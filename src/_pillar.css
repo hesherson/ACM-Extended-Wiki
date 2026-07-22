@@ -141,7 +141,9 @@ h1{
 .rule{height:2px;background:var(--amber);margin:28px 0 0}
 
 /* ---- Sections ---- */
-.sec{margin-top:88px;scroll-margin-top:96px}
+/* Sections carry a lot of reading, so they get real air between them. A heading arriving too soon
+   after the block above reads as part of it. */
+.sec{margin-top:116px;scroll-margin-top:96px}
 .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px}
 .sec-num{font-family:"Space Mono",monospace;font-size:13px;color:var(--amber);padding-top:4px}
 h2{
@@ -150,7 +152,7 @@ h2{
 }
 h3{
   font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:23px;
-  letter-spacing:.02em;text-transform:uppercase;margin-top:40px;margin-bottom:10px;
+  letter-spacing:.02em;text-transform:uppercase;margin-top:58px;margin-bottom:10px;
 }
 .sec p + p{margin-top:17px}
 .sec p{max-width:70ch}
@@ -178,7 +180,12 @@ code{
 
 /* ---- Dropdown. The long-explanation component ---- */
 details.dd{border:1px solid var(--rule);border-radius:3px;background:var(--navy-2);overflow:hidden}
-details.dd + details.dd{margin-top:16px}
+details.dd + details.dd{margin-top:20px}
+/* An open card holds a page of reading. Closed cards stay tight so the list is scannable, but the
+   moment one is expanded it needs space either side or it runs into its neighbours. */
+details.dd[open]{margin-bottom:46px}
+details.dd + details.dd[open], details.dd[open] + details.dd{margin-top:46px}
+details.dd[open]:last-child{margin-bottom:0}
 details.dd[open]{border-color:var(--rule-2)}
 details.dd summary{
   display:flex;align-items:baseline;gap:12px;padding:15px 16px;cursor:pointer;
@@ -283,6 +290,17 @@ figure.placeholder{
 @media print{ .ico.inv{filter:none} }
 
 /* ---- Flags ---- */
+/* ---- Numbered steps. Only for procedures where the order genuinely matters, otherwise a plain
+   list is honest and this is decoration. ---- */
+ol.steps{list-style:none;counter-reset:st;margin-top:14px;display:flex;flex-direction:column;gap:11px}
+ol.steps li{
+  counter-increment:st;position:relative;padding-left:34px;font-size:14.5px;
+}
+ol.steps li::before{
+  content:counter(st,decimal-leading-zero);position:absolute;left:0;top:1px;
+  font-family:"Space Mono",monospace;font-size:11px;color:var(--amber);
+}
+
 .flags{background:rgba(190,24,24,.10);border:1px solid rgba(190,24,24,.45);border-radius:3px;padding:22px 24px;margin-top:52px}
 .flags h3{font-weight:900;font-size:19px;color:var(--bad-ink);margin:0}
 .flags ul{list-style:none;margin-top:12px;display:flex;flex-direction:column;gap:12px}
@@ -369,6 +387,18 @@ footer .brand{color:var(--cream)}
 .tb-h{display:block;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:17px;text-transform:uppercase;letter-spacing:.02em;margin-top:2px}
 .tb-s{display:block;font-size:12.5px;color:var(--cream-dim);margin-top:3px;line-height:1.5}
 .tb-none{padding:12px 13px;color:var(--cream-dim);font-size:14px}
+
+/* On desktop the sidebar is a scroll container (overflow-y:auto), and an absolutely positioned panel
+   inside a scroll container gets clipped to it. Results were being cut off at the 280px sidebar edge.
+   Fixed positioning escapes the overflow entirely; the script places it against the input, because the
+   input moves whenever the sidebar itself is scrolled. */
+@media (min-width:820px){
+  .tb-res{
+    position:fixed;left:auto;top:auto;
+    width:min(560px, calc(100vw - 40px));
+    max-height:min(72vh,660px);
+  }
+}
 
 /* ---- Glossary term button and popup ---- */
 button.gl{

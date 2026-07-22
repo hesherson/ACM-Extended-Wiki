@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
-<title>ACM Extended Wiki | Airway and chest</title>
+<title>ACM Extended Wiki | Head injury</title>
 <link rel="icon" type="image/png" href="img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -714,20 +714,19 @@ try{if(localStorage.getItem('pillarNight')==='1'){document.documentElement.class
     <a href="ov_oxygen.html">Oxygen and saturation</a>
     <a href="ov_circ.html">Circulation and rhythm</a>
     <a href="ov_chest.html">Chest and airway</a>
-    <a href="ov_tbi.html">Head injury</a>
+    <a class="on" href="ov_tbi.html">Head injury</a>
+    <div class="subnav">
+      <a href="#making-icp-observable" data-s="making-icp-observable">Making ICP Observable</a>
+      <a href="#composing-with-everything-else" data-s="composing-with-everything-else">Composing With Everything Else</a>
+      <a href="#clearing-it" data-s="clearing-it">Clearing It</a>
+    </div>
     <a href="ov_access.html">Access and flow</a>
     <a href="ov_traps.html">Known traps</a>
     <div class="grp">Systems</div>
     <a href="ventilator.html">Ventilator</a>
     <a href="oxygen.html">Oxygen delivery</a>
     <a href="bleeding.html">Bleeding and shock</a>
-    <a class="on" href="airway.html">Airway and chest</a>
-    <div class="subnav">
-      <a href="#needle-decompression" data-s="needle-decompression">Needle Decompression</a>
-      <a href="#positive-pressure-and-preload" data-s="positive-pressure-and-preload">Positive Pressure And Preload</a>
-      <a href="#capnography" data-s="capnography">Capnography</a>
-      <a href="#junctional-wounds" data-s="junctional-wounds">Junctional Wounds</a>
-    </div>
+    <a href="airway.html">Airway and chest</a>
     <a href="circulation.html">Arrest and rhythms</a>
     <a href="medications.html">Medications</a>
     <a href="access.html">Access and blood</a>
@@ -757,107 +756,81 @@ try{if(localStorage.getItem('pillarNight')==='1'){document.documentElement.class
     <div class="sb-prog"><i id="sbProg"></i></div>
   </div>
   <nav class="sb-list" id="sbList" hidden>
-    <a href="#needle-decompression" data-a="needle-decompression">Needle Decompression</a>
-    <a href="#positive-pressure-and-preload" data-a="positive-pressure-and-preload">Positive Pressure And Preload</a>
-    <a href="#capnography" data-a="capnography">Capnography</a>
-    <a href="#junctional-wounds" data-a="junctional-wounds">Junctional Wounds</a>
+    <a href="#making-icp-observable" data-a="making-icp-observable">Making ICP Observable</a>
+    <a href="#composing-with-everything-else" data-a="composing-with-everything-else">Composing With Everything Else</a>
+    <a href="#clearing-it" data-a="clearing-it">Clearing It</a>
   </nav>
 </div>
-<div class="eyebrow">PILLAR <span class="tag">//</span> SYSTEMS</div>
-<h1>Airway And Chest</h1>
-<p class="lede">Decompression, seals, drainage and tubes. The part of the addon where doing the wrong thing confidently causes the injury you were treating for.</p>
+<div class="eyebrow">PILLAR <span class="tag">//</span> ADVANCED FUNCTIONS</div>
+<h1>Head<br>Injury</h1>
+<p class="lede">A raised intracranial pressure has to be observable through the ordinary tools, or it is not a diagnosis, it is a hidden variable. This is how the brain is made visible on a heart rate, a cuff and a respiratory rate.</p>
 <div class="rule"></div>
 
 <div class="principle">
   <div class="lab">The one thing</div>
-  <p><b>A needle costs something.</b> Decompressing a chest that did not need it seeds the pneumothorax you were looking for, and repeating it raises the chance of turning that into a <button type="button" class="gl" data-t="tension-pneumothorax">tension</button>.</p>
+  <p><b>The vitals track the pressure.</b> A raised ICP shows up as a recognisable pattern across several numbers at once, and it changes as the brain runs out of room.</p>
 </div>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">01</span><h2 id="needle-decompression">Needle Decompression</h2></div>
-  <p>The action is available on any living casualty at any time, rather than only when a tension is present, so the decision comes from what you find on examination rather than from a label the game has already applied.</p>
-  <p>Before the needle goes in, the indication is checked. If a tension or simple pneumothorax is present, it works as expected. If not, you have just made a hole in a healthy chest.</p>
-  <div class="card">
-    <header><span class="name">Unnecessary decompression</span><span class="badge off">Iatrogenic</span></header>
-    <div class="grid">
-      <div class="cell wide"><div class="k">First unnecessary needle</div><div class="v">seeds a developing simple pneumothorax</div></div>
-      <div class="cell"><div class="k">Tension chance</div><div class="v">0.35 cumulative</div></div>
-      <div class="cell"><div class="k">Onset delay</div><div class="v">90 s</div></div>
-    </div>
-  </div>
-  <p>Set <code>ACMI_ncd_iatrogenicTension</code> to false to disable the tension escalation while keeping the rest.</p>
+  <div class="sec-head"><span class="sec-num">01</span><h2 id="making-icp-observable">Making ICP Observable</h2></div>
+  <p>ACM has no intracranial pressure model, so a head-injured casualty read the same as anyone else. ACM Extended writes a signature onto the patient's ACM and ACE vitals so the state is visible through heart rate, blood pressure cuff, saturation and respiratory rate rather than sitting behind a variable nobody can see.</p>
+  <p>Everything scales with severity, with how much compensation reserve is left, and with herniation stage. It is phased, and the phases look different from each other on purpose.</p>
 
   <details class="dd">
-    <summary><span class="dd-mark"></span><span class="dd-name">Why this is in the addon</span><span class="dd-tag">Teaching intent</span></summary>
+    <summary><span class="dd-mark"></span><span class="dd-name">Compensated Cushing</span><span class="dd-tag">Ominous but holding</span></summary>
     <div class="dd-body">
-      <p>Most medical sims make needle decompression a free action, which trains the habit of needling anything that looks unwell. That habit is actively dangerous, and it is one of the more common criticisms of prehospital chest decompression in the real literature.</p>
-      <p>Making it cost something turns it into a decision. You are meant to examine first, and the delay before the iatrogenic pneumothorax declares itself means you find out you were wrong later, which is exactly how it happens.</p>
-      <p>It is recoverable. A simple pneumothorax you caused can be decompressed and drained like any other, so the cost is time and a lesson rather than a dead casualty.</p>
+      <p>Pressure is raised and the reserve is intact. The brain is actively defending its own perfusion pressure and succeeding, at a visible cost.</p>
+      <table class="t">
+        <thead><tr><th>Sign</th><th>Direction</th></tr></thead>
+        <tbody>
+          <tr><td>Systolic pressure</td><td>Climbs hard</td></tr>
+          <tr><td>Diastolic pressure</td><td>Climbs far less</td></tr>
+          <tr><td>Pulse pressure</td><td>Widens</td></tr>
+          <tr><td>Heart rate</td><td>Reflex bradycardia</td></tr>
+          <tr><td>Respirations</td><td>Irregular, Cheyne-Stokes</td></tr>
+        </tbody>
+      </table>
+      <p>Malignant hypertension with a widening pulse pressure and a slowing heart is the classic triad, and it is the pattern that should make a medic stop treating the blood pressure as good news. This casualty is compensating, not stable.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Decompensating</span><span class="dd-tag">The surge fails</span></summary>
+    <div class="dd-body">
+      <p>The compensation budget is spent and herniation is advancing. The sympathetic surge that was holding perfusion pressure up stops working.</p>
+      <p>Pressure falls rather than rises. The bradycardia that was a defensive reflex stops being defensive. What made this dangerous in the compensated phase was the hypertension; what makes it lethal here is that the hypertension has gone.</p>
+      <p>The transition matters more than either endpoint. A head injury whose blood pressure is normalising without treatment is not improving.</p>
     </div>
   </details>
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">02</span><h2 id="positive-pressure-and-preload">Positive Pressure And Preload</h2></div>
-  <p>Ventilating a casualty raises intrathoracic pressure, which opposes venous return. In a full tank that costs nothing measurable. In an empty one it costs a great deal.</p>
-  <div class="scroll">
-  <table class="t">
-    <thead><tr><th>Volume state</th><th>Stroke volume penalty</th></tr></thead>
-    <tbody>
-      <tr><td>Full</td><td class="mono">about 0%</td></tr>
-      <tr><td>Class III haemorrhage</td><td class="mono">15 to 19%</td></tr>
-      <tr><td>Maximum modelled</td><td class="mono">35%</td></tr>
-    </tbody>
-  </table>
-  </div>
-  <p>High PEEP multiplies it up to 1.5 times. This applies to <b>both</b> the ventilator and manual bagging, so an enthusiastic BVM technique on a shocked casualty does real harm.</p>
-  <p>The practical rule: <b>fill them before you tube them</b>, and if you must ventilate an empty casualty, keep pressures and PEEP low until volume is restored.</p>
+  <div class="sec-head"><span class="sec-num">02</span><h2 id="composing-with-everything-else">Composing With Everything Else</h2></div>
+  <p>The Cushing response is delivered as a contribution to systemic vascular resistance rather than as a blood pressure offset, for the same reason the pressors are: the blood pressure function is compiled final and unreachable.</p>
+  <p>It is written as a MAP delta converted at the pressor scale, so it composes with the pressor term and with ACE's own computed resistance instead of fighting either. Raised pressure drives resistance up through the sympathetic response, and decompensated collapse drives it negative.</p>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">The heart rate decoupling trap</span><span class="dd-tag">Set both, always</span></summary>
+    <div class="dd-body">
+      <p>There are two heart rate variables in play and they serve different consumers. <code>ace_medical_heartRate</code> drives the ECG trace and the monitor. <code>ACM_core_TargetVitals_HeartRate</code> drives what ACM believes the rate should be.</p>
+      <p>Writing only one of them decouples the monitor from the model. The bradycardia appeared on the trace but the rest of the simulation carried on with the old rate, or the reverse, depending on which was written.</p>
+      <p><b>Anything that changes heart rate must set both.</b> There are fifteen sites in the addon that do so. This is not optional and it is not defensive coding, it is the contract.</p>
+    </div>
+  </details>
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">03</span><h2 id="capnography">Capnography</h2></div>
-  <p>The EMMA reads <button type="button" class="gl" data-t="etco2">EtCO2</button> at the tube and shows a number, a rate, and a rolling trace. The number is a breath to breath trailing average rather than a single breath, so it settles rather than jumping, and a change in it means something has actually changed.</p>
-  <figure>
-    <img src="img/emma_live.gif" alt="EMMA capnograph running">
-    <figcaption>EMMA in use. Value, rate, and the rolling trace</figcaption>
-  </figure>
-  <div class="iconkey">
-    <div class="ik"><img class="ico" src="img/emma_ca.png" alt=""><span class="ikn">Inventory</span><span class="ikd">EMMA mainstream capnograph, inline on the tube</span></div>
+  <div class="sec-head"><span class="sec-num">03</span><h2 id="clearing-it">Clearing It</h2></div>
+  <p>A Zeus module clears the TBI state outright, removing every variable it set rather than winding severity down to zero. Winding down leaves residual offsets attached to the casualty that show up later as vitals that will not quite normalise.</p>
+  <div class="flags">
+    <h3>Red Flags</h3>
+    <ul>
+      <li><b>Reading a rising blood pressure in a head injury as improvement.</b> It is the brain defending perfusion, and it is a warning.</li>
+      <li><b>A head injury whose pressure normalises without treatment.</b> That is decompensation, not recovery.</li>
+      <li><b>Writing one heart rate variable.</b> Both, every time, or the monitor and the model disagree.</li>
+    </ul>
   </div>
-  <p>Read the shape, not only the number. A square trace with a flat top is a patient moving air. A trace that slopes upward instead of levelling is obstruction. A trace that shrinks breath by breath while the ventilator settings have not changed is a lung getting stiffer, and in pressure control that is the only warning you get.</p>
-  <p>Value falling with a pulse present usually means circulation, not ventilation. Cardiac output carries CO2 to the lung, so a dropping number on unchanged settings points at the pump before it points at the tube.</p>
 </section>
-
-<section class="sec">
-  <div class="sec-head"><span class="sec-num">04</span><h2 id="junctional-wounds">Junctional Wounds</h2></div>
-  <p>Five states, each a distinct step: open, packed, wrapped, and XStat. Bleeding falls as you progress. The AAJT-S applies with a pause, and Combat Gauze is tracked separately.</p>
-  <figure>
-  <img src="img/aajt-s_ca.png" alt="AAJT-S">
-  <figcaption>AAJT-S junctional tourniquet</figcaption>
-</figure>
-<p>Two application sites, and the one you need depends on where the bleed is. Inguinal for groin and proximal thigh, axillary for a shoulder or high arm wound that a limb tourniquet cannot reach.</p>
-<div class="figpair">
-  <figure>
-    <img src="img/aajt-s_example.png" alt="AAJT-S applied at the inguinal site">
-    <figcaption>Inguinal placement, windlass over the pelvis</figcaption>
-  </figure>
-  <figure>
-    <img src="img/aajt-s_axilla_example.png" alt="AAJT-S applied at the axillary site">
-    <figcaption>Axillary placement, for wounds above a limb tourniquet</figcaption>
-  </figure>
-</div>
-<figure class="placeholder">Five wound states screenshot goes here</figure>
-</section>
-
-<div class="flags">
-  <h3>Red Flags</h3>
-  <ul>
-    <li><b>Needling on suspicion alone.</b> Examine first. A wrong needle creates the injury.</li>
-    <li><b>Repeat needles when the first did not help.</b> Each one raises the tension chance cumulatively.</li>
-    <li><b>Ventilating an empty casualty.</b> You are trading oxygenation for cardiac output.</li>
-    <li><b>High PEEP in shock.</b> Multiplies the <button type="button" class="gl" data-t="preload">preload</button> penalty by half again.</li>
-  </ul>
-</div>
 
 <footer>
   <span class="brand">PILLAR</span> // ACM EXTENDED FIELD GUIDE // v0.9.873 // BUILD 2026-07-22

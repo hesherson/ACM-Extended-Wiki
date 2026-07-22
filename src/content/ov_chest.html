@@ -1,0 +1,85 @@
+<div class="eyebrow">PILLAR <span class="tag">//</span> ADVANCED FUNCTIONS</div>
+<h1>Chest<br>And Airway</h1>
+<p class="lede">A ventilator sets the respiratory rate. ACM's original could not express that, and the two branches that stopped it were both sitting above the default.</p>
+<div class="rule"></div>
+
+<div class="principle">
+  <div class="lab">The one thing</div>
+  <p><b>The machine's set rate is the respiratory rate, exactly.</b> It does not decay toward anything, and it is not overwritten four times a second by a hardcoded value.</p>
+</div>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Respiration Rate</h2></div>
+  <p><b>ACM behaviour.</b> <code>updateRespirationRate</code> resolves through a series of cases. Two of them made mechanical ventilation impossible to represent, and both sat above the default so nothing downstream could correct them.</p>
+  <table class="t">
+    <thead><tr><th>ACM case</th><th>Result</th><th>Problem</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">not breathing</td><td class="mono">RR 0</td><td>Fires for the paralysed apneic patient a ventilator exists for</td></tr>
+      <tr><td class="mono">bvmActive</td><td class="mono">RR 10</td><td>Hardcoded, and the vent registers as the BVM provider</td></tr>
+    </tbody>
+  </table>
+  <p>Taken together: a rocuronium'd, intubated, ventilated patient read a respiratory rate of zero and stopped being ventilated, and where the first case did not fire the second overwrote the dialled rate with 10 on every vitals cycle.</p>
+  <p><b>Override.</b> One new case, placed <b>first</b>, for a patient on a running ventilator in a mandatory mode. Everything else is ACM's original logic preserved verbatim.</p>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Why writing the variable from our own tick failed</span><span class="dd-tag">Fighting a function</span></summary>
+    <div class="dd-body">
+      <p>The first attempt at this did not replace the function. It set the respiration rate variable from the ventilator's own tick, on the assumption that whoever wrote last would win.</p>
+      <p>That is a losing arrangement. ACM's vitals cycle runs roughly four times a second and recomputes the value from its own cases every pass. Our tick and its cycle simply alternated, and the displayed rate oscillated between the dialled value and 10.</p>
+      <p>The general lesson: if a value is recomputed on a cycle, you cannot own it by writing it more often. You have to own the function that computes it.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Why CPAP is excluded</span><span class="dd-tag">Deliberate</span></summary>
+    <div class="dd-body">
+      <p>The new case covers the mandatory modes only, SIMV VC PS and SIMV PC. CPAP PS HF is not included, and that is not an oversight.</p>
+      <p>CPAP is a spontaneous mode. It supports breaths the patient starts and guarantees none. The patient's own drive, or absence of one, has to stand.</p>
+      <p>The consequence is that CPAP on an apneic casualty is correctly fatal. The machine sits there supporting breaths that are never taken and the medic has to notice. If the override had covered CPAP as well, the mode would silently have ventilated a patient with no drive, which would have removed the single most important thing that mode teaches.</p>
+    </div>
+  </details>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">02</span><h2>Breathing State</h2></div>
+  <p><b>ACM behaviour.</b> Breathing effectiveness is knocked down multiplicatively by hemothorax fluid, pneumothorax, tension pneumothorax and CBRN exposure.</p>
+  <p><b>Override.</b> The model is reproduced verbatim, with a graded pulmonary edema penalty added on top in the same multiplicative style. The full reasoning for degrading effectiveness rather than capping saturation is on the oxygen page.</p>
+  <table class="t">
+    <thead><tr><th>Term</th><th>Threshold</th><th>Behaviour</th></tr></thead>
+    <tbody>
+      <tr><td>Hemothorax fluid</td><td class="mono">above 0.3</td><td>Scales down toward 0.1x at 1.5</td></tr>
+      <tr><td>Tension pneumothorax</td><td class="mono">any</td><td>Multiplies down</td></tr>
+      <tr><td>Hardcore pneumothorax</td><td class="mono">flag</td><td>Separate stricter path</td></tr>
+      <tr><td>Pulmonary edema</td><td class="mono">onset to cap</td><td>Graded, own coefficient</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Bagging Gates</h2></div>
+  <p><b>ACM behaviour.</b> <code>canUseBVM</code> allows bagging an unconscious patient, or an awake patient who is lying down, and blocks a second medic from bagging a patient someone else is already bagging.</p>
+  <p><b>Override.</b> Faithful de-macroed copy plus one guard at the front: <b>a patient wearing a non-rebreather mask cannot be bagged.</b> The mask has to come off before a bag mask seal is possible.</p>
+  <p>The guard applies to both the plain and the oxygen-supplied bagging actions, because both route their condition through the same function.</p>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Why gate rather than auto-remove</span><span class="dd-tag">Design</span></summary>
+    <div class="dd-body">
+      <p>The alternative was to silently remove the mask when bagging starts. That was rejected.</p>
+      <p>Removing equipment on the patient's behalf hides a step the medic should be performing and thinking about. The mask being in the way is real, and noticing it is part of managing an airway rather than an inconvenience to be smoothed over.</p>
+      <p>Gating also fails safely. A blocked action tells the medic something is wrong and they investigate. An action that quietly rearranged the patient would leave them unsure what state anyone is in.</p>
+    </div>
+  </details>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">04</span><h2>Where This Is Installed</h2></div>
+  <p>All four functions are replaced at compile time through <code>ACMI_overwrite_breathing</code> and <code>ACMI_overwrite_airway</code>. ACM prepares these normally rather than compiling them final, so compile-time replacement installs cleanly, the same way the circulation overrides do.</p>
+  <div class="flags">
+    <h3>Red Flags</h3>
+    <ul>
+      <li><b>CPAP on a casualty without a respiratory drive.</b> The mode guarantees no breath and the override deliberately does not rescue it.</li>
+      <li><b>Attempting to bag over a non-rebreather.</b> The action is gated off. Remove the mask.</li>
+      <li><b>Owning a cycled value by writing it more often.</b> It will oscillate. Own the function instead.</li>
+    </ul>
+  </div>
+</section>

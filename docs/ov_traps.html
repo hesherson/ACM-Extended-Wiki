@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
-<title>ACM Extended Wiki | Airway and chest</title>
+<title>ACM Extended Wiki | Known traps</title>
 <link rel="icon" type="image/png" href="img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -716,18 +716,19 @@ try{if(localStorage.getItem('pillarNight')==='1'){document.documentElement.class
     <a href="ov_chest.html">Chest and airway</a>
     <a href="ov_tbi.html">Head injury</a>
     <a href="ov_access.html">Access and flow</a>
-    <a href="ov_traps.html">Known traps</a>
+    <a class="on" href="ov_traps.html">Known traps</a>
+    <div class="subnav">
+      <a href="#the-trailing-comma" data-s="the-trailing-comma">The Trailing Comma</a>
+      <a href="#action-condition-inheritance" data-s="action-condition-inheritance">Action Condition Inheritance</a>
+      <a href="#final-functions" data-s="final-functions">Final Functions</a>
+      <a href="#two-writers-one-value" data-s="two-writers-one-value">Two Writers, One Value</a>
+      <a href="#paths-and-encoding" data-s="paths-and-encoding">Paths And Encoding</a>
+    </div>
     <div class="grp">Systems</div>
     <a href="ventilator.html">Ventilator</a>
     <a href="oxygen.html">Oxygen delivery</a>
     <a href="bleeding.html">Bleeding and shock</a>
-    <a class="on" href="airway.html">Airway and chest</a>
-    <div class="subnav">
-      <a href="#needle-decompression" data-s="needle-decompression">Needle Decompression</a>
-      <a href="#positive-pressure-and-preload" data-s="positive-pressure-and-preload">Positive Pressure And Preload</a>
-      <a href="#capnography" data-s="capnography">Capnography</a>
-      <a href="#junctional-wounds" data-s="junctional-wounds">Junctional Wounds</a>
-    </div>
+    <a href="airway.html">Airway and chest</a>
     <a href="circulation.html">Arrest and rhythms</a>
     <a href="medications.html">Medications</a>
     <a href="access.html">Access and blood</a>
@@ -757,107 +758,101 @@ try{if(localStorage.getItem('pillarNight')==='1'){document.documentElement.class
     <div class="sb-prog"><i id="sbProg"></i></div>
   </div>
   <nav class="sb-list" id="sbList" hidden>
-    <a href="#needle-decompression" data-a="needle-decompression">Needle Decompression</a>
-    <a href="#positive-pressure-and-preload" data-a="positive-pressure-and-preload">Positive Pressure And Preload</a>
-    <a href="#capnography" data-a="capnography">Capnography</a>
-    <a href="#junctional-wounds" data-a="junctional-wounds">Junctional Wounds</a>
+    <a href="#the-trailing-comma" data-a="the-trailing-comma">The Trailing Comma</a>
+    <a href="#action-condition-inheritance" data-a="action-condition-inheritance">Action Condition Inheritance</a>
+    <a href="#final-functions" data-a="final-functions">Final Functions</a>
+    <a href="#two-writers-one-value" data-a="two-writers-one-value">Two Writers, One Value</a>
+    <a href="#paths-and-encoding" data-a="paths-and-encoding">Paths And Encoding</a>
   </nav>
 </div>
-<div class="eyebrow">PILLAR <span class="tag">//</span> SYSTEMS</div>
-<h1>Airway And Chest</h1>
-<p class="lede">Decompression, seals, drainage and tubes. The part of the addon where doing the wrong thing confidently causes the injury you were treating for.</p>
+<div class="eyebrow">PILLAR <span class="tag">//</span> ADVANCED FUNCTIONS</div>
+<h1>Known<br>Traps</h1>
+<p class="lede">Failures that cost hours to find, collected so they cost minutes instead. Every one of these has actually happened during development, and most produce no error message at all.</p>
 <div class="rule"></div>
 
 <div class="principle">
-  <div class="lab">The one thing</div>
-  <p><b>A needle costs something.</b> Decompressing a chest that did not need it seeds the pneumothorax you were looking for, and repeating it raises the chance of turning that into a <button type="button" class="gl" data-t="tension-pneumothorax">tension</button>.</p>
+  <div class="lab">The common thread</div>
+  <p><b>Every trap here fails silently.</b> Nothing throws, nothing logs where you are looking, and the code appears correct on inspection. That is what makes them expensive.</p>
 </div>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">01</span><h2 id="needle-decompression">Needle Decompression</h2></div>
-  <p>The action is available on any living casualty at any time, rather than only when a tension is present, so the decision comes from what you find on examination rather than from a label the game has already applied.</p>
-  <p>Before the needle goes in, the indication is checked. If a tension or simple pneumothorax is present, it works as expected. If not, you have just made a hole in a healthy chest.</p>
-  <div class="card">
-    <header><span class="name">Unnecessary decompression</span><span class="badge off">Iatrogenic</span></header>
-    <div class="grid">
-      <div class="cell wide"><div class="k">First unnecessary needle</div><div class="v">seeds a developing simple pneumothorax</div></div>
-      <div class="cell"><div class="k">Tension chance</div><div class="v">0.35 cumulative</div></div>
-      <div class="cell"><div class="k">Onset delay</div><div class="v">90 s</div></div>
-    </div>
-  </div>
-  <p>Set <code>ACMI_ncd_iatrogenicTension</code> to false to disable the tension escalation while keeping the rest.</p>
+  <div class="sec-head"><span class="sec-num">01</span><h2 id="the-trailing-comma">The Trailing Comma</h2></div>
+  <p>A trailing comma inside an array kills <code>fn_postInit</code> at parse time. Everything registered after that point never registers.</p>
+  <p>The symptom is not an error. It is that some arbitrary set of features are simply absent, with no pattern that makes sense, because the cut-off is wherever the comma happens to sit in the file rather than anywhere meaningful.</p>
+  <table class="t">
+    <thead><tr><th>Looks like</th><th>Actually is</th></tr></thead>
+    <tbody>
+      <tr><td>Half the actions missing</td><td>Parse stopped partway down postInit</td></tr>
+      <tr><td>A feature that worked yesterday</td><td>Something above it gained a comma</td></tr>
+      <tr><td>No RPT error</td><td>Correct. There is none.</td></tr>
+    </tbody>
+  </table>
+  <p>It is checked on every build by <code>commacheck.py</code>, which is the only reliable defence. Do not rely on spotting it by eye; the comma is invisible in a long array.</p>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">02</span><h2 id="action-condition-inheritance">Action Condition Inheritance</h2></div>
+  <p>An action that inherits from a hidden parent inherits the parent's condition, including a condition of <code>false</code>. The child then never appears, and the child's own definition looks completely correct because the problem is not in it.</p>
+  <p><b>Restate conditions explicitly on every child.</b> Do not rely on inheritance to leave them alone.</p>
 
   <details class="dd">
-    <summary><span class="dd-mark"></span><span class="dd-name">Why this is in the addon</span><span class="dd-tag">Teaching intent</span></summary>
+    <summary><span class="dd-mark"></span><span class="dd-name">The thoracostomy case</span><span class="dd-tag">Same family</span></summary>
     <div class="dd-body">
-      <p>Most medical sims make needle decompression a free action, which trains the habit of needling anything that looks unwell. That habit is actively dangerous, and it is one of the more common criticisms of prehospital chest decompression in the real literature.</p>
-      <p>Making it cost something turns it into a decision. You are meant to examine first, and the delay before the iatrogenic pneumothorax declares itself means you find out you were wrong later, which is exactly how it happens.</p>
-      <p>It is recoverable. A simple pneumothorax you caused can be decompressed and drained like any other, so the cost is time and a lesson rather than a dead casualty.</p>
+      <p>A closely related version of this took a long time to find. The thoracostomy action was not appearing, and its condition was correct.</p>
+      <p>The override had restated <code>condition</code> but silently inherited ACM's <code>items[] = {"ACE_surgicalKit"}</code>. ACE's medical menu filters any action whose required items the medic is not carrying, so the action vanished whenever the surgical kit was absent, which looked exactly like a broken condition.</p>
+      <p>The fix was overriding <code>items[] = {}</code> as well. The general form: when replacing an action, check every inherited property, not only the one you meant to change.</p>
     </div>
   </details>
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">02</span><h2 id="positive-pressure-and-preload">Positive Pressure And Preload</h2></div>
-  <p>Ventilating a casualty raises intrathoracic pressure, which opposes venous return. In a full tank that costs nothing measurable. In an empty one it costs a great deal.</p>
-  <div class="scroll">
+  <div class="sec-head"><span class="sec-num">03</span><h2 id="final-functions">Final Functions</h2></div>
+  <p>ACM compiles most of its functions final. A runtime reassignment is ignored, the original keeps running, and your code never executes. The full mechanism is on the <b>How overrides work</b> page; this is the checklist version.</p>
   <table class="t">
-    <thead><tr><th>Volume state</th><th>Stroke volume penalty</th></tr></thead>
+    <thead><tr><th>Symptom</th><th>Check</th></tr></thead>
     <tbody>
-      <tr><td>Full</td><td class="mono">about 0%</td></tr>
-      <tr><td>Class III haemorrhage</td><td class="mono">15 to 19%</td></tr>
-      <tr><td>Maximum modelled</td><td class="mono">35%</td></tr>
+      <tr><td>Change has no effect whatsoever</td><td>RPT for <code>final function</code></td></tr>
+      <tr><td>Feature appears entirely absent</td><td>A gate upstream returning false</td></tr>
+      <tr><td>Value oscillates between two figures</td><td>Two writers on a cycled variable</td></tr>
     </tbody>
   </table>
-  </div>
-  <p>High PEEP multiplies it up to 1.5 times. This applies to <b>both</b> the ventilator and manual bagging, so an enthusiastic BVM technique on a shocked casualty does real harm.</p>
-  <p>The practical rule: <b>fill them before you tube them</b>, and if you must ventilate an empty casualty, keep pressures and PEEP low until volume is restored.</p>
+  <p>Functions confirmed final and therefore requiring compile-time replacement include the EKG generators, <code>getUp</code>, <code>getIVFlowRate</code>, <code>getBloodPressure</code> and <code>updateHeartRate</code>. Functions confirmed <i>not</i> final include <code>updatePeripheralResistance</code> and <code>getBloodVolumeChange</code>.</p>
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">03</span><h2 id="capnography">Capnography</h2></div>
-  <p>The EMMA reads <button type="button" class="gl" data-t="etco2">EtCO2</button> at the tube and shows a number, a rate, and a rolling trace. The number is a breath to breath trailing average rather than a single breath, so it settles rather than jumping, and a change in it means something has actually changed.</p>
-  <figure>
-    <img src="img/emma_live.gif" alt="EMMA capnograph running">
-    <figcaption>EMMA in use. Value, rate, and the rolling trace</figcaption>
-  </figure>
-  <div class="iconkey">
-    <div class="ik"><img class="ico" src="img/emma_ca.png" alt=""><span class="ikn">Inventory</span><span class="ikd">EMMA mainstream capnograph, inline on the tube</span></div>
-  </div>
-  <p>Read the shape, not only the number. A square trace with a flat top is a patient moving air. A trace that slopes upward instead of levelling is obstruction. A trace that shrinks breath by breath while the ventilator settings have not changed is a lung getting stiffer, and in pressure control that is the only warning you get.</p>
-  <p>Value falling with a pulse present usually means circulation, not ventilation. Cardiac output carries CO2 to the lung, so a dropping number on unchanged settings points at the pump before it points at the tube.</p>
+  <div class="sec-head"><span class="sec-num">04</span><h2 id="two-writers-one-value">Two Writers, One Value</h2></div>
+  <p>Where a variable is recomputed on a cycle, writing it from your own tick does not give you ownership. Your write and the cycle's write alternate, and the value visibly flickers.</p>
+  <p>This has caused three separate bugs: the ventilator respiratory rate against ACM's vitals cycle, saturation against ACE's gas exchange, and the altitude model against the ventilator shunt model.</p>
+  <table class="t">
+    <thead><tr><th>Value</th><th>Rule</th></tr></thead>
+    <tbody>
+      <tr><td>Respiratory rate</td><td>Own <code>updateRespirationRate</code>, do not write the variable</td></tr>
+      <tr><td>Saturation</td><td>Write the ACM target layer only, never <code>ace_medical_spo2</code></td></tr>
+      <tr><td>Saturation while ventilating</td><td>The vent owns it. Every other writer carries the guard.</td></tr>
+      <tr><td>Heart rate</td><td>Write both variables, always</td></tr>
+    </tbody>
+  </table>
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">04</span><h2 id="junctional-wounds">Junctional Wounds</h2></div>
-  <p>Five states, each a distinct step: open, packed, wrapped, and XStat. Bleeding falls as you progress. The AAJT-S applies with a pause, and Combat Gauze is tracked separately.</p>
-  <figure>
-  <img src="img/aajt-s_ca.png" alt="AAJT-S">
-  <figcaption>AAJT-S junctional tourniquet</figcaption>
-</figure>
-<p>Two application sites, and the one you need depends on where the bleed is. Inguinal for groin and proximal thigh, axillary for a shoulder or high arm wound that a limb tourniquet cannot reach.</p>
-<div class="figpair">
-  <figure>
-    <img src="img/aajt-s_example.png" alt="AAJT-S applied at the inguinal site">
-    <figcaption>Inguinal placement, windlass over the pelvis</figcaption>
-  </figure>
-  <figure>
-    <img src="img/aajt-s_axilla_example.png" alt="AAJT-S applied at the axillary site">
-    <figcaption>Axillary placement, for wounds above a limb tourniquet</figcaption>
-  </figure>
-</div>
-<figure class="placeholder">Five wound states screenshot goes here</figure>
+  <div class="sec-head"><span class="sec-num">05</span><h2 id="paths-and-encoding">Paths And Encoding</h2></div>
+  <p>Two small ones that produce confusing results rather than clean failures.</p>
+  <table class="t">
+    <thead><tr><th>Rule</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td>Texture and sound paths take <b>single</b> backslashes</td><td>Doubled paths resolve to nothing and the asset silently does not draw</td></tr>
+      <tr><td>All sounds are mono ogg</td><td>Stereo files do not position in the world correctly</td></tr>
+    </tbody>
+  </table>
+  <div class="flags">
+    <h3>Before Shipping</h3>
+    <ul>
+      <li><b>Run the checks.</b> Brace balance, duplicate config classes with the button macro expanded, and trailing commas. All three catch silent failures.</li>
+      <li><b>Check for duplicate CAManBase entries.</b> ACE_Actions and ACE_SelfActions must appear exactly once each.</li>
+      <li><b>Sweep for use before define.</b> A function called before its definition fails only on the path that reaches it.</li>
+    </ul>
+  </div>
 </section>
-
-<div class="flags">
-  <h3>Red Flags</h3>
-  <ul>
-    <li><b>Needling on suspicion alone.</b> Examine first. A wrong needle creates the injury.</li>
-    <li><b>Repeat needles when the first did not help.</b> Each one raises the tension chance cumulatively.</li>
-    <li><b>Ventilating an empty casualty.</b> You are trading oxygenation for cardiac output.</li>
-    <li><b>High PEEP in shock.</b> Multiplies the <button type="button" class="gl" data-t="preload">preload</button> penalty by half again.</li>
-  </ul>
-</div>
 
 <footer>
   <span class="brand">PILLAR</span> // ACM EXTENDED FIELD GUIDE // v0.9.873 // BUILD 2026-07-22

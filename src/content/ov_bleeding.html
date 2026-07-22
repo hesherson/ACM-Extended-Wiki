@@ -1,0 +1,98 @@
+<div class="eyebrow">PILLAR <span class="tag">//</span> ADVANCED FUNCTIONS</div>
+<h1>Bleeding<br>And Clotting</h1>
+<p class="lede">Stock ACE bleeds at a fixed rate per wound. ACM Extended makes that rate answer to blood pressure and to clotting quality, so how you resuscitate changes how fast they empty.</p>
+<div class="rule"></div>
+
+<div class="principle">
+  <div class="lab">The one thing</div>
+  <p><b>Pressure drives loss.</b> Every point of pressure you add to an uncontrolled bleed is pushing blood out of the hole faster. Control the bleeding first and the trade-off disappears.</p>
+</div>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Blood Loss Multiplier</h2></div>
+  <p><b>ACE behaviour.</b> Blood loss per wound is a fixed rate determined by wound type and bandage state. Blood pressure has no effect on it at all. A casualty at a {{map|MAP}} of 40 and a casualty at 110 lose blood at exactly the same speed.</p>
+  <p><b>Override.</b> Loss is multiplied by how hard the heart is pushing, referenced to a MAP of 70 so that target pressure reproduces stock behaviour exactly.</p>
+  <table class="t">
+    <thead><tr><th>MAP</th><th>Multiplier</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">40</td><td class="mono">0.55x</td><td>Floor. {{permissive-hypotension|Permissive hypotension}} working.</td></tr>
+      <tr><td class="mono">55</td><td class="mono">0.75x</td><td>Below target, bleeding slowed</td></tr>
+      <tr><td class="mono">70</td><td class="mono">1.00x</td><td>Reference. Stock ACE rate.</td></tr>
+      <tr><td class="mono">90</td><td class="mono">1.5x</td><td>Over-resuscitated</td></tr>
+      <tr><td class="mono">110</td><td class="mono">2.00x</td><td>Ceiling</td></tr>
+    </tbody>
+  </table>
+  <p>It applies to <b>uncontrolled bleeding only</b>. ACE already returns zero for a bandaged wound, so the multiplier has nothing to act on once you have controlled it. This is the mechanical reason the order of operations matters: tourniquet, then fluid. Reversed, you are pressurising an open circuit.</p>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Why a floor and a ceiling</span><span class="dd-tag">Design</span></summary>
+    <div class="dd-body">
+      <p>The curve is clamped at both ends rather than running to zero and to infinity, for two different reasons.</p>
+      <p><b>The floor at 0.55x</b> stops permissive hypotension becoming a cheat. A casualty allowed to sit at a MAP of 30 would otherwise stop bleeding almost entirely, which would make deliberate under-resuscitation the dominant strategy and would be wrong: a hole in an artery still leaks at low pressure.</p>
+      <p><b>The ceiling at 2.00x</b> keeps an over-resuscitated casualty recoverable. Without it, a medic who pushed too much fluid too early would put the patient into an unrecoverable spiral, and the point of the mechanic is to teach the trade-off, not to hand out unwinnable cases.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">What this feels like in play</span><span class="dd-tag">Practical</span></summary>
+    <div class="dd-body">
+      <p>The visible effect is that a casualty with an uncontrolled junctional bleed who receives a litre of crystalloid deteriorates faster than one who does not, and the medic sees it as blood volume dropping despite fluid going in.</p>
+      <p>That reads as the fluid not working. It is working exactly as intended: the pressure it bought is being spent pushing blood out of a hole nobody has closed. The correct response is not more fluid.</p>
+      <p>The same mechanic is why a tourniquet applied late still helps. Once the bleed is controlled the multiplier stops applying to it, and the pressure you have built starts doing what you wanted it to do.</p>
+    </div>
+  </details>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">02</span><h2>Clotting Quality</h2></div>
+  <p><b>ACE behaviour.</b> No {{coagulopathy}} model of any kind. Blood clots identically whatever the casualty's temperature or chemistry, so a cold, acidotic, calcium-depleted patient bandages up exactly like a warm healthy one.</p>
+  <p><b>Override.</b> Three multiplying legs feed a single coagulation multiplier, which is read by the same blood loss hook as the pressure term above. They compound, which is the whole point of calling it a triad.</p>
+  <table class="t">
+    <thead><tr><th>Leg</th><th>Threshold</th><th>Worst case</th></tr></thead>
+    <tbody>
+      <tr><td>{{acidosis|Acidosis}}</td><td class="mono">0.30</td><td class="mono">1.3x</td></tr>
+      <tr><td>Hypothermia</td><td class="mono">below 35 C</td><td class="mono">compounds</td></tr>
+      <tr><td>{{ionised-calcium|Ionised calcium}}</td><td class="mono">below 1.0</td><td class="mono">1.4x</td></tr>
+    </tbody>
+  </table>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Citrate and calcium</span><span class="dd-tag">The transfusion cost</span></summary>
+    <div class="dd-body">
+      <p>Stored blood is anticoagulated with {{citrate|citrate}}, and citrate works by binding calcium. Transfuse enough of it fast enough and you strip the recipient's ionised calcium, which is a clotting factor in its own right.</p>
+      <table class="t">
+        <thead><tr><th>Term</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Citrate load per litre transfused</td><td class="mono">0.18</td></tr>
+          <tr><td>Calcium chloride credit per gram</td><td class="mono">0.12</td></tr>
+          <tr><td>Ionised calcium floor</td><td class="mono">0.55</td></tr>
+          <tr><td>MAP lost per unit below threshold</td><td class="mono">up to 40 mmHg</td></tr>
+        </tbody>
+      </table>
+      <p>The consequence is that a massive transfusion without calcium replacement makes the patient bleed worse than the transfusion is helping. This is the mechanism behind calcium being a non-negotiable adjunct rather than an optional extra, and it is measurable in game rather than being a slogan.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Why the legs multiply</span><span class="dd-tag">Design</span></summary>
+    <div class="dd-body">
+      <p>Each leg could have been additive. They multiply because that is what makes the triad behave like a triad rather than like three separate penalties.</p>
+      <p>A casualty who is only cold is manageable. A casualty who is cold, acidotic and calcium-depleted is not the sum of three problems, they are a patient whose blood has stopped working. Multiplying reproduces that: two mild legs are tolerable, three mild legs are not.</p>
+      <p>It also means fixing any one leg helps disproportionately, which is the behaviour you want to teach. Rewarming a cold casualty pays back more than the temperature change alone suggests, because it divides out of the other two.</p>
+    </div>
+  </details>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Where This Is Installed</h2></div>
+  <p>Both terms are read inside <code>ace_medical_status_fnc_getBloodVolumeChange</code>, replaced at compile time through <code>ACMI_overwrite_medical_status</code>. That function is not compiled final by ACM, so the replacement installs cleanly.</p>
+  <p>The replacement sets <code>ACMI_infusion_getBloodVolumeChangePatched</code> on the unit each time it runs. If you are debugging and want to confirm the override is actually live rather than assuming it, read that variable: it holds the mission time of the last run.</p>
+  <div class="flags">
+    <h3>Red Flags</h3>
+    <ul>
+      <li><b>Fluid before haemorrhage control.</b> Every mmHg you add multiplies the loss through an open hole. Stop the bleeding first.</li>
+      <li><b>Massive transfusion without calcium.</b> Citrate strips ionised calcium at 0.18 per litre and the clotting penalty compounds with the other two legs.</li>
+      <li><b>Treating a cold casualty as a temperature problem only.</b> Hypothermia is a clotting problem that happens to show as a number on a thermometer.</li>
+    </ul>
+  </div>
+</section>

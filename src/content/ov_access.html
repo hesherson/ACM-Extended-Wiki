@@ -1,0 +1,72 @@
+<div class="eyebrow">PILLAR <span class="tag">//</span> ADVANCED FUNCTIONS</div>
+<h1>Access<br>And Flow</h1>
+<p class="lede">What actually determines how fast fluid goes in: catheter bore, the height you hold the bag, and the roller clamp. Stock ACM treats most of this as one number.</p>
+<div class="rule"></div>
+
+<div class="principle">
+  <div class="lab">The one thing</div>
+  <p><b>The clamp sets an absolute rate, not a fraction.</b> Gravity flow is roughly 250 mL per minute. A titrated drip is a small number of mL per minute. Treating the clamp as a percentage of gravity made every infusion run about ten times too fast.</p>
+</div>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Catheter Bore</h2></div>
+  <p><b>ACM behaviour.</b> A flow table keyed by access type, with a base rate of 4.1667 mL per second inherited from ACE's medical engine. ACM models 16G, 14G, and two intraosseous devices.</p>
+  <p><b>Override.</b> The table is reproduced and an 18G catheter is added. An 18G is a smaller bore than a 16G and flows correspondingly slower, which matters because 18G is the realistic field choice in a lot of situations where a 16G is not achievable.</p>
+  <table class="t">
+    <thead><tr><th>Access</th><th>Type</th><th>Multiplier</th><th>Approx mL/s</th></tr></thead>
+    <tbody>
+      <tr><td>14G</td><td class="mono">2</td><td class="mono">1.50x</td><td class="mono">6.25</td></tr>
+      <tr><td>16G</td><td class="mono">1</td><td class="mono">1.00x</td><td class="mono">4.17</td></tr>
+      <tr><td>18G</td><td class="mono">5</td><td class="mono">0.55x</td><td class="mono">2.29</td></tr>
+      <tr><td>IO FAST1</td><td class="mono">4</td><td class="mono">0.65x</td><td class="mono">2.71</td></tr>
+      <tr><td>IO EZ</td><td class="mono">3</td><td class="mono">0.55x</td><td class="mono">2.29</td></tr>
+    </tbody>
+  </table>
+  <p>The 18G factor is exposed as <code>ACMI_iv18gFlowFactor</code> and defaults to 0.55, so it can be tuned without touching the table.</p>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Why intraosseous is slower than it looks</span><span class="dd-tag">Practical</span></summary>
+    <div class="dd-body">
+      <p>Both IO devices sit below a 16G peripheral line, at 0.65x and 0.55x. That surprises people who think of IO as the fast option because it is quick to establish.</p>
+      <p>Quick to place and quick to infuse are different things. The marrow cavity offers real resistance, which is why IO frequently needs a pressure bag or a push-pull technique to move volume at a useful rate.</p>
+      <p>The practical consequence in game is that IO is the right answer when you cannot get a vein, not when you need volume fast into someone who has veins available.</p>
+    </div>
+  </details>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">02</span><h2>The Roller Clamp</h2></div>
+  <p><b>Override.</b> The clamp publishes an absolute flow rate in mL per second for its access site, clamped to the gauge's physical maximum. It is not a fraction of the gravity rate.</p>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">The bug this fixed</span><span class="dd-tag">Ten times too fast</span></summary>
+    <div class="dd-body">
+      <p>Treating the clamp as a fraction of the wide-open gravity rate meant that dialling in a slow drip still produced a fast infusion, because a small fraction of 250 mL per minute is still a lot of fluid.</p>
+      <p>The symptom was bags emptying at roughly ten times the dialled rate, which made titration meaningless: any drug you were trying to run slowly went in as a bolus.</p>
+      <p>With an absolute rate the bag drains at exactly the drops per minute you set. The gauge maximum still applies as a ceiling, because you cannot push more through a catheter than its bore allows however far you open the clamp.</p>
+      <p>When no tracked infusion is present the rate is published as negative, which the flow function reads as wide open.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Holding the bag up</span><span class="dd-tag">Hydrostatic column</span></summary>
+    <div class="dd-body">
+      <p>Raising the bag raises the hydrostatic column, which raises flow. While a medic holds a bag aloft, <code>ACMI_hang_flowMult</code> is set on the patient and defaults to 1, meaning no change.</p>
+      <p>The important detail is that the hang boost raises the <b>ceiling only</b>. A titrated drip running below the cap is unaffected, because gravity does not make a clamp open further. Only a wide-open line benefits.</p>
+      <p>That is the correct behaviour and it is also the one people find counterintuitive: holding the bag higher does nothing at all if the clamp is what is limiting you.</p>
+    </div>
+  </details>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Where This Is Installed</h2></div>
+  <p><code>ACM_circulation_fnc_getIVFlowRate</code> is compiled final by ACM, so an earlier runtime reassignment of it was silently ignored and had no effect at all. It is now replaced at compile time through <code>ACMI_overwrite_circulation</code>.</p>
+  <p>The file is a full de-macroed replacement of ACM's flow table. If ACM changes its gauge multipliers, re-pull the source rather than editing our copy to match.</p>
+  <div class="flags">
+    <h3>Red Flags</h3>
+    <ul>
+      <li><b>Expecting IO to move volume like a large-bore peripheral.</b> It flows at roughly half, and needs pressure to do better.</li>
+      <li><b>Raising the bag to speed up a titrated drip.</b> The hang boost only lifts the ceiling. If the clamp is limiting, height changes nothing.</li>
+    </ul>
+  </div>
+</section>

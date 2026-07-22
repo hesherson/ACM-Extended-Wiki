@@ -1,0 +1,94 @@
+<div class="eyebrow">PILLAR <span class="tag">//</span> ADVANCED FUNCTIONS</div>
+<h1>Oxygen<br>And Saturation</h1>
+<p class="lede">Three systems can write a saturation number and only one of them may. This page is the layer separation that keeps ACM Extended from fighting ACE, and it is the most important thing here for anyone extending the addon.</p>
+<div class="rule"></div>
+
+<div class="principle">
+  <div class="lab">The one thing</div>
+  <p><b>Exactly one function may own saturation at a time.</b> Two writers do not average, they alternate, and the number visibly flickers between them four times a second.</p>
+</div>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Who Owns SpO2</h2></div>
+  <p>There are three layers involved and they are easy to confuse because all three end up affecting a number labelled SpO2.</p>
+  <table class="t">
+    <thead><tr><th>Layer</th><th>Variable</th><th>Driven by</th></tr></thead>
+    <tbody>
+      <tr><td>ACE simulation</td><td class="mono">ace_medical_spo2</td><td>Ventilation and gas exchange</td></tr>
+      <tr><td>ACM target</td><td class="mono">ACM_core_TargetVitals_OxygenSaturation</td><td>What the patient should read</td></tr>
+      <tr><td>ACM display</td><td class="mono">getSpO2</td><td>Read-time transform, adds blood loss</td></tr>
+    </tbody>
+  </table>
+  <p><b>ACE behaviour.</b> <code>ace_medical_spo2</code> is driven by ventilation and gas exchange, with no blood volume term at all.</p>
+  <p><b>ACM behaviour.</b> Blood loss enters at the ACM <code>getSpO2</code> display layer as a read-time transform, not as a stored value.</p>
+  <p><b>Override.</b> ACM Extended writes <code>ACM_core_TargetVitals_OxygenSaturation</code>, the ACM target layer, and <b>never touches <code>ace_medical_spo2</code></b>. That is the entire reason there is no fight with ACE.</p>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Why writing the ACE variable fails</span><span class="dd-tag">Read before extending</span></summary>
+    <div class="dd-body">
+      <p>ACE's vitals cycle recomputes <code>ace_medical_spo2</code> from its own gas exchange model on every pass. Anything you write there is overwritten on the next tick.</p>
+      <p>The failure mode is not a clean revert. Your value holds for a fraction of a second, ACE's value replaces it, yours is written again, and the displayed number oscillates between the two. On a pulse oximeter that reads as a value that will not settle, which players correctly report as a bug.</p>
+      <p>Writing the ACM target layer instead means ACE's simulation continues undisturbed and ACM resolves the target on read. Nothing is fighting because nothing is being contradicted.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">The single-writer guard</span><span class="dd-tag">Copy this pattern</span></summary>
+    <div class="dd-body">
+      <p>Several ACM Extended systems have a legitimate claim on saturation: the ventilator shunt model, the altitude model, and the megacode scenario driver. They cannot all write it.</p>
+      <p>The rule is that the ventilator owns saturation whenever it is driving, because its shunt model already folds altitude in through the same ratio. Every other writer stands down. In <code>fn_altitudeTick</code> that is one line:</p>
+      <div class="card"><div class="body"><code>if (_patient getVariable ["ACMI_vent_driving", false]) exitWith {};</code></div></div>
+      <p><b>Any new function that writes saturation must carry the same guard.</b> Without it the symptom is a saturation that jumps between two plausible values while a ventilated casualty is being carried uphill, which is close to impossible to diagnose from the outside.</p>
+    </div>
+  </details>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">02</span><h2>Breathing Effectiveness</h2></div>
+  <p><b>ACM behaviour.</b> <code>getBreathingState</code> returns an effectiveness figure knocked down by pneumothorax, tension pneumothorax, hemothorax and CBRN exposure. Each insult multiplies.</p>
+  <p><b>Override.</b> The model is reproduced verbatim, then a graded over-resuscitation pulmonary edema penalty is applied on top, multiplicatively, exactly like the hemothorax term it sits beside.</p>
+  <table class="t">
+    <thead><tr><th>Insult</th><th>Effect on breathing state</th></tr></thead>
+    <tbody>
+      <tr><td>Hemothorax fluid above 0.3</td><td class="mono">scales to 0.1x at 1.5</td></tr>
+      <tr><td>Tension pneumothorax</td><td>multiplies down</td></tr>
+      <tr><td>Pulmonary edema</td><td class="mono">to ACMI_edema_breathPenaltyMax</td></tr>
+    </tbody>
+  </table>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Why edema is not an SpO2 cap</span><span class="dd-tag">Design</span></summary>
+    <div class="dd-body">
+      <p>The first implementation pinned saturation to a floor when the casualty was fluid overloaded. It was replaced, and the reasoning is worth keeping.</p>
+      <p>A cap is a display lie. It forces a number without changing the physiology behind it, so everything downstream of saturation carries on as though the lungs were fine, and the number snaps rather than moving.</p>
+      <p>Degrading breathing effectiveness instead means fluid overload floods the alveoli and damages gas exchange the same way a pneumothorax does, and ACM's own oxygen simulation carries saturation down from there on its own curve. The result moves gradually, responds to the things that should help it, and cannot be walked around by anything reading saturation directly.</p>
+      <p>The penalty scales from nothing at the onset threshold to its maximum at the overload cap, and has its own coefficient so it can be tuned without disturbing any other breathing insult.</p>
+    </div>
+  </details>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Delivery Versus Saturation</h2></div>
+  <p>Saturation tells you what fraction of the haemoglobin present is loaded. It says nothing about how much haemoglobin there is, or whether the pump is moving it. A casualty can read 96% while delivering almost nothing.</p>
+  <p>ACM Extended models delivery as haemoglobin concentration times saturation times {{cardiac-output|cardiac output}}, expressed as a fraction of normal. All three terms move independently, which is why it catches cases saturation alone cannot.</p>
+  <table class="t">
+    <thead><tr><th>State</th><th>Delivery</th><th>What saturation shows</th></tr></thead>
+    <tbody>
+      <tr><td>Healthy</td><td class="mono">1.01</td><td>Normal</td></tr>
+      <tr><td>Class II haemorrhage</td><td class="mono">0.80</td><td>Still normal</td></tr>
+      <tr><td>Class III haemorrhage</td><td class="mono">0.58</td><td>Often still normal</td></tr>
+      <tr><td>Class III plus crystalloid</td><td class="mono">0.70</td><td>Normal</td></tr>
+      <tr><td>Class III plus whole blood</td><td class="mono">1.10</td><td>Normal</td></tr>
+      <tr><td>Deep shock</td><td class="mono">0.35</td><td>May still look survivable</td></tr>
+    </tbody>
+  </table>
+  <p>Read the middle rows again. {{crystalloid|Crystalloid}} raises delivery less than blood does, and the display shows the same number for both.</p>
+  <div class="flags">
+    <h3>Red Flags</h3>
+    <ul>
+      <li><b>Writing <code>ace_medical_spo2</code> from anywhere.</b> It is recomputed every vitals pass and your value will oscillate against ACE's.</li>
+      <li><b>A new saturation writer without the vent guard.</b> Two owners produce a flickering number that is very hard to trace back.</li>
+      <li><b>Trusting saturation on a haemorrhaging casualty.</b> It stays normal well past the point where delivery has collapsed.</li>
+    </ul>
+  </div>
+</section>

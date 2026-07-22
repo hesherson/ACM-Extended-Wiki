@@ -1,0 +1,88 @@
+<div class="eyebrow">PILLAR <span class="tag">//</span> ADVANCED FUNCTIONS</div>
+<h1>Known<br>Traps</h1>
+<p class="lede">Failures that cost hours to find, collected so they cost minutes instead. Every one of these has actually happened during development, and most produce no error message at all.</p>
+<div class="rule"></div>
+
+<div class="principle">
+  <div class="lab">The common thread</div>
+  <p><b>Every trap here fails silently.</b> Nothing throws, nothing logs where you are looking, and the code appears correct on inspection. That is what makes them expensive.</p>
+</div>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">01</span><h2>The Trailing Comma</h2></div>
+  <p>A trailing comma inside an array kills <code>fn_postInit</code> at parse time. Everything registered after that point never registers.</p>
+  <p>The symptom is not an error. It is that some arbitrary set of features are simply absent, with no pattern that makes sense, because the cut-off is wherever the comma happens to sit in the file rather than anywhere meaningful.</p>
+  <table class="t">
+    <thead><tr><th>Looks like</th><th>Actually is</th></tr></thead>
+    <tbody>
+      <tr><td>Half the actions missing</td><td>Parse stopped partway down postInit</td></tr>
+      <tr><td>A feature that worked yesterday</td><td>Something above it gained a comma</td></tr>
+      <tr><td>No RPT error</td><td>Correct. There is none.</td></tr>
+    </tbody>
+  </table>
+  <p>It is checked on every build by <code>commacheck.py</code>, which is the only reliable defence. Do not rely on spotting it by eye; the comma is invisible in a long array.</p>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">02</span><h2>Action Condition Inheritance</h2></div>
+  <p>An action that inherits from a hidden parent inherits the parent's condition, including a condition of <code>false</code>. The child then never appears, and the child's own definition looks completely correct because the problem is not in it.</p>
+  <p><b>Restate conditions explicitly on every child.</b> Do not rely on inheritance to leave them alone.</p>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">The thoracostomy case</span><span class="dd-tag">Same family</span></summary>
+    <div class="dd-body">
+      <p>A closely related version of this took a long time to find. The thoracostomy action was not appearing, and its condition was correct.</p>
+      <p>The override had restated <code>condition</code> but silently inherited ACM's <code>items[] = {"ACE_surgicalKit"}</code>. ACE's medical menu filters any action whose required items the medic is not carrying, so the action vanished whenever the surgical kit was absent, which looked exactly like a broken condition.</p>
+      <p>The fix was overriding <code>items[] = {}</code> as well. The general form: when replacing an action, check every inherited property, not only the one you meant to change.</p>
+    </div>
+  </details>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Final Functions</h2></div>
+  <p>ACM compiles most of its functions final. A runtime reassignment is ignored, the original keeps running, and your code never executes. The full mechanism is on the <b>How overrides work</b> page; this is the checklist version.</p>
+  <table class="t">
+    <thead><tr><th>Symptom</th><th>Check</th></tr></thead>
+    <tbody>
+      <tr><td>Change has no effect whatsoever</td><td>RPT for <code>final function</code></td></tr>
+      <tr><td>Feature appears entirely absent</td><td>A gate upstream returning false</td></tr>
+      <tr><td>Value oscillates between two figures</td><td>Two writers on a cycled variable</td></tr>
+    </tbody>
+  </table>
+  <p>Functions confirmed final and therefore requiring compile-time replacement include the EKG generators, <code>getUp</code>, <code>getIVFlowRate</code>, <code>getBloodPressure</code> and <code>updateHeartRate</code>. Functions confirmed <i>not</i> final include <code>updatePeripheralResistance</code> and <code>getBloodVolumeChange</code>.</p>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">04</span><h2>Two Writers, One Value</h2></div>
+  <p>Where a variable is recomputed on a cycle, writing it from your own tick does not give you ownership. Your write and the cycle's write alternate, and the value visibly flickers.</p>
+  <p>This has caused three separate bugs: the ventilator respiratory rate against ACM's vitals cycle, saturation against ACE's gas exchange, and the altitude model against the ventilator shunt model.</p>
+  <table class="t">
+    <thead><tr><th>Value</th><th>Rule</th></tr></thead>
+    <tbody>
+      <tr><td>Respiratory rate</td><td>Own <code>updateRespirationRate</code>, do not write the variable</td></tr>
+      <tr><td>Saturation</td><td>Write the ACM target layer only, never <code>ace_medical_spo2</code></td></tr>
+      <tr><td>Saturation while ventilating</td><td>The vent owns it. Every other writer carries the guard.</td></tr>
+      <tr><td>Heart rate</td><td>Write both variables, always</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">05</span><h2>Paths And Encoding</h2></div>
+  <p>Two small ones that produce confusing results rather than clean failures.</p>
+  <table class="t">
+    <thead><tr><th>Rule</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td>Texture and sound paths take <b>single</b> backslashes</td><td>Doubled paths resolve to nothing and the asset silently does not draw</td></tr>
+      <tr><td>All sounds are mono ogg</td><td>Stereo files do not position in the world correctly</td></tr>
+    </tbody>
+  </table>
+  <div class="flags">
+    <h3>Before Shipping</h3>
+    <ul>
+      <li><b>Run the checks.</b> Brace balance, duplicate config classes with the button macro expanded, and trailing commas. All three catch silent failures.</li>
+      <li><b>Check for duplicate CAManBase entries.</b> ACE_Actions and ACE_SelfActions must appear exactly once each.</li>
+      <li><b>Sweep for use before define.</b> A function called before its definition fails only on the path that reaches it.</li>
+    </ul>
+  </div>
+</section>

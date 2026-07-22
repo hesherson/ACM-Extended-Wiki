@@ -33,18 +33,25 @@ VERSION = "0.9.873"
 # Order here is the order in the sidebar. Groups are emitted in first-seen order.
 PAGES = [
     ("index",        "index.html",        "Start here",          "Overview"),
+    ("ov_intro",     "ov_intro.html",     "How overrides work",  "Advanced Functions"),
+    ("ov_bleeding",  "ov_bleeding.html",  "Bleeding and clotting", "Advanced Functions"),
+    ("ov_oxygen",    "ov_oxygen.html",    "Oxygen and saturation", "Advanced Functions"),
+    ("ov_circ",      "ov_circ.html",      "Circulation and rhythm", "Advanced Functions"),
+    ("ov_chest",     "ov_chest.html",     "Chest and airway",    "Advanced Functions"),
+    ("ov_tbi",       "ov_tbi.html",       "Head injury",         "Advanced Functions"),
+    ("ov_access",    "ov_access.html",    "Access and flow",     "Advanced Functions"),
+    ("ov_traps",     "ov_traps.html",     "Known traps",         "Advanced Functions"),
     ("ventilator",   "ventilator.html",   "Ventilator",          "Systems"),
     ("oxygen",       "oxygen.html",       "Oxygen delivery",     "Systems"),
     ("bleeding",     "bleeding.html",     "Bleeding and shock",  "Systems"),
     ("airway",       "airway.html",       "Airway and chest",    "Systems"),
-    ("circulation",  "circulation.html",  "Arrest and Rhythms",  "Systems"),
+    ("circulation",  "circulation.html",  "Arrest and rhythms",  "Systems"),
     ("medications",  "medications.html",  "Medications",         "Systems"),
     ("access",       "access.html",       "Access and blood",    "Systems"),
     ("tbi",          "tbi.html",          "Head injury",         "Systems"),
     ("flight",       "flight.html",       "Flight and altitude", "Systems"),
     ("menu",         "menu.html",         "Medical menu",        "Interface"),
     ("accessibility","accessibility.html","Accessibility",       "Interface"),
-    ("overrides",    "overrides.html",    "Advanced Functions / Overrides", "Reference"),
     ("glossary",     "glossary.html",     "Glossary",            "Reference"),
     ("settings",     "settings.html",     "Settings reference",  "Reference"),
     ("zeus",         "zeus.html",         "Zeus modules",        "Reference"),
@@ -151,7 +158,7 @@ var IDX={index};
       }}
     }}
     hits.sort(function(a,b){{return b.s-a.s;}});
-    if(!hits.length){{ qr.innerHTML='<div class="tb-none">Nothing found</div>'; qr.hidden=false; return; }}
+    if(!hits.length){{ qr.innerHTML='<div class="tb-none">Nothing found</div>'; qr.hidden=false; placeRes(); return; }}
     qr.innerHTML=hits.slice(0,12).map(function(h){{
       var href=h.r.f+(h.r.a?'#'+h.r.a:'');
       return '<a href="'+href+'"><span class="tb-p">'+esc(h.r.p)+'</span>'+
@@ -159,6 +166,7 @@ var IDX={index};
              '<span class="tb-s">'+esc(h.sn)+'</span></a>';
     }}).join('');
     qr.hidden=false;
+    placeRes();
   }}
   // SECTION BAR. Tracks which section is in view, fills a progress line, and collapses to a thin strip
   // once the reader is past the top. Read-only apart from the toggle, so it cannot block the page.
@@ -261,6 +269,19 @@ var IDX={index};
     qr.hidden=true; veil.classList.remove('on');
     if(document.activeElement===q) q.blur();
   }});
+
+  // SEARCH PANEL PLACEMENT. Fixed positioning escapes the sidebar's overflow clipping, but fixed
+  // coordinates are viewport relative, so the panel has to be told where the input is. The input
+  // moves when the sidebar scrolls or the window resizes, hence the listeners.
+  function placeRes(){{
+    if(window.innerWidth < 820){{ qr.style.left=''; qr.style.top=''; return; }}
+    var r=q.getBoundingClientRect();
+    qr.style.left=Math.round(r.left)+'px';
+    qr.style.top=Math.round(r.bottom+6)+'px';
+  }}
+  var sideEl=document.querySelector('.side');
+  if(sideEl) sideEl.addEventListener('scroll',function(){{ if(!qr.hidden) placeRes(); }},{{passive:true}});
+  window.addEventListener('resize',function(){{ if(!qr.hidden) placeRes(); }});
 
   q.addEventListener('input',run);
   q.addEventListener('focus',function(){{ focusMode(true); run(); }});

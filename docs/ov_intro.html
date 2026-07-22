@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
-<title>ACM Extended Wiki | Airway and chest</title>
+<title>ACM Extended Wiki | How overrides work</title>
 <link rel="icon" type="image/png" href="img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -709,7 +709,12 @@ try{if(localStorage.getItem('pillarNight')==='1'){document.documentElement.class
     <div class="grp">Overview</div>
     <a href="index.html">Start here</a>
     <div class="grp">Advanced Functions</div>
-    <a href="ov_intro.html">How overrides work</a>
+    <a class="on" href="ov_intro.html">How overrides work</a>
+    <div class="subnav">
+      <a href="#why-replacement-not-wrapping" data-s="why-replacement-not-wrapping">Why Replacement, Not Wrapping</a>
+      <a href="#the-cost-of-replacing" data-s="the-cost-of-replacing">The Cost Of Replacing</a>
+      <a href="#reading-this-section" data-s="reading-this-section">Reading This Section</a>
+    </div>
     <a href="ov_bleeding.html">Bleeding and clotting</a>
     <a href="ov_oxygen.html">Oxygen and saturation</a>
     <a href="ov_circ.html">Circulation and rhythm</a>
@@ -721,13 +726,7 @@ try{if(localStorage.getItem('pillarNight')==='1'){document.documentElement.class
     <a href="ventilator.html">Ventilator</a>
     <a href="oxygen.html">Oxygen delivery</a>
     <a href="bleeding.html">Bleeding and shock</a>
-    <a class="on" href="airway.html">Airway and chest</a>
-    <div class="subnav">
-      <a href="#needle-decompression" data-s="needle-decompression">Needle Decompression</a>
-      <a href="#positive-pressure-and-preload" data-s="positive-pressure-and-preload">Positive Pressure And Preload</a>
-      <a href="#capnography" data-s="capnography">Capnography</a>
-      <a href="#junctional-wounds" data-s="junctional-wounds">Junctional Wounds</a>
-    </div>
+    <a href="airway.html">Airway and chest</a>
     <a href="circulation.html">Arrest and rhythms</a>
     <a href="medications.html">Medications</a>
     <a href="access.html">Access and blood</a>
@@ -757,107 +756,101 @@ try{if(localStorage.getItem('pillarNight')==='1'){document.documentElement.class
     <div class="sb-prog"><i id="sbProg"></i></div>
   </div>
   <nav class="sb-list" id="sbList" hidden>
-    <a href="#needle-decompression" data-a="needle-decompression">Needle Decompression</a>
-    <a href="#positive-pressure-and-preload" data-a="positive-pressure-and-preload">Positive Pressure And Preload</a>
-    <a href="#capnography" data-a="capnography">Capnography</a>
-    <a href="#junctional-wounds" data-a="junctional-wounds">Junctional Wounds</a>
+    <a href="#why-replacement-not-wrapping" data-a="why-replacement-not-wrapping">Why Replacement, Not Wrapping</a>
+    <a href="#the-cost-of-replacing" data-a="the-cost-of-replacing">The Cost Of Replacing</a>
+    <a href="#reading-this-section" data-a="reading-this-section">Reading This Section</a>
   </nav>
 </div>
-<div class="eyebrow">PILLAR <span class="tag">//</span> SYSTEMS</div>
-<h1>Airway And Chest</h1>
-<p class="lede">Decompression, seals, drainage and tubes. The part of the addon where doing the wrong thing confidently causes the injury you were treating for.</p>
+<div class="eyebrow">PILLAR <span class="tag">//</span> ADVANCED FUNCTIONS</div>
+<h1>How Overrides<br>Work</h1>
+<p class="lede">ACM Extended does not sit beside ACM and ACE. It replaces specific functions inside them. This page is the mechanism: how a replacement is installed, why it has to be done this way, and what that costs you.</p>
 <div class="rule"></div>
 
 <div class="principle">
-  <div class="lab">The one thing</div>
-  <p><b>A needle costs something.</b> Decompressing a chest that did not need it seeds the pneumothorax you were looking for, and repeating it raises the chance of turning that into a <button type="button" class="gl" data-t="tension-pneumothorax">tension</button>.</p>
+  <div class="lab">The rule we follow</div>
+  <p>Overrides are <b>additive wherever possible</b>. Where a gate exists, ACM Extended can make it harder to pass but never easier, so nothing here can accidentally save a casualty ACM would have let die.</p>
 </div>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">01</span><h2 id="needle-decompression">Needle Decompression</h2></div>
-  <p>The action is available on any living casualty at any time, rather than only when a tension is present, so the decision comes from what you find on examination rather than from a label the game has already applied.</p>
-  <p>Before the needle goes in, the indication is checked. If a tension or simple pneumothorax is present, it works as expected. If not, you have just made a hole in a healthy chest.</p>
-  <div class="card">
-    <header><span class="name">Unnecessary decompression</span><span class="badge off">Iatrogenic</span></header>
-    <div class="grid">
-      <div class="cell wide"><div class="k">First unnecessary needle</div><div class="v">seeds a developing simple pneumothorax</div></div>
-      <div class="cell"><div class="k">Tension chance</div><div class="v">0.35 cumulative</div></div>
-      <div class="cell"><div class="k">Onset delay</div><div class="v">90 s</div></div>
-    </div>
-  </div>
-  <p>Set <code>ACMI_ncd_iatrogenicTension</code> to false to disable the tension escalation while keeping the rest.</p>
+  <div class="sec-head"><span class="sec-num">01</span><h2 id="why-replacement-not-wrapping">Why Replacement, Not Wrapping</h2></div>
+  <p>The obvious way to change a function's behaviour is to keep a reference to the original, install your own, and call through. That does not work here, and understanding why explains the shape of everything else in this section.</p>
+  <p>ACM compiles most of its own functions <b>final</b>. A final function cannot be reassigned at runtime. Assigning over it does not raise an error you will notice in normal play; the assignment is simply ignored and the original keeps running. Code that looks installed sits there doing nothing.</p>
 
   <details class="dd">
-    <summary><span class="dd-mark"></span><span class="dd-name">Why this is in the addon</span><span class="dd-tag">Teaching intent</span></summary>
+    <summary><span class="dd-mark"></span><span class="dd-name">The silent failure</span><span class="dd-tag">Costs hours</span></summary>
     <div class="dd-body">
-      <p>Most medical sims make needle decompression a free action, which trains the habit of needling anything that looks unwell. That habit is actively dangerous, and it is one of the more common criticisms of prehospital chest decompression in the real literature.</p>
-      <p>Making it cost something turns it into a decision. You are meant to examine first, and the delay before the iatrogenic pneumothorax declares itself means you find out you were wrong later, which is exactly how it happens.</p>
-      <p>It is recoverable. A simple pneumothorax you caused can be decompressed and drained like any other, so the cost is time and a lesson rather than a dead casualty.</p>
+      <p>This is the single most expensive trap in the addon and it has been hit more than once.</p>
+      <p>A runtime reassignment of a final function produces an <code>Attempt to override final function</code> line in the RPT log and then carries on. If you are not reading the log, the symptom is that your change appears to do nothing at all. Not intermittently. Not partially. Nothing.</p>
+      <p>The functions this has caught include the EKG generators, <code>ACM_core_fnc_getUp</code>, and <code>ACM_circulation_fnc_getIVFlowRate</code>. In each case the code was correct and simply never ran.</p>
+      <p><b>How to check.</b> Search the RPT for <code>final function</code>. Anything named there is a function you cannot reassign at runtime and must replace at compile time instead.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Compile-time replacement</span><span class="dd-tag">CfgFunctions</span></summary>
+    <div class="dd-body">
+      <p>The mechanism that does work is declaring the function in <code>CfgFunctions</code> under the same name, from an addon that loads after the one you are replacing. Load order decides the winner, and ACM Extended declares ACM and ACE as dependencies, so it always loads later.</p>
+      <p>The override classes live in <code>config.cpp</code> and are named by the subsystem they touch:</p>
+      <table class="t">
+        <thead><tr><th>Class</th><th>Replaces functions in</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">ACMI_overwrite_medical_gui</td><td>ACE medical interface</td></tr>
+          <tr><td class="mono">ACMI_overwrite_medical_status</td><td>ACE blood volume and status</td></tr>
+          <tr><td class="mono">ACMI_overwrite_medical_vitals</td><td>ACE vitals cycle</td></tr>
+          <tr><td class="mono">ACMI_overwrite_medical_treatment</td><td>ACE treatment actions</td></tr>
+          <tr><td class="mono">ACMI_overwrite_circulation</td><td>ACM circulation, rhythms, IV flow</td></tr>
+          <tr><td class="mono">ACMI_overwrite_core</td><td>ACM core state</td></tr>
+          <tr><td class="mono">ACMI_overwrite_breathing</td><td>ACM breathing and gas exchange</td></tr>
+          <tr><td class="mono">ACMI_overwrite_airway</td><td>ACM airway</td></tr>
+          <tr><td class="mono">ACMI_overwrite_dragging</td><td>ACE dragging</td></tr>
+        </tbody>
+      </table>
+      <p>Only the <code>file</code> property is touched. Every other function in the original wrapper class is left alone.</p>
     </div>
   </details>
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">02</span><h2 id="positive-pressure-and-preload">Positive Pressure And Preload</h2></div>
-  <p>Ventilating a casualty raises intrathoracic pressure, which opposes venous return. In a full tank that costs nothing measurable. In an empty one it costs a great deal.</p>
-  <div class="scroll">
+  <div class="sec-head"><span class="sec-num">02</span><h2 id="the-cost-of-replacing">The Cost Of Replacing</h2></div>
+  <p>Compile-time replacement means the whole function is yours. There is no original underneath to fall back to, so every line of the original behaviour has to be reproduced in your copy or it is gone.</p>
+  <p>That has a maintenance consequence you should understand before extending anything here. <b>When ACM or ACE change a function we have replaced, our copy does not inherit the change.</b> It keeps running the old logic against a newer game. Nothing warns you.</p>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">De-macroing</span><span class="dd-tag">Why the files are long</span></summary>
+    <div class="dd-body">
+      <p>ACM and ACE source is written with preprocessor macros: <code>GET_OXYGEN</code>, <code>GET_IV</code>, <code>QEGVAR</code> and so on. Those macros are defined in the originating addon's header and resolve against that addon's tag.</p>
+      <p>A copy compiled inside ACM Extended resolves those macros in <i>our</i> tag context, which either fails to compile or silently reads the wrong variable. So every replacement is de-macroed by hand: the macro is expanded to the literal variable name it produces.</p>
+      <p>That is why <code>fn_getIVFlowRate.sqf</code> writes <code>ACM_circulation_IV_Placement</code> in full rather than <code>GET_IV</code>, and why these files are longer than the originals they replace. It is deliberate, and it is the only way the copy behaves identically.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Re-pull discipline</span><span class="dd-tag">On every ACM update</span></summary>
+    <div class="dd-body">
+      <p>Each override file carries a comment naming what it replaced and what was added. When ACM or ACE update, the procedure is:</p>
+      <ol class="steps">
+        <li>Diff the upstream function against the version our copy was taken from.</li>
+        <li>If upstream changed, re-pull the new original, de-macro it again, and re-apply our additions on top.</li>
+        <li>Never patch our copy to match a described change. Take the new source.</li>
+      </ol>
+      <p>The additions are deliberately small and clearly marked in each file precisely so this step stays cheap. A replacement that has drifted into a rewrite cannot be re-pulled and becomes permanent maintenance.</p>
+    </div>
+  </details>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">03</span><h2 id="reading-this-section">Reading This Section</h2></div>
+  <p>Each page that follows covers one domain. The pattern is the same throughout:</p>
   <table class="t">
-    <thead><tr><th>Volume state</th><th>Stroke volume penalty</th></tr></thead>
+    <thead><tr><th>Heading</th><th>Means</th></tr></thead>
     <tbody>
-      <tr><td>Full</td><td class="mono">about 0%</td></tr>
-      <tr><td>Class III haemorrhage</td><td class="mono">15 to 19%</td></tr>
-      <tr><td>Maximum modelled</td><td class="mono">35%</td></tr>
+      <tr><td><b>ACE behaviour</b></td><td>What stock ACE does, unmodified</td></tr>
+      <tr><td><b>ACM behaviour</b></td><td>What ACM already changed, where relevant</td></tr>
+      <tr><td><b>Override</b></td><td>What ACM Extended does instead, and why</td></tr>
     </tbody>
   </table>
-  </div>
-  <p>High PEEP multiplies it up to 1.5 times. This applies to <b>both</b> the ventilator and manual bagging, so an enthusiastic BVM technique on a shocked casualty does real harm.</p>
-  <p>The practical rule: <b>fill them before you tube them</b>, and if you must ventilate an empty casualty, keep pressures and PEEP low until volume is restored.</p>
+  <p>Where a number is given it is the value in the shipped build. Where a setting name is given it is a CBA variable you can change without touching code.</p>
 </section>
-
-<section class="sec">
-  <div class="sec-head"><span class="sec-num">03</span><h2 id="capnography">Capnography</h2></div>
-  <p>The EMMA reads <button type="button" class="gl" data-t="etco2">EtCO2</button> at the tube and shows a number, a rate, and a rolling trace. The number is a breath to breath trailing average rather than a single breath, so it settles rather than jumping, and a change in it means something has actually changed.</p>
-  <figure>
-    <img src="img/emma_live.gif" alt="EMMA capnograph running">
-    <figcaption>EMMA in use. Value, rate, and the rolling trace</figcaption>
-  </figure>
-  <div class="iconkey">
-    <div class="ik"><img class="ico" src="img/emma_ca.png" alt=""><span class="ikn">Inventory</span><span class="ikd">EMMA mainstream capnograph, inline on the tube</span></div>
-  </div>
-  <p>Read the shape, not only the number. A square trace with a flat top is a patient moving air. A trace that slopes upward instead of levelling is obstruction. A trace that shrinks breath by breath while the ventilator settings have not changed is a lung getting stiffer, and in pressure control that is the only warning you get.</p>
-  <p>Value falling with a pulse present usually means circulation, not ventilation. Cardiac output carries CO2 to the lung, so a dropping number on unchanged settings points at the pump before it points at the tube.</p>
-</section>
-
-<section class="sec">
-  <div class="sec-head"><span class="sec-num">04</span><h2 id="junctional-wounds">Junctional Wounds</h2></div>
-  <p>Five states, each a distinct step: open, packed, wrapped, and XStat. Bleeding falls as you progress. The AAJT-S applies with a pause, and Combat Gauze is tracked separately.</p>
-  <figure>
-  <img src="img/aajt-s_ca.png" alt="AAJT-S">
-  <figcaption>AAJT-S junctional tourniquet</figcaption>
-</figure>
-<p>Two application sites, and the one you need depends on where the bleed is. Inguinal for groin and proximal thigh, axillary for a shoulder or high arm wound that a limb tourniquet cannot reach.</p>
-<div class="figpair">
-  <figure>
-    <img src="img/aajt-s_example.png" alt="AAJT-S applied at the inguinal site">
-    <figcaption>Inguinal placement, windlass over the pelvis</figcaption>
-  </figure>
-  <figure>
-    <img src="img/aajt-s_axilla_example.png" alt="AAJT-S applied at the axillary site">
-    <figcaption>Axillary placement, for wounds above a limb tourniquet</figcaption>
-  </figure>
-</div>
-<figure class="placeholder">Five wound states screenshot goes here</figure>
-</section>
-
-<div class="flags">
-  <h3>Red Flags</h3>
-  <ul>
-    <li><b>Needling on suspicion alone.</b> Examine first. A wrong needle creates the injury.</li>
-    <li><b>Repeat needles when the first did not help.</b> Each one raises the tension chance cumulatively.</li>
-    <li><b>Ventilating an empty casualty.</b> You are trading oxygenation for cardiac output.</li>
-    <li><b>High PEEP in shock.</b> Multiplies the <button type="button" class="gl" data-t="preload">preload</button> penalty by half again.</li>
-  </ul>
-</div>
 
 <footer>
   <span class="brand">PILLAR</span> // ACM EXTENDED FIELD GUIDE // v0.9.873 // BUILD 2026-07-22

@@ -1,0 +1,90 @@
+<div class="eyebrow">PILLAR <span class="tag">//</span> ADVANCED FUNCTIONS</div>
+<h1>How Overrides<br>Work</h1>
+<p class="lede">ACM Extended does not sit beside ACM and ACE. It replaces specific functions inside them. This page is the mechanism: how a replacement is installed, why it has to be done this way, and what that costs you.</p>
+<div class="rule"></div>
+
+<div class="principle">
+  <div class="lab">The rule we follow</div>
+  <p>Overrides are <b>additive wherever possible</b>. Where a gate exists, ACM Extended can make it harder to pass but never easier, so nothing here can accidentally save a casualty ACM would have let die.</p>
+</div>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Why Replacement, Not Wrapping</h2></div>
+  <p>The obvious way to change a function's behaviour is to keep a reference to the original, install your own, and call through. That does not work here, and understanding why explains the shape of everything else in this section.</p>
+  <p>ACM compiles most of its own functions <b>final</b>. A final function cannot be reassigned at runtime. Assigning over it does not raise an error you will notice in normal play; the assignment is simply ignored and the original keeps running. Code that looks installed sits there doing nothing.</p>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">The silent failure</span><span class="dd-tag">Costs hours</span></summary>
+    <div class="dd-body">
+      <p>This is the single most expensive trap in the addon and it has been hit more than once.</p>
+      <p>A runtime reassignment of a final function produces an <code>Attempt to override final function</code> line in the RPT log and then carries on. If you are not reading the log, the symptom is that your change appears to do nothing at all. Not intermittently. Not partially. Nothing.</p>
+      <p>The functions this has caught include the EKG generators, <code>ACM_core_fnc_getUp</code>, and <code>ACM_circulation_fnc_getIVFlowRate</code>. In each case the code was correct and simply never ran.</p>
+      <p><b>How to check.</b> Search the RPT for <code>final function</code>. Anything named there is a function you cannot reassign at runtime and must replace at compile time instead.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Compile-time replacement</span><span class="dd-tag">CfgFunctions</span></summary>
+    <div class="dd-body">
+      <p>The mechanism that does work is declaring the function in <code>CfgFunctions</code> under the same name, from an addon that loads after the one you are replacing. Load order decides the winner, and ACM Extended declares ACM and ACE as dependencies, so it always loads later.</p>
+      <p>The override classes live in <code>config.cpp</code> and are named by the subsystem they touch:</p>
+      <table class="t">
+        <thead><tr><th>Class</th><th>Replaces functions in</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">ACMI_overwrite_medical_gui</td><td>ACE medical interface</td></tr>
+          <tr><td class="mono">ACMI_overwrite_medical_status</td><td>ACE blood volume and status</td></tr>
+          <tr><td class="mono">ACMI_overwrite_medical_vitals</td><td>ACE vitals cycle</td></tr>
+          <tr><td class="mono">ACMI_overwrite_medical_treatment</td><td>ACE treatment actions</td></tr>
+          <tr><td class="mono">ACMI_overwrite_circulation</td><td>ACM circulation, rhythms, IV flow</td></tr>
+          <tr><td class="mono">ACMI_overwrite_core</td><td>ACM core state</td></tr>
+          <tr><td class="mono">ACMI_overwrite_breathing</td><td>ACM breathing and gas exchange</td></tr>
+          <tr><td class="mono">ACMI_overwrite_airway</td><td>ACM airway</td></tr>
+          <tr><td class="mono">ACMI_overwrite_dragging</td><td>ACE dragging</td></tr>
+        </tbody>
+      </table>
+      <p>Only the <code>file</code> property is touched. Every other function in the original wrapper class is left alone.</p>
+    </div>
+  </details>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">02</span><h2>The Cost Of Replacing</h2></div>
+  <p>Compile-time replacement means the whole function is yours. There is no original underneath to fall back to, so every line of the original behaviour has to be reproduced in your copy or it is gone.</p>
+  <p>That has a maintenance consequence you should understand before extending anything here. <b>When ACM or ACE change a function we have replaced, our copy does not inherit the change.</b> It keeps running the old logic against a newer game. Nothing warns you.</p>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">De-macroing</span><span class="dd-tag">Why the files are long</span></summary>
+    <div class="dd-body">
+      <p>ACM and ACE source is written with preprocessor macros: <code>GET_OXYGEN</code>, <code>GET_IV</code>, <code>QEGVAR</code> and so on. Those macros are defined in the originating addon's header and resolve against that addon's tag.</p>
+      <p>A copy compiled inside ACM Extended resolves those macros in <i>our</i> tag context, which either fails to compile or silently reads the wrong variable. So every replacement is de-macroed by hand: the macro is expanded to the literal variable name it produces.</p>
+      <p>That is why <code>fn_getIVFlowRate.sqf</code> writes <code>ACM_circulation_IV_Placement</code> in full rather than <code>GET_IV</code>, and why these files are longer than the originals they replace. It is deliberate, and it is the only way the copy behaves identically.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Re-pull discipline</span><span class="dd-tag">On every ACM update</span></summary>
+    <div class="dd-body">
+      <p>Each override file carries a comment naming what it replaced and what was added. When ACM or ACE update, the procedure is:</p>
+      <ol class="steps">
+        <li>Diff the upstream function against the version our copy was taken from.</li>
+        <li>If upstream changed, re-pull the new original, de-macro it again, and re-apply our additions on top.</li>
+        <li>Never patch our copy to match a described change. Take the new source.</li>
+      </ol>
+      <p>The additions are deliberately small and clearly marked in each file precisely so this step stays cheap. A replacement that has drifted into a rewrite cannot be re-pulled and becomes permanent maintenance.</p>
+    </div>
+  </details>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Reading This Section</h2></div>
+  <p>Each page that follows covers one domain. The pattern is the same throughout:</p>
+  <table class="t">
+    <thead><tr><th>Heading</th><th>Means</th></tr></thead>
+    <tbody>
+      <tr><td><b>ACE behaviour</b></td><td>What stock ACE does, unmodified</td></tr>
+      <tr><td><b>ACM behaviour</b></td><td>What ACM already changed, where relevant</td></tr>
+      <tr><td><b>Override</b></td><td>What ACM Extended does instead, and why</td></tr>
+    </tbody>
+  </table>
+  <p>Where a number is given it is the value in the shipped build. Where a setting name is given it is a CBA variable you can change without touching code.</p>
+</section>

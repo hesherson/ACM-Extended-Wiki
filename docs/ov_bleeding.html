@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
-<title>ACM Extended Wiki | Airway and chest</title>
+<title>ACM Extended Wiki | Bleeding and clotting</title>
 <link rel="icon" type="image/png" href="img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -710,7 +710,12 @@ try{if(localStorage.getItem('pillarNight')==='1'){document.documentElement.class
     <a href="index.html">Start here</a>
     <div class="grp">Advanced Functions</div>
     <a href="ov_intro.html">How overrides work</a>
-    <a href="ov_bleeding.html">Bleeding and clotting</a>
+    <a class="on" href="ov_bleeding.html">Bleeding and clotting</a>
+    <div class="subnav">
+      <a href="#blood-loss-multiplier" data-s="blood-loss-multiplier">Blood Loss Multiplier</a>
+      <a href="#clotting-quality" data-s="clotting-quality">Clotting Quality</a>
+      <a href="#where-this-is-installed" data-s="where-this-is-installed">Where This Is Installed</a>
+    </div>
     <a href="ov_oxygen.html">Oxygen and saturation</a>
     <a href="ov_circ.html">Circulation and rhythm</a>
     <a href="ov_chest.html">Chest and airway</a>
@@ -721,13 +726,7 @@ try{if(localStorage.getItem('pillarNight')==='1'){document.documentElement.class
     <a href="ventilator.html">Ventilator</a>
     <a href="oxygen.html">Oxygen delivery</a>
     <a href="bleeding.html">Bleeding and shock</a>
-    <a class="on" href="airway.html">Airway and chest</a>
-    <div class="subnav">
-      <a href="#needle-decompression" data-s="needle-decompression">Needle Decompression</a>
-      <a href="#positive-pressure-and-preload" data-s="positive-pressure-and-preload">Positive Pressure And Preload</a>
-      <a href="#capnography" data-s="capnography">Capnography</a>
-      <a href="#junctional-wounds" data-s="junctional-wounds">Junctional Wounds</a>
-    </div>
+    <a href="airway.html">Airway and chest</a>
     <a href="circulation.html">Arrest and rhythms</a>
     <a href="medications.html">Medications</a>
     <a href="access.html">Access and blood</a>
@@ -757,107 +756,109 @@ try{if(localStorage.getItem('pillarNight')==='1'){document.documentElement.class
     <div class="sb-prog"><i id="sbProg"></i></div>
   </div>
   <nav class="sb-list" id="sbList" hidden>
-    <a href="#needle-decompression" data-a="needle-decompression">Needle Decompression</a>
-    <a href="#positive-pressure-and-preload" data-a="positive-pressure-and-preload">Positive Pressure And Preload</a>
-    <a href="#capnography" data-a="capnography">Capnography</a>
-    <a href="#junctional-wounds" data-a="junctional-wounds">Junctional Wounds</a>
+    <a href="#blood-loss-multiplier" data-a="blood-loss-multiplier">Blood Loss Multiplier</a>
+    <a href="#clotting-quality" data-a="clotting-quality">Clotting Quality</a>
+    <a href="#where-this-is-installed" data-a="where-this-is-installed">Where This Is Installed</a>
   </nav>
 </div>
-<div class="eyebrow">PILLAR <span class="tag">//</span> SYSTEMS</div>
-<h1>Airway And Chest</h1>
-<p class="lede">Decompression, seals, drainage and tubes. The part of the addon where doing the wrong thing confidently causes the injury you were treating for.</p>
+<div class="eyebrow">PILLAR <span class="tag">//</span> ADVANCED FUNCTIONS</div>
+<h1>Bleeding<br>And Clotting</h1>
+<p class="lede">Stock ACE bleeds at a fixed rate per wound. ACM Extended makes that rate answer to blood pressure and to clotting quality, so how you resuscitate changes how fast they empty.</p>
 <div class="rule"></div>
 
 <div class="principle">
   <div class="lab">The one thing</div>
-  <p><b>A needle costs something.</b> Decompressing a chest that did not need it seeds the pneumothorax you were looking for, and repeating it raises the chance of turning that into a <button type="button" class="gl" data-t="tension-pneumothorax">tension</button>.</p>
+  <p><b>Pressure drives loss.</b> Every point of pressure you add to an uncontrolled bleed is pushing blood out of the hole faster. Control the bleeding first and the trade-off disappears.</p>
 </div>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">01</span><h2 id="needle-decompression">Needle Decompression</h2></div>
-  <p>The action is available on any living casualty at any time, rather than only when a tension is present, so the decision comes from what you find on examination rather than from a label the game has already applied.</p>
-  <p>Before the needle goes in, the indication is checked. If a tension or simple pneumothorax is present, it works as expected. If not, you have just made a hole in a healthy chest.</p>
-  <div class="card">
-    <header><span class="name">Unnecessary decompression</span><span class="badge off">Iatrogenic</span></header>
-    <div class="grid">
-      <div class="cell wide"><div class="k">First unnecessary needle</div><div class="v">seeds a developing simple pneumothorax</div></div>
-      <div class="cell"><div class="k">Tension chance</div><div class="v">0.35 cumulative</div></div>
-      <div class="cell"><div class="k">Onset delay</div><div class="v">90 s</div></div>
-    </div>
-  </div>
-  <p>Set <code>ACMI_ncd_iatrogenicTension</code> to false to disable the tension escalation while keeping the rest.</p>
+  <div class="sec-head"><span class="sec-num">01</span><h2 id="blood-loss-multiplier">Blood Loss Multiplier</h2></div>
+  <p><b>ACE behaviour.</b> Blood loss per wound is a fixed rate determined by wound type and bandage state. Blood pressure has no effect on it at all. A casualty at a <button type="button" class="gl" data-t="map">MAP</button> of 40 and a casualty at 110 lose blood at exactly the same speed.</p>
+  <p><b>Override.</b> Loss is multiplied by how hard the heart is pushing, referenced to a MAP of 70 so that target pressure reproduces stock behaviour exactly.</p>
+  <table class="t">
+    <thead><tr><th>MAP</th><th>Multiplier</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">40</td><td class="mono">0.55x</td><td>Floor. <button type="button" class="gl" data-t="permissive-hypotension">Permissive hypotension</button> working.</td></tr>
+      <tr><td class="mono">55</td><td class="mono">0.75x</td><td>Below target, bleeding slowed</td></tr>
+      <tr><td class="mono">70</td><td class="mono">1.00x</td><td>Reference. Stock ACE rate.</td></tr>
+      <tr><td class="mono">90</td><td class="mono">1.5x</td><td>Over-resuscitated</td></tr>
+      <tr><td class="mono">110</td><td class="mono">2.00x</td><td>Ceiling</td></tr>
+    </tbody>
+  </table>
+  <p>It applies to <b>uncontrolled bleeding only</b>. ACE already returns zero for a bandaged wound, so the multiplier has nothing to act on once you have controlled it. This is the mechanical reason the order of operations matters: tourniquet, then fluid. Reversed, you are pressurising an open circuit.</p>
 
   <details class="dd">
-    <summary><span class="dd-mark"></span><span class="dd-name">Why this is in the addon</span><span class="dd-tag">Teaching intent</span></summary>
+    <summary><span class="dd-mark"></span><span class="dd-name">Why a floor and a ceiling</span><span class="dd-tag">Design</span></summary>
     <div class="dd-body">
-      <p>Most medical sims make needle decompression a free action, which trains the habit of needling anything that looks unwell. That habit is actively dangerous, and it is one of the more common criticisms of prehospital chest decompression in the real literature.</p>
-      <p>Making it cost something turns it into a decision. You are meant to examine first, and the delay before the iatrogenic pneumothorax declares itself means you find out you were wrong later, which is exactly how it happens.</p>
-      <p>It is recoverable. A simple pneumothorax you caused can be decompressed and drained like any other, so the cost is time and a lesson rather than a dead casualty.</p>
+      <p>The curve is clamped at both ends rather than running to zero and to infinity, for two different reasons.</p>
+      <p><b>The floor at 0.55x</b> stops permissive hypotension becoming a cheat. A casualty allowed to sit at a MAP of 30 would otherwise stop bleeding almost entirely, which would make deliberate under-resuscitation the dominant strategy and would be wrong: a hole in an artery still leaks at low pressure.</p>
+      <p><b>The ceiling at 2.00x</b> keeps an over-resuscitated casualty recoverable. Without it, a medic who pushed too much fluid too early would put the patient into an unrecoverable spiral, and the point of the mechanic is to teach the trade-off, not to hand out unwinnable cases.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">What this feels like in play</span><span class="dd-tag">Practical</span></summary>
+    <div class="dd-body">
+      <p>The visible effect is that a casualty with an uncontrolled junctional bleed who receives a litre of crystalloid deteriorates faster than one who does not, and the medic sees it as blood volume dropping despite fluid going in.</p>
+      <p>That reads as the fluid not working. It is working exactly as intended: the pressure it bought is being spent pushing blood out of a hole nobody has closed. The correct response is not more fluid.</p>
+      <p>The same mechanic is why a tourniquet applied late still helps. Once the bleed is controlled the multiplier stops applying to it, and the pressure you have built starts doing what you wanted it to do.</p>
     </div>
   </details>
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">02</span><h2 id="positive-pressure-and-preload">Positive Pressure And Preload</h2></div>
-  <p>Ventilating a casualty raises intrathoracic pressure, which opposes venous return. In a full tank that costs nothing measurable. In an empty one it costs a great deal.</p>
-  <div class="scroll">
+  <div class="sec-head"><span class="sec-num">02</span><h2 id="clotting-quality">Clotting Quality</h2></div>
+  <p><b>ACE behaviour.</b> No <button type="button" class="gl" data-t="coagulopathy">Coagulopathy</button> model of any kind. Blood clots identically whatever the casualty's temperature or chemistry, so a cold, acidotic, calcium-depleted patient bandages up exactly like a warm healthy one.</p>
+  <p><b>Override.</b> Three multiplying legs feed a single coagulation multiplier, which is read by the same blood loss hook as the pressure term above. They compound, which is the whole point of calling it a triad.</p>
   <table class="t">
-    <thead><tr><th>Volume state</th><th>Stroke volume penalty</th></tr></thead>
+    <thead><tr><th>Leg</th><th>Threshold</th><th>Worst case</th></tr></thead>
     <tbody>
-      <tr><td>Full</td><td class="mono">about 0%</td></tr>
-      <tr><td>Class III haemorrhage</td><td class="mono">15 to 19%</td></tr>
-      <tr><td>Maximum modelled</td><td class="mono">35%</td></tr>
+      <tr><td><button type="button" class="gl" data-t="acidosis">Acidosis</button></td><td class="mono">0.30</td><td class="mono">1.3x</td></tr>
+      <tr><td>Hypothermia</td><td class="mono">below 35 C</td><td class="mono">compounds</td></tr>
+      <tr><td><button type="button" class="gl" data-t="ionised-calcium">Ionised calcium</button></td><td class="mono">below 1.0</td><td class="mono">1.4x</td></tr>
     </tbody>
   </table>
-  </div>
-  <p>High PEEP multiplies it up to 1.5 times. This applies to <b>both</b> the ventilator and manual bagging, so an enthusiastic BVM technique on a shocked casualty does real harm.</p>
-  <p>The practical rule: <b>fill them before you tube them</b>, and if you must ventilate an empty casualty, keep pressures and PEEP low until volume is restored.</p>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Citrate and calcium</span><span class="dd-tag">The transfusion cost</span></summary>
+    <div class="dd-body">
+      <p>Stored blood is anticoagulated with <button type="button" class="gl" data-t="citrate">citrate</button>, and citrate works by binding calcium. Transfuse enough of it fast enough and you strip the recipient's ionised calcium, which is a clotting factor in its own right.</p>
+      <table class="t">
+        <thead><tr><th>Term</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Citrate load per litre transfused</td><td class="mono">0.18</td></tr>
+          <tr><td>Calcium chloride credit per gram</td><td class="mono">0.12</td></tr>
+          <tr><td>Ionised calcium floor</td><td class="mono">0.55</td></tr>
+          <tr><td>MAP lost per unit below threshold</td><td class="mono">up to 40 mmHg</td></tr>
+        </tbody>
+      </table>
+      <p>The consequence is that a massive transfusion without calcium replacement makes the patient bleed worse than the transfusion is helping. This is the mechanism behind calcium being a non-negotiable adjunct rather than an optional extra, and it is measurable in game rather than being a slogan.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Why the legs multiply</span><span class="dd-tag">Design</span></summary>
+    <div class="dd-body">
+      <p>Each leg could have been additive. They multiply because that is what makes the triad behave like a triad rather than like three separate penalties.</p>
+      <p>A casualty who is only cold is manageable. A casualty who is cold, acidotic and calcium-depleted is not the sum of three problems, they are a patient whose blood has stopped working. Multiplying reproduces that: two mild legs are tolerable, three mild legs are not.</p>
+      <p>It also means fixing any one leg helps disproportionately, which is the behaviour you want to teach. Rewarming a cold casualty pays back more than the temperature change alone suggests, because it divides out of the other two.</p>
+    </div>
+  </details>
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">03</span><h2 id="capnography">Capnography</h2></div>
-  <p>The EMMA reads <button type="button" class="gl" data-t="etco2">EtCO2</button> at the tube and shows a number, a rate, and a rolling trace. The number is a breath to breath trailing average rather than a single breath, so it settles rather than jumping, and a change in it means something has actually changed.</p>
-  <figure>
-    <img src="img/emma_live.gif" alt="EMMA capnograph running">
-    <figcaption>EMMA in use. Value, rate, and the rolling trace</figcaption>
-  </figure>
-  <div class="iconkey">
-    <div class="ik"><img class="ico" src="img/emma_ca.png" alt=""><span class="ikn">Inventory</span><span class="ikd">EMMA mainstream capnograph, inline on the tube</span></div>
+  <div class="sec-head"><span class="sec-num">03</span><h2 id="where-this-is-installed">Where This Is Installed</h2></div>
+  <p>Both terms are read inside <code>ace_medical_status_fnc_getBloodVolumeChange</code>, replaced at compile time through <code>ACMI_overwrite_medical_status</code>. That function is not compiled final by ACM, so the replacement installs cleanly.</p>
+  <p>The replacement sets <code>ACMI_infusion_getBloodVolumeChangePatched</code> on the unit each time it runs. If you are debugging and want to confirm the override is actually live rather than assuming it, read that variable: it holds the mission time of the last run.</p>
+  <div class="flags">
+    <h3>Red Flags</h3>
+    <ul>
+      <li><b>Fluid before haemorrhage control.</b> Every mmHg you add multiplies the loss through an open hole. Stop the bleeding first.</li>
+      <li><b>Massive transfusion without calcium.</b> Citrate strips ionised calcium at 0.18 per litre and the clotting penalty compounds with the other two legs.</li>
+      <li><b>Treating a cold casualty as a temperature problem only.</b> Hypothermia is a clotting problem that happens to show as a number on a thermometer.</li>
+    </ul>
   </div>
-  <p>Read the shape, not only the number. A square trace with a flat top is a patient moving air. A trace that slopes upward instead of levelling is obstruction. A trace that shrinks breath by breath while the ventilator settings have not changed is a lung getting stiffer, and in pressure control that is the only warning you get.</p>
-  <p>Value falling with a pulse present usually means circulation, not ventilation. Cardiac output carries CO2 to the lung, so a dropping number on unchanged settings points at the pump before it points at the tube.</p>
 </section>
-
-<section class="sec">
-  <div class="sec-head"><span class="sec-num">04</span><h2 id="junctional-wounds">Junctional Wounds</h2></div>
-  <p>Five states, each a distinct step: open, packed, wrapped, and XStat. Bleeding falls as you progress. The AAJT-S applies with a pause, and Combat Gauze is tracked separately.</p>
-  <figure>
-  <img src="img/aajt-s_ca.png" alt="AAJT-S">
-  <figcaption>AAJT-S junctional tourniquet</figcaption>
-</figure>
-<p>Two application sites, and the one you need depends on where the bleed is. Inguinal for groin and proximal thigh, axillary for a shoulder or high arm wound that a limb tourniquet cannot reach.</p>
-<div class="figpair">
-  <figure>
-    <img src="img/aajt-s_example.png" alt="AAJT-S applied at the inguinal site">
-    <figcaption>Inguinal placement, windlass over the pelvis</figcaption>
-  </figure>
-  <figure>
-    <img src="img/aajt-s_axilla_example.png" alt="AAJT-S applied at the axillary site">
-    <figcaption>Axillary placement, for wounds above a limb tourniquet</figcaption>
-  </figure>
-</div>
-<figure class="placeholder">Five wound states screenshot goes here</figure>
-</section>
-
-<div class="flags">
-  <h3>Red Flags</h3>
-  <ul>
-    <li><b>Needling on suspicion alone.</b> Examine first. A wrong needle creates the injury.</li>
-    <li><b>Repeat needles when the first did not help.</b> Each one raises the tension chance cumulatively.</li>
-    <li><b>Ventilating an empty casualty.</b> You are trading oxygenation for cardiac output.</li>
-    <li><b>High PEEP in shock.</b> Multiplies the <button type="button" class="gl" data-t="preload">preload</button> penalty by half again.</li>
-  </ul>
-</div>
 
 <footer>
   <span class="brand">PILLAR</span> // ACM EXTENDED FIELD GUIDE // v0.9.873 // BUILD 2026-07-22

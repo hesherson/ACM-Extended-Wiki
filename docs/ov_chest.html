@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
-<title>ACM Extended Wiki | Airway and chest</title>
+<title>ACM Extended Wiki | Chest and airway</title>
 <link rel="icon" type="image/png" href="img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -713,7 +713,13 @@ try{if(localStorage.getItem('pillarNight')==='1'){document.documentElement.class
     <a href="ov_bleeding.html">Bleeding and clotting</a>
     <a href="ov_oxygen.html">Oxygen and saturation</a>
     <a href="ov_circ.html">Circulation and rhythm</a>
-    <a href="ov_chest.html">Chest and airway</a>
+    <a class="on" href="ov_chest.html">Chest and airway</a>
+    <div class="subnav">
+      <a href="#respiration-rate" data-s="respiration-rate">Respiration Rate</a>
+      <a href="#breathing-state" data-s="breathing-state">Breathing State</a>
+      <a href="#bagging-gates" data-s="bagging-gates">Bagging Gates</a>
+      <a href="#where-this-is-installed" data-s="where-this-is-installed">Where This Is Installed</a>
+    </div>
     <a href="ov_tbi.html">Head injury</a>
     <a href="ov_access.html">Access and flow</a>
     <a href="ov_traps.html">Known traps</a>
@@ -721,13 +727,7 @@ try{if(localStorage.getItem('pillarNight')==='1'){document.documentElement.class
     <a href="ventilator.html">Ventilator</a>
     <a href="oxygen.html">Oxygen delivery</a>
     <a href="bleeding.html">Bleeding and shock</a>
-    <a class="on" href="airway.html">Airway and chest</a>
-    <div class="subnav">
-      <a href="#needle-decompression" data-s="needle-decompression">Needle Decompression</a>
-      <a href="#positive-pressure-and-preload" data-s="positive-pressure-and-preload">Positive Pressure And Preload</a>
-      <a href="#capnography" data-s="capnography">Capnography</a>
-      <a href="#junctional-wounds" data-s="junctional-wounds">Junctional Wounds</a>
-    </div>
+    <a href="airway.html">Airway and chest</a>
     <a href="circulation.html">Arrest and rhythms</a>
     <a href="medications.html">Medications</a>
     <a href="access.html">Access and blood</a>
@@ -757,107 +757,97 @@ try{if(localStorage.getItem('pillarNight')==='1'){document.documentElement.class
     <div class="sb-prog"><i id="sbProg"></i></div>
   </div>
   <nav class="sb-list" id="sbList" hidden>
-    <a href="#needle-decompression" data-a="needle-decompression">Needle Decompression</a>
-    <a href="#positive-pressure-and-preload" data-a="positive-pressure-and-preload">Positive Pressure And Preload</a>
-    <a href="#capnography" data-a="capnography">Capnography</a>
-    <a href="#junctional-wounds" data-a="junctional-wounds">Junctional Wounds</a>
+    <a href="#respiration-rate" data-a="respiration-rate">Respiration Rate</a>
+    <a href="#breathing-state" data-a="breathing-state">Breathing State</a>
+    <a href="#bagging-gates" data-a="bagging-gates">Bagging Gates</a>
+    <a href="#where-this-is-installed" data-a="where-this-is-installed">Where This Is Installed</a>
   </nav>
 </div>
-<div class="eyebrow">PILLAR <span class="tag">//</span> SYSTEMS</div>
-<h1>Airway And Chest</h1>
-<p class="lede">Decompression, seals, drainage and tubes. The part of the addon where doing the wrong thing confidently causes the injury you were treating for.</p>
+<div class="eyebrow">PILLAR <span class="tag">//</span> ADVANCED FUNCTIONS</div>
+<h1>Chest<br>And Airway</h1>
+<p class="lede">A ventilator sets the respiratory rate. ACM's original could not express that, and the two branches that stopped it were both sitting above the default.</p>
 <div class="rule"></div>
 
 <div class="principle">
   <div class="lab">The one thing</div>
-  <p><b>A needle costs something.</b> Decompressing a chest that did not need it seeds the pneumothorax you were looking for, and repeating it raises the chance of turning that into a <button type="button" class="gl" data-t="tension-pneumothorax">tension</button>.</p>
+  <p><b>The machine's set rate is the respiratory rate, exactly.</b> It does not decay toward anything, and it is not overwritten four times a second by a hardcoded value.</p>
 </div>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">01</span><h2 id="needle-decompression">Needle Decompression</h2></div>
-  <p>The action is available on any living casualty at any time, rather than only when a tension is present, so the decision comes from what you find on examination rather than from a label the game has already applied.</p>
-  <p>Before the needle goes in, the indication is checked. If a tension or simple pneumothorax is present, it works as expected. If not, you have just made a hole in a healthy chest.</p>
-  <div class="card">
-    <header><span class="name">Unnecessary decompression</span><span class="badge off">Iatrogenic</span></header>
-    <div class="grid">
-      <div class="cell wide"><div class="k">First unnecessary needle</div><div class="v">seeds a developing simple pneumothorax</div></div>
-      <div class="cell"><div class="k">Tension chance</div><div class="v">0.35 cumulative</div></div>
-      <div class="cell"><div class="k">Onset delay</div><div class="v">90 s</div></div>
-    </div>
-  </div>
-  <p>Set <code>ACMI_ncd_iatrogenicTension</code> to false to disable the tension escalation while keeping the rest.</p>
+  <div class="sec-head"><span class="sec-num">01</span><h2 id="respiration-rate">Respiration Rate</h2></div>
+  <p><b>ACM behaviour.</b> <code>updateRespirationRate</code> resolves through a series of cases. Two of them made mechanical ventilation impossible to represent, and both sat above the default so nothing downstream could correct them.</p>
+  <table class="t">
+    <thead><tr><th>ACM case</th><th>Result</th><th>Problem</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">not breathing</td><td class="mono">RR 0</td><td>Fires for the paralysed apneic patient a ventilator exists for</td></tr>
+      <tr><td class="mono">bvmActive</td><td class="mono">RR 10</td><td>Hardcoded, and the vent registers as the BVM provider</td></tr>
+    </tbody>
+  </table>
+  <p>Taken together: a rocuronium'd, intubated, ventilated patient read a respiratory rate of zero and stopped being ventilated, and where the first case did not fire the second overwrote the dialled rate with 10 on every vitals cycle.</p>
+  <p><b>Override.</b> One new case, placed <b>first</b>, for a patient on a running ventilator in a mandatory mode. Everything else is ACM's original logic preserved verbatim.</p>
 
   <details class="dd">
-    <summary><span class="dd-mark"></span><span class="dd-name">Why this is in the addon</span><span class="dd-tag">Teaching intent</span></summary>
+    <summary><span class="dd-mark"></span><span class="dd-name">Why writing the variable from our own tick failed</span><span class="dd-tag">Fighting a function</span></summary>
     <div class="dd-body">
-      <p>Most medical sims make needle decompression a free action, which trains the habit of needling anything that looks unwell. That habit is actively dangerous, and it is one of the more common criticisms of prehospital chest decompression in the real literature.</p>
-      <p>Making it cost something turns it into a decision. You are meant to examine first, and the delay before the iatrogenic pneumothorax declares itself means you find out you were wrong later, which is exactly how it happens.</p>
-      <p>It is recoverable. A simple pneumothorax you caused can be decompressed and drained like any other, so the cost is time and a lesson rather than a dead casualty.</p>
+      <p>The first attempt at this did not replace the function. It set the respiration rate variable from the ventilator's own tick, on the assumption that whoever wrote last would win.</p>
+      <p>That is a losing arrangement. ACM's vitals cycle runs roughly four times a second and recomputes the value from its own cases every pass. Our tick and its cycle simply alternated, and the displayed rate oscillated between the dialled value and 10.</p>
+      <p>The general lesson: if a value is recomputed on a cycle, you cannot own it by writing it more often. You have to own the function that computes it.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Why CPAP is excluded</span><span class="dd-tag">Deliberate</span></summary>
+    <div class="dd-body">
+      <p>The new case covers the mandatory modes only, SIMV VC PS and SIMV PC. CPAP PS HF is not included, and that is not an oversight.</p>
+      <p>CPAP is a spontaneous mode. It supports breaths the patient starts and guarantees none. The patient's own drive, or absence of one, has to stand.</p>
+      <p>The consequence is that CPAP on an apneic casualty is correctly fatal. The machine sits there supporting breaths that are never taken and the medic has to notice. If the override had covered CPAP as well, the mode would silently have ventilated a patient with no drive, which would have removed the single most important thing that mode teaches.</p>
     </div>
   </details>
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">02</span><h2 id="positive-pressure-and-preload">Positive Pressure And Preload</h2></div>
-  <p>Ventilating a casualty raises intrathoracic pressure, which opposes venous return. In a full tank that costs nothing measurable. In an empty one it costs a great deal.</p>
-  <div class="scroll">
+  <div class="sec-head"><span class="sec-num">02</span><h2 id="breathing-state">Breathing State</h2></div>
+  <p><b>ACM behaviour.</b> Breathing effectiveness is knocked down multiplicatively by hemothorax fluid, pneumothorax, tension pneumothorax and CBRN exposure.</p>
+  <p><b>Override.</b> The model is reproduced verbatim, with a graded pulmonary edema penalty added on top in the same multiplicative style. The full reasoning for degrading effectiveness rather than capping saturation is on the oxygen page.</p>
   <table class="t">
-    <thead><tr><th>Volume state</th><th>Stroke volume penalty</th></tr></thead>
+    <thead><tr><th>Term</th><th>Threshold</th><th>Behaviour</th></tr></thead>
     <tbody>
-      <tr><td>Full</td><td class="mono">about 0%</td></tr>
-      <tr><td>Class III haemorrhage</td><td class="mono">15 to 19%</td></tr>
-      <tr><td>Maximum modelled</td><td class="mono">35%</td></tr>
+      <tr><td>Hemothorax fluid</td><td class="mono">above 0.3</td><td>Scales down toward 0.1x at 1.5</td></tr>
+      <tr><td>Tension pneumothorax</td><td class="mono">any</td><td>Multiplies down</td></tr>
+      <tr><td>Hardcore pneumothorax</td><td class="mono">flag</td><td>Separate stricter path</td></tr>
+      <tr><td>Pulmonary edema</td><td class="mono">onset to cap</td><td>Graded, own coefficient</td></tr>
     </tbody>
   </table>
-  </div>
-  <p>High PEEP multiplies it up to 1.5 times. This applies to <b>both</b> the ventilator and manual bagging, so an enthusiastic BVM technique on a shocked casualty does real harm.</p>
-  <p>The practical rule: <b>fill them before you tube them</b>, and if you must ventilate an empty casualty, keep pressures and PEEP low until volume is restored.</p>
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">03</span><h2 id="capnography">Capnography</h2></div>
-  <p>The EMMA reads <button type="button" class="gl" data-t="etco2">EtCO2</button> at the tube and shows a number, a rate, and a rolling trace. The number is a breath to breath trailing average rather than a single breath, so it settles rather than jumping, and a change in it means something has actually changed.</p>
-  <figure>
-    <img src="img/emma_live.gif" alt="EMMA capnograph running">
-    <figcaption>EMMA in use. Value, rate, and the rolling trace</figcaption>
-  </figure>
-  <div class="iconkey">
-    <div class="ik"><img class="ico" src="img/emma_ca.png" alt=""><span class="ikn">Inventory</span><span class="ikd">EMMA mainstream capnograph, inline on the tube</span></div>
-  </div>
-  <p>Read the shape, not only the number. A square trace with a flat top is a patient moving air. A trace that slopes upward instead of levelling is obstruction. A trace that shrinks breath by breath while the ventilator settings have not changed is a lung getting stiffer, and in pressure control that is the only warning you get.</p>
-  <p>Value falling with a pulse present usually means circulation, not ventilation. Cardiac output carries CO2 to the lung, so a dropping number on unchanged settings points at the pump before it points at the tube.</p>
+  <div class="sec-head"><span class="sec-num">03</span><h2 id="bagging-gates">Bagging Gates</h2></div>
+  <p><b>ACM behaviour.</b> <code>canUseBVM</code> allows bagging an unconscious patient, or an awake patient who is lying down, and blocks a second medic from bagging a patient someone else is already bagging.</p>
+  <p><b>Override.</b> Faithful de-macroed copy plus one guard at the front: <b>a patient wearing a non-rebreather mask cannot be bagged.</b> The mask has to come off before a bag mask seal is possible.</p>
+  <p>The guard applies to both the plain and the oxygen-supplied bagging actions, because both route their condition through the same function.</p>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Why gate rather than auto-remove</span><span class="dd-tag">Design</span></summary>
+    <div class="dd-body">
+      <p>The alternative was to silently remove the mask when bagging starts. That was rejected.</p>
+      <p>Removing equipment on the patient's behalf hides a step the medic should be performing and thinking about. The mask being in the way is real, and noticing it is part of managing an airway rather than an inconvenience to be smoothed over.</p>
+      <p>Gating also fails safely. A blocked action tells the medic something is wrong and they investigate. An action that quietly rearranged the patient would leave them unsure what state anyone is in.</p>
+    </div>
+  </details>
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">04</span><h2 id="junctional-wounds">Junctional Wounds</h2></div>
-  <p>Five states, each a distinct step: open, packed, wrapped, and XStat. Bleeding falls as you progress. The AAJT-S applies with a pause, and Combat Gauze is tracked separately.</p>
-  <figure>
-  <img src="img/aajt-s_ca.png" alt="AAJT-S">
-  <figcaption>AAJT-S junctional tourniquet</figcaption>
-</figure>
-<p>Two application sites, and the one you need depends on where the bleed is. Inguinal for groin and proximal thigh, axillary for a shoulder or high arm wound that a limb tourniquet cannot reach.</p>
-<div class="figpair">
-  <figure>
-    <img src="img/aajt-s_example.png" alt="AAJT-S applied at the inguinal site">
-    <figcaption>Inguinal placement, windlass over the pelvis</figcaption>
-  </figure>
-  <figure>
-    <img src="img/aajt-s_axilla_example.png" alt="AAJT-S applied at the axillary site">
-    <figcaption>Axillary placement, for wounds above a limb tourniquet</figcaption>
-  </figure>
-</div>
-<figure class="placeholder">Five wound states screenshot goes here</figure>
+  <div class="sec-head"><span class="sec-num">04</span><h2 id="where-this-is-installed">Where This Is Installed</h2></div>
+  <p>All four functions are replaced at compile time through <code>ACMI_overwrite_breathing</code> and <code>ACMI_overwrite_airway</code>. ACM prepares these normally rather than compiling them final, so compile-time replacement installs cleanly, the same way the circulation overrides do.</p>
+  <div class="flags">
+    <h3>Red Flags</h3>
+    <ul>
+      <li><b>CPAP on a casualty without a respiratory drive.</b> The mode guarantees no breath and the override deliberately does not rescue it.</li>
+      <li><b>Attempting to bag over a non-rebreather.</b> The action is gated off. Remove the mask.</li>
+      <li><b>Owning a cycled value by writing it more often.</b> It will oscillate. Own the function instead.</li>
+    </ul>
+  </div>
 </section>
-
-<div class="flags">
-  <h3>Red Flags</h3>
-  <ul>
-    <li><b>Needling on suspicion alone.</b> Examine first. A wrong needle creates the injury.</li>
-    <li><b>Repeat needles when the first did not help.</b> Each one raises the tension chance cumulatively.</li>
-    <li><b>Ventilating an empty casualty.</b> You are trading oxygenation for cardiac output.</li>
-    <li><b>High PEEP in shock.</b> Multiplies the <button type="button" class="gl" data-t="preload">preload</button> penalty by half again.</li>
-  </ul>
-</div>
 
 <footer>
   <span class="brand">PILLAR</span> // ACM EXTENDED FIELD GUIDE // v0.9.873 // BUILD 2026-07-22

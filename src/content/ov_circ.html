@@ -1,0 +1,118 @@
+<div class="eyebrow">PILLAR <span class="tag">//</span> ADVANCED FUNCTIONS</div>
+<h1>Circulation<br>And Rhythm</h1>
+<p class="lede">Custom rhythms, an AED that recognises them, ROSC gated on the cause being fixed, and the only working lever for a pure vasoconstrictor. This is the densest set of overrides in the addon.</p>
+<div class="rule"></div>
+
+<div class="principle">
+  <div class="lab">The one thing</div>
+  <p><b>Arrest becomes a differential, not a shock-and-hope exercise.</b> ROSC is gated on the reversible cause being fixed, not on enough compressions having happened.</p>
+</div>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">01</span><h2>The EKG Generator</h2></div>
+  <p><b>ACM behaviour.</b> <code>displayAEDMonitor_generateEKG</code> builds a waveform by spacing beats and appending a complex. It is compiled final, so a runtime reassignment cannot replace it.</p>
+  <p><b>Override.</b> Compile-time replacement reproducing ACM's waveforms verbatim, with three corrections.</p>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Delegation for custom rhythms</span><span class="dd-tag">Codes 100 and up</span></summary>
+    <div class="dd-body">
+      <p>Rhythm codes at or above 100 are handed to the ACM Extended generator. That is where atrial fibrillation, SVT, torsades and the rest of the custom set are drawn.</p>
+      <p>Everything below 100 falls through to ACM's original waveform code untouched, so no stock rhythm changes appearance. The split at 100 is what keeps the two sets from interfering.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Rate lock</span><span class="dd-tag">Waveform equals beep equals BPM</span></summary>
+    <div class="dd-body">
+      <p>ACM spaces beats by a gap computed from heart rate, then appends the complex. One beat therefore occupies the gap plus the complex length, but the audible beep was timed from the rate alone.</p>
+      <p>The consequence was that the trace on screen, the beep you hear, and the number displayed disagreed with each other, and the discrepancy grew as the rate rose because the complex is a fixed width.</p>
+      <p>The override accounts for the complex length in the spacing so all three agree at any rate. On a monitor that matters more than it sounds: counting the trace and counting the beeps are both legitimate ways for a medic to check the number, and they have to give the same answer.</p>
+    </div>
+  </details>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">02</span><h2>The AED And Torsades</h2></div>
+  <p><b>ACM behaviour.</b> The shockable set is VF, pulseless VT and VT. Anything else returns no shock advised.</p>
+  <p><b>Override.</b> The shockable test also includes the ACM Extended defibrillatable rhythms, currently torsades at code 102.</p>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Why this was unreachable code</span><span class="dd-tag">Worth understanding</span></summary>
+    <div class="dd-body">
+      <p>The shock path already handled torsades correctly and would defibrillate it back to sinus. It simply could never be reached.</p>
+      <p>An AED parked on torsades announced no shock advised and dropped straight to CPR. It never charged, so the discharge never happened, so the working conversion code sat there unused.</p>
+      <p>This is a useful pattern to recognise. When a feature appears completely absent rather than partially broken, the cause is often a gate upstream returning false, not the feature itself.</p>
+      <p>With torsades in the shockable set the AED advises and charges normally. The discharge and conversion are handled downstream exactly as before.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Torsades has no pulse</span><span class="dd-tag">checkPulseLocal</span></summary>
+    <div class="dd-body">
+      <p>Torsades is pulseless polymorphic VT. There is organised electrical activity on the monitor and no mechanical pulse to palpate, and that gap between what the monitor shows and what your fingers find is the entire diagnostic point.</p>
+      <p>The pulse check override forces the palpated rate to zero for rhythm 102, so a pulse check correctly reports no pulse while the monitor keeps showing the rhythm driven from <code>ace_medical_heartRate</code>.</p>
+      <p>Without this the casualty had a palpable pulse in a pulseless rhythm, which taught exactly the wrong lesson.</p>
+    </div>
+  </details>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">03</span><h2>ROSC Gating</h2></div>
+  <p><b>ACM behaviour.</b> ACM already blocks ROSC on four reversible causes: hypoxia below its threshold, tension pneumothorax, and two others handled in its own circulation state function.</p>
+  <p><b>Override.</b> Strictly additive. The causes ACM does not model are added to the same gate, and nothing else is changed.</p>
+  <p>The design consequence is that compressions alone will not restart a heart that is arrested for a reason nobody has corrected. The medic has to work the differential, and the mechanic rewards that rather than rewarding persistence.</p>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Additive means one direction only</span><span class="dd-tag">Design rule</span></summary>
+    <div class="dd-body">
+      <p>This override can only ever make ROSC harder to achieve, never easier. It adds conditions to an existing gate and removes none.</p>
+      <p>That is deliberate and it is the rule the whole section follows. An override that could relax a gate risks reviving a casualty ACM would have let die, which would make ACM Extended less strict than the thing it extends. Extending should not mean softening.</p>
+      <p>It also makes the override safe to reason about in isolation: if a casualty achieves ROSC, every ACM condition was satisfied, plus ours.</p>
+    </div>
+  </details>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">04</span><h2>Pressors And Resistance</h2></div>
+  <p>Blood pressure is cardiac output times systemic vascular resistance. A pure vasoconstrictor like norepinephrine raises pressure by raising resistance, and reproducing that turned out to be the only route available.</p>
+  <p><b>The problem.</b> <code>getBloodPressure</code> is compiled final and unreachable, so a display offset path does not exist. <code>updateHeartRate</code> is likewise final.</p>
+  <p><b>Override.</b> <code>ace_medical_vitals_fnc_updatePeripheralResistance</code> is <i>not</i> compiled final, verified by its absence from the runtime final-function list, so a compile-time replacement installs cleanly. Resistance is where the pressor acts.</p>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Why this is the right place, not just the available one</span><span class="dd-tag">Physiology</span></summary>
+    <div class="dd-body">
+      <p>It would be easy to read this as a workaround that happened to be reachable. It is not.</p>
+      <p>Because the override runs inside the vitals cycle, there is no race with ACE overwriting the value afterward. ACM's baroreflex is already folded into the adjustment arriving upstream, so it continues to oppose the rise naturally on the next pass, which is what a real baroreflex does.</p>
+      <p>Natural blood pressure rises with blood pressure, correctly, because this is a real haemodynamic change rather than a display offset. And ACM's bleeding rate functions read the same resistance, so a vasoconstricted patient bleeds slightly differently. That is a consequence rather than a bug, and it is physiologically defensible.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Everything that layers here</span><span class="dd-tag">Independent terms</span></summary>
+    <div class="dd-body">
+      <p>Six independent contributions are summed on top of ACE's computed resistance. They are separate variables so that one can be tuned or cleared without disturbing the others.</p>
+      <table class="t">
+        <thead><tr><th>Source</th><th>Direction</th><th>Set by</th></tr></thead>
+        <tbody>
+          <tr><td>Non-epi pressor support</td><td>raises</td><td class="mono">fn_circHandle</td></tr>
+          <tr><td>Lidocaine toxicity</td><td>lowers</td><td class="mono">lidoTox_resistDelta</td></tr>
+          <tr><td>Esmolol overdose</td><td>lowers</td><td class="mono">esmololTox_resistDelta</td></tr>
+          <tr><td>Fast infusion hypotension</td><td>lowers</td><td class="mono">infusionTox_resistDelta</td></tr>
+          <tr><td>Awake paralysis</td><td>raises</td><td class="mono">fn_rocuroniumTick</td></tr>
+          <tr><td>Raised ICP and Cushing</td><td>either</td><td class="mono">fn_tbiApplyVitals</td></tr>
+        </tbody>
+      </table>
+      <p>Epinephrine is deliberately excluded from the pressor term. It keeps its heart-rate driven blood pressure effect, and adding it here as well would double count it.</p>
+      <p>Awake paralysis is worth calling out: an aware, paralysed patient has an unblunted catecholamine surge that genuinely raises resistance, so the hypertension you see is real physiology rather than a cue painted on.</p>
+    </div>
+  </details>
+</section>
+
+<div class="flags">
+  <h3>Red Flags</h3>
+  <ul>
+    <li><b>Compressions without a differential.</b> ROSC is gated on the cause being corrected. Working harder at CPR does not substitute for finding it.</li>
+    <li><b>Trusting a monitor over a pulse check in torsades.</b> Organised electrical activity with no mechanical output is the presentation, not a display fault.</li>
+    <li><b>Adding a pressor effect through blood pressure directly.</b> That path is final and unreachable. Resistance is the working lever.</li>
+  </ul>
+</div>

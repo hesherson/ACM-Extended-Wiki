@@ -1,0 +1,70 @@
+<div class="eyebrow">PILLAR <span class="tag">//</span> ADVANCED FUNCTIONS</div>
+<h1>Head<br>Injury</h1>
+<p class="lede">A raised intracranial pressure has to be observable through the ordinary tools, or it is not a diagnosis, it is a hidden variable. This is how the brain is made visible on a heart rate, a cuff and a respiratory rate.</p>
+<div class="rule"></div>
+
+<div class="principle">
+  <div class="lab">The one thing</div>
+  <p><b>The vitals track the pressure.</b> A raised ICP shows up as a recognisable pattern across several numbers at once, and it changes as the brain runs out of room.</p>
+</div>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Making ICP Observable</h2></div>
+  <p>ACM has no intracranial pressure model, so a head-injured casualty read the same as anyone else. ACM Extended writes a signature onto the patient's ACM and ACE vitals so the state is visible through heart rate, blood pressure cuff, saturation and respiratory rate rather than sitting behind a variable nobody can see.</p>
+  <p>Everything scales with severity, with how much compensation reserve is left, and with herniation stage. It is phased, and the phases look different from each other on purpose.</p>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Compensated Cushing</span><span class="dd-tag">Ominous but holding</span></summary>
+    <div class="dd-body">
+      <p>Pressure is raised and the reserve is intact. The brain is actively defending its own perfusion pressure and succeeding, at a visible cost.</p>
+      <table class="t">
+        <thead><tr><th>Sign</th><th>Direction</th></tr></thead>
+        <tbody>
+          <tr><td>Systolic pressure</td><td>Climbs hard</td></tr>
+          <tr><td>Diastolic pressure</td><td>Climbs far less</td></tr>
+          <tr><td>Pulse pressure</td><td>Widens</td></tr>
+          <tr><td>Heart rate</td><td>Reflex bradycardia</td></tr>
+          <tr><td>Respirations</td><td>Irregular, Cheyne-Stokes</td></tr>
+        </tbody>
+      </table>
+      <p>Malignant hypertension with a widening pulse pressure and a slowing heart is the classic triad, and it is the pattern that should make a medic stop treating the blood pressure as good news. This casualty is compensating, not stable.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Decompensating</span><span class="dd-tag">The surge fails</span></summary>
+    <div class="dd-body">
+      <p>The compensation budget is spent and herniation is advancing. The sympathetic surge that was holding perfusion pressure up stops working.</p>
+      <p>Pressure falls rather than rises. The bradycardia that was a defensive reflex stops being defensive. What made this dangerous in the compensated phase was the hypertension; what makes it lethal here is that the hypertension has gone.</p>
+      <p>The transition matters more than either endpoint. A head injury whose blood pressure is normalising without treatment is not improving.</p>
+    </div>
+  </details>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">02</span><h2>Composing With Everything Else</h2></div>
+  <p>The Cushing response is delivered as a contribution to systemic vascular resistance rather than as a blood pressure offset, for the same reason the pressors are: the blood pressure function is compiled final and unreachable.</p>
+  <p>It is written as a MAP delta converted at the pressor scale, so it composes with the pressor term and with ACE's own computed resistance instead of fighting either. Raised pressure drives resistance up through the sympathetic response, and decompensated collapse drives it negative.</p>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">The heart rate decoupling trap</span><span class="dd-tag">Set both, always</span></summary>
+    <div class="dd-body">
+      <p>There are two heart rate variables in play and they serve different consumers. <code>ace_medical_heartRate</code> drives the ECG trace and the monitor. <code>ACM_core_TargetVitals_HeartRate</code> drives what ACM believes the rate should be.</p>
+      <p>Writing only one of them decouples the monitor from the model. The bradycardia appeared on the trace but the rest of the simulation carried on with the old rate, or the reverse, depending on which was written.</p>
+      <p><b>Anything that changes heart rate must set both.</b> There are fifteen sites in the addon that do so. This is not optional and it is not defensive coding, it is the contract.</p>
+    </div>
+  </details>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Clearing It</h2></div>
+  <p>A Zeus module clears the TBI state outright, removing every variable it set rather than winding severity down to zero. Winding down leaves residual offsets attached to the casualty that show up later as vitals that will not quite normalise.</p>
+  <div class="flags">
+    <h3>Red Flags</h3>
+    <ul>
+      <li><b>Reading a rising blood pressure in a head injury as improvement.</b> It is the brain defending perfusion, and it is a warning.</li>
+      <li><b>A head injury whose pressure normalises without treatment.</b> That is decompensation, not recovery.</li>
+      <li><b>Writing one heart rate variable.</b> Both, every time, or the monitor and the model disagree.</li>
+    </ul>
+  </div>
+</section>

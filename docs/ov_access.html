@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
-<title>ACM Extended Wiki | Airway and chest</title>
+<title>ACM Extended Wiki | Access and flow</title>
 <link rel="icon" type="image/png" href="img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -715,19 +715,18 @@ try{if(localStorage.getItem('pillarNight')==='1'){document.documentElement.class
     <a href="ov_circ.html">Circulation and rhythm</a>
     <a href="ov_chest.html">Chest and airway</a>
     <a href="ov_tbi.html">Head injury</a>
-    <a href="ov_access.html">Access and flow</a>
+    <a class="on" href="ov_access.html">Access and flow</a>
+    <div class="subnav">
+      <a href="#catheter-bore" data-s="catheter-bore">Catheter Bore</a>
+      <a href="#the-roller-clamp" data-s="the-roller-clamp">The Roller Clamp</a>
+      <a href="#where-this-is-installed" data-s="where-this-is-installed">Where This Is Installed</a>
+    </div>
     <a href="ov_traps.html">Known traps</a>
     <div class="grp">Systems</div>
     <a href="ventilator.html">Ventilator</a>
     <a href="oxygen.html">Oxygen delivery</a>
     <a href="bleeding.html">Bleeding and shock</a>
-    <a class="on" href="airway.html">Airway and chest</a>
-    <div class="subnav">
-      <a href="#needle-decompression" data-s="needle-decompression">Needle Decompression</a>
-      <a href="#positive-pressure-and-preload" data-s="positive-pressure-and-preload">Positive Pressure And Preload</a>
-      <a href="#capnography" data-s="capnography">Capnography</a>
-      <a href="#junctional-wounds" data-s="junctional-wounds">Junctional Wounds</a>
-    </div>
+    <a href="airway.html">Airway and chest</a>
     <a href="circulation.html">Arrest and rhythms</a>
     <a href="medications.html">Medications</a>
     <a href="access.html">Access and blood</a>
@@ -757,107 +756,83 @@ try{if(localStorage.getItem('pillarNight')==='1'){document.documentElement.class
     <div class="sb-prog"><i id="sbProg"></i></div>
   </div>
   <nav class="sb-list" id="sbList" hidden>
-    <a href="#needle-decompression" data-a="needle-decompression">Needle Decompression</a>
-    <a href="#positive-pressure-and-preload" data-a="positive-pressure-and-preload">Positive Pressure And Preload</a>
-    <a href="#capnography" data-a="capnography">Capnography</a>
-    <a href="#junctional-wounds" data-a="junctional-wounds">Junctional Wounds</a>
+    <a href="#catheter-bore" data-a="catheter-bore">Catheter Bore</a>
+    <a href="#the-roller-clamp" data-a="the-roller-clamp">The Roller Clamp</a>
+    <a href="#where-this-is-installed" data-a="where-this-is-installed">Where This Is Installed</a>
   </nav>
 </div>
-<div class="eyebrow">PILLAR <span class="tag">//</span> SYSTEMS</div>
-<h1>Airway And Chest</h1>
-<p class="lede">Decompression, seals, drainage and tubes. The part of the addon where doing the wrong thing confidently causes the injury you were treating for.</p>
+<div class="eyebrow">PILLAR <span class="tag">//</span> ADVANCED FUNCTIONS</div>
+<h1>Access<br>And Flow</h1>
+<p class="lede">What actually determines how fast fluid goes in: catheter bore, the height you hold the bag, and the roller clamp. Stock ACM treats most of this as one number.</p>
 <div class="rule"></div>
 
 <div class="principle">
   <div class="lab">The one thing</div>
-  <p><b>A needle costs something.</b> Decompressing a chest that did not need it seeds the pneumothorax you were looking for, and repeating it raises the chance of turning that into a <button type="button" class="gl" data-t="tension-pneumothorax">tension</button>.</p>
+  <p><b>The clamp sets an absolute rate, not a fraction.</b> Gravity flow is roughly 250 mL per minute. A titrated drip is a small number of mL per minute. Treating the clamp as a percentage of gravity made every infusion run about ten times too fast.</p>
 </div>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">01</span><h2 id="needle-decompression">Needle Decompression</h2></div>
-  <p>The action is available on any living casualty at any time, rather than only when a tension is present, so the decision comes from what you find on examination rather than from a label the game has already applied.</p>
-  <p>Before the needle goes in, the indication is checked. If a tension or simple pneumothorax is present, it works as expected. If not, you have just made a hole in a healthy chest.</p>
-  <div class="card">
-    <header><span class="name">Unnecessary decompression</span><span class="badge off">Iatrogenic</span></header>
-    <div class="grid">
-      <div class="cell wide"><div class="k">First unnecessary needle</div><div class="v">seeds a developing simple pneumothorax</div></div>
-      <div class="cell"><div class="k">Tension chance</div><div class="v">0.35 cumulative</div></div>
-      <div class="cell"><div class="k">Onset delay</div><div class="v">90 s</div></div>
-    </div>
-  </div>
-  <p>Set <code>ACMI_ncd_iatrogenicTension</code> to false to disable the tension escalation while keeping the rest.</p>
+  <div class="sec-head"><span class="sec-num">01</span><h2 id="catheter-bore">Catheter Bore</h2></div>
+  <p><b>ACM behaviour.</b> A flow table keyed by access type, with a base rate of 4.1667 mL per second inherited from ACE's medical engine. ACM models 16G, 14G, and two intraosseous devices.</p>
+  <p><b>Override.</b> The table is reproduced and an 18G catheter is added. An 18G is a smaller bore than a 16G and flows correspondingly slower, which matters because 18G is the realistic field choice in a lot of situations where a 16G is not achievable.</p>
+  <table class="t">
+    <thead><tr><th>Access</th><th>Type</th><th>Multiplier</th><th>Approx mL/s</th></tr></thead>
+    <tbody>
+      <tr><td>14G</td><td class="mono">2</td><td class="mono">1.50x</td><td class="mono">6.25</td></tr>
+      <tr><td>16G</td><td class="mono">1</td><td class="mono">1.00x</td><td class="mono">4.17</td></tr>
+      <tr><td>18G</td><td class="mono">5</td><td class="mono">0.55x</td><td class="mono">2.29</td></tr>
+      <tr><td>IO FAST1</td><td class="mono">4</td><td class="mono">0.65x</td><td class="mono">2.71</td></tr>
+      <tr><td>IO EZ</td><td class="mono">3</td><td class="mono">0.55x</td><td class="mono">2.29</td></tr>
+    </tbody>
+  </table>
+  <p>The 18G factor is exposed as <code>ACMI_iv18gFlowFactor</code> and defaults to 0.55, so it can be tuned without touching the table.</p>
 
   <details class="dd">
-    <summary><span class="dd-mark"></span><span class="dd-name">Why this is in the addon</span><span class="dd-tag">Teaching intent</span></summary>
+    <summary><span class="dd-mark"></span><span class="dd-name">Why intraosseous is slower than it looks</span><span class="dd-tag">Practical</span></summary>
     <div class="dd-body">
-      <p>Most medical sims make needle decompression a free action, which trains the habit of needling anything that looks unwell. That habit is actively dangerous, and it is one of the more common criticisms of prehospital chest decompression in the real literature.</p>
-      <p>Making it cost something turns it into a decision. You are meant to examine first, and the delay before the iatrogenic pneumothorax declares itself means you find out you were wrong later, which is exactly how it happens.</p>
-      <p>It is recoverable. A simple pneumothorax you caused can be decompressed and drained like any other, so the cost is time and a lesson rather than a dead casualty.</p>
+      <p>Both IO devices sit below a 16G peripheral line, at 0.65x and 0.55x. That surprises people who think of IO as the fast option because it is quick to establish.</p>
+      <p>Quick to place and quick to infuse are different things. The marrow cavity offers real resistance, which is why IO frequently needs a pressure bag or a push-pull technique to move volume at a useful rate.</p>
+      <p>The practical consequence in game is that IO is the right answer when you cannot get a vein, not when you need volume fast into someone who has veins available.</p>
     </div>
   </details>
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">02</span><h2 id="positive-pressure-and-preload">Positive Pressure And Preload</h2></div>
-  <p>Ventilating a casualty raises intrathoracic pressure, which opposes venous return. In a full tank that costs nothing measurable. In an empty one it costs a great deal.</p>
-  <div class="scroll">
-  <table class="t">
-    <thead><tr><th>Volume state</th><th>Stroke volume penalty</th></tr></thead>
-    <tbody>
-      <tr><td>Full</td><td class="mono">about 0%</td></tr>
-      <tr><td>Class III haemorrhage</td><td class="mono">15 to 19%</td></tr>
-      <tr><td>Maximum modelled</td><td class="mono">35%</td></tr>
-    </tbody>
-  </table>
-  </div>
-  <p>High PEEP multiplies it up to 1.5 times. This applies to <b>both</b> the ventilator and manual bagging, so an enthusiastic BVM technique on a shocked casualty does real harm.</p>
-  <p>The practical rule: <b>fill them before you tube them</b>, and if you must ventilate an empty casualty, keep pressures and PEEP low until volume is restored.</p>
+  <div class="sec-head"><span class="sec-num">02</span><h2 id="the-roller-clamp">The Roller Clamp</h2></div>
+  <p><b>Override.</b> The clamp publishes an absolute flow rate in mL per second for its access site, clamped to the gauge's physical maximum. It is not a fraction of the gravity rate.</p>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">The bug this fixed</span><span class="dd-tag">Ten times too fast</span></summary>
+    <div class="dd-body">
+      <p>Treating the clamp as a fraction of the wide-open gravity rate meant that dialling in a slow drip still produced a fast infusion, because a small fraction of 250 mL per minute is still a lot of fluid.</p>
+      <p>The symptom was bags emptying at roughly ten times the dialled rate, which made titration meaningless: any drug you were trying to run slowly went in as a bolus.</p>
+      <p>With an absolute rate the bag drains at exactly the drops per minute you set. The gauge maximum still applies as a ceiling, because you cannot push more through a catheter than its bore allows however far you open the clamp.</p>
+      <p>When no tracked infusion is present the rate is published as negative, which the flow function reads as wide open.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Holding the bag up</span><span class="dd-tag">Hydrostatic column</span></summary>
+    <div class="dd-body">
+      <p>Raising the bag raises the hydrostatic column, which raises flow. While a medic holds a bag aloft, <code>ACMI_hang_flowMult</code> is set on the patient and defaults to 1, meaning no change.</p>
+      <p>The important detail is that the hang boost raises the <b>ceiling only</b>. A titrated drip running below the cap is unaffected, because gravity does not make a clamp open further. Only a wide-open line benefits.</p>
+      <p>That is the correct behaviour and it is also the one people find counterintuitive: holding the bag higher does nothing at all if the clamp is what is limiting you.</p>
+    </div>
+  </details>
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">03</span><h2 id="capnography">Capnography</h2></div>
-  <p>The EMMA reads <button type="button" class="gl" data-t="etco2">EtCO2</button> at the tube and shows a number, a rate, and a rolling trace. The number is a breath to breath trailing average rather than a single breath, so it settles rather than jumping, and a change in it means something has actually changed.</p>
-  <figure>
-    <img src="img/emma_live.gif" alt="EMMA capnograph running">
-    <figcaption>EMMA in use. Value, rate, and the rolling trace</figcaption>
-  </figure>
-  <div class="iconkey">
-    <div class="ik"><img class="ico" src="img/emma_ca.png" alt=""><span class="ikn">Inventory</span><span class="ikd">EMMA mainstream capnograph, inline on the tube</span></div>
+  <div class="sec-head"><span class="sec-num">03</span><h2 id="where-this-is-installed">Where This Is Installed</h2></div>
+  <p><code>ACM_circulation_fnc_getIVFlowRate</code> is compiled final by ACM, so an earlier runtime reassignment of it was silently ignored and had no effect at all. It is now replaced at compile time through <code>ACMI_overwrite_circulation</code>.</p>
+  <p>The file is a full de-macroed replacement of ACM's flow table. If ACM changes its gauge multipliers, re-pull the source rather than editing our copy to match.</p>
+  <div class="flags">
+    <h3>Red Flags</h3>
+    <ul>
+      <li><b>Expecting IO to move volume like a large-bore peripheral.</b> It flows at roughly half, and needs pressure to do better.</li>
+      <li><b>Raising the bag to speed up a titrated drip.</b> The hang boost only lifts the ceiling. If the clamp is limiting, height changes nothing.</li>
+    </ul>
   </div>
-  <p>Read the shape, not only the number. A square trace with a flat top is a patient moving air. A trace that slopes upward instead of levelling is obstruction. A trace that shrinks breath by breath while the ventilator settings have not changed is a lung getting stiffer, and in pressure control that is the only warning you get.</p>
-  <p>Value falling with a pulse present usually means circulation, not ventilation. Cardiac output carries CO2 to the lung, so a dropping number on unchanged settings points at the pump before it points at the tube.</p>
 </section>
-
-<section class="sec">
-  <div class="sec-head"><span class="sec-num">04</span><h2 id="junctional-wounds">Junctional Wounds</h2></div>
-  <p>Five states, each a distinct step: open, packed, wrapped, and XStat. Bleeding falls as you progress. The AAJT-S applies with a pause, and Combat Gauze is tracked separately.</p>
-  <figure>
-  <img src="img/aajt-s_ca.png" alt="AAJT-S">
-  <figcaption>AAJT-S junctional tourniquet</figcaption>
-</figure>
-<p>Two application sites, and the one you need depends on where the bleed is. Inguinal for groin and proximal thigh, axillary for a shoulder or high arm wound that a limb tourniquet cannot reach.</p>
-<div class="figpair">
-  <figure>
-    <img src="img/aajt-s_example.png" alt="AAJT-S applied at the inguinal site">
-    <figcaption>Inguinal placement, windlass over the pelvis</figcaption>
-  </figure>
-  <figure>
-    <img src="img/aajt-s_axilla_example.png" alt="AAJT-S applied at the axillary site">
-    <figcaption>Axillary placement, for wounds above a limb tourniquet</figcaption>
-  </figure>
-</div>
-<figure class="placeholder">Five wound states screenshot goes here</figure>
-</section>
-
-<div class="flags">
-  <h3>Red Flags</h3>
-  <ul>
-    <li><b>Needling on suspicion alone.</b> Examine first. A wrong needle creates the injury.</li>
-    <li><b>Repeat needles when the first did not help.</b> Each one raises the tension chance cumulatively.</li>
-    <li><b>Ventilating an empty casualty.</b> You are trading oxygenation for cardiac output.</li>
-    <li><b>High PEEP in shock.</b> Multiplies the <button type="button" class="gl" data-t="preload">preload</button> penalty by half again.</li>
-  </ul>
-</div>
 
 <footer>
   <span class="brand">PILLAR</span> // ACM EXTENDED FIELD GUIDE // v0.9.873 // BUILD 2026-07-22
