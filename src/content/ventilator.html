@@ -206,6 +206,251 @@
   </article>
 </section>
 
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">05</span><h2>Reading The Pressure Waveform</h2></div>
+  <p>One breath, drawn as airway pressure against time. Every number the machine reports is somewhere on this curve, and the two that matter most are separated by the part of it people skip.</p>
+
+  <figure class="wave">
+    <svg class="wavefig" viewBox="0 0 800 512" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="Ventilator pressure over time, showing peak pressure, plateau pressure, the resistive and elastic components, and the four phases of the respiratory cycle">
+      <defs>
+        <marker id="wfA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--amber)"/>
+        </marker>
+        <marker id="wfC" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--cream-dim)"/>
+        </marker>
+      </defs>
+    
+      <!-- ===== AXES ===== -->
+      <line x1="96" y1="48" x2="96" y2="306" stroke="var(--cream-dim)" stroke-width="1.5"/>
+      <line x1="96" y1="306" x2="678" y2="306" stroke="var(--cream-dim)" stroke-width="1.5"/>
+      <text x="678" y="296" class="ax" text-anchor="end">Time</text>
+      <text x="678" y="311" class="axs" text-anchor="end">(sec)</text>
+      <text x="30" y="177" class="ax" text-anchor="middle" transform="rotate(-90 30 177)">Paw (cmH2O)</text>
+    
+      <!-- ===== LEADER ELBOWS. One path each, so the corner is a real join and the dashes carry round it
+               instead of two separate lines that only happen to cross. ===== -->
+      <path class="lead" d="M 246 316 L 246 62 L 468 62"/>
+      <path class="lead" d="M 400 316 L 400 124 L 468 124"/>
+      <path class="lead" d="M 300 124 L 400 124"/>
+      <path class="lead" d="M 534 316 L 534 286"/>
+      <path class="lead" d="M 600 316 L 600 286"/>
+    
+      <!-- ===== THE TRACE ===== -->
+      <path d="M 96.0 288.0 L 99.41 285.98 L 102.82 283.52 L 106.23 280.65 L 109.64 277.39 L 113.05 273.75 L 116.45 269.76 L 119.86 265.44 L 123.27 260.82 L 126.68 255.9 L 130.09 250.71 L 133.5 245.27 L 136.91 239.61 L 140.32 233.74 L 143.73 227.68 L 147.14 221.46 L 150.55 215.09 L 153.95 208.6 L 157.36 202.0 L 160.77 195.32 L 164.18 188.58 L 167.59 181.8 L 171.0 175.0 L 174.41 168.2 L 177.82 161.42 L 181.23 154.68 L 184.64 148.0 L 188.05 141.4 L 191.45 134.91 L 194.86 128.54 L 198.27 122.32 L 201.68 116.26 L 205.09 110.39 L 208.5 104.73 L 211.91 99.29 L 215.32 94.1 L 218.73 89.18 L 222.14 84.56 L 225.55 80.24 L 228.95 76.25 L 232.36 72.61 L 235.77 69.35 L 239.18 66.48 L 242.59 64.02 L 246.0 62.0 L 249.0 68.7 L 252.0 75.01 L 255.0 80.94 L 258.0 86.49 L 261.0 91.66 L 264.0 96.44 L 267.0 100.85 L 270.0 104.86 L 273.0 108.5 L 276.0 111.75 L 279.0 114.62 L 282.0 117.11 L 285.0 119.22 L 288.0 120.94 L 291.0 122.28 L 294.0 123.23 L 297.0 123.81 L 300.0 124.0 L 307.14 124.36 L 314.29 124.71 L 321.43 125.07 L 328.57 125.43 L 335.71 125.79 L 342.86 126.14 L 350.0 126.5 L 357.14 126.86 L 364.29 127.21 L 371.43 127.57 L 378.57 127.93 L 385.71 128.29 L 392.86 128.64 L 400.0 129.0 L 402.91 140.33 L 405.83 150.85 L 408.74 160.62 L 411.65 169.7 L 414.57 178.13 L 417.48 185.95 L 420.39 193.22 L 423.3 199.98 L 426.22 206.25 L 429.13 212.07 L 432.04 217.48 L 434.96 222.51 L 437.87 227.17 L 440.78 231.51 L 443.7 235.53 L 446.61 239.27 L 449.52 242.74 L 452.43 245.97 L 455.35 248.96 L 458.26 251.74 L 461.17 254.33 L 464.09 256.73 L 467.0 258.95 L 469.91 261.02 L 472.83 262.94 L 475.74 264.73 L 478.65 266.39 L 481.57 267.93 L 484.48 269.36 L 487.39 270.69 L 490.3 271.92 L 493.22 273.07 L 496.13 274.13 L 499.04 275.12 L 501.96 276.04 L 504.87 276.89 L 507.78 277.68 L 510.7 278.41 L 513.61 279.1 L 516.52 279.73 L 519.43 280.32 L 522.35 280.87 L 525.26 281.38 L 528.17 281.85 L 531.09 282.29 L 534.0 282.69 L 600 288.0 L 603.0 281.93 L 606.0 273.1 L 609.0 261.88 L 612.0 248.69 L 615.0 233.91 L 618.0 217.95 L 621.0 201.19 L 624.0 184.04 L 627.0 166.89 L 630.0 150.13 L 633.0 134.17 L 636.0 119.39 L 639.0 106.2 L 642.0 94.98 L 645.0 86.15 L 648.0 80.08" fill="none" stroke="var(--amber)" stroke-width="2.6"
+            stroke-linejoin="round" stroke-linecap="round"/>
+    
+      <!-- ===== PRESSURE LABELS, each on an elbow that points back at its own level ===== -->
+      <path class="pt" d="M 556 62  L 476 62"  marker-end="url(#wfC)"/>
+      <path class="pt" d="M 556 124 L 476 124" marker-end="url(#wfC)"/>
+      <text x="564" y="62"  class="lbl" dy="4">Peak pressure</text>
+      <text x="564" y="124" class="lbl" dy="4">Plateau pressure</text>
+    
+      <!-- RESISTIVE: the span between peak and plateau, with an elbow pointing left into it -->
+      <path class="brk" d="M 700 62 L 700 124" marker-start="url(#wfC)" marker-end="url(#wfC)"/>
+      <path class="pt"  d="M 700 93 L 700 93 M 698 93 L 660 93" marker-end="url(#wfC)"/>
+      <text x="706" y="86"  class="lbl2">Resistive</text>
+      <text x="706" y="102" class="lbl2">pressure</text>
+    
+      <!-- ELASTIC: plateau down to baseline, same treatment -->
+      <path class="brk" d="M 700 132 L 700 288" marker-start="url(#wfC)" marker-end="url(#wfC)"/>
+      <path class="pt"  d="M 698 210 L 660 210" marker-end="url(#wfC)"/>
+      <text x="706" y="202" class="lbl2">Elastic</text>
+      <text x="706" y="218" class="lbl2">pressure</text>
+    
+      <!-- ===== PHASE BANDS. Each boundary carries an upward arrow to the axis, so the band is tied to an
+               exact instant on the trace rather than floating under it. ===== -->
+      <g class="up">
+        <path d="M 96 328 L 96 310"  marker-end="url(#wfA)"/>
+        <path d="M 246 328 L 246 310" marker-end="url(#wfA)"/>
+        <path d="M 400 328 L 400 310" marker-end="url(#wfA)"/>
+        <path d="M 534 328 L 534 310" marker-end="url(#wfA)"/>
+        <path d="M 600 328 L 600 310" marker-end="url(#wfA)"/>
+      </g>
+      <g class="ph">
+        <path d="M 96 336 L 246 336"  marker-start="url(#wfA)" marker-end="url(#wfA)"/>
+        <path d="M 246 336 L 400 336" marker-start="url(#wfA)" marker-end="url(#wfA)"/>
+        <path d="M 400 336 L 534 336" marker-start="url(#wfA)" marker-end="url(#wfA)"/>
+        <path d="M 534 336 L 600 336" marker-start="url(#wfA)" marker-end="url(#wfA)"/>
+      </g>
+      <text x="171" y="356" class="phl" text-anchor="middle">Inspiratory</text>
+      <text x="171" y="372" class="phl" text-anchor="middle">flow time</text>
+      <text x="323" y="356" class="phl" text-anchor="middle">Inspiratory</text>
+      <text x="323" y="372" class="phl" text-anchor="middle">pause</text>
+      <text x="467" y="356" class="phl" text-anchor="middle">Expiratory</text>
+      <text x="467" y="372" class="phl" text-anchor="middle">flow time</text>
+      <text x="567" y="356" class="phl" text-anchor="middle">Expiratory</text>
+      <text x="567" y="372" class="phl" text-anchor="middle">pause</text>
+    
+      <!-- ===== INSPIRATORY / EXPIRATORY TIME ===== -->
+      <g class="up2">
+        <path d="M 96 400 L 96 384"  marker-end="url(#wfC)"/>
+        <path d="M 400 400 L 400 384" marker-end="url(#wfC)"/>
+        <path d="M 600 400 L 600 384" marker-end="url(#wfC)"/>
+      </g>
+      <g class="ph2">
+        <path d="M 96 408 L 400 408"  marker-start="url(#wfC)" marker-end="url(#wfC)"/>
+        <path d="M 400 408 L 600 408" marker-start="url(#wfC)" marker-end="url(#wfC)"/>
+      </g>
+      <text x="248" y="428" class="phl2" text-anchor="middle">Inspiratory time</text>
+      <text x="500" y="428" class="phl2" text-anchor="middle">Expiratory time</text>
+    
+      <!-- ===== TOTAL CYCLE ===== -->
+      <g class="up2">
+        <path d="M 96 464 L 96 440"  marker-end="url(#wfC)"/>
+        <path d="M 600 464 L 600 440" marker-end="url(#wfC)"/>
+      </g>
+      <g class="ph2">
+        <path d="M 96 472 L 600 472" marker-start="url(#wfC)" marker-end="url(#wfC)"/>
+      </g>
+      <text x="348" y="492" class="phl2" text-anchor="middle">Total cycle time (ventilatory period)</text>
+    </svg>
+    <figcaption>Airway pressure through one ventilatory period</figcaption>
+  </figure>
+
+  <h3>Peak, plateau, and the gap between them</h3>
+  <p><b>Peak pressure</b> is the highest pressure in the circuit, reached while gas is still moving. It contains two things at once: the pressure needed to push gas through the tube and airways, and the pressure needed to distend the lung.</p>
+  <p><b>Plateau pressure</b> is what is left once flow stops during the inspiratory pause. Nothing is moving, so the resistive part has dissipated and what remains is the pressure actually stretching the alveoli. <b>Plateau is the number that barotraumatises a lung, not peak.</b></p>
+  <div class="scroll">
+  <table class="t">
+    <thead><tr><th>What moved</th><th>Reading</th><th>What it means</th></tr></thead>
+    <tbody>
+      <tr><td>Peak rises, plateau steady</td><td class="mono">resistive</td><td>Something in the tube or airway: secretions, a kink, bronchospasm, a bitten tube</td></tr>
+      <tr><td>Peak and plateau both rise</td><td class="mono">elastic</td><td>The lung itself is stiffer: edema, contusion, {{ards|ARDS}}, a pneumothorax, or a chest that cannot expand</td></tr>
+      <tr><td>Gap widening over time</td><td class="mono">resistance</td><td>Worsening obstruction. Suction and look at the tube before you touch the settings</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>The two labelled brackets are the same split read off the trace directly. <b>Resistive pressure</b> is the drop from peak to plateau. <b>Elastic pressure</b> is plateau down to baseline, the pressure held against the lung's own recoil.</p>
+
+  <h3>The four phases</h3>
+  <p>Inspiratory time is flow plus pause. Expiratory time is flow plus pause. Together they are the ventilatory period, and the ratio between them is what you set as {{ie-ratio|I:E}}.</p>
+  <p>Expiration is <b>passive</b>, which is why that limb is a curve and not a ramp: the lung empties against its own recoil through the resistance of the circuit, fast at first and slower as the pressure gradient falls. Shorten expiratory time past what that curve needs and the next breath starts before the last one finished leaving. The trace never returns to baseline, and the pressure it never returned to is trapped in the chest.</p>
+
+  
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">06</span><h2>Barotrauma, VILI &amp; Gas Trapping</h2></div>
+  <p>The machine will do what you set it to. If that means forcing a set volume into a lung that cannot take it, the pressure goes wherever it has to go and the lung pays for it. These are the numbers behind that, and they are the reason mode choice is a clinical decision rather than a preference.</p>
+
+  <div class="principle">
+    <div class="lab">The one thing</div>
+    <p><b>Volume control guarantees volume and lets pressure run.</b> Pressure is what injures lungs, so on a stiffening lung the setting that keeps ventilation constant is the setting that does the damage.</p>
+  </div>
+
+  <h3>Where peak pressure comes from</h3>
+  <p>In a volume-targeted breath the machine computes peak pressure from the volume you set and how stiff the lung is. Compliance runs 1.00 for a healthy lung down to a floor of 0.20.</p>
+  <div class="scroll">
+  <table class="t">
+    <thead><tr><th>Set VT</th><th>Comp 1.00</th><th>Comp 0.70</th><th>Comp 0.50</th><th>Comp 0.35</th><th>Comp 0.20</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">400 mL</td><td class="mono">18</td><td class="mono">22</td><td class="mono">27</td><td class="mono">35</td><td class="mono">56</td></tr>
+      <tr><td class="mono">500 mL</td><td class="mono">20</td><td class="mono">25</td><td class="mono">32</td><td class="mono">42</td><td class="mono">68</td></tr>
+      <tr><td class="mono">600 mL</td><td class="mono">22</td><td class="mono">29</td><td class="mono">37</td><td class="mono">49</td><td class="mono">80</td></tr>
+      <tr><td class="mono">700 mL</td><td class="mono">25</td><td class="mono">32</td><td class="mono">42</td><td class="mono">56</td><td class="mono">92</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Peak pressure in cmH2O. The gauge turns amber at <b>30</b> and barotrauma begins accruing above <b>35</b>. Read the 500 mL row across: the same setting that is comfortable on a healthy lung is injuring a blast lung.</p>
+  <p>Pressure control caps this by definition. In PC the pressure is what you set and the volume is whatever that pressure moves, which is the trade the mode exists to make.</p>
+
+  <h3>What stiffens a lung</h3>
+  <div class="scroll">
+  <table class="t">
+    <thead><tr><th>Insult</th><th>Compliance cost</th><th>At</th></tr></thead>
+    <tbody>
+      <tr><td>Blast lung</td><td class="mono">up to 0.62</td><td>full severity</td></tr>
+      <tr><td>Fluid overload</td><td class="mono">up to 0.45</td><td>1.6 L over</td></tr>
+      <tr><td>Ventilator-induced injury</td><td class="mono">up to 0.30</td><td>accumulated</td></tr>
+      <tr><td>{{pneumothorax}}</td><td class="mono">up to 0.25</td><td>state 3</td></tr>
+      <tr><td>{{hemothorax}}</td><td class="mono">up to 0.20</td><td>1500 mL</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>They stack, and the floor is 0.20. A blast lung with a litre of crystalloid in it is already most of the way there before the ventilator has done anything.</p>
+
+  <h3>The barotrauma dose</h3>
+  <p>Time above the ceiling accumulates, it does not simply alarm. The dose accrues faster the further over you are, and when it reaches a full unit the machine has injured them.</p>
+  <div class="scroll">
+  <table class="t">
+    <thead><tr><th>Sustained PIP</th><th>Dose rate</th><th>Time to an injury event</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">36</td><td class="mono">0.0054 /s</td><td class="mono">3.1 min</td></tr>
+      <tr><td class="mono">40</td><td class="mono">0.0078 /s</td><td class="mono">2.1 min</td></tr>
+      <tr><td class="mono">45</td><td class="mono">0.0108 /s</td><td class="mono">1.5 min</td></tr>
+      <tr><td class="mono">50</td><td class="mono">0.0138 /s</td><td class="mono">1.2 min</td></tr>
+      <tr><td class="mono">55 and above</td><td class="mono">0.0168 /s</td><td class="mono">1.0 min</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Below 35 the dose decays at 0.004 per second, so backing the pressure off does buy the accumulation back. <b>The injury it has already caused does not decay.</b></p>
+
+  <h3>What one injury event does</h3>
+  <div class="scroll">
+  <table class="t">
+    <thead><tr><th>Effect</th><th>Amount</th><th>Consequence</th></tr></thead>
+    <tbody>
+      <tr><td>Lung injury</td><td class="mono">+0.20</td><td>Stiffens the lung, which raises PIP, which accrues dose faster</td></tr>
+      <tr><td>Pneumothorax roll</td><td class="mono">55%</td><td>A new one on a chest with no prior injury. <b>100% if one already exists</b></td></tr>
+      <tr><td>Pain</td><td class="mono">+0.25</td><td>Barotrauma hurts</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>The first row is the trap. Each event stiffens the lung, a stiffer lung needs more pressure for the same volume, and more pressure accrues the next dose faster. Left alone in volume control it accelerates.</p>
+  <p>The pneumothorax it creates is not a cosmetic flag. The addon marks the chest injured and then hands off to ACM's own pneumothorax handler, so it deteriorates and converts to tension exactly like one caused by a fragment.</p>
+
+  <h3>Stretch, not just pressure</h3>
+  <p>Volume injures independently of pressure. Above <b>8 mL/kg</b> in a lung already stiffer than 0.80, injury accrues on top of everything above, scaling to full effect by 12 mL/kg. At 70 kg that is 560 mL, which is inside the range people set without thinking.</p>
+  <p>This is what makes 6 mL/kg an actual treatment in blast lung rather than a slogan, and the machine shows you the number: the live screen reports mL/kg alongside the volume.</p>
+
+  <h3>Positive pressure on a pneumothorax</h3>
+  <p>An undecompressed pneumothorax is driven toward tension by <b>mean</b> airway pressure, not peak. Mean is PEEP plus about a third of the driving pressure, so PEEP does more damage per cmH2O than the peak does, because it is held for the whole cycle rather than a fraction of it.</p>
+  <p><b>There is no threshold on this one.</b> It ramps from a mean of 5 upward, so any positive pressure grows it, and it converts to tension at state 2.5 of 3. Decompression stops it dead: a needle, a thoracostomy or a chest tube all gate it off completely.</p>
+
+  <h3>Gas trapping and auto-PEEP</h3>
+  <p>The lung needs time to empty, and how much time depends on compliance. If expiratory time is shorter than that, the next breath starts before the last one has finished leaving and the leftover pressure stacks.</p>
+  <div class="scroll">
+  <table class="t">
+    <thead><tr><th>Term</th><th>Value</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td>Emptying time</td><td class="mono">1.8 s x compliance</td><td>A stiff lung empties FASTER, so trapping is a soft-lung problem</td></tr>
+      <tr><td>Accrual</td><td class="mono">0.9 cmH2O/s</td><td>At full deficit, scaled by how far short expiration falls</td></tr>
+      <tr><td>Clearance</td><td class="mono">1.2 cmH2O/s</td><td>Once expiratory time is adequate again</td></tr>
+      <tr><td>Alarm</td><td class="mono">4 cmH2O</td><td>GAS TRAPPING, a HIGH priority alarm</td></tr>
+      <tr><td>Ceiling</td><td class="mono">20 cmH2O</td><td></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Auto-PEEP is added to peak pressure, so trapping feeds the barotrauma model directly. It is also shown on the live screen in brackets beside the PEEP you set, which is the only way to tell dialled PEEP from actual end-expiratory pressure.</p>
+  <p>Clearance is faster than accrual, so lengthening expiratory time recovers quicker than it built. Raise the I:E, drop the rate, or both.</p>
+
+  <h3>The pressure limit is a valve, not a warning</h3>
+  <p>The limit on ALERTS is enforced. The machine will not push past it, so in a volume-targeted breath a lung needing more pressure than the limit allows simply does not receive the full volume, and the delivered VTe drops below the set VT.</p>
+  <p>That is the entire point of it, and the trade runs both ways. Set it low and you will not barotraumatise them, but you may not ventilate them either. Set it high and the machine will injure the lung on your behalf without ever refusing.</p>
+
+  <div class="flags">
+    <h3>Red Flags</h3>
+    <ul>
+      <li><b>Rising peak with a steady plateau, answered by more volume.</b> The pressure is resistive. More volume through the same obstruction raises pressure further and moves no more gas.</li>
+      <li><b>Volume control on a lung that is stiffening.</b> The mode holds volume constant by letting pressure climb, and pressure is the thing that injures. Change mode rather than chasing the number.</li>
+      <li><b>Ignoring the bracketed figure beside PEEP.</b> That is auto-PEEP. It is added to peak pressure and it is feeding barotrauma whether or not you have looked at it.</li>
+      <li><b>A pneumothorax on positive pressure that has not been decompressed.</b> There is no safe pressure. Mean airway pressure grows it from the moment the machine starts.</li>
+      <li><b>Setting a high pressure limit to stop the volume alarming.</b> The alarm was the machine telling you the lung could not take the setting.</li>
+    </ul>
+  </div>
+</section>
+
+<div class="flags">
+    <h3>Red Flags</h3>
+    <ul>
+      <li><b>Watching peak and ignoring plateau.</b> Peak includes resistance you may not be able to change. Plateau is the number that tells you what the alveoli are taking.</li>
+      <li><b>An expiratory limb that does not reach baseline.</b> The breath is being interrupted. Lengthen expiratory time before anything else.</li>
+      <li><b>Treating a rising peak by turning the volume up.</b> If the cause is resistive, more volume through the same obstruction raises pressure further and moves no more gas.</li>
+    </ul>
+  </div>
+</section>
+
 <div class="flags">
   <h3>Red Flags</h3>
   <ul>

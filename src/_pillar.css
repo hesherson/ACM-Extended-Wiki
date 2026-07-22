@@ -309,6 +309,26 @@ table.t.inf tr.grp td{border-top:2px solid var(--rule-2)}
        text-transform:uppercase;color:var(--amber-dim)}
 .kv .v{display:block;font-family:"Space Mono",monospace;font-size:13px;color:var(--cream);margin-top:2px}
 
+/* ---- Waveform figure. Inline SVG rather than an image so it themes with the page, scales without
+   resampling, and stays readable when the guide is printed. ---- */
+figure.wave{border:1px solid var(--rule);border-radius:3px;background:var(--navy-2);padding:14px 12px 4px}
+.wavefig{display:block;width:100%;height:auto}
+.wavefig .ax   {font-family:"Space Mono",monospace;font-size:14px;fill:var(--cream-dim);letter-spacing:.04em}
+.wavefig .axs  {font-family:"Space Mono",monospace;font-size:11px;fill:var(--cream-dim)}
+.wavefig .lbl  {font-family:"Instrument Sans",system-ui,sans-serif;font-size:15px;font-weight:600;fill:var(--cream)}
+.wavefig .lbl2 {font-family:"Instrument Sans",system-ui,sans-serif;font-size:13px;fill:var(--cream-dim)}
+.wavefig .phl  {font-family:"Space Mono",monospace;font-size:12px;fill:var(--amber);letter-spacing:.02em}
+.wavefig .phl2 {font-family:"Space Mono",monospace;font-size:12px;fill:var(--cream-dim);letter-spacing:.02em}
+/* Leader elbows are one path each, so the corner is a real join and the dash pattern carries round it. */
+.wavefig .lead{fill:none;stroke:rgba(240,231,210,.42);stroke-width:1;stroke-dasharray:4 4}
+.wavefig .pt  {fill:none;stroke:var(--cream-dim);stroke-width:1.2}
+.wavefig .brk {fill:none;stroke:var(--cream-dim);stroke-width:1.4}
+.wavefig .up  path{fill:none;stroke:var(--amber);stroke-width:1.2}
+.wavefig .ph  path{fill:none;stroke:var(--amber);stroke-width:1.4}
+.wavefig .up2 path{fill:none;stroke:var(--cream-dim);stroke-width:1.2}
+.wavefig .ph2 path{fill:none;stroke:var(--cream-dim);stroke-width:1.4}
+@media print{ figure.wave{background:none;border-color:#999} }
+
 /* ---- Numbered steps. Only for procedures where the order genuinely matters, otherwise a plain
    list is honest and this is decoration. ---- */
 ol.steps{list-style:none;counter-reset:st;margin-top:14px;display:flex;flex-direction:column;gap:11px}
