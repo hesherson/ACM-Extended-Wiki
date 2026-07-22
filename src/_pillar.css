@@ -2,41 +2,31 @@
    Edit here, run build.py, every page updates. */
 :root{
   --navy:#0B1530; --navy-2:#131F42; --red:#BE1818;
-  --cream:#F0E7D2; --cream-dim:#C0B7A2; --body-ink:#D9D1C0;
-  --green:#3B8F4A; --amber:#D9A441; --amber-dim:#B8862F; --bad-ink:#F08A8A;
+  --cream:#EDE3CC; --cream-dim:#B9B09C;
+  --green:#3B8F4A; --amber:#D08A1E; --bad-ink:#F08A8A;
   --rule:rgba(237,227,204,.16); --rule-2:rgba(237,227,204,.30);
   --sidebar:280px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
 body{
-  background:var(--navy);color:var(--body-ink);
+  background:var(--navy);color:var(--cream);
   font-family:"Instrument Sans",system-ui,sans-serif;
-  font-size:16px;line-height:1.62;font-variant-numeric:tabular-nums;
+  font-size:16px;line-height:1.55;font-variant-numeric:tabular-nums;
   -webkit-font-smoothing:antialiased;
 }
 
 /* ---- Shell. Sidebar on desktop, stacked on mobile ---- */
 .shell{display:block}
 .side{
-  background:var(--navy-2);border-bottom:2px solid var(--amber);
-  padding:22px 18px 18px;
+  background:var(--navy-2);border-bottom:2px solid var(--red);
+  padding:20px 16px;
 }
-/* Below the breakpoint the sidebar stacks above the content. Nav collapses to a wrapped row so it reads
-   as a header strip rather than a long column the reader has to scroll past to reach the page. */
-@media (max-width:819px){
-  .nav{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
-  .nav .grp{width:100%;margin:10px 0 2px}
-  .nav a{border-left:none;border:1px solid var(--rule);border-radius:3px;padding:6px 10px;font-size:13.5px}
-  .nav a.on{border-color:var(--amber)}
-  .tb-res{width:min(420px,92vw)}
+.side .brand{
+  font-family:"Barlow Condensed",sans-serif;font-weight:900;
+  font-size:30px;line-height:.92;text-transform:uppercase;
 }
-.side .brand{display:block;line-height:0}
-.side .brand img{
-  width:100%;max-width:190px;height:auto;display:block;
-  opacity:.87;transition:opacity .2s ease;
-}
-.side .brand:hover img{opacity:1}
+.side .brand span{color:var(--red)}
 .side .ver{
   font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.18em;
   text-transform:uppercase;color:var(--cream-dim);margin-top:6px;
@@ -44,27 +34,25 @@ body{
 .nav{margin-top:16px}
 .nav .grp{
   font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--amber);margin:20px 0 7px;
+  text-transform:uppercase;color:var(--red);margin:16px 0 6px;
 }
 .nav a{
   display:block;color:var(--cream-dim);text-decoration:none;
   padding:6px 10px;border-left:2px solid transparent;border-radius:0 3px 3px 0;
   font-size:14.5px;
 }
-.nav a:hover{color:var(--cream);background:rgba(240,231,210,.05)}
-.nav a.on{color:var(--cream);border-left-color:var(--amber);background:rgba(217,164,65,.11)}
+.nav a:hover{color:var(--cream);background:rgba(237,227,204,.05)}
+.nav a.on{color:var(--cream);border-left-color:var(--red);background:rgba(190,24,24,.10)}
 
-.main{
-  padding:26px 18px 90px;max-width:820px;margin:0 auto;
-}
+.main{padding:24px 16px 80px;max-width:820px;margin:0 auto}
 
-@media (min-width:820px){
+@media (min-width:900px){
   .shell{display:grid;grid-template-columns:var(--sidebar) 1fr;min-height:100vh}
   .side{
     border-bottom:none;border-right:1px solid var(--rule);
     position:sticky;top:0;height:100vh;overflow-y:auto;padding:26px 18px;
   }
-  .main{padding:48px 48px 110px;max-width:880px;margin:0}
+  .main{padding:44px 40px 96px;max-width:900px;margin:0}
 }
 
 /* ---- Page head ---- */
@@ -72,32 +60,28 @@ body{
   font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.22em;
   text-transform:uppercase;color:var(--cream-dim);
 }
-.eyebrow .tag{color:var(--amber)}
+.eyebrow .tag{color:var(--red)}
 h1{
   font-family:"Barlow Condensed",sans-serif;font-weight:900;
   font-size:clamp(36px,9vw,54px);line-height:.94;text-transform:uppercase;margin-top:8px;
 }
-.lede{color:var(--cream-dim);margin-top:12px;max-width:60ch;line-height:1.6}
-.rule{height:2px;background:var(--amber);margin:28px 0 0}
+.lede{color:var(--cream-dim);margin-top:10px;max-width:60ch}
+.rule{height:2px;background:var(--red);margin:20px 0 0}
 
 /* ---- Sections ---- */
-.sec{margin-top:88px;scroll-margin-top:96px}
-.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px}
-.sec-num{font-family:"Space Mono",monospace;font-size:13px;color:var(--amber);padding-top:4px}
+.sec{margin-top:36px;scroll-margin-top:20px}
+.sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:12px}
+.sec-num{font-family:"Space Mono",monospace;font-size:12px;color:var(--red);padding-top:3px}
 h2{
-  font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:33px;
-  letter-spacing:.02em;text-transform:uppercase;line-height:1.05;
+  font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:27px;
+  letter-spacing:.02em;text-transform:uppercase;
 }
 h3{
-  font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:23px;
-  letter-spacing:.02em;text-transform:uppercase;margin-top:40px;margin-bottom:10px;
+  font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:20px;
+  letter-spacing:.02em;text-transform:uppercase;margin-top:22px;
 }
-.sec p + p{margin-top:17px}
+.sec p + p{margin-top:11px}
 .sec p{max-width:70ch}
-.sec > p{margin-top:17px}
-.sec > p:first-of-type{margin-top:0}
-details.dd + p, .icard + p, .drug + p, table.t + p, .card + p, figure + p, .flags + p{margin-top:30px}
-p + details.dd, p + .icard, p + .drug, p + .card, p + figure{margin-top:26px}
 b,strong{color:#fff;font-weight:600}
 code{
   font-family:"Space Mono",monospace;font-size:.88em;
@@ -107,26 +91,26 @@ code{
 
 /* ---- Keystone / principle ---- */
 .principle{
-  border-left:3px solid var(--amber);background:var(--navy-2);
-  padding:20px 22px;margin:30px 0;border-radius:2px;
+  border-left:3px solid var(--red);background:var(--navy-2);
+  padding:14px 16px;margin:18px 0;border-radius:2px;
 }
 .principle .lab{
-  font-family:"Space Mono",monospace;font-size:10.5px;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--amber);
+  font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--red);
 }
 .principle p{margin-top:6px}
 
 /* ---- Dropdown. The long-explanation component ---- */
 details.dd{border:1px solid var(--rule);border-radius:3px;background:var(--navy-2);overflow:hidden}
-details.dd + details.dd{margin-top:16px}
+details.dd + details.dd{margin-top:8px}
 details.dd[open]{border-color:var(--rule-2)}
 details.dd summary{
-  display:flex;align-items:baseline;gap:12px;padding:15px 16px;cursor:pointer;
+  display:flex;align-items:baseline;gap:12px;padding:12px 14px;cursor:pointer;
   list-style:none;-webkit-tap-highlight-color:transparent;
 }
 details.dd summary::-webkit-details-marker{display:none}
 details.dd summary::marker{content:""}
-.dd-mark{font-family:"Space Mono",monospace;font-size:13px;color:var(--amber);font-weight:700;width:13px;flex:none}
+.dd-mark{font-family:"Space Mono",monospace;font-size:12px;color:var(--red);font-weight:700;width:12px;flex:none}
 details.dd[open] .dd-mark::before{content:"-"}
 details.dd:not([open]) .dd-mark::before{content:"+"}
 .dd-name{
@@ -137,12 +121,12 @@ details.dd:not([open]) .dd-mark::before{content:"+"}
   font-family:"Space Mono",monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;
   color:var(--cream-dim);margin-left:auto;text-align:right;
 }
-.dd-body{padding:0 16px 18px;border-top:1px solid var(--rule);padding-top:15px;font-size:14.5px}
-.dd-body p + p{margin-top:12px}
+.dd-body{padding:0 14px 14px;border-top:1px solid var(--rule);padding-top:12px;font-size:14.5px}
+.dd-body p + p{margin-top:9px}
 
 /* ---- Card, for a discrete thing with settings ---- */
 .card{
-  border:1px solid var(--rule);border-radius:3px;margin-top:26px;
+  border:1px solid var(--rule);border-radius:3px;margin-top:16px;
   overflow:hidden;background:var(--navy-2);
 }
 .card > header{
@@ -166,20 +150,20 @@ details.dd:not([open]) .dd-mark::before{content:"+"}
 .grid .cell{background:var(--navy);padding:10px 12px}
 .grid .cell.wide{grid-column:1 / -1}
 .grid .k{
-  font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.12em;
-  text-transform:uppercase;color:var(--amber-dim);
+  font-family:"Space Mono",monospace;font-size:9.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--cream-dim);
 }
 .grid .v{font-family:"Space Mono",monospace;font-size:14px;color:#fff;margin-top:3px}
 @media (min-width:640px){ .grid{grid-template-columns:repeat(4,1fr)} }
 
 /* ---- Table ---- */
-table.t{width:100%;border-collapse:collapse;margin-top:24px}
+table.t{width:100%;border-collapse:collapse;margin-top:12px}
 table.t thead th{
-  font-family:"Space Mono",monospace;font-size:10.5px;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--amber-dim);text-align:left;
-  padding:0 12px 10px 0;border-bottom:1px solid var(--rule-2);
+  font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--cream-dim);text-align:left;
+  padding:0 10px 8px 0;border-bottom:1px solid var(--rule-2);
 }
-table.t tbody td{padding:13px 12px 13px 0;border-bottom:1px solid var(--rule);vertical-align:top;font-size:14.5px}
+table.t tbody td{padding:11px 10px 11px 0;border-bottom:1px solid var(--rule);vertical-align:top;font-size:14.5px}
 table.t tbody tr:last-child td{border-bottom:none}
 table.t td.mono{font-family:"Space Mono",monospace;font-size:13px}
 .scroll{overflow-x:auto}
@@ -198,9 +182,9 @@ figure.placeholder{
 }
 
 /* ---- Flags ---- */
-.flags{background:rgba(190,24,24,.10);border:1px solid rgba(190,24,24,.45);border-radius:3px;padding:22px 24px;margin-top:52px}
+.flags{background:rgba(190,24,24,.10);border:1px solid rgba(190,24,24,.45);border-radius:3px;padding:15px 17px;margin-top:18px}
 .flags h3{font-weight:900;font-size:19px;color:var(--bad-ink);margin:0}
-.flags ul{list-style:none;margin-top:12px;display:flex;flex-direction:column;gap:12px}
+.flags ul{list-style:none;margin-top:9px;display:flex;flex-direction:column;gap:8px}
 .flags li{padding-left:19px;position:relative;font-size:14.5px}
 .flags li::before{content:"";position:absolute;left:0;top:8px;width:8px;height:8px;background:var(--red);transform:rotate(45deg)}
 
@@ -227,20 +211,20 @@ footer .brand{color:var(--cream)}
 }
 
 /* ---- Drug card ---- */
-.drug{border:1px solid var(--rule);border-radius:3px;margin-top:36px;overflow:hidden;background:var(--navy-2)}
+.drug{border:1px solid var(--rule);border-radius:3px;margin-top:18px;overflow:hidden;background:var(--navy-2)}
 .drug > header{padding:12px 14px;border-bottom:1px solid var(--rule);display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
 .drug .dn{font-family:"Barlow Condensed",sans-serif;font-weight:900;font-size:24px;text-transform:uppercase;letter-spacing:.02em}
 .drug .dc{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-dim)}
-.drug .dd-dose{font-family:"Space Mono",monospace;font-size:12.5px;color:var(--amber);font-weight:700;margin-left:auto}
+.drug .dd-dose{font-family:"Space Mono",monospace;font-size:12px;color:var(--red);font-weight:700;margin-left:auto}
 .pk{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--rule)}
 @media (min-width:560px){ .pk{grid-template-columns:repeat(4,1fr)} }
 .pk .cell{background:var(--navy);padding:9px 11px}
-.pk .k{font-family:"Space Mono",monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber-dim)}
+.pk .k{font-family:"Space Mono",monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-dim)}
 .pk .v{font-family:"Space Mono",monospace;font-size:13px;color:#fff;margin-top:2px}
 .drug .sect{padding:12px 14px;border-top:1px solid var(--rule)}
 .drug .sect h4{
-  font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--amber);margin-bottom:6px;
+  font-family:"Space Mono",monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--red);margin-bottom:5px;
 }
 .drug .sect.anti h4{color:var(--green)}
 .drug .sect.contra h4{color:var(--bad-ink)}
@@ -269,7 +253,7 @@ footer .brand{color:var(--cream)}
   transition:border-color .2s ease,box-shadow .2s ease;
 }
 .tb-q::placeholder{color:var(--cream-dim)}
-.tb-q:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 3px rgba(217,164,65,.18)}
+.tb-q:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 3px rgba(190,24,24,.16)}
 .tb-res{
   position:absolute;left:0;top:calc(100% + 6px);width:min(420px,84vw);
   background:var(--navy-2);border:1px solid var(--rule-2);border-radius:3px;
@@ -279,38 +263,33 @@ footer .brand{color:var(--cream)}
 @keyframes tbIn{from{opacity:0;transform:translateY(-6px) scale(.98)}to{opacity:1;transform:none}}
 .tb-res a{display:block;padding:10px 13px;border-bottom:1px solid var(--rule);text-decoration:none;color:var(--cream)}
 .tb-res a:last-child{border-bottom:none}
-.tb-res a:hover{background:rgba(217,164,65,.12)}
-.tb-p{display:block;font-family:"Space Mono",monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber)}
+.tb-res a:hover{background:rgba(190,24,24,.12)}
+.tb-p{display:block;font-family:"Space Mono",monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
 .tb-h{display:block;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:17px;text-transform:uppercase;letter-spacing:.02em;margin-top:2px}
 .tb-s{display:block;font-size:12.5px;color:var(--cream-dim);margin-top:3px;line-height:1.5}
 .tb-none{padding:12px 13px;color:var(--cream-dim);font-size:14px}
 
-/* ---- Glossary term button and popup ---- */
-button.gl{
-  font:inherit;color:var(--cream);cursor:pointer;
-  background:rgba(217,164,65,.10);
-  border:1px solid rgba(217,164,65,.28);
-  border-radius:3px;
-  padding:0 5px;margin:0 1px;
-  line-height:1.35;display:inline;
-  transition:background .16s ease,border-color .16s ease,color .16s ease,box-shadow .16s ease;
-}
-button.gl::after{
-  content:"";display:inline-block;width:3px;height:3px;border-radius:50%;
-  background:var(--amber);vertical-align:2px;margin-left:4px;opacity:.65;
-}
-button.gl:hover,button.gl:focus-visible{
-  background:rgba(217,164,65,.22);
-  border-color:rgba(217,164,65,.60);
-  color:#fff;outline:none;
-  box-shadow:0 0 0 2px rgba(217,164,65,.12);
-}
-button.gl:hover::after{opacity:1}
-button.gl.arming{
-  background:rgba(217,164,65,.30);
-  border-color:var(--amber);
+/* ---- Entry animations. Pure CSS, so nothing can leave them half finished ---- */
+.main{animation:pageIn .34s cubic-bezier(.2,.8,.3,1) both}
+@keyframes pageIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.nav a,.nav .grp{animation:navIn .32s cubic-bezier(.2,.8,.3,1) both;animation-delay:calc(var(--i,0) * 26ms)}
+@keyframes navIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
+
+/* Fade the content out on the way to the next page. Opacity only, no overlay, so it cannot trap clicks. */
+.main.leaving{opacity:0;transform:translateY(-6px);transition:opacity .16s ease,transform .16s ease}
+
+@media (prefers-reduced-motion:reduce){
+  .main,.nav a,.nav .grp{animation:none}
+  .main.leaving{transition:none}
 }
 
+/* ---- Glossary term button and popup ---- */
+button.gl{
+  font:inherit;color:var(--cream);background:none;border:none;padding:0;cursor:pointer;
+  border-bottom:1px dashed var(--red);
+}
+button.gl:hover{color:#fff;border-bottom-style:solid}
 .glpop{
   position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;
   padding:20px;background:rgba(6,11,26,.72);
@@ -321,7 +300,7 @@ button.gl.arming{
 .glpop[hidden]{display:none;pointer-events:none}
 .glpop.on{opacity:1}
 .glpop-in{
-  background:var(--navy-2);border:1px solid var(--rule-2);border-left:3px solid var(--amber);
+  background:var(--navy-2);border:1px solid var(--rule-2);border-left:3px solid var(--red);
   border-radius:3px;padding:20px 22px;max-width:440px;width:100%;
   transform:translateY(10px) scale(.97);transition:transform .18s cubic-bezier(.2,.8,.3,1);
 }
@@ -336,7 +315,7 @@ button.gl.arming{
   text-transform:uppercase;background:none;border:1px solid var(--rule-2);color:var(--cream-dim);
   padding:7px 14px;border-radius:2px;cursor:pointer;
 }
-.glpop-x:hover{color:var(--cream);border-color:var(--amber)}
+.glpop-x:hover{color:var(--cream);border-color:var(--red)}
 
 /* ---- Glossary page ---- */
 .glist{display:flex;flex-direction:column;gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:3px}
@@ -346,11 +325,11 @@ button.gl.arming{
   text-transform:uppercase;letter-spacing:.02em;
 }
 .gitem .gd{font-size:14.5px;color:var(--cream-dim);margin-top:4px}
-@media print{ .glpop{display:none} button.gl{background:none;border:none;padding:0;color:#000} button.gl::after{display:none} }
+@media print{ .topbar,.glpop{display:none} button.gl{border-bottom:none;color:#000} }
 
 /* ---- Injury / entity card, ported from the standalone reference cards ---- */
 .icard{
-  border:1px solid var(--rule);border-radius:3px;margin-top:28px;overflow:hidden;
+  border:1px solid var(--rule);border-radius:3px;margin-top:18px;overflow:hidden;
   background:linear-gradient(180deg,var(--navy-2),var(--navy));
 }
 .icard > header{
@@ -377,8 +356,8 @@ button.gl.arming{
 .sgrid .s.key .sv{color:#fff}
 .sgrid .s.danger{background:rgba(190,24,24,.12)}
 .sgrid .sk{
-  font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.12em;
-  text-transform:uppercase;color:var(--amber-dim);
+  font-family:"Space Mono",monospace;font-size:9.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--cream-dim);
 }
 .sgrid .sv{font-family:"Space Mono",monospace;font-size:15px;color:var(--cream);margin-top:3px}
 .sgrid .sv small{display:block;font-size:10.5px;color:var(--cream-dim);margin-top:2px}
@@ -389,8 +368,8 @@ button.gl.arming{
 .resp{padding:2px 15px 15px}
 .resp-h{
   display:flex;justify-content:space-between;align-items:baseline;
-  font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.12em;
-  text-transform:uppercase;color:var(--amber-dim);padding:13px 0 8px;
+  font-family:"Space Mono",monospace;font-size:9.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--cream-dim);padding:11px 0 7px;
 }
 .resp-h .cols{color:var(--cream-dim)}
 .rrow{display:flex;align-items:center;gap:10px;margin-top:6px}
@@ -408,8 +387,8 @@ button.gl.arming{
 /* ---- Drug timeline. Onset, peak, duration as one readable bar ---- */
 .tl{padding:13px 15px;border-top:1px solid var(--rule)}
 .tl-h{
-  font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--amber);margin-bottom:10px;
+  font-family:"Space Mono",monospace;font-size:9.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--red);margin-bottom:9px;
 }
 .tl-bar{position:relative;height:26px;background:rgba(237,227,204,.06);border-radius:2px;overflow:hidden}
 .tl-bar .seg{position:absolute;top:0;bottom:0}
@@ -426,7 +405,7 @@ button.gl.arming{
 .tl-key .k-du i{background:rgba(237,227,204,.13)}
 
 /* ---- Danger zone block ---- */
-.danger-zone{margin-top:52px;border:1px solid rgba(190,24,24,.45);border-radius:3px;overflow:hidden}
+.danger-zone{margin-top:26px;border:1px solid rgba(190,24,24,.45);border-radius:3px;overflow:hidden}
 .danger-zone > header{
   padding:11px 15px;background:rgba(190,24,24,.14);
   font-family:"Barlow Condensed",sans-serif;font-weight:900;font-size:19px;
@@ -435,136 +414,3 @@ button.gl.arming{
 .danger-zone .dz{padding:12px 15px;border-top:1px solid rgba(190,24,24,.25);font-size:14.5px}
 .danger-zone .dz:first-of-type{border-top:none}
 .danger-zone .dz b{color:#fff}
-
-/* ---- Centred sidebar head ---- */
-.side-head{display:flex;flex-direction:column;align-items:center;text-align:center}
-.side .brand{display:block;line-height:0;width:100%}
-.side .brand img{
-  width:100%;max-width:172px;height:auto;display:block;margin:0 auto;
-  opacity:.87;transition:opacity .2s ease;
-}
-.side .brand:hover img{opacity:1}
-.side .ver{
-  font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--cream-dim);margin-top:10px;text-align:center;
-}
-
-/* ---- Right hand contents rail ---- */
-
-@media (min-width:1180px){
-  .toc a.sub{
-    font-size:12px;padding:5px 10px 5px 20px;color:rgba(192,183,162,.78);
-  }
-  .toc a.sub.on{color:var(--cream)}
-  .drug,.icard{scroll-margin-top:24px}
-}
-
-/* ---- Section bar. Opaque, sticky, collapses to a thin strip on scroll ---- */
-.secbar{
-  position:sticky;top:0;z-index:40;
-  background:var(--navy);                 /* fully opaque: nothing shows through it */
-  border-bottom:1px solid var(--rule);
-  margin:0 -18px 22px;padding:0 18px;
-  transition:box-shadow .2s ease;
-}
-.secbar.thin{box-shadow:0 6px 18px rgba(6,11,26,.45)}
-.sb-in{position:relative}
-.sb-now{
-  display:flex;align-items:baseline;gap:10px;width:100%;
-  background:none;border:none;cursor:pointer;color:inherit;text-align:left;
-  padding:15px 0 13px;
-  transition:padding .22s cubic-bezier(.2,.8,.3,1);
-}
-.secbar.thin .sb-now{padding:8px 0 7px}
-.sb-lab{
-  font-family:"Space Mono",monospace;font-size:9.5px;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--amber);flex:none;
-  opacity:1;max-width:120px;overflow:hidden;white-space:nowrap;
-  transition:opacity .22s ease,max-width .22s ease;
-}
-.secbar.thin .sb-lab{opacity:0;max-width:0}
-.sb-cur{
-  font-family:"Barlow Condensed",sans-serif;font-weight:700;
-  text-transform:uppercase;letter-spacing:.02em;color:var(--cream);
-  font-size:20px;line-height:1.1;
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
-  transition:font-size .22s cubic-bezier(.2,.8,.3,1);
-}
-.secbar.thin .sb-cur{font-size:15px}
-.sb-caret{
-  margin-left:auto;flex:none;width:0;height:0;align-self:center;
-  border-left:5px solid transparent;border-right:5px solid transparent;
-  border-top:5px solid var(--amber);
-  transition:transform .2s ease;
-}
-.secbar.open .sb-caret{transform:rotate(180deg)}
-.sb-prog{height:2px;background:rgba(240,231,210,.08);border-radius:2px;overflow:hidden}
-.sb-prog i{display:block;height:100%;width:0;background:var(--amber);transition:width .12s linear}
-
-.sb-list{
-  position:absolute;left:-18px;right:-18px;top:100%;
-  background:var(--navy-2);border:1px solid var(--rule-2);border-top:none;
-  max-height:60vh;overflow-y:auto;
-  box-shadow:0 18px 40px rgba(6,11,26,.6);
-  display:flex;flex-direction:column;
-}
-.sb-list a{
-  display:block;color:var(--cream-dim);text-decoration:none;font-size:14px;
-  padding:9px 18px;border-left:2px solid transparent;
-  transition:color .15s ease,background .15s ease,border-color .15s ease;
-}
-.sb-list a:hover{color:var(--cream);background:rgba(240,231,210,.05)}
-.sb-list a.on{color:var(--cream);border-left-color:var(--amber);background:rgba(217,164,65,.11)}
-.sb-list a.sub{font-size:12.5px;padding-left:34px;color:rgba(192,183,162,.78)}
-.sb-list a.sub.on{color:var(--cream)}
-
-.sec{scroll-margin-top:96px}
-.drug,.icard{scroll-margin-top:96px}
-
-@media (min-width:820px){
-  .secbar{margin:0 -48px 26px;padding:0 48px}
-  .sb-list{left:-48px;right:-48px}
-  .sb-list a{padding-left:48px}
-  .sb-list a.sub{padding-left:66px}
-}
-@media (prefers-reduced-motion:reduce){
-  .sb-now,.sb-lab,.sb-cur,.sb-caret,.sb-prog i{transition:none}
-}
-@media print{ .secbar{display:none} }
-
-/* ---- Cross document page transition ----
-   Only the content column animates. The sidebar and the section bar are given their own transition
-   names, which tells the browser they are the SAME element either side of the navigation, so it holds
-   them still instead of repainting them. That is what stops the sidebar flashing.
-   Painting html and body in the page colour also removes the white flash browsers show between loads. */
-html{background:var(--navy)}
-
-@view-transition{ navigation:auto }
-
-.main{view-transition-name:pagecontent}
-.side{view-transition-name:sidechrome}
-
-/* Everything not explicitly named falls into root. Holding it at zero keeps the shell from moving. */
-::view-transition-group(root){animation-duration:0s}
-::view-transition-old(sidechrome),
-::view-transition-new(sidechrome){animation:none;mix-blend-mode:normal}
-
-::view-transition-old(pagecontent){
-  animation:contentOut .34s cubic-bezier(.4,0,.6,1) both;
-}
-::view-transition-new(pagecontent){
-  animation:contentIn .46s cubic-bezier(.2,.7,.3,1) .08s both;
-}
-@keyframes contentOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-10px)}}
-@keyframes contentIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-
-/* Fallback for browsers without cross document view transitions: fade the content only, same timing. */
-@supports not (view-transition-name:none){
-  .main{animation:contentIn .46s cubic-bezier(.2,.7,.3,1) both}
-}
-
-@media (prefers-reduced-motion:reduce){
-  ::view-transition-old(pagecontent),
-  ::view-transition-new(pagecontent){animation:none}
-  .main{animation:none}
-}

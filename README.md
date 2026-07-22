@@ -94,15 +94,3 @@ even opened from disk with no server. Section anchors are generated automaticall
 
 Large guides will grow the index. If page weight becomes a problem, switch to a single `search-index.json`
 fetched on demand, at the cost of search no longer working offline from a file.
-
-## If a page looks like an older version
-
-Every page inlines its own CSS, so a cached HTML file means cached styling. If some pages look updated and
-others do not, you are seeing a mix of old and new files rather than a styling bug.
-
-1. Delete the old `docs/` folder entirely before copying a new build over it. Copying on top leaves stale files.
-2. Hard refresh in the browser: Ctrl+Shift+R, or Cmd+Shift+R on Mac.
-3. On GitHub Pages, give the CDN a minute after pushing, then hard refresh.
-
-The footer of every page prints the version and build date. If two pages disagree there, the files on disk
-are from different builds.

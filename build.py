@@ -16,9 +16,7 @@ page is rewritten.
 ADDING A PAGE: drop a file in src/content/ and add a line to PAGES below. That is the whole process.
 ADDING AN IMAGE: put it in docs/img/ and reference it as img/thing.png from any page.
 """
-import os, re, datetime, json, sys
-
-sys.dont_write_bytecode = True   # keep src/ free of __pycache__
+import os, re, shutil, datetime, json, sys, html as _html
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "src"))
 from glossary_terms import TERMS
 
@@ -54,9 +52,7 @@ HEAD = """<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
 <title>{title}</title>
-<link rel="icon" type="image/png" href="img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;900&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -71,7 +67,7 @@ HEAD = """<!DOCTYPE html>
 
 FOOT = r"""
 <footer>
-  <span class="brand">PILLAR</span> // ACM EXTENDED FIELD GUIDE // v{version} // BUILD {built}
+  <span class="brand">PILLAR</span> // ACM EXTENDED FIELD GUIDE // v{version} // BUILT {built}
 </footer>
 </main>
 </div>
@@ -97,29 +93,9 @@ var IDX={index};
     pop.classList.remove('on');
     setTimeout(function(){{pop.hidden=true;}},180);
   }}
-
-  // HOVER TO OPEN after a deliberate pause, so passing the cursor over a term does not fire it.
-  // Clicking still opens immediately. Touch devices never fire mouseenter, so they get the click path.
-  var hoverT=null, armed=null;
-  function clearArm(){{
-    if(hoverT){{ clearTimeout(hoverT); hoverT=null; }}
-    if(armed){{ armed.classList.remove('arming'); armed=null; }}
-  }}
-  document.addEventListener('mouseover',function(ev){{
-    var b=ev.target.closest('.gl');
-    if(!b || b===armed) return;
-    clearArm();
-    armed=b; b.classList.add('arming');
-    hoverT=setTimeout(function(){{ open(b.dataset.t); clearArm(); }},1000);
-  }});
-  document.addEventListener('mouseout',function(ev){{
-    var b=ev.target.closest('.gl');
-    if(b && b===armed) clearArm();
-  }});
-
   document.addEventListener('click',function(ev){{
     var b=ev.target.closest('.gl');
-    if(b){{ ev.preventDefault(); clearArm(); open(b.dataset.t); return; }}
+    if(b){{ ev.preventDefault(); open(b.dataset.t); return; }}
     if(ev.target.closest('.glpop-x') || ev.target===pop) close();
   }});
   document.addEventListener('keydown',function(ev){{ if(ev.key==='Escape') close(); }});
@@ -154,48 +130,17 @@ var IDX={index};
     }}).join('');
     qr.hidden=false;
   }}
-  // SECTION BAR. Tracks which section is in view, fills a progress line, and collapses to a thin strip
-  // once the reader is past the top. Read-only apart from the toggle, so it cannot block the page.
-  var sb=document.getElementById('secbar');
-  if(sb){{
-    var list=document.getElementById('sbList'), now=document.getElementById('sbNow');
-    var cur=document.getElementById('sbCur'), prog=document.getElementById('sbProg');
-    var links=[].slice.call(list.querySelectorAll('a'));
-    var heads=links.map(function(a){{ return document.getElementById(a.dataset.a); }});
-    var tick=false;
-    function spy(){{
-      var y=window.scrollY, best=0;
-      for(var i=0;i<heads.length;i++){{ if(heads[i] && heads[i].offsetTop<=y+120) best=i; }}
-      links.forEach(function(a,i){{ a.classList.toggle('on', i===best); }});
-      if(cur.textContent!==links[best].textContent) cur.textContent=links[best].textContent;
-      var doc=document.documentElement.scrollHeight-window.innerHeight;
-      prog.style.width=(doc>0 ? Math.min(100,(y/doc)*100) : 0)+'%';
-      sb.classList.toggle('thin', y>90);
-      tick=false;
-    }}
-    window.addEventListener('scroll',function(){{
-      if(!tick){{ tick=true; requestAnimationFrame(spy); }}
-    }},{{passive:true}});
-    now.addEventListener('click',function(){{
-      var open=list.hidden;
-      list.hidden=!open;
-      now.setAttribute('aria-expanded', open?'true':'false');
-      sb.classList.toggle('open', open);
-    }});
-    list.addEventListener('click',function(ev){{
-      if(ev.target.tagName==='A'){{
-        list.hidden=true; sb.classList.remove('open');
-        now.setAttribute('aria-expanded','false');
-      }}
-    }});
-    document.addEventListener('click',function(ev){{
-      if(!ev.target.closest('.secbar') && !list.hidden){{
-        list.hidden=true; sb.classList.remove('open');
-        now.setAttribute('aria-expanded','false');
-      }}
-    }});
-    spy();
-  }}
+  // Fade out before navigating so the change of page reads as a transition rather than a flash.
+  document.addEventListener('click',function(ev){{
+    var a=ev.target.closest('a[href]');
+    if(!a) return;
+    var href=a.getAttribute('href');
+    if(!href || href.charAt(0)==='#' || a.target || ev.metaKey || ev.ctrlKey || ev.shiftKey) return;
+    if(a.hostname && a.hostname!==location.hostname) return;
+    ev.preventDefault();
+    document.body.classList.add('leaving');
+    setTimeout(function(){{ location.href=href; }},170);
+  }});
 
   var veil=document.getElementById('veil');
   function focusMode(on){{ veil.classList.toggle('on',on); }}
@@ -207,6 +152,7 @@ var IDX={index};
   window.addEventListener('pageshow',function(){{
     qr.hidden=true; veil.classList.remove('on');
     if(document.activeElement===q) q.blur();
+    var m=document.querySelector('.main'); if(m) m.classList.remove('leaving');
   }});
 
   q.addEventListener('input',run);
@@ -219,6 +165,23 @@ var IDX={index};
     if(!ev.target.closest('.tb-wrap') && !ev.target.closest('.tb-veil')) {{ qr.hidden=true; focusMode(false); }}
   }});
   q.addEventListener('keydown',function(ev){{ if(ev.key==='Escape') dismiss(); }});
+
+  // PAGE TRANSITION. Fade the content, then follow the link. Guarded so it degrades to a plain
+  // navigation rather than trapping the user if anything goes wrong.
+  var main=document.querySelector('.main');
+  document.addEventListener('click',function(ev){{
+    var a=ev.target.closest('a[href]');
+    if(!a||!main) return;
+    var href=a.getAttribute('href');
+    if(!href||href.charAt(0)==='#'||a.target||ev.metaKey||ev.ctrlKey||ev.shiftKey||ev.button!==0) return;
+    if(a.hostname && a.hostname!==location.hostname) return;
+    ev.preventDefault();
+    main.classList.add('leaving');
+    var went=false;
+    function go(){{ if(!went){{ went=true; location.href=href; }} }}
+    setTimeout(go,160);
+    setTimeout(go,600);   // safety net: never leave the page faded and stranded
+  }});
 
   }})();
 </script>
@@ -254,52 +217,6 @@ def add_anchors(body):
         slug = re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
         return f'<h2 id="{slug}">{m.group(1)}</h2>'
     return re.sub(r"<h2>(.*?)</h2>", sub, body)
-
-
-def add_card_anchors(body):
-    """Give drug cards and injury cards ids too. On a page like medications the h2 sections are only
-    scaffolding and the real navigation targets are the 19 cards, so the rail needs to reach them."""
-    def drug(m):
-        slug = re.sub(r"[^a-z0-9]+", "-", m.group(1).lower()).strip("-")
-        return f'<div class="drug" id="d-{slug}"><header><span class="dn">{m.group(1)}</span>'
-    body = re.sub(r'<div class="drug">\s*<header><span class="dn">([^<]+)</span>', drug, body)
-
-    def inj(m):
-        slug = re.sub(r"[^a-z0-9]+", "-", m.group(1).lower()).strip("-")
-        return f'<article class="icard" id="c-{slug}"><header><span class="iname">{m.group(1)}</span>'
-    body = re.sub(r'<article class="icard">\s*<header><span class="iname">([^<]+)</span>', inj, body)
-    return body
-
-
-def toc(body):
-    """Sticky section bar. Sits at the top of the content column, opaque so nothing shows through it,
-    and collapses to a thin strip as the reader scrolls. Sections come from the h2 anchors, and named
-    cards nest under them, so it can never disagree with the page."""
-    marks = []
-    for m in re.finditer(r'<h2 id="([^"]+)">(.*?)</h2>', body, re.S):
-        marks.append((m.start(), "sec", m.group(1), re.sub(r"<[^>]+>", "", m.group(2)).strip()))
-    for m in re.finditer(r'id="d-([\w-]+)"><header><span class="dn">([^<]+)<', body):
-        marks.append((m.start(), "sub", "d-" + m.group(1), m.group(2).strip()))
-    for m in re.finditer(r'id="c-([\w-]+)"><header><span class="iname">([^<]+)<', body):
-        marks.append((m.start(), "sub", "c-" + m.group(1), m.group(2).strip()))
-    marks.sort()
-    if len(marks) < 2:
-        return ""
-    out = ['<div class="secbar" id="secbar">',
-           '  <div class="sb-in">',
-           '    <button type="button" class="sb-now" id="sbNow" aria-expanded="false">',
-           '      <span class="sb-lab">On this page</span>',
-           '      <span class="sb-cur" id="sbCur"></span>',
-           '      <span class="sb-caret"></span>',
-           '    </button>',
-           '    <div class="sb-prog"><i id="sbProg"></i></div>',
-           '  </div>',
-           '  <nav class="sb-list" id="sbList" hidden>']
-    for _, kind, anchor, label in marks:
-        cls = ' class="sub"' if kind == "sub" else ""
-        out.append(f'    <a{cls} href="#{anchor}" data-a="{anchor}">{label}</a>')
-    out += ["  </nav>", "</div>"]
-    return "\n".join(out)
 
 
 def index_page(slug, fname, title, body):
@@ -338,22 +255,23 @@ def sidebar(current):
     """Sidebar nav. Search sits at the top of it. Every link carries an index so CSS can stagger the
     cascade without any JavaScript, which means the animation can never get stuck part way."""
     out = ['<aside class="side">',
-           '  <div class="side-head">',
-           '    <a class="brand" href="index.html"><img src="img/pillar_mark.png" alt="PILLAR"></a>',
-           f'    <div class="ver">ACM Extended // v{VERSION}</div>',
-           '  </div>',
+           '  <div class="brand">PILL<span>A</span>R</div>',
+           f'  <div class="ver">ACM Extended // v{VERSION}</div>',
            '  <div class="tb-wrap">',
            '    <input id="q" class="tb-q" type="search" placeholder="Search" autocomplete="off" spellcheck="false">',
            '    <div id="qr" class="tb-res" hidden></div>',
            '  </div>',
            '  <nav class="nav">']
     seen = []
+    i = 0
     for slug, fname, title, group in PAGES:
         if group not in seen:
             seen.append(group)
-            out.append(f'    <div class="grp">{group}</div>')
-        cls = ' class="on"' if slug == current else ""
-        out.append(f'    <a{cls} href="{fname}">{title}</a>')
+            out.append(f'    <div class="grp" style="--i:{i}">{group}</div>')
+            i += 1
+        cls = "on" if slug == current else ""
+        out.append(f'    <a class="{cls}" style="--i:{i}" href="{fname}">{title}</a>')
+        i += 1
     out += ['  </nav>', '</aside>', '<main class="main">']
     return "\n".join(out)
 
@@ -378,7 +296,6 @@ def build():
         body, miss = apply_terms(body)
         badterms += [(slug, m) for m in miss]
         body = add_anchors(body)
-        body = add_card_anchors(body)
         bodies[slug] = body
         index += index_page(slug, fname, title, body)
 
@@ -389,8 +306,8 @@ def build():
     for slug, fname, title, group in PAGES:
         if slug not in bodies:
             continue
-        page = (HEAD.format(title=f"ACM Extended Wiki | {title}", css=css)
-                + sidebar(slug) + "\n" + toc(bodies[slug]) + "\n" + bodies[slug]
+        page = (HEAD.format(title=f"PILLAR | {title}", css=css)
+                + sidebar(slug) + "\n" + bodies[slug]
                 + FOOT.format(version=VERSION, built=built, terms=terms_json, index=idx_json))
         open(os.path.join(OUT, fname), "w", encoding="utf-8").write(page)
 
