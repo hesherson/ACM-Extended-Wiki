@@ -34,14 +34,14 @@ PAGES = [
     ("oxygen",       "oxygen.html",       "Oxygen delivery",     "Systems"),
     ("bleeding",     "bleeding.html",     "Bleeding and shock",  "Systems"),
     ("airway",       "airway.html",       "Airway and chest",    "Systems"),
-    ("circulation",  "circulation.html",  "Rhythms and drugs",   "Systems"),
+    ("circulation",  "circulation.html",  "Arrest and Rhythms",  "Systems"),
     ("medications",  "medications.html",  "Medications",         "Systems"),
     ("access",       "access.html",       "Access and blood",    "Systems"),
     ("tbi",          "tbi.html",          "Head injury",         "Systems"),
     ("flight",       "flight.html",       "Flight and altitude", "Systems"),
     ("menu",         "menu.html",         "Medical menu",        "Interface"),
     ("accessibility","accessibility.html","Accessibility",       "Interface"),
-    ("overrides",    "overrides.html",    "What we override",    "Reference"),
+    ("overrides",    "overrides.html",    "Advanced Functions / Overrides", "Reference"),
     ("glossary",     "glossary.html",     "Glossary",            "Reference"),
     ("settings",     "settings.html",     "Settings reference",  "Reference"),
     ("zeus",         "zeus.html",         "Zeus modules",        "Reference"),
@@ -62,13 +62,6 @@ HEAD = """<!DOCTYPE html>
 </head>
 <body>
 <div class="tb-veil" id="veil"></div>
-<div class="topbar">
-  <div class="tb-brand">PILL<span>A</span>R</div>
-  <div class="tb-wrap">
-    <input id="q" class="tb-q" type="search" placeholder="Search" autocomplete="off" spellcheck="false">
-    <div id="qr" class="tb-res" hidden></div>
-  </div>
-</div>
 <div class="shell">
 """
 
@@ -137,21 +130,60 @@ var IDX={index};
     }}).join('');
     qr.hidden=false;
   }}
-  var tb=document.querySelector('.topbar');
-  function onScroll(){{ tb.classList.toggle('scrolled', window.scrollY > 40); }}
-  window.addEventListener('scroll',onScroll,{{passive:true}}); onScroll();
+  // Fade out before navigating so the change of page reads as a transition rather than a flash.
+  document.addEventListener('click',function(ev){{
+    var a=ev.target.closest('a[href]');
+    if(!a) return;
+    var href=a.getAttribute('href');
+    if(!href || href.charAt(0)==='#' || a.target || ev.metaKey || ev.ctrlKey || ev.shiftKey) return;
+    if(a.hostname && a.hostname!==location.hostname) return;
+    ev.preventDefault();
+    document.body.classList.add('leaving');
+    setTimeout(function(){{ location.href=href; }},170);
+  }});
 
   var veil=document.getElementById('veil');
   function focusMode(on){{ veil.classList.toggle('on',on); }}
+  function dismiss(){{ qr.hidden=true; focusMode(false); q.blur(); }}
+
+  // RESET ON ARRIVAL. A page restored from the back/forward cache keeps the DOM exactly as it was left,
+  // including a focused search box and a lit veil, which locked the page until a manual reload. Clearing
+  // on pageshow covers both a fresh load and a restore.
+  window.addEventListener('pageshow',function(){{
+    qr.hidden=true; veil.classList.remove('on');
+    if(document.activeElement===q) q.blur();
+    var m=document.querySelector('.main'); if(m) m.classList.remove('leaving');
+  }});
+
   q.addEventListener('input',run);
   q.addEventListener('focus',function(){{ focusMode(true); run(); }});
-  function dismiss(){{ qr.hidden=true; focusMode(false); q.blur(); }}
+  q.addEventListener('blur',function(){{ setTimeout(function(){{
+    if(!qr.matches(':hover')) focusMode(false);
+  }},120); }});
   veil.addEventListener('click',dismiss);
   document.addEventListener('click',function(ev){{
     if(!ev.target.closest('.tb-wrap') && !ev.target.closest('.tb-veil')) {{ qr.hidden=true; focusMode(false); }}
   }});
   q.addEventListener('keydown',function(ev){{ if(ev.key==='Escape') dismiss(); }});
-}})();
+
+  // PAGE TRANSITION. Fade the content, then follow the link. Guarded so it degrades to a plain
+  // navigation rather than trapping the user if anything goes wrong.
+  var main=document.querySelector('.main');
+  document.addEventListener('click',function(ev){{
+    var a=ev.target.closest('a[href]');
+    if(!a||!main) return;
+    var href=a.getAttribute('href');
+    if(!href||href.charAt(0)==='#'||a.target||ev.metaKey||ev.ctrlKey||ev.shiftKey||ev.button!==0) return;
+    if(a.hostname && a.hostname!==location.hostname) return;
+    ev.preventDefault();
+    main.classList.add('leaving');
+    var went=false;
+    function go(){{ if(!went){{ went=true; location.href=href; }} }}
+    setTimeout(go,160);
+    setTimeout(go,600);   // safety net: never leave the page faded and stranded
+  }});
+
+  }})();
 </script>
 </body>
 </html>
@@ -220,18 +252,26 @@ def glossary_page():
 
 
 def sidebar(current):
-    """Sidebar nav. Groups in first-seen order, current page marked."""
+    """Sidebar nav. Search sits at the top of it. Every link carries an index so CSS can stagger the
+    cascade without any JavaScript, which means the animation can never get stuck part way."""
     out = ['<aside class="side">',
            '  <div class="brand">PILL<span>A</span>R</div>',
            f'  <div class="ver">ACM Extended // v{VERSION}</div>',
+           '  <div class="tb-wrap">',
+           '    <input id="q" class="tb-q" type="search" placeholder="Search" autocomplete="off" spellcheck="false">',
+           '    <div id="qr" class="tb-res" hidden></div>',
+           '  </div>',
            '  <nav class="nav">']
     seen = []
+    i = 0
     for slug, fname, title, group in PAGES:
         if group not in seen:
             seen.append(group)
-            out.append(f'    <div class="grp">{group}</div>')
-        cls = ' class="on"' if slug == current else ""
-        out.append(f'    <a href="{fname}"{cls}>{title}</a>')
+            out.append(f'    <div class="grp" style="--i:{i}">{group}</div>')
+            i += 1
+        cls = "on" if slug == current else ""
+        out.append(f'    <a class="{cls}" style="--i:{i}" href="{fname}">{title}</a>')
+        i += 1
     out += ['  </nav>', '</aside>', '<main class="main">']
     return "\n".join(out)
 

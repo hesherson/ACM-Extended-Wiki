@@ -99,6 +99,87 @@
 <figure class="placeholder">Live panel screenshot goes here</figure>
 </section>
 
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">04</span><h2>Settings By Injury</h2></div>
+  <p>Starting points. The badge tells you whether {{peep|PEEP}} is the lever that helps or the lever that harms.</p>
+
+  <article class="icard">
+    <header><span class="iname">Healthy lung</span><span class="bdg none">No shunt</span></header>
+    <div class="sgrid">
+      <div class="s wide"><div class="sk">Mode</div><div class="sv">SIMV VC PS</div></div>
+      <div class="s"><div class="sk">PEEP</div><div class="sv">5</div></div>
+      <div class="s"><div class="sk">FiO2</div><div class="sv">21 to 40%</div></div>
+      <div class="s"><div class="sk">Tidal vol</div><div class="sv">6 to 8<small>mL/kg</small></div></div>
+      <div class="s"><div class="sk">I:E</div><div class="sv">1:2</div></div>
+    </div>
+    <p class="treat">Nothing to fix. <b>Oxygen does nothing for a good lung.</b> 21% and 100% both read the same.</p>
+  </article>
+
+  <article class="icard">
+    <header><span class="iname">Pulmonary edema</span><span class="bdg recruit">Recruitable, PEEP works</span></header>
+    <div class="sgrid">
+      <div class="s wide"><div class="sk">Mode</div><div class="sv">SIMV VC PS</div></div>
+      <div class="s key"><div class="sk">PEEP</div><div class="sv">10 to 15</div></div>
+      <div class="s"><div class="sk">FiO2</div><div class="sv">40 to 60%</div></div>
+      <div class="s"><div class="sk">Tidal vol</div><div class="sv">6 to 8<small>mL/kg</small></div></div>
+      <div class="s"><div class="sk">I:E</div><div class="sv">1:2 to 1:1.5</div></div>
+    </div>
+    <p class="treat"><b>PEEP is what treats this.</b> It holds flooded alveoli open so they can take part again. Oxygen chases the {{shunt}} and loses.</p>
+    <div class="resp">
+      <div class="resp-h">SpO2 response<span class="cols">PEEP against FiO2</span></div>
+      <div class="rrow is-good"><span class="lab">PEEP</span><span class="bar"><i style="width:86%"></i></span><span class="num">strong</span></div>
+      <div class="rrow is-bad"><span class="lab">FiO2</span><span class="bar"><i style="width:22%"></i></span><span class="num">poor</span></div>
+    </div>
+  </article>
+
+  <article class="icard">
+    <header><span class="iname">Blast lung and ARDS</span><span class="bdg recruit">Recruitable, PEEP works</span></header>
+    <div class="sgrid">
+      <div class="s wide"><div class="sk">Mode</div><div class="sv">SIMV PC</div></div>
+      <div class="s key"><div class="sk">PEEP</div><div class="sv">5 to 8</div></div>
+      <div class="s"><div class="sk">FiO2</div><div class="sv">60 to 95%</div></div>
+      <div class="s"><div class="sk">Tidal vol</div><div class="sv">5 to 6<small>mL/kg</small></div></div>
+      <div class="s"><div class="sk">I:E</div><div class="sv">1:1.5</div></div>
+    </div>
+    <p class="treat">Pressure control, always. The lung is already torn and volume control will finish the job. Accept a higher CO2 rather than chasing numbers.</p>
+    <div class="resp">
+      <div class="resp-h">SpO2 response<span class="cols">PEEP against FiO2</span></div>
+      <div class="rrow is-good"><span class="lab">PEEP</span><span class="bar"><i style="width:72%"></i></span><span class="num">good</span></div>
+      <div class="rrow is-mid"><span class="lab">FiO2</span><span class="bar"><i style="width:44%"></i></span><span class="num">partial</span></div>
+    </div>
+  </article>
+
+  <article class="icard">
+    <header><span class="iname">Pneumothorax</span><span class="bdg fixed">Fixed, PEEP harms</span></header>
+    <div class="sgrid">
+      <div class="s wide danger"><div class="sk">Mode</div><div class="sv">DECOMPRESS FIRST</div></div>
+      <div class="s"><div class="sk">PEEP</div><div class="sv">5<small>after drainage</small></div></div>
+      <div class="s"><div class="sk">FiO2</div><div class="sv">as needed</div></div>
+      <div class="s"><div class="sk">Tidal vol</div><div class="sv">6<small>mL/kg</small></div></div>
+      <div class="s"><div class="sk">I:E</div><div class="sv">1:2</div></div>
+    </div>
+    <p class="treat"><b>Positive pressure turns a simple pneumothorax into a tension one within minutes.</b> Decompress and drain before you ventilate.</p>
+    <div class="resp">
+      <div class="resp-h">SpO2 response<span class="cols">PEEP against FiO2</span></div>
+      <div class="rrow is-bad"><span class="lab">PEEP</span><span class="bar"><i style="width:12%"></i></span><span class="num">harmful</span></div>
+      <div class="rrow is-mid"><span class="lab">FiO2</span><span class="bar"><i style="width:38%"></i></span><span class="num">partial</span></div>
+    </div>
+  </article>
+
+  <article class="icard">
+    <header><span class="iname">Hemothorax</span><span class="bdg fixed">Fixed, PEEP harms</span></header>
+    <div class="sgrid">
+      <div class="s wide danger"><div class="sk">Mode</div><div class="sv">DRAIN FIRST</div></div>
+      <div class="s"><div class="sk">PEEP</div><div class="sv">5<small>after drainage</small></div></div>
+      <div class="s"><div class="sk">FiO2</div><div class="sv">high early</div></div>
+      <div class="s"><div class="sk">Tidal vol</div><div class="sv">6<small>mL/kg</small></div></div>
+      <div class="s"><div class="sk">I:E</div><div class="sv">1:2</div></div>
+    </div>
+    <p class="treat">PEEP does not lift blood off a lung. Drainage does, and the blood you drain is blood they can have back.</p>
+  </article>
+</section>
+
 <div class="flags">
   <h3>Red Flags</h3>
   <ul>
