@@ -213,7 +213,7 @@
 
   <figure class="wave">
     <svg class="wavefig" viewBox="0 0 800 512" xmlns="http://www.w3.org/2000/svg" role="img"
-         aria-label="Ventilator pressure over time, showing peak pressure, plateau pressure, the resistive and elastic components, and the four phases of the respiratory cycle">
+         aria-label="Ventilator pressure over time, showing peak and plateau pressure, the resistive and elastic components, and the four phases of the respiratory cycle">
       <defs>
         <marker id="wfA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
           <path d="M0 0 L10 5 L0 10 z" fill="var(--amber)"/>
@@ -225,94 +225,90 @@
     
       <!-- ===== AXES ===== -->
       <line x1="96" y1="48" x2="96" y2="306" stroke="var(--cream-dim)" stroke-width="1.5"/>
-      <line x1="96" y1="306" x2="678" y2="306" stroke="var(--cream-dim)" stroke-width="1.5"/>
-      <text x="678" y="296" class="ax" text-anchor="end">Time</text>
-      <text x="678" y="311" class="axs" text-anchor="end">(sec)</text>
+      <line x1="96" y1="306" x2="664" y2="306" stroke="var(--cream-dim)" stroke-width="1.5"/>
+      <text x="674" y="302" class="ax">Time</text>
+      <text x="674" y="318" class="axs">(sec)</text>
       <text x="30" y="177" class="ax" text-anchor="middle" transform="rotate(-90 30 177)">Paw (cmH2O)</text>
     
-      <!-- ===== LEADER ELBOWS. One path each, so the corner is a real join and the dashes carry round it
-               instead of two separate lines that only happen to cross. ===== -->
-      <path class="lead" d="M 246 316 L 246 62 L 468 62"/>
-      <path class="lead" d="M 400 316 L 400 124 L 468 124"/>
-      <path class="lead" d="M 300 124 L 400 124"/>
+      <!-- ===== LEADER ELBOWS. One path each, so the corner is a real join and the dash pattern carries round it
+               rather than two lines that only cross. Each runs from a point ON THE TRACE. ===== -->
+      <path class="lead" d="M 246 316 L 246 62 L 470 62"/>
+      <path class="lead" d="M 400 316 L 400 124 L 470 124"/>
       <path class="lead" d="M 534 316 L 534 286"/>
       <path class="lead" d="M 600 316 L 600 286"/>
+      <path class="lead" d="M 96 288 L 618 288"/>
     
       <!-- ===== THE TRACE ===== -->
       <path d="M 96.0 288.0 L 99.41 285.98 L 102.82 283.52 L 106.23 280.65 L 109.64 277.39 L 113.05 273.75 L 116.45 269.76 L 119.86 265.44 L 123.27 260.82 L 126.68 255.9 L 130.09 250.71 L 133.5 245.27 L 136.91 239.61 L 140.32 233.74 L 143.73 227.68 L 147.14 221.46 L 150.55 215.09 L 153.95 208.6 L 157.36 202.0 L 160.77 195.32 L 164.18 188.58 L 167.59 181.8 L 171.0 175.0 L 174.41 168.2 L 177.82 161.42 L 181.23 154.68 L 184.64 148.0 L 188.05 141.4 L 191.45 134.91 L 194.86 128.54 L 198.27 122.32 L 201.68 116.26 L 205.09 110.39 L 208.5 104.73 L 211.91 99.29 L 215.32 94.1 L 218.73 89.18 L 222.14 84.56 L 225.55 80.24 L 228.95 76.25 L 232.36 72.61 L 235.77 69.35 L 239.18 66.48 L 242.59 64.02 L 246.0 62.0 L 249.0 68.7 L 252.0 75.01 L 255.0 80.94 L 258.0 86.49 L 261.0 91.66 L 264.0 96.44 L 267.0 100.85 L 270.0 104.86 L 273.0 108.5 L 276.0 111.75 L 279.0 114.62 L 282.0 117.11 L 285.0 119.22 L 288.0 120.94 L 291.0 122.28 L 294.0 123.23 L 297.0 123.81 L 300.0 124.0 L 307.14 124.36 L 314.29 124.71 L 321.43 125.07 L 328.57 125.43 L 335.71 125.79 L 342.86 126.14 L 350.0 126.5 L 357.14 126.86 L 364.29 127.21 L 371.43 127.57 L 378.57 127.93 L 385.71 128.29 L 392.86 128.64 L 400.0 129.0 L 402.91 140.33 L 405.83 150.85 L 408.74 160.62 L 411.65 169.7 L 414.57 178.13 L 417.48 185.95 L 420.39 193.22 L 423.3 199.98 L 426.22 206.25 L 429.13 212.07 L 432.04 217.48 L 434.96 222.51 L 437.87 227.17 L 440.78 231.51 L 443.7 235.53 L 446.61 239.27 L 449.52 242.74 L 452.43 245.97 L 455.35 248.96 L 458.26 251.74 L 461.17 254.33 L 464.09 256.73 L 467.0 258.95 L 469.91 261.02 L 472.83 262.94 L 475.74 264.73 L 478.65 266.39 L 481.57 267.93 L 484.48 269.36 L 487.39 270.69 L 490.3 271.92 L 493.22 273.07 L 496.13 274.13 L 499.04 275.12 L 501.96 276.04 L 504.87 276.89 L 507.78 277.68 L 510.7 278.41 L 513.61 279.1 L 516.52 279.73 L 519.43 280.32 L 522.35 280.87 L 525.26 281.38 L 528.17 281.85 L 531.09 282.29 L 534.0 282.69 L 600 288.0 L 603.0 281.93 L 606.0 273.1 L 609.0 261.88 L 612.0 248.69 L 615.0 233.91 L 618.0 217.95 L 621.0 201.19 L 624.0 184.04 L 627.0 166.89 L 630.0 150.13 L 633.0 134.17 L 636.0 119.39 L 639.0 106.2 L 642.0 94.98 L 645.0 86.15 L 648.0 80.08" fill="none" stroke="var(--amber)" stroke-width="2.6"
             stroke-linejoin="round" stroke-linecap="round"/>
     
-      <!-- ===== PRESSURE LABELS, each on an elbow that points back at its own level ===== -->
-      <path class="pt" d="M 556 62  L 476 62"  marker-end="url(#wfC)"/>
-      <path class="pt" d="M 556 124 L 476 124" marker-end="url(#wfC)"/>
-      <text x="564" y="62"  class="lbl" dy="4">Peak pressure</text>
-      <text x="564" y="124" class="lbl" dy="4">Plateau pressure</text>
+      <text x="478" y="62"  class="lbl" dy="4">Peak pressure</text>
+      <text x="478" y="124" class="lbl" dy="4">Plateau pressure</text>
     
-      <!-- RESISTIVE: the span between peak and plateau, with an elbow pointing left into it -->
-      <path class="brk" d="M 700 62 L 700 124" marker-start="url(#wfC)" marker-end="url(#wfC)"/>
-      <path class="pt"  d="M 700 93 L 700 93 M 698 93 L 660 93" marker-end="url(#wfC)"/>
-      <text x="706" y="86"  class="lbl2">Resistive</text>
-      <text x="706" y="102" class="lbl2">pressure</text>
+      <!-- ===== THE TWO COMPONENTS, as brackets with elbowed arms.
+               Peak minus plateau is the RESISTIVE pressure: it dissipates the moment flow stops.
+               Plateau minus PEEP is the ELASTIC pressure, the driving pressure actually distending the lung.
+               Each arm bends out of the spine and points at the exact level it refers to. ===== -->
+      <path class="brk" d="M 626 62  L 700 62  L 700 124" marker-start="url(#wfC)"/>
+      <path class="brk" d="M 626 124 L 700 124"           marker-start="url(#wfC)"/>
+      <text x="708" y="86"  class="lbl2">Resistive</text>
+      <text x="708" y="102" class="lbl2">pressure</text>
     
-      <!-- ELASTIC: plateau down to baseline, same treatment -->
-      <path class="brk" d="M 700 132 L 700 288" marker-start="url(#wfC)" marker-end="url(#wfC)"/>
-      <path class="pt"  d="M 698 210 L 660 210" marker-end="url(#wfC)"/>
-      <text x="706" y="202" class="lbl2">Elastic</text>
-      <text x="706" y="218" class="lbl2">pressure</text>
+      <path class="brk" d="M 626 132 L 700 132 L 700 288" marker-start="url(#wfC)"/>
+      <path class="brk" d="M 626 288 L 700 288"           marker-start="url(#wfC)"/>
+      <text x="708" y="202" class="lbl2">Elastic</text>
+      <text x="708" y="218" class="lbl2">pressure</text>
     
-      <!-- ===== PHASE BANDS. Each boundary carries an upward arrow to the axis, so the band is tied to an
-               exact instant on the trace rather than floating under it. ===== -->
-      <g class="up">
-        <path d="M 96 328 L 96 310"  marker-end="url(#wfA)"/>
-        <path d="M 246 328 L 246 310" marker-end="url(#wfA)"/>
-        <path d="M 400 328 L 400 310" marker-end="url(#wfA)"/>
-        <path d="M 534 328 L 534 310" marker-end="url(#wfA)"/>
-        <path d="M 600 328 L 600 310" marker-end="url(#wfA)"/>
-      </g>
+      <!-- ===== PHASE BANDS ===== -->
       <g class="ph">
-        <path d="M 96 336 L 246 336"  marker-start="url(#wfA)" marker-end="url(#wfA)"/>
-        <path d="M 246 336 L 400 336" marker-start="url(#wfA)" marker-end="url(#wfA)"/>
-        <path d="M 400 336 L 534 336" marker-start="url(#wfA)" marker-end="url(#wfA)"/>
-        <path d="M 534 336 L 600 336" marker-start="url(#wfA)" marker-end="url(#wfA)"/>
+        <path d="M 96 332 L 246 332"  marker-start="url(#wfA)" marker-end="url(#wfA)"/>
+        <path d="M 246 332 L 400 332" marker-start="url(#wfA)" marker-end="url(#wfA)"/>
+        <path d="M 400 332 L 534 332" marker-start="url(#wfA)" marker-end="url(#wfA)"/>
+        <path d="M 534 332 L 600 332" marker-start="url(#wfA)" marker-end="url(#wfA)"/>
       </g>
-      <text x="171" y="356" class="phl" text-anchor="middle">Inspiratory</text>
-      <text x="171" y="372" class="phl" text-anchor="middle">flow time</text>
-      <text x="323" y="356" class="phl" text-anchor="middle">Inspiratory</text>
-      <text x="323" y="372" class="phl" text-anchor="middle">pause</text>
-      <text x="467" y="356" class="phl" text-anchor="middle">Expiratory</text>
-      <text x="467" y="372" class="phl" text-anchor="middle">flow time</text>
-      <text x="567" y="356" class="phl" text-anchor="middle">Expiratory</text>
-      <text x="567" y="372" class="phl" text-anchor="middle">pause</text>
+      <text x="171" y="352" class="phl" text-anchor="middle">Inspiratory</text>
+      <text x="171" y="368" class="phl" text-anchor="middle">flow time</text>
+      <text x="323" y="352" class="phl" text-anchor="middle">Inspiratory</text>
+      <text x="323" y="368" class="phl" text-anchor="middle">pause</text>
+      <text x="467" y="352" class="phl" text-anchor="middle">Expiratory</text>
+      <text x="467" y="368" class="phl" text-anchor="middle">flow time</text>
+      <text x="567" y="352" class="phl" text-anchor="middle">Expiratory</text>
+      <text x="567" y="368" class="phl" text-anchor="middle">pause</text>
     
-      <!-- ===== INSPIRATORY / EXPIRATORY TIME ===== -->
-      <g class="up2">
-        <path d="M 96 400 L 96 384"  marker-end="url(#wfC)"/>
-        <path d="M 400 400 L 400 384" marker-end="url(#wfC)"/>
-        <path d="M 600 400 L 600 384" marker-end="url(#wfC)"/>
-      </g>
+      <!-- ===== GROUPED TIMES. Elbowed risers at each end so the bracket is tied to the boundary above it. ===== -->
       <g class="ph2">
-        <path d="M 96 408 L 400 408"  marker-start="url(#wfC)" marker-end="url(#wfC)"/>
-        <path d="M 400 408 L 600 408" marker-start="url(#wfC)" marker-end="url(#wfC)"/>
+        <path d="M 96 388 L 96 400 L 400 400 L 400 388"  marker-start="url(#wfC)" marker-end="url(#wfC)"/>
+        <path d="M 400 400 L 600 400 L 600 388"          marker-end="url(#wfC)"/>
       </g>
-      <text x="248" y="428" class="phl2" text-anchor="middle">Inspiratory time</text>
-      <text x="500" y="428" class="phl2" text-anchor="middle">Expiratory time</text>
+      <text x="248" y="420" class="phl2" text-anchor="middle">Inspiratory time</text>
+      <text x="500" y="420" class="phl2" text-anchor="middle">Expiratory time</text>
     
-      <!-- ===== TOTAL CYCLE ===== -->
-      <g class="up2">
-        <path d="M 96 464 L 96 440"  marker-end="url(#wfC)"/>
-        <path d="M 600 464 L 600 440" marker-end="url(#wfC)"/>
-      </g>
       <g class="ph2">
-        <path d="M 96 472 L 600 472" marker-start="url(#wfC)" marker-end="url(#wfC)"/>
+        <path d="M 96 440 L 96 452 L 600 452 L 600 440" marker-start="url(#wfC)" marker-end="url(#wfC)"/>
       </g>
-      <text x="348" y="492" class="phl2" text-anchor="middle">Total cycle time (ventilatory period)</text>
+      <text x="348" y="472" class="phl2" text-anchor="middle">Total cycle time (ventilatory period)</text>
     </svg>
     <figcaption>Airway pressure through one ventilatory period</figcaption>
   </figure>
 
+  <h3>This shape only means anything under constant flow</h3>
+  <p>Everything below assumes a volume-targeted breath with a square flow waveform and an inspiratory pause. That is what separates the curve into readable parts. Under variable flow, in a pressure-targeted mode, the pressure trace is close to uninformative: the machine holds pressure at what you set, so the shape tells you about the machine rather than the lung. Without a pause you never see a plateau at all, and the two most useful numbers on the curve collapse into one.</p>
+
   <h3>Peak, plateau, and the gap between them</h3>
-  <p><b>Peak pressure</b> is the highest pressure in the circuit, reached while gas is still moving. It contains two things at once: the pressure needed to push gas through the tube and airways, and the pressure needed to distend the lung.</p>
-  <p><b>Plateau pressure</b> is what is left once flow stops during the inspiratory pause. Nothing is moving, so the resistive part has dissipated and what remains is the pressure actually stretching the alveoli. <b>Plateau is the number that barotraumatises a lung, not peak.</b></p>
+  <p><b>Peak pressure</b> is the highest pressure in the circuit, reached while gas is still moving. It is the sum of two things: the pressure spent pushing gas through the tube and airways, and the pressure spent distending the lung.</p>
+  <p><b>Plateau pressure</b> is what is left once flow stops during the pause. With no flow there is no resistive work, so what remains is the pressure actually stretching the alveoli. <b>Plateau is the number that barotraumatises a lung, not peak.</b></p>
+  <div class="scroll">
+  <table class="t">
+    <thead><tr><th>Quantity</th><th>Is</th><th>Tells you about</th></tr></thead>
+    <tbody>
+      <tr><td>Peak</td><td class="mono">resistive + plateau</td><td>Everything at once. On its own it cannot say which</td></tr>
+      <tr><td>Peak minus plateau</td><td class="mono">resistive pressure</td><td>The tube and the airways</td></tr>
+      <tr><td>Plateau minus PEEP</td><td class="mono">elastic, driving pressure</td><td>The lung itself</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Real thresholds worth carrying: a peak-to-plateau gap over <b>5 cmH2O</b> means the extra pressure is resistive, and a gap over <b>10 cmH2O</b> points at a kinked or secretion-plugged tube, an intraluminal mass, or bronchospasm. A peak above roughly 25 cmH2O is itself reason enough to stop and measure a plateau.</p>
+  <p>Two smaller things the trace will tell you if you look. A <b>negative dip at the very start</b> of the rise means the casualty triggered that breath; no dip means the machine did. And the plateau is never perfectly flat, it <b>drifts downward</b> through the pause, because lung tissue stress-relaxes, lung units with different time constants keep exchanging gas between themselves, a little gas is absorbed, and no circuit is truly leak-free.</p>
   <div class="scroll">
   <table class="t">
     <thead><tr><th>What moved</th><th>Reading</th><th>What it means</th></tr></thead>
@@ -323,7 +319,7 @@
     </tbody>
   </table>
   </div>
-  <p>The two labelled brackets are the same split read off the trace directly. <b>Resistive pressure</b> is the drop from peak to plateau. <b>Elastic pressure</b> is plateau down to baseline, the pressure held against the lung's own recoil.</p>
+  <p>The two brackets on the figure are that same split read straight off the trace. <b>Resistive pressure</b> is the step from peak down to plateau. <b>Elastic pressure</b> is plateau down to baseline, which is the driving pressure and the one that matters for lung injury.</p>
 
   <h3>The four phases</h3>
   <p>Inspiratory time is flow plus pause. Expiratory time is flow plus pause. Together they are the ventilatory period, and the ratio between them is what you set as {{ie-ratio|I:E}}.</p>

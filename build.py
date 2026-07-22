@@ -78,6 +78,19 @@ try{{if(localStorage.getItem('pillarNight')==='1'){{document.documentElement.cla
 </script>
 </head>
 <body>
+<header class="mbar" id="mbar">
+  <button type="button" class="mbar-burger" id="navBtn" aria-label="Open navigation" aria-expanded="false" aria-controls="sideNav">
+    <span></span><span></span><span></span>
+  </button>
+  <a class="mbar-home" href="index.html">ACM Extended</a>
+  <button type="button" class="mbar-search" id="mSearch" aria-label="Search">
+    <svg viewBox="0 0 20 20" width="17" height="17" aria-hidden="true">
+      <circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M12.8 12.8 L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+  </button>
+</header>
+<div class="nav-scrim" id="navScrim"></div>
 <div class="tb-veil" id="veil"></div>
 <div class="shell">
 """
@@ -295,6 +308,45 @@ var IDX={index};
   q.addEventListener('keydown',function(ev){{ if(ev.key==='Escape') dismiss(); }});
 
   }})();
+
+/* ---- MOBILE NAV DRAWER -------------------------------------------------------------------------
+   Off canvas below the breakpoint. Everything that opens it also closes it, because a drawer you can
+   only dismiss one way is a trap on a phone: the hamburger toggles, the scrim closes, Escape closes,
+   and following any link closes so you never land on the new page with the nav still over it. */
+(function(){{
+  var btn=document.getElementById('navBtn'),
+      scr=document.getElementById('navScrim'),
+      side=document.getElementById('sideNav'),
+      msearch=document.getElementById('mSearch');
+  if(!btn||!side) return;
+  var lastFocus=null;
+  function setOpen(on){{
+    document.body.classList.toggle('nav-open',on);
+    btn.setAttribute('aria-expanded',on?'true':'false');
+    if(on){{ lastFocus=document.activeElement; }}
+    else if(lastFocus&&lastFocus.focus){{ lastFocus.focus(); }}
+  }}
+  btn.addEventListener('click',function(){{ setOpen(!document.body.classList.contains('nav-open')); }});
+  if(scr) scr.addEventListener('click',function(){{ setOpen(false); }});
+  document.addEventListener('keydown',function(ev){{ if(ev.key==='Escape') setOpen(false); }});
+  /* Any nav link closes it. Same page anchors would otherwise leave the drawer covering the section
+     it just scrolled to. */
+  side.addEventListener('click',function(ev){{
+    if(ev.target.closest&&ev.target.closest('a')) setOpen(false);
+  }});
+  /* The search button opens the drawer and puts the cursor in the field, so search is one tap from
+     the top bar rather than hidden behind the menu. */
+  if(msearch) msearch.addEventListener('click',function(){{
+    setOpen(true);
+    var q=document.getElementById('q');
+    if(q) setTimeout(function(){{ q.focus(); }},280);
+  }});
+  /* Rotating to a wide screen must not leave the body locked from a drawer that no longer exists. */
+  var mq=window.matchMedia('(min-width:820px)');
+  function sync(){{ if(mq.matches) setOpen(false); }}
+  if(mq.addEventListener) mq.addEventListener('change',sync); else if(mq.addListener) mq.addListener(sync);
+}})();
+
 </script>
 </body>
 </html>
@@ -418,7 +470,7 @@ def page_sections(body):
 def sidebar(current, sections=()):
     """Sidebar nav, with the sections of the current page nested under its own link. Search sits at
     the top. Sub links are same page anchors, so following one never reloads."""
-    out = ['<aside class="side">',
+    out = ['<aside class="side" id="sideNav">',
            '  <div class="side-head">',
            '    <a class="brand" href="index.html"><img src="img/pillar_mark.png" alt="PILLAR"></a>',
            f'    <div class="ver">ACM Extended // v{VERSION}</div>',
