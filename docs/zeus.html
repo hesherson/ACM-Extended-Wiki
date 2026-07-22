@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
 <title>ACM Extended Wiki | Zeus modules</title>
 <link rel="icon" type="image/png" href="img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,25 +13,45 @@
 /* PILLAR GUIDE. One stylesheet, inlined into every page at build time.
    Edit here, run build.py, every page updates. */
 :root{
-  --navy:#0B1530; --navy-2:#131F42; --red:#BE1818;
-  --cream:#F0E7D2; --cream-dim:#C0B7A2;
-  --green:#3B8F4A; --amber:#D9A441; --amber-dim:#B8862F; --bad-ink:#F08A8A;
+  --navy:#12182A; --navy-2:#1D2440; --red:#BE1818;
+  --cream:#F6EEDA; --cream-dim:#CCBF9C; --body-ink:#E9DBB0;
+  --green:#3B8F4A; --amber:#E5B655; --amber-dim:#C89A3C; --bad-ink:#F08A8A;
   --rule:rgba(237,227,204,.16); --rule-2:rgba(237,227,204,.30);
   --sidebar:280px;
+
+  /* Channels rather than finished colours, so night mode can restate them once instead of
+     chasing every rgba() through the sheet. --fill is any neutral wash (bar tracks, hovers),
+     --scrim is anything painted over the page (veils, drop shadows), --surface-key is the one
+     settings cell that gets lifted out of the grid. */
+  --amber-rgb:229,182,85;
+  --fill-rgb:240,231,210;
+  --scrim-rgb:6,11,26;
+  --surface-key:#16213F;
+  --sub-ink:rgba(204,191,156,.78);
+}
+
+/* ---- Night. Backgrounds only: pure black and greys. Text keeps the warmth it has in daylight,
+   which is the whole point of running it warm in the first place. ---- */
+html.night{
+  --navy:#000000; --navy-2:#121212;
+  --rule:rgba(255,255,255,.13); --rule-2:rgba(255,255,255,.24);
+  --fill-rgb:255,255,255;
+  --scrim-rgb:0,0,0;
+  --surface-key:#1C1C1C;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
 body{
-  background:var(--navy);color:var(--cream);
+  background:var(--navy);color:var(--body-ink);
   font-family:"Instrument Sans",system-ui,sans-serif;
-  font-size:16px;line-height:1.55;font-variant-numeric:tabular-nums;
+  font-size:16px;line-height:1.62;font-variant-numeric:tabular-nums;
   -webkit-font-smoothing:antialiased;
 }
 
 /* ---- Shell. Sidebar on desktop, stacked on mobile ---- */
 .shell{display:block}
 .side{
-  background:var(--navy-2);border-bottom:2px solid var(--red);
+  background:var(--navy-2);border-bottom:2px solid var(--amber);
   padding:22px 18px 18px;
 }
 /* Below the breakpoint the sidebar stacks above the content. Nav collapses to a wrapped row so it reads
@@ -39,7 +60,7 @@ body{
   .nav{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
   .nav .grp{width:100%;margin:10px 0 2px}
   .nav a{border-left:none;border:1px solid var(--rule);border-radius:3px;padding:6px 10px;font-size:13.5px}
-  .nav a.on{border-color:var(--red)}
+  .nav a.on{border-color:var(--amber)}
   .tb-res{width:min(420px,92vw)}
 }
 .side .brand{display:block;line-height:0}
@@ -62,12 +83,51 @@ body{
   padding:6px 10px;border-left:2px solid transparent;border-radius:0 3px 3px 0;
   font-size:14.5px;
 }
-.nav a:hover{color:var(--cream);background:rgba(237,227,204,.05)}
-.nav a.on{color:var(--cream);border-left-color:var(--red);background:rgba(190,24,24,.10)}
+.nav a:hover{color:var(--cream);background:rgba(var(--fill-rgb),.05)}
+.nav a.on{color:var(--cream);border-left-color:var(--amber);background:rgba(var(--amber-rgb),.11)}
+
+/* Sections of the page currently open, nested under its link. The left borders butt together into one
+   continuous rail, and the segment beside the section in view turns amber. */
+.nav .subnav{margin:3px 0 8px 11px}
+.nav .subnav a{
+  padding:5px 10px 5px 13px;font-size:13px;line-height:1.35;
+  color:var(--sub-ink);background:none;
+  border-left:2px solid var(--rule-2);border-radius:0;
+}
+.nav .subnav a:hover{
+  color:var(--cream);background:rgba(var(--fill-rgb),.04);border-left-color:var(--cream-dim);
+}
+.nav .subnav a.on{color:var(--cream);border-left-color:var(--amber);background:none}
+
+/* ---- Night mode switch, foot of the sidebar ---- */
+.nightbtn{
+  display:flex;align-items:center;gap:10px;width:100%;
+  margin-top:26px;padding:13px 10px 4px;
+  background:none;border:none;border-top:1px solid var(--rule);
+  color:var(--cream-dim);cursor:pointer;text-align:left;
+  transition:color .15s ease;
+}
+.nightbtn:hover{color:var(--cream)}
+.nb-lab{
+  font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+}
+.nb-sw{
+  margin-left:auto;flex:none;position:relative;
+  width:32px;height:17px;border-radius:9px;
+  background:rgba(var(--fill-rgb),.10);border:1px solid var(--rule-2);
+  transition:background .18s ease,border-color .18s ease;
+}
+.nb-sw i{
+  position:absolute;top:2px;left:2px;width:11px;height:11px;border-radius:50%;
+  background:var(--cream-dim);
+  transition:transform .18s cubic-bezier(.2,.8,.3,1),background .18s ease;
+}
+.nightbtn[aria-pressed="true"] .nb-sw{background:rgba(var(--amber-rgb),.26);border-color:var(--amber)}
+.nightbtn[aria-pressed="true"] .nb-sw i{transform:translateX(15px);background:var(--amber)}
+@media print{ .nightbtn{display:none} }
 
 .main{
   padding:26px 18px 90px;max-width:820px;margin:0 auto;
-  animation:pageIn .34s cubic-bezier(.2,.8,.3,1) both;
 }
 
 @media (min-width:820px){
@@ -226,7 +286,7 @@ footer .brand{color:var(--cream)}
 
 /* ---- Print. A laminated card still beats a phone ---- */
 @media print{
-  body{background:#fff;color:#000}
+  html,body{background:#fff;color:#000}
   .side,.nav{display:none}
   .main{max-width:none;padding:0}
   .card,.principle,details.dd{border-color:#999;background:#fff}
@@ -267,7 +327,7 @@ footer .brand{color:var(--cream)}
 /* The veil is purely visual. It is pointer-events:none unless .on, and a stuck .on would lock the page,
    so the script clears it on pageshow as well as on dismiss. */
 .tb-veil{
-  position:fixed;inset:0;z-index:50;background:rgba(6,11,26,.66);
+  position:fixed;inset:0;z-index:50;background:rgba(var(--scrim-rgb),.66);
   opacity:0;pointer-events:none;transition:opacity .22s ease;
 }
 .tb-veil.on{opacity:1;pointer-events:auto}
@@ -281,7 +341,7 @@ footer .brand{color:var(--cream)}
   transition:border-color .2s ease,box-shadow .2s ease;
 }
 .tb-q::placeholder{color:var(--cream-dim)}
-.tb-q:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 3px rgba(190,24,24,.16)}
+.tb-q:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 3px rgba(var(--amber-rgb),.18)}
 .tb-res{
   position:absolute;left:0;top:calc(100% + 6px);width:min(420px,84vw);
   background:var(--navy-2);border:1px solid var(--rule-2);border-radius:3px;
@@ -291,31 +351,41 @@ footer .brand{color:var(--cream)}
 @keyframes tbIn{from{opacity:0;transform:translateY(-6px) scale(.98)}to{opacity:1;transform:none}}
 .tb-res a{display:block;padding:10px 13px;border-bottom:1px solid var(--rule);text-decoration:none;color:var(--cream)}
 .tb-res a:last-child{border-bottom:none}
-.tb-res a:hover{background:rgba(190,24,24,.12)}
+.tb-res a:hover{background:rgba(var(--amber-rgb),.12)}
 .tb-p{display:block;font-family:"Space Mono",monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber)}
 .tb-h{display:block;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:17px;text-transform:uppercase;letter-spacing:.02em;margin-top:2px}
 .tb-s{display:block;font-size:12.5px;color:var(--cream-dim);margin-top:3px;line-height:1.5}
 .tb-none{padding:12px 13px;color:var(--cream-dim);font-size:14px}
 
-/* ---- Entry animations. Pure CSS, so nothing can leave them half finished ---- */
-@keyframes pageIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-
-.nav a,.nav .grp{animation:navIn .32s cubic-bezier(.2,.8,.3,1) both;animation-delay:calc(var(--i,0) * 26ms)}
-@keyframes navIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
-
-@media (prefers-reduced-motion:reduce){
-  .main,.nav a,.nav .grp{animation:none}
-}
-
 /* ---- Glossary term button and popup ---- */
 button.gl{
-  font:inherit;color:var(--cream);background:none;border:none;padding:0;cursor:pointer;
-  border-bottom:1px dashed var(--red);
+  font:inherit;color:var(--cream);cursor:pointer;
+  background:rgba(var(--amber-rgb),.10);
+  border:1px solid rgba(var(--amber-rgb),.28);
+  border-radius:3px;
+  padding:0 5px;margin:0 1px;
+  line-height:1.35;display:inline;
+  transition:background .16s ease,border-color .16s ease,color .16s ease,box-shadow .16s ease;
 }
-button.gl:hover{color:#fff;border-bottom-style:solid}
+button.gl::after{
+  content:"";display:inline-block;width:3px;height:3px;border-radius:50%;
+  background:var(--amber);vertical-align:2px;margin-left:4px;opacity:.65;
+}
+button.gl:hover,button.gl:focus-visible{
+  background:rgba(var(--amber-rgb),.22);
+  border-color:rgba(var(--amber-rgb),.60);
+  color:#fff;outline:none;
+  box-shadow:0 0 0 2px rgba(var(--amber-rgb),.12);
+}
+button.gl:hover::after{opacity:1}
+button.gl.arming{
+  background:rgba(var(--amber-rgb),.30);
+  border-color:var(--amber);
+}
+
 .glpop{
   position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;
-  padding:20px;background:rgba(6,11,26,.72);
+  padding:20px;background:rgba(var(--scrim-rgb),.72);
   opacity:0;transition:opacity .18s ease;
 }
 /* A class rule with display:flex beats the browser's [hidden]{display:none}, which left this overlay
@@ -323,7 +393,7 @@ button.gl:hover{color:#fff;border-bottom-style:solid}
 .glpop[hidden]{display:none;pointer-events:none}
 .glpop.on{opacity:1}
 .glpop-in{
-  background:var(--navy-2);border:1px solid var(--rule-2);border-left:3px solid var(--red);
+  background:var(--navy-2);border:1px solid var(--rule-2);border-left:3px solid var(--amber);
   border-radius:3px;padding:20px 22px;max-width:440px;width:100%;
   transform:translateY(10px) scale(.97);transition:transform .18s cubic-bezier(.2,.8,.3,1);
 }
@@ -338,7 +408,7 @@ button.gl:hover{color:#fff;border-bottom-style:solid}
   text-transform:uppercase;background:none;border:1px solid var(--rule-2);color:var(--cream-dim);
   padding:7px 14px;border-radius:2px;cursor:pointer;
 }
-.glpop-x:hover{color:var(--cream);border-color:var(--red)}
+.glpop-x:hover{color:var(--cream);border-color:var(--amber)}
 
 /* ---- Glossary page ---- */
 .glist{display:flex;flex-direction:column;gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:3px}
@@ -348,7 +418,7 @@ button.gl:hover{color:#fff;border-bottom-style:solid}
   text-transform:uppercase;letter-spacing:.02em;
 }
 .gitem .gd{font-size:14.5px;color:var(--cream-dim);margin-top:4px}
-@media print{ .glpop{display:none} button.gl{border-bottom:none;color:#000} }
+@media print{ .glpop{display:none} button.gl{background:none;border:none;padding:0;color:#000} button.gl::after{display:none} }
 
 /* ---- Injury / entity card, ported from the standalone reference cards ---- */
 .icard{
@@ -371,11 +441,28 @@ button.gl:hover{color:#fff;border-bottom-style:solid}
 .bdg.recruit{color:var(--green);border-color:rgba(59,143,74,.5)}
 .bdg.fixed{color:var(--bad-ink);border-color:rgba(190,24,24,.5)}
 .bdg.warn{color:var(--amber);border-color:rgba(208,138,30,.5)}
+
+/* ---- Gate strip. A blocking step that has to be done before any setting below it applies.
+   Sits between the title and the settings so it is read first, which is the whole reason it is not
+   a cell inside the grid. Red is correct here: this is a contraindication, not emphasis. ---- */
+.icard .gate{
+  display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;
+  padding:9px 15px 10px;
+  background:rgba(190,24,24,.16);
+  border-left:3px solid var(--red);border-bottom:1px solid var(--rule);
+}
+.icard .gate .gk{
+  font-family:"Space Mono",monospace;font-size:9px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--bad-ink);flex:none;
+}
+.icard .gate .gv{
+  font-family:"Instrument Sans",system-ui,sans-serif;font-size:14px;font-weight:600;color:#fff;
+}
 .sgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--rule)}
 @media (min-width:560px){ .sgrid{grid-template-columns:repeat(4,1fr)} }
 .sgrid .s{background:var(--navy);padding:10px 12px}
 .sgrid .s.wide{grid-column:1 / -1}
-.sgrid .s.key{background:#0d1a3a}
+.sgrid .s.key{background:var(--surface-key)}
 .sgrid .s.key .sv{color:#fff}
 .sgrid .s.danger{background:rgba(190,24,24,.12)}
 .sgrid .sk{
@@ -400,7 +487,7 @@ button.gl:hover{color:#fff;border-bottom-style:solid}
   font-family:"Space Mono",monospace;font-size:11px;color:var(--cream-dim);
   width:74px;flex:none;
 }
-.rrow .bar{flex:1;height:9px;background:rgba(237,227,204,.07);border-radius:2px;overflow:hidden}
+.rrow .bar{flex:1;height:9px;background:rgba(var(--fill-rgb),.07);border-radius:2px;overflow:hidden}
 .rrow .bar i{display:block;height:100%;border-radius:2px}
 .rrow.is-good .bar i{background:var(--green)}
 .rrow.is-mid  .bar i{background:var(--amber)}
@@ -413,11 +500,11 @@ button.gl:hover{color:#fff;border-bottom-style:solid}
   font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.16em;
   text-transform:uppercase;color:var(--amber);margin-bottom:10px;
 }
-.tl-bar{position:relative;height:26px;background:rgba(237,227,204,.06);border-radius:2px;overflow:hidden}
+.tl-bar{position:relative;height:26px;background:rgba(var(--fill-rgb),.06);border-radius:2px;overflow:hidden}
 .tl-bar .seg{position:absolute;top:0;bottom:0}
 .tl-bar .on{background:rgba(208,138,30,.55)}
 .tl-bar .pk{background:rgba(59,143,74,.65)}
-.tl-bar .du{background:rgba(237,227,204,.13)}
+.tl-bar .du{background:rgba(var(--fill-rgb),.13)}
 .tl-key{
   display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;
   font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.06em;color:var(--cream-dim);
@@ -425,7 +512,7 @@ button.gl:hover{color:#fff;border-bottom-style:solid}
 .tl-key i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:-1px}
 .tl-key .k-on i{background:rgba(208,138,30,.55)}
 .tl-key .k-pk i{background:rgba(59,143,74,.65)}
-.tl-key .k-du i{background:rgba(237,227,204,.13)}
+.tl-key .k-du i{background:rgba(var(--fill-rgb),.13)}
 
 /* ---- Danger zone block ---- */
 .danger-zone{margin-top:52px;border:1px solid rgba(190,24,24,.45);border-radius:3px;overflow:hidden}
@@ -452,42 +539,104 @@ button.gl:hover{color:#fff;border-bottom-style:solid}
 }
 
 /* ---- Right hand contents rail ---- */
-.toc{display:none}
-@media (min-width:1180px){
-  .shell{grid-template-columns:var(--sidebar) minmax(0,1fr) 232px}
-  .toc{
-    display:block;position:sticky;top:0;align-self:start;
-    max-height:100vh;overflow-y:auto;
-    padding:48px 20px 60px 0;
-  }
-  .toc-h{
-    font-family:"Space Mono",monospace;font-size:9.5px;letter-spacing:.18em;
-    text-transform:uppercase;color:var(--amber);
-    padding-bottom:10px;margin-bottom:8px;border-bottom:1px solid var(--rule);
-  }
-  .toc nav{display:flex;flex-direction:column;gap:2px}
-  .toc a{
-    display:block;color:var(--cream-dim);text-decoration:none;font-size:13px;line-height:1.4;
-    padding:7px 10px;border-left:2px solid transparent;border-radius:0 3px 3px 0;
-    transition:color .18s ease,border-color .18s ease,background .18s ease,transform .18s ease;
-  }
-  .toc a:hover{color:var(--cream);background:rgba(240,231,210,.05)}
-  .toc a.on{
-    color:var(--cream);border-left-color:var(--amber);
-    background:rgba(217,164,65,.10);transform:translateX(2px);
-  }
-  .main{max-width:860px}
-}
-@media print{ .toc{display:none} }
+
 @media (min-width:1180px){
   .toc a.sub{
-    font-size:12px;padding:5px 10px 5px 20px;color:rgba(192,183,162,.78);
+    font-size:12px;padding:5px 10px 5px 20px;color:var(--sub-ink);
   }
   .toc a.sub.on{color:var(--cream)}
   .drug,.icard{scroll-margin-top:24px}
 }
 
+/* ---- Section bar. Opaque, sticky, collapses to a thin strip on scroll ---- */
+.secbar{
+  position:sticky;top:0;z-index:40;
+  background:var(--navy);                 /* fully opaque: nothing shows through it */
+  border-bottom:1px solid var(--rule);
+  margin:0 -18px 22px;padding:0 18px;
+  transition:box-shadow .2s ease;
+}
+.secbar.thin{box-shadow:0 6px 18px rgba(var(--scrim-rgb),.45)}
+.sb-in{position:relative}
+.sb-now{
+  display:flex;align-items:baseline;gap:10px;width:100%;
+  background:none;border:none;cursor:pointer;color:inherit;text-align:left;
+  padding:15px 0 13px;
+  transition:padding .22s cubic-bezier(.2,.8,.3,1);
+}
+.secbar.thin .sb-now{padding:8px 0 7px}
+.sb-lab{
+  font-family:"Space Mono",monospace;font-size:9.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--amber);flex:none;
+  opacity:1;max-width:120px;overflow:hidden;white-space:nowrap;
+  transition:opacity .22s ease,max-width .22s ease;
+}
+.secbar.thin .sb-lab{opacity:0;max-width:0}
+.sb-cur{
+  font-family:"Barlow Condensed",sans-serif;font-weight:700;
+  text-transform:uppercase;letter-spacing:.02em;color:var(--cream);
+  font-size:20px;line-height:1.1;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  transition:font-size .22s cubic-bezier(.2,.8,.3,1);
+}
+.secbar.thin .sb-cur{font-size:15px}
+.sb-caret{
+  margin-left:auto;flex:none;width:0;height:0;align-self:center;
+  border-left:5px solid transparent;border-right:5px solid transparent;
+  border-top:5px solid var(--amber);
+  transition:transform .2s ease;
+}
+.secbar.open .sb-caret{transform:rotate(180deg)}
+.sb-prog{height:2px;background:rgba(var(--fill-rgb),.08);border-radius:2px;overflow:hidden}
+.sb-prog i{display:block;height:100%;width:0;background:var(--amber);transition:width .12s linear}
+
+.sb-list{
+  position:absolute;left:-18px;right:-18px;top:100%;
+  background:var(--navy-2);border:1px solid var(--rule-2);border-top:none;
+  max-height:60vh;overflow-y:auto;
+  box-shadow:0 18px 40px rgba(var(--scrim-rgb),.6);
+  display:flex;flex-direction:column;
+}
+/* Same trap as .glpop above: display:flex in a class rule outranks the browser's
+   [hidden]{display:none}, so the list sat open over the page and the toggle looked dead. */
+.sb-list[hidden]{display:none;pointer-events:none}
+.sb-list a{
+  display:block;color:var(--cream-dim);text-decoration:none;font-size:14px;
+  padding:9px 18px;border-left:2px solid transparent;
+  transition:color .15s ease,background .15s ease,border-color .15s ease;
+}
+.sb-list a:hover{color:var(--cream);background:rgba(var(--fill-rgb),.05)}
+.sb-list a.on{color:var(--cream);border-left-color:var(--amber);background:rgba(var(--amber-rgb),.11)}
+.sb-list a.sub{font-size:12.5px;padding-left:34px;color:var(--sub-ink)}
+.sb-list a.sub.on{color:var(--cream)}
+
+.sec{scroll-margin-top:96px}
+.drug,.icard{scroll-margin-top:96px}
+
+@media (min-width:820px){
+  .secbar{margin:0 -48px 26px;padding:0 48px}
+  .sb-list{left:-48px;right:-48px}
+  .sb-list a{padding-left:48px}
+  .sb-list a.sub{padding-left:66px}
+}
+@media (prefers-reduced-motion:reduce){
+  .sb-now,.sb-lab,.sb-cur,.sb-caret,.sb-prog i{transition:none}
+}
+@media print{ .secbar{display:none} }
+
+/* ---- Page navigation ----
+   Cross document view transitions were removed. The old content faded out over 340ms while the new
+   content faded in after an 80ms delay, so for a quarter of a second both were painted on top of each
+   other and the outgoing text then vanished. Painting html in the page colour is kept, because that is
+   what removes the white flash browsers show between loads, and it is a paint fix rather than motion. */
+html{background:var(--navy)}
+
 </style>
+<script>
+/* Runs before the body paints. Without this the page renders warm, then snaps to black once the
+   footer script gets to run, which is worse than having no night mode at all. */
+try{if(localStorage.getItem('pillarNight')==='1'){document.documentElement.className='night';}}catch(e){}
+</script>
 </head>
 <body>
 <div class="tb-veil" id="veil"></div>
@@ -502,34 +651,53 @@ button.gl:hover{color:#fff;border-bottom-style:solid}
     <div id="qr" class="tb-res" hidden></div>
   </div>
   <nav class="nav">
-    <div class="grp" style="--i:0">Overview</div>
-    <a class="" style="--i:1" href="index.html">Start here</a>
-    <div class="grp" style="--i:2">Systems</div>
-    <a class="" style="--i:3" href="ventilator.html">Ventilator</a>
-    <a class="" style="--i:4" href="oxygen.html">Oxygen delivery</a>
-    <a class="" style="--i:5" href="bleeding.html">Bleeding and shock</a>
-    <a class="" style="--i:6" href="airway.html">Airway and chest</a>
-    <a class="" style="--i:7" href="circulation.html">Arrest and Rhythms</a>
-    <a class="" style="--i:8" href="medications.html">Medications</a>
-    <a class="" style="--i:9" href="access.html">Access and blood</a>
-    <a class="" style="--i:10" href="tbi.html">Head injury</a>
-    <a class="" style="--i:11" href="flight.html">Flight and altitude</a>
-    <div class="grp" style="--i:12">Interface</div>
-    <a class="" style="--i:13" href="menu.html">Medical menu</a>
-    <a class="" style="--i:14" href="accessibility.html">Accessibility</a>
-    <div class="grp" style="--i:15">Reference</div>
-    <a class="" style="--i:16" href="overrides.html">Advanced Functions / Overrides</a>
-    <a class="" style="--i:17" href="glossary.html">Glossary</a>
-    <a class="" style="--i:18" href="settings.html">Settings reference</a>
-    <a class="on" style="--i:19" href="zeus.html">Zeus modules</a>
+    <div class="grp">Overview</div>
+    <a href="index.html">Start here</a>
+    <div class="grp">Systems</div>
+    <a href="ventilator.html">Ventilator</a>
+    <a href="oxygen.html">Oxygen delivery</a>
+    <a href="bleeding.html">Bleeding and shock</a>
+    <a href="airway.html">Airway and chest</a>
+    <a href="circulation.html">Arrest and Rhythms</a>
+    <a href="medications.html">Medications</a>
+    <a href="access.html">Access and blood</a>
+    <a href="tbi.html">Head injury</a>
+    <a href="flight.html">Flight and altitude</a>
+    <div class="grp">Interface</div>
+    <a href="menu.html">Medical menu</a>
+    <a href="accessibility.html">Accessibility</a>
+    <div class="grp">Reference</div>
+    <a href="overrides.html">Advanced Functions / Overrides</a>
+    <a href="glossary.html">Glossary</a>
+    <a href="settings.html">Settings reference</a>
+    <a class="on" href="zeus.html">Zeus modules</a>
+    <div class="subnav">
+      <a href="#injury-modules" data-s="injury-modules">Injury Modules</a>
+      <a href="#logistics-modules" data-s="logistics-modules">Logistics Modules</a>
+      <a href="#scenario-modules" data-s="scenario-modules">Scenario Modules</a>
+    </div>
   </nav>
+  <button type="button" class="nightbtn" id="nightBtn" aria-pressed="false">
+    <span class="nb-lab">Night mode</span>
+    <span class="nb-sw"><i></i></span>
+  </button>
 </aside>
 <main class="main">
-<aside class="toc"><div class="toc-h">On this page</div><nav>
-  <a href="#injury-modules" data-a="injury-modules">Injury Modules</a>
-  <a href="#logistics-modules" data-a="logistics-modules">Logistics Modules</a>
-  <a href="#scenario-modules" data-a="scenario-modules">Scenario Modules</a>
-</nav></aside>
+<div class="secbar" id="secbar">
+  <div class="sb-in">
+    <button type="button" class="sb-now" id="sbNow" aria-expanded="false">
+      <span class="sb-lab">On this page</span>
+      <span class="sb-cur" id="sbCur"></span>
+      <span class="sb-caret"></span>
+    </button>
+    <div class="sb-prog"><i id="sbProg"></i></div>
+  </div>
+  <nav class="sb-list" id="sbList" hidden>
+    <a href="#injury-modules" data-a="injury-modules">Injury Modules</a>
+    <a href="#logistics-modules" data-a="logistics-modules">Logistics Modules</a>
+    <a href="#scenario-modules" data-a="scenario-modules">Scenario Modules</a>
+  </nav>
+</div>
 <div class="eyebrow">PILLAR <span class="tag">//</span> REFERENCE</div>
 <h1>Zeus Modules</h1>
 <p class="lede">Everything an instructor needs to build a casualty on the fly, and to undo it afterwards.</p>
@@ -584,7 +752,7 @@ button.gl:hover{color:#fff;border-bottom-style:solid}
 </div>
 
 <footer>
-  <span class="brand">PILLAR</span> // ACM EXTENDED FIELD GUIDE // v0.9.873 // BUILT 2026-07-22
+  <span class="brand">PILLAR</span> // ACM EXTENDED FIELD GUIDE // v0.9.873 // BUILD 2026-07-22
 </footer>
 </main>
 </div>
@@ -610,9 +778,29 @@ var IDX=[{"p":"Start here","f":"index.html","a":"","h":"Start here","t":"PILLAR 
     pop.classList.remove('on');
     setTimeout(function(){pop.hidden=true;},180);
   }
+
+  // HOVER TO OPEN after a deliberate pause, so passing the cursor over a term does not fire it.
+  // Clicking still opens immediately. Touch devices never fire mouseenter, so they get the click path.
+  var hoverT=null, armed=null;
+  function clearArm(){
+    if(hoverT){ clearTimeout(hoverT); hoverT=null; }
+    if(armed){ armed.classList.remove('arming'); armed=null; }
+  }
+  document.addEventListener('mouseover',function(ev){
+    var b=ev.target.closest('.gl');
+    if(!b || b===armed) return;
+    clearArm();
+    armed=b; b.classList.add('arming');
+    hoverT=setTimeout(function(){ open(b.dataset.t); clearArm(); },1000);
+  });
+  document.addEventListener('mouseout',function(ev){
+    var b=ev.target.closest('.gl');
+    if(b && b===armed) clearArm();
+  });
+
   document.addEventListener('click',function(ev){
     var b=ev.target.closest('.gl');
-    if(b){ ev.preventDefault(); open(b.dataset.t); return; }
+    if(b){ ev.preventDefault(); clearArm(); open(b.dataset.t); return; }
     if(ev.target.closest('.glpop-x') || ev.target===pop) close();
   });
   document.addEventListener('keydown',function(ev){ if(ev.key==='Escape') close(); });
@@ -647,22 +835,94 @@ var IDX=[{"p":"Start here","f":"index.html","a":"","h":"Start here","t":"PILLAR 
     }).join('');
     qr.hidden=false;
   }
-  // Contents rail: highlight the section currently in view. Read-only, so nothing here can block the page.
-  var toc=document.querySelector('.toc');
-  if(toc){
-    var links=[].slice.call(toc.querySelectorAll('a'));
+  // SECTION BAR. Tracks which section is in view, fills a progress line, and collapses to a thin strip
+  // once the reader is past the top. Read-only apart from the toggle, so it cannot block the page.
+  var sb=document.getElementById('secbar');
+  if(sb){
+    var list=document.getElementById('sbList'), now=document.getElementById('sbNow');
+    var cur=document.getElementById('sbCur'), prog=document.getElementById('sbProg');
+    var links=[].slice.call(list.querySelectorAll('a'));
     var heads=links.map(function(a){ return document.getElementById(a.dataset.a); });
     var tick=false;
     function spy(){
-      var best=0, y=window.scrollY+140;
-      for(var i=0;i<heads.length;i++){ if(heads[i] && heads[i].offsetTop<=y) best=i; }
+      var y=window.scrollY, best=0;
+      for(var i=0;i<heads.length;i++){ if(heads[i] && heads[i].offsetTop<=y+120) best=i; }
       links.forEach(function(a,i){ a.classList.toggle('on', i===best); });
+      if(cur.textContent!==links[best].textContent) cur.textContent=links[best].textContent;
+      var doc=document.documentElement.scrollHeight-window.innerHeight;
+      prog.style.width=(doc>0 ? Math.min(100,(y/doc)*100) : 0)+'%';
+      sb.classList.toggle('thin', y>90);
       tick=false;
     }
     window.addEventListener('scroll',function(){
       if(!tick){ tick=true; requestAnimationFrame(spy); }
     },{passive:true});
+    now.addEventListener('click',function(){
+      var open=list.hidden;
+      list.hidden=!open;
+      now.setAttribute('aria-expanded', open?'true':'false');
+      sb.classList.toggle('open', open);
+    });
+    list.addEventListener('click',function(ev){
+      if(ev.target.tagName==='A'){
+        list.hidden=true; sb.classList.remove('open');
+        now.setAttribute('aria-expanded','false');
+      }
+    });
+    document.addEventListener('click',function(ev){
+      if(!ev.target.closest('.secbar') && !list.hidden){
+        list.hidden=true; sb.classList.remove('open');
+        now.setAttribute('aria-expanded','false');
+      }
+    });
+    // A page restored from the back/forward cache keeps the DOM as it was left, so a list
+    // left open would come back open. Same reason the search box is reset on pageshow.
+    function sbShut(){
+      list.hidden=true; sb.classList.remove('open');
+      now.setAttribute('aria-expanded','false');
+    }
+    window.addEventListener('pageshow',sbShut);
+    document.addEventListener('keydown',function(ev){
+      if(ev.key==='Escape' && !list.hidden) sbShut();
+    });
     spy();
+  }
+
+  // SIDEBAR SUBNAV. Marks which section of the current page is in view. Kept independent of the
+  // section bar above, so it still works on a page with too few headings to be given one.
+  var sn=document.querySelector('.subnav');
+  if(sn){
+    var sLinks=[].slice.call(sn.querySelectorAll('a'));
+    var sHeads=sLinks.map(function(a){ return document.getElementById(a.dataset.s); });
+    var sTick=false;
+    function sspy(){
+      var y=window.scrollY, best=0;
+      for(var i=0;i<sHeads.length;i++){ if(sHeads[i] && sHeads[i].offsetTop<=y+120) best=i; }
+      sLinks.forEach(function(a,i){ a.classList.toggle('on', i===best); });
+      sTick=false;
+    }
+    window.addEventListener('scroll',function(){
+      if(!sTick){ sTick=true; requestAnimationFrame(sspy); }
+    },{passive:true});
+    sspy();
+  }
+
+  // NIGHT MODE. Backgrounds only. The class is already on <html> from the head script if it was
+  // left on, so this just keeps the button in step and writes the choice back.
+  var nb=document.getElementById('nightBtn');
+  if(nb){
+    function nightSet(on){
+      document.documentElement.classList.toggle('night',on);
+      nb.setAttribute('aria-pressed',on?'true':'false');
+    }
+    nightSet(document.documentElement.classList.contains('night'));
+    nb.addEventListener('click',function(){
+      var on=!document.documentElement.classList.contains('night');
+      nightSet(on);
+      // Storage can be blocked entirely by browser settings. Losing the preference between pages is
+      // survivable, a thrown error that halts the rest of this script is not.
+      try{ localStorage.setItem('pillarNight',on?'1':'0'); }catch(e){}
+    });
   }
 
   var veil=document.getElementById('veil');
