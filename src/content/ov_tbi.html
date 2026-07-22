@@ -9,7 +9,7 @@
 </div>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">01</span><h2>Making ICP Observable</h2></div>
+  <div class="sec-head"><span class="sec-num">01</span><h2>Writing The ICP Signature Onto Vitals</h2></div>
   <p>ACM has no intracranial pressure model, so a head-injured casualty read the same as anyone else. ACM Extended writes a signature onto the patient's ACM and ACE vitals so the state is visible through heart rate, blood pressure cuff, saturation and respiratory rate rather than sitting behind a variable nobody can see.</p>
   <p>Everything scales with severity, with how much compensation reserve is left, and with herniation stage. It is phased, and the phases look different from each other on purpose.</p>
 
@@ -42,7 +42,7 @@
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">02</span><h2>Composing With Everything Else</h2></div>
+  <div class="sec-head"><span class="sec-num">02</span><h2>Delivering Cushing Through Resistance</h2></div>
   <p>The Cushing response is delivered as a contribution to systemic vascular resistance rather than as a blood pressure offset, for the same reason the pressors are: the blood pressure function is compiled final and unreachable.</p>
   <p>It is written as a MAP delta converted at the pressor scale, so it composes with the pressor term and with ACE's own computed resistance instead of fighting either. Raised pressure drives resistance up through the sympathetic response, and decompensated collapse drives it negative.</p>
 
@@ -57,7 +57,7 @@
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">03</span><h2>Clearing It</h2></div>
+  <div class="sec-head"><span class="sec-num">03</span><h2>Clearing TBI State</h2></div>
   <p>A Zeus module clears the TBI state outright, removing every variable it set rather than winding severity down to zero. Winding down leaves residual offsets attached to the casualty that show up later as vitals that will not quite normalise.</p>
   <div class="flags">
     <h3>Red Flags</h3>

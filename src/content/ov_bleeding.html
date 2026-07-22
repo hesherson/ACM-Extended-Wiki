@@ -9,7 +9,7 @@
 </div>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">01</span><h2>Blood Loss Multiplier</h2></div>
+  <div class="sec-head"><span class="sec-num">01</span><h2>MAP-Scaled Blood Loss Multiplier</h2></div>
   <p><b>ACE behaviour.</b> Blood loss per wound is a fixed rate determined by wound type and bandage state. Blood pressure has no effect on it at all. A casualty at a {{map|MAP}} of 40 and a casualty at 110 lose blood at exactly the same speed.</p>
   <p><b>Override.</b> Loss is multiplied by how hard the heart is pushing, referenced to a MAP of 70 so that target pressure reproduces stock behaviour exactly.</p>
   <table class="t">
@@ -44,7 +44,7 @@
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">02</span><h2>Clotting Quality</h2></div>
+  <div class="sec-head"><span class="sec-num">02</span><h2>Coagulation Multiplier: The Three Legs</h2></div>
   <p><b>ACE behaviour.</b> No {{coagulopathy}} model of any kind. Blood clots identically whatever the casualty's temperature or chemistry, so a cold, acidotic, calcium-depleted patient bandages up exactly like a warm healthy one.</p>
   <p><b>Override.</b> Three multiplying legs feed a single coagulation multiplier, which is read by the same blood loss hook as the pressure term above. They compound, which is the whole point of calling it a triad.</p>
   <table class="t">
@@ -84,7 +84,7 @@
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">03</span><h2>Where This Is Installed</h2></div>
+  <div class="sec-head"><span class="sec-num">03</span><h2>Install Point &amp; Verifying It Is Live</h2></div>
   <p>Both terms are read inside <code>ace_medical_status_fnc_getBloodVolumeChange</code>, replaced at compile time through <code>ACMI_overwrite_medical_status</code>. That function is not compiled final by ACM, so the replacement installs cleanly.</p>
   <p>The replacement sets <code>ACMI_infusion_getBloodVolumeChangePatched</code> on the unit each time it runs. If you are debugging and want to confirm the override is actually live rather than assuming it, read that variable: it holds the mission time of the last run.</p>
   <div class="flags">

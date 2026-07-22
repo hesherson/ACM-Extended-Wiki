@@ -1,75 +1,507 @@
 <div class="eyebrow">PILLAR <span class="tag">//</span> SYSTEMS</div>
-<h1>Access And Blood</h1>
-<p class="lede">Getting a line in, keeping blood cold, and what temperature costs you when you run it.</p>
+<h1>Access, Infusions<br>&amp; Blood</h1>
+<p class="lede">Everything that goes into a vein: the catheter, the rate it flows at, every infusion the addon carries with its safe and toxic bands, and the cold chain that decides whether the blood you hang helps or hurts.</p>
 <div class="rule"></div>
 
 <div class="principle">
   <div class="lab">The one thing</div>
-  <p><b>Cold blood is not the same product as warm blood.</b> It runs slower, it drops core temperature, and it feeds the same hypothermia that stops the casualty clotting. Warming it is worth the time it takes.</p>
+  <p><b>Bore sets the ceiling, the clamp sets the rate, the bag sets the concentration.</b> The same drug at the same gtt/min is a different dose out of a 100 mL bag than out of a 250 mL bag.</p>
 </div>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">01</span><h2>IV Access</h2></div>
-  <p>Establishing a line is a mini-game rather than a timer. You palpate for the vessel, feel for the dot, and stick when you have it.</p>
-  <div class="card">
-    <header><span class="name">What it tracks</span><span class="badge on">Per limb</span></header>
-    <div class="body">
-      <p>Catheter gauge and rotation, misses and the bruising they cause, which sites you have already used, cap state, and whether a band is on. Marks persist on the limb, so a casualty who has been stuck four times looks like it.</p>
-    </div>
-  </div>
-  <p>A band is required before you can {{cannulation|cannulate}}, and the native ACM insert actions are hidden so there is one route in rather than two.</p>
-
-  <details class="dd">
-    <summary><span class="dd-mark"></span><span class="dd-name">Why misses are tracked</span><span class="dd-tag">Consequence</span></summary>
-    <div class="dd-body">
-      <p>A failed cannulation costs a site. Bruise a vein and it is harder to use again, which is why a casualty who has been worked on badly is harder to work on than a fresh one.</p>
-      <p>This is also the argument for {{io|IO}}. When access is difficult, the drill is faster and more reliable than a fifth attempt at a vein you have already damaged, and the model rewards making that call early rather than after exhausting every site.</p>
-    </div>
-  </details>
-</section>
-
-<section class="sec">
-  <div class="sec-head"><span class="sec-num">02</span><h2>IO Access</h2></div>
-  <p>Faster and more reliable than a difficult IV, with one cost attached: pain on the fluid bolus rather than on insertion.</p>
-  <p>That timing is right. The drill going in is tolerable; the pressure of fluid entering the marrow space is what casualties actually complain about, and it is why lidocaine into an IO before running fluid is standard practice.</p>
-</section>
-
-<section class="sec">
-  <div class="sec-head"><span class="sec-num">03</span><h2>Cold Chain</h2></div>
-  <p>Blood exists in three states, and the state travels with the unit.</p>
+  <div class="sec-head"><span class="sec-num">01</span><h2>Vascular Access &amp; Catheter Gauge</h2></div>
+  <p>Flow through a cannula follows bore before anything else. Every access type resolves to a multiplier on a base rate of 4.1667 mL/s, which is roughly 250 mL per minute wide open.</p>
   <div class="scroll">
   <table class="t">
-    <thead><tr><th>State</th><th>Flow rate</th><th>Effect on casualty</th></tr></thead>
+    <thead><tr><th>Access</th><th>Multiplier</th><th>mL/s</th><th>mL/min</th><th>Use when</th></tr></thead>
     <tbody>
-      <tr><td>Warmed</td><td class="mono">1.1x</td><td>No temperature penalty</td></tr>
-      <tr><td>Normal</td><td class="mono">1.0x</td><td>No temperature penalty</td></tr>
-      <tr><td>Cold</td><td class="mono">0.65x</td><td>Drops core temperature</td></tr>
+      <tr><td>14G</td><td class="mono">1.50x</td><td class="mono">6.25</td><td class="mono">375</td><td>Massive transfusion, you have the vein</td></tr>
+      <tr><td>16G</td><td class="mono">1.00x</td><td class="mono">4.17</td><td class="mono">250</td><td>Reference. Standard trauma line</td></tr>
+      <tr><td>18G</td><td class="mono">0.55x</td><td class="mono">2.29</td><td class="mono">138</td><td>Realistic field line, poor veins</td></tr>
+      <tr><td>{{io|IO}} FAST1</td><td class="mono">0.65x</td><td class="mono">2.71</td><td class="mono">163</td><td>Sternal, no peripheral access</td></tr>
+      <tr><td>{{io|IO}} EZ</td><td class="mono">0.55x</td><td class="mono">2.29</td><td class="mono">138</td><td>Tibial or humeral, no peripheral access</td></tr>
     </tbody>
   </table>
   </div>
-  <p>The temperature drop is gated on the cold flag alone, so room temperature blood does not chill anybody. Cold blood runs at roughly two thirds the rate of warm, which matters when you are trying to move volume quickly.</p>
+  <p><b>Intraosseous is not the fast option.</b> It is fast to place and slow to infuse, because the marrow cavity resists flow. Both IO devices sit below a 16G peripheral. Reach for IO when you cannot get a vein, not when you need volume quickly into someone who has veins.</p>
+  <p>IO insertion carries a pain response on fluid bolus onset rather than on insertion, which is when it actually hurts in reality.</p>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">02</span><h2>Roller Clamp &amp; Gravity</h2></div>
+  <p>The clamp sets an <b>absolute</b> rate in mL/s for its access site, not a fraction of the wide-open gravity rate. It is then capped by the gauge, because no clamp position pushes more through a catheter than its bore allows.</p>
+  <div class="kv">
+    <div><span class="k">Base rate</span><span class="v">4.1667 mL/s</span></div>
+    <div><span class="k">Wide open</span><span class="v">~250 mL/min</span></div>
+    <div><span class="k">Drop factor</span><span class="v">60 gtt/mL</span></div>
+    <div><span class="k">Hang boost</span><span class="v">ceiling only</span></div>
+  </div>
+  <p>Raising the bag raises the hydrostatic column and lifts the <b>ceiling only</b>. A titrated drip running below that ceiling does not speed up, because gravity does not open a clamp. Height helps a wide-open line and does nothing to a throttled one.</p>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Infusion Reference</h2></div>
+  <p>Every infusion in the addon, with the drop rate, the delivered dose, the predicted serum level and the band that rate falls in. Read the bag column first: <b>the same gtt/min out of a different bag size is a different dose</b>, because the concentration changes with it.</p>
+  <div class="scroll">
+  <table class="t">
+    <thead><tr><th>Band</th><th>Means</th></tr></thead>
+    <tbody>
+      <tr><td><span class="bnd ok">Safe</span></td><td>Therapeutic. Run it here.</td></tr>
+      <tr><td><span class="bnd warn">CAUTION</span></td><td>Above therapeutic. Deliberate, time limited, watched.</td></tr>
+      <tr><td><span class="bnd bad">HIGH</span></td><td>Toxic serum level. Drug specific consequence follows.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>The ceiling band is named for what the drug actually does at that level, so it reads as a consequence rather than a severity word. Lidocaine seizes. Calcium arrests. Esmolol blocks. Amiodarone is simply toxic.</p>
 
   <details class="dd">
-    <summary><span class="dd-mark"></span><span class="dd-name">The cooler</span><span class="dd-tag">Virtual container</span></summary>
+    <summary><span class="dd-mark"></span><span class="dd-name">Amiodarone</span><span class="dd-tag">Antiarrhythmic</span></summary>
     <div class="dd-body">
-      <p>The cooler holds units in its own inventory and keeps them cold. Blood left inside thaws slowly at a fifth of the outside rate, so a cooler buys you time rather than holding the state forever.</p>
-      <p>Unloading forces the unit into your inventory rather than dropping it, which avoids losing a bag on the ground in the middle of a transfusion.</p>
+      <div class="kv">
+        <div><span class="k">Bag sizes</span><span class="v">100 mL / 250 mL</span></div>
+        <div><span class="k">Serum unit</span><span class="v">mg/L</span></div>
+        <div><span class="k">Ceiling band</span><span class="v">TOXIC</span></div>
+        <div><span class="k">Top safe rate</span><span class="v">238 gtt/min</span></div>
+      </div>
+      <div class="scroll">
+      <table class="t inf">
+        <thead><tr><th>Bag</th><th>Conc</th><th>gtt/min</th><th>mg/min</th><th>Serum (mg/L)</th><th>Band</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">100</td><td class="mono">1.5</td><td class="mono">45</td><td class="mono">6.75</td><td class="mono">1.12</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">1.5</td><td class="mono">95</td><td class="mono">14.25</td><td class="mono">2.38</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">1.5</td><td class="mono">120</td><td class="mono">18.00</td><td class="mono">3.00</td><td><span class="bnd warn">CAUTION</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">1.5</td><td class="mono">143</td><td class="mono">21.42</td><td class="mono">3.57</td><td><span class="bnd bad">TOXIC</span></td></tr>
+          <tr class="grp"><td class="mono">250</td><td class="mono">0.6</td><td class="mono">113</td><td class="mono">6.75</td><td class="mono">1.13</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">250</td><td class="mono">0.6</td><td class="mono">238</td><td class="mono">14.25</td><td class="mono">2.38</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">250</td><td class="mono">0.6</td><td class="mono">300</td><td class="mono">18.00</td><td class="mono">3.00</td><td><span class="bnd warn">CAUTION</span></td></tr>
+          <tr><td class="mono">250</td><td class="mono">0.6</td><td class="mono">357</td><td class="mono">21.42</td><td class="mono">3.57</td><td><span class="bnd bad">TOXIC</span></td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Calcium chloride</span><span class="dd-tag">Electrolyte</span></summary>
+    <div class="dd-body">
+      <div class="kv">
+        <div><span class="k">Bag sizes</span><span class="v">50 mL / 100 mL / 250 mL</span></div>
+        <div><span class="k">Serum unit</span><span class="v">mg/dL</span></div>
+        <div><span class="k">Ceiling band</span><span class="v">ARREST</span></div>
+        <div><span class="k">Top safe rate</span><span class="v">522 gtt/min</span></div>
+      </div>
+      <div class="scroll">
+      <table class="t inf">
+        <thead><tr><th>Bag</th><th>Conc</th><th>gtt/min</th><th>mg/min</th><th>Serum (mg/dL)</th><th>Band</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">50</td><td class="mono">20</td><td class="mono">49</td><td class="mono">98.90</td><td class="mono">0.45</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">50</td><td class="mono">20</td><td class="mono">104</td><td class="mono">208.79</td><td class="mono">0.95</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">50</td><td class="mono">20</td><td class="mono">275</td><td class="mono">549.45</td><td class="mono">2.50</td><td><span class="bnd warn">CAUTION</span></td></tr>
+          <tr><td class="mono">50</td><td class="mono">20</td><td class="mono">448</td><td class="mono">896.70</td><td class="mono">4.08</td><td><span class="bnd bad">ARREST</span></td></tr>
+          <tr class="grp"><td class="mono">100</td><td class="mono">10</td><td class="mono">99</td><td class="mono">98.90</td><td class="mono">0.45</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">10</td><td class="mono">209</td><td class="mono">208.79</td><td class="mono">0.95</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">10</td><td class="mono">549</td><td class="mono">549.45</td><td class="mono">2.50</td><td><span class="bnd warn">CAUTION</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">10</td><td class="mono">897</td><td class="mono">896.70</td><td class="mono">4.08</td><td><span class="bnd bad">ARREST</span></td></tr>
+          <tr class="grp"><td class="mono">250</td><td class="mono">4</td><td class="mono">247</td><td class="mono">98.90</td><td class="mono">0.45</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">250</td><td class="mono">4</td><td class="mono">522</td><td class="mono">208.79</td><td class="mono">0.95</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">250</td><td class="mono">4</td><td class="mono">1374</td><td class="mono">549.45</td><td class="mono">2.50</td><td><span class="bnd warn">CAUTION</span></td></tr>
+          <tr><td class="mono">250</td><td class="mono">4</td><td class="mono">2242</td><td class="mono">896.70</td><td class="mono">4.08</td><td><span class="bnd bad">ARREST</span></td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Calcium gluconate</span><span class="dd-tag">Electrolyte</span></summary>
+    <div class="dd-body">
+      <div class="kv">
+        <div><span class="k">Bag sizes</span><span class="v">100 mL / 250 mL</span></div>
+        <div><span class="k">Serum unit</span><span class="v">mg/dL</span></div>
+        <div><span class="k">Ceiling band</span><span class="v">ARREST</span></div>
+        <div><span class="k">Top safe rate</span><span class="v">511 gtt/min</span></div>
+      </div>
+      <div class="scroll">
+      <table class="t inf">
+        <thead><tr><th>Bag</th><th>Conc</th><th>gtt/min</th><th>mg/min</th><th>Serum (mg/dL)</th><th>Band</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">100</td><td class="mono">30</td><td class="mono">97</td><td class="mono">290.32</td><td class="mono">0.45</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">30</td><td class="mono">204</td><td class="mono">612.90</td><td class="mono">0.95</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">30</td><td class="mono">538</td><td class="mono">1612.90</td><td class="mono">2.50</td><td><span class="bnd warn">CAUTION</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">30</td><td class="mono">877</td><td class="mono">2632.26</td><td class="mono">4.08</td><td><span class="bnd bad">ARREST</span></td></tr>
+          <tr class="grp"><td class="mono">250</td><td class="mono">12</td><td class="mono">242</td><td class="mono">290.32</td><td class="mono">0.45</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">250</td><td class="mono">12</td><td class="mono">511</td><td class="mono">612.90</td><td class="mono">0.95</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">250</td><td class="mono">12</td><td class="mono">1344</td><td class="mono">1612.90</td><td class="mono">2.50</td><td><span class="bnd warn">CAUTION</span></td></tr>
+          <tr><td class="mono">250</td><td class="mono">12</td><td class="mono">2194</td><td class="mono">2632.26</td><td class="mono">4.08</td><td><span class="bnd bad">ARREST</span></td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Ceftriaxone</span><span class="dd-tag">Antibiotic</span></summary>
+    <div class="dd-body">
+      <div class="kv">
+        <div><span class="k">Bag sizes</span><span class="v">100 mL / 250 mL</span></div>
+        <div><span class="k">Serum unit</span><span class="v">mcg/mL</span></div>
+        <div><span class="k">Ceiling band</span><span class="v">HIGH</span></div>
+        <div><span class="k">Top safe rate</span><span class="v">53 gtt/min</span></div>
+      </div>
+      <div class="scroll">
+      <table class="t inf">
+        <thead><tr><th>Bag</th><th>Conc</th><th>gtt/min</th><th>mg/min</th><th>Serum (mcg/mL)</th><th>Band</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">100</td><td class="mono">10</td><td class="mono">10</td><td class="mono">10.12</td><td class="mono">67.50</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">10</td><td class="mono">21</td><td class="mono">21.37</td><td class="mono">142.50</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">10</td><td class="mono">34</td><td class="mono">33.75</td><td class="mono">225.00</td><td><span class="bnd warn">CAUTION</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">10</td><td class="mono">46</td><td class="mono">45.90</td><td class="mono">306.00</td><td><span class="bnd bad">HIGH</span></td></tr>
+          <tr class="grp"><td class="mono">250</td><td class="mono">4</td><td class="mono">25</td><td class="mono">10.12</td><td class="mono">67.50</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">250</td><td class="mono">4</td><td class="mono">53</td><td class="mono">21.38</td><td class="mono">142.50</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">250</td><td class="mono">4</td><td class="mono">84</td><td class="mono">33.75</td><td class="mono">225.00</td><td><span class="bnd warn">CAUTION</span></td></tr>
+          <tr><td class="mono">250</td><td class="mono">4</td><td class="mono">115</td><td class="mono">45.90</td><td class="mono">306.00</td><td><span class="bnd bad">HIGH</span></td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Epinephrine</span><span class="dd-tag">Vasopressor</span></summary>
+    <div class="dd-body">
+      <div class="kv">
+        <div><span class="k">Bag sizes</span><span class="v">100 mL / 250 mL</span></div>
+        <div><span class="k">Serum unit</span><span class="v">mcg/mL</span></div>
+        <div><span class="k">Ceiling band</span><span class="v">HIGH</span></div>
+        <div><span class="k">Top safe rate</span><span class="v">142 gtt/min</span></div>
+      </div>
+      <div class="scroll">
+      <table class="t inf">
+        <thead><tr><th>Bag</th><th>Conc</th><th>gtt/min</th><th>mg/min</th><th>Serum (mcg/mL)</th><th>Band</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">100</td><td class="mono">0.01</td><td class="mono">27</td><td class="mono">0.03</td><td class="mono">0.09</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">0.01</td><td class="mono">57</td><td class="mono">0.06</td><td class="mono">0.19</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">0.01</td><td class="mono">82</td><td class="mono">0.08</td><td class="mono">0.28</td><td><span class="bnd warn">CAUTION</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">0.01</td><td class="mono">107</td><td class="mono">0.11</td><td class="mono">0.36</td><td><span class="bnd bad">HIGH</span></td></tr>
+          <tr class="grp"><td class="mono">250</td><td class="mono">0.004</td><td class="mono">68</td><td class="mono">0.03</td><td class="mono">0.09</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">250</td><td class="mono">0.004</td><td class="mono">142</td><td class="mono">0.06</td><td class="mono">0.19</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">250</td><td class="mono">0.004</td><td class="mono">206</td><td class="mono">0.08</td><td class="mono">0.28</td><td><span class="bnd warn">CAUTION</span></td></tr>
+          <tr><td class="mono">250</td><td class="mono">0.004</td><td class="mono">268</td><td class="mono">0.11</td><td class="mono">0.36</td><td><span class="bnd bad">HIGH</span></td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Esmolol</span><span class="dd-tag">Beta blocker</span></summary>
+    <div class="dd-body">
+      <div class="kv">
+        <div><span class="k">Bag sizes</span><span class="v">250 mL</span></div>
+        <div><span class="k">Serum unit</span><span class="v">arb</span></div>
+        <div><span class="k">Ceiling band</span><span class="v">BLOCK</span></div>
+        <div><span class="k">Top safe rate</span><span class="v">2 gtt/min</span></div>
+      </div>
+      <div class="scroll">
+      <table class="t inf">
+        <thead><tr><th>Bag</th><th>Conc</th><th>gtt/min</th><th>mg/min</th><th>Serum (arb)</th><th>Band</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">250</td><td class="mono">10</td><td class="mono">1</td><td class="mono">1.12</td><td class="mono">0.90</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">250</td><td class="mono">10</td><td class="mono">2</td><td class="mono">2.38</td><td class="mono">1.90</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">250</td><td class="mono">10</td><td class="mono">4</td><td class="mono">4.38</td><td class="mono">3.50</td><td><span class="bnd warn">CAUTION</span></td></tr>
+          <tr><td class="mono">250</td><td class="mono">10</td><td class="mono">6</td><td class="mono">6.38</td><td class="mono">5.10</td><td><span class="bnd bad">BLOCK</span></td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Fentanyl</span><span class="dd-tag">Opioid</span></summary>
+    <div class="dd-body">
+      <div class="kv">
+        <div><span class="k">Bag sizes</span><span class="v">100 mL</span></div>
+        <div><span class="k">Serum unit</span><span class="v">mcg/mL</span></div>
+        <div><span class="k">Ceiling band</span><span class="v">HIGH</span></div>
+        <div><span class="k">Top safe rate</span><span class="v">23 gtt/min</span></div>
+      </div>
+      <div class="scroll">
+      <table class="t inf">
+        <thead><tr><th>Bag</th><th>Conc</th><th>gtt/min</th><th>mg/min</th><th>Serum (mcg/mL)</th><th>Band</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">100</td><td class="mono">0.001</td><td class="mono">11</td><td class="mono">0.00</td><td class="mono">0.00</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">0.001</td><td class="mono">23</td><td class="mono">0.00</td><td class="mono">0.00</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">0.001</td><td class="mono">32</td><td class="mono">0.00</td><td class="mono">0.00</td><td><span class="bnd warn">CAUTION</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">0.001</td><td class="mono">41</td><td class="mono">0.00</td><td class="mono">0.01</td><td><span class="bnd bad">HIGH</span></td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Ketamine</span><span class="dd-tag">Dissociative</span></summary>
+    <div class="dd-body">
+      <div class="kv">
+        <div><span class="k">Bag sizes</span><span class="v">100 mL</span></div>
+        <div><span class="k">Serum unit</span><span class="v">mcg/mL</span></div>
+        <div><span class="k">Ceiling band</span><span class="v">HIGH</span></div>
+        <div><span class="k">Top safe rate</span><span class="v">68 gtt/min</span></div>
+      </div>
+      <div class="scroll">
+      <table class="t inf">
+        <thead><tr><th>Bag</th><th>Conc</th><th>gtt/min</th><th>mg/min</th><th>Serum (mcg/mL)</th><th>Band</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">100</td><td class="mono">0.5</td><td class="mono">32</td><td class="mono">1.62</td><td class="mono">1.35</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">0.5</td><td class="mono">68</td><td class="mono">3.42</td><td class="mono">2.85</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">0.5</td><td class="mono">96</td><td class="mono">4.80</td><td class="mono">4.00</td><td><span class="bnd warn">CAUTION</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">0.5</td><td class="mono">122</td><td class="mono">6.12</td><td class="mono">5.10</td><td><span class="bnd bad">HIGH</span></td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Lidocaine</span><span class="dd-tag">Antiarrhythmic</span></summary>
+    <div class="dd-body">
+      <div class="kv">
+        <div><span class="k">Bag sizes</span><span class="v">100 mL / 250 mL</span></div>
+        <div><span class="k">Serum unit</span><span class="v">mcg/mL</span></div>
+        <div><span class="k">Ceiling band</span><span class="v">SEIZURE</span></div>
+        <div><span class="k">Top safe rate</span><span class="v">48 gtt/min</span></div>
+      </div>
+      <div class="scroll">
+      <table class="t inf">
+        <thead><tr><th>Bag</th><th>Conc</th><th>gtt/min</th><th>mg/min</th><th>Serum (mcg/mL)</th><th>Band</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">100</td><td class="mono">1</td><td class="mono">9</td><td class="mono">0.90</td><td class="mono">2.25</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">1</td><td class="mono">19</td><td class="mono">1.90</td><td class="mono">4.75</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">1</td><td class="mono">34</td><td class="mono">3.40</td><td class="mono">8.50</td><td><span class="bnd warn">CAUTION</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">1</td><td class="mono">49</td><td class="mono">4.90</td><td class="mono">12.24</td><td><span class="bnd bad">SEIZURE</span></td></tr>
+          <tr class="grp"><td class="mono">250</td><td class="mono">0.4</td><td class="mono">22</td><td class="mono">0.90</td><td class="mono">2.25</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">250</td><td class="mono">0.4</td><td class="mono">48</td><td class="mono">1.90</td><td class="mono">4.75</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">250</td><td class="mono">0.4</td><td class="mono">85</td><td class="mono">3.40</td><td class="mono">8.50</td><td><span class="bnd warn">CAUTION</span></td></tr>
+          <tr><td class="mono">250</td><td class="mono">0.4</td><td class="mono">122</td><td class="mono">4.90</td><td class="mono">12.24</td><td><span class="bnd bad">SEIZURE</span></td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Magnesium</span><span class="dd-tag">Electrolyte</span></summary>
+    <div class="dd-body">
+      <div class="kv">
+        <div><span class="k">Bag sizes</span><span class="v">50 mL</span></div>
+        <div><span class="k">Serum unit</span><span class="v">mg/dL</span></div>
+        <div><span class="k">Ceiling band</span><span class="v">safe</span></div>
+        <div><span class="k">Top safe rate</span><span class="v">1 gtt/min</span></div>
+      </div>
+      <div class="scroll">
+      <table class="t inf">
+        <thead><tr><th>Bag</th><th>Conc</th><th>gtt/min</th><th>mg/min</th><th>Serum (mg/dL)</th><th>Band</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">50</td><td class="mono">40</td><td class="mono">1</td><td class="mono">3.04</td><td class="mono">3.80</td><td><span class="bnd ok">Safe</span></td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Midazolam</span><span class="dd-tag">Benzodiazepine</span></summary>
+    <div class="dd-body">
+      <div class="kv">
+        <div><span class="k">Bag sizes</span><span class="v">100 mL</span></div>
+        <div><span class="k">Serum unit</span><span class="v">mcg/mL</span></div>
+        <div><span class="k">Ceiling band</span><span class="v">HIGH</span></div>
+        <div><span class="k">Top safe rate</span><span class="v">24 gtt/min</span></div>
+      </div>
+      <div class="scroll">
+      <table class="t inf">
+        <thead><tr><th>Bag</th><th>Conc</th><th>gtt/min</th><th>mg/min</th><th>Serum (mcg/mL)</th><th>Band</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">100</td><td class="mono">0.05</td><td class="mono">11</td><td class="mono">0.06</td><td class="mono">0.11</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">0.05</td><td class="mono">24</td><td class="mono">0.12</td><td class="mono">0.24</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">0.05</td><td class="mono">35</td><td class="mono">0.17</td><td class="mono">0.35</td><td><span class="bnd warn">CAUTION</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">0.05</td><td class="mono">46</td><td class="mono">0.23</td><td class="mono">0.46</td><td><span class="bnd bad">HIGH</span></td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Morphine</span><span class="dd-tag">Opioid</span></summary>
+    <div class="dd-body">
+      <div class="kv">
+        <div><span class="k">Bag sizes</span><span class="v">100 mL</span></div>
+        <div><span class="k">Serum unit</span><span class="v">mcg/mL</span></div>
+        <div><span class="k">Ceiling band</span><span class="v">HIGH</span></div>
+        <div><span class="k">Top safe rate</span><span class="v">11 gtt/min</span></div>
+      </div>
+      <div class="scroll">
+      <table class="t inf">
+        <thead><tr><th>Bag</th><th>Conc</th><th>gtt/min</th><th>mg/min</th><th>Serum (mcg/mL)</th><th>Band</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">100</td><td class="mono">0.1</td><td class="mono">5</td><td class="mono">0.05</td><td class="mono">0.04</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">0.1</td><td class="mono">11</td><td class="mono">0.11</td><td class="mono">0.08</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">0.1</td><td class="mono">17</td><td class="mono">0.17</td><td class="mono">0.11</td><td><span class="bnd warn">CAUTION</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">0.1</td><td class="mono">23</td><td class="mono">0.23</td><td class="mono">0.15</td><td><span class="bnd bad">HIGH</span></td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Norepinephrine</span><span class="dd-tag">Vasopressor</span></summary>
+    <div class="dd-body">
+      <div class="kv">
+        <div><span class="k">Bag sizes</span><span class="v">250 mL</span></div>
+        <div><span class="k">Serum unit</span><span class="v">mcg/mL</span></div>
+        <div><span class="k">Ceiling band</span><span class="v">HIGH</span></div>
+        <div><span class="k">Top safe rate</span><span class="v">15 gtt/min</span></div>
+      </div>
+      <div class="scroll">
+      <table class="t inf">
+        <thead><tr><th>Bag</th><th>Conc</th><th>gtt/min</th><th>mg/min</th><th>Serum (mcg/mL)</th><th>Band</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">250</td><td class="mono">0.016</td><td class="mono">7</td><td class="mono">0.01</td><td class="mono">0.05</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">250</td><td class="mono">0.016</td><td class="mono">15</td><td class="mono">0.02</td><td class="mono">0.10</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">250</td><td class="mono">0.016</td><td class="mono">22</td><td class="mono">0.04</td><td class="mono">0.14</td><td><span class="bnd warn">CAUTION</span></td></tr>
+          <tr><td class="mono">250</td><td class="mono">0.016</td><td class="mono">29</td><td class="mono">0.05</td><td class="mono">0.18</td><td><span class="bnd bad">HIGH</span></td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Ondansetron</span><span class="dd-tag">Antiemetic</span></summary>
+    <div class="dd-body">
+      <div class="kv">
+        <div><span class="k">Bag sizes</span><span class="v">100 mL</span></div>
+        <div><span class="k">Serum unit</span><span class="v">mcg/mL</span></div>
+        <div><span class="k">Ceiling band</span><span class="v">HIGH</span></div>
+        <div><span class="k">Top safe rate</span><span class="v">21 gtt/min</span></div>
+      </div>
+      <div class="scroll">
+      <table class="t inf">
+        <thead><tr><th>Bag</th><th>Conc</th><th>gtt/min</th><th>mg/min</th><th>Serum (mcg/mL)</th><th>Band</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">100</td><td class="mono">0.04</td><td class="mono">10</td><td class="mono">0.04</td><td class="mono">0.07</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">0.04</td><td class="mono">21</td><td class="mono">0.09</td><td class="mono">0.14</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">0.04</td><td class="mono">34</td><td class="mono">0.13</td><td class="mono">0.22</td><td><span class="bnd warn">CAUTION</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">0.04</td><td class="mono">46</td><td class="mono">0.18</td><td class="mono">0.31</td><td><span class="bnd bad">HIGH</span></td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">TXA</span><span class="dd-tag">Antifibrinolytic</span></summary>
+    <div class="dd-body">
+      <div class="kv">
+        <div><span class="k">Bag sizes</span><span class="v">100 mL / 250 mL</span></div>
+        <div><span class="k">Serum unit</span><span class="v">mcg/mL</span></div>
+        <div><span class="k">Ceiling band</span><span class="v">HIGH</span></div>
+        <div><span class="k">Top safe rate</span><span class="v">7 gtt/min</span></div>
+      </div>
+      <div class="scroll">
+      <table class="t inf">
+        <thead><tr><th>Bag</th><th>Conc</th><th>gtt/min</th><th>mg/min</th><th>Serum (mcg/mL)</th><th>Band</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">100</td><td class="mono">10</td><td class="mono">1</td><td class="mono">1.35</td><td class="mono">6.75</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">10</td><td class="mono">3</td><td class="mono">2.85</td><td class="mono">14.25</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">10</td><td class="mono">4</td><td class="mono">4.50</td><td class="mono">22.50</td><td><span class="bnd warn">CAUTION</span></td></tr>
+          <tr><td class="mono">100</td><td class="mono">10</td><td class="mono">6</td><td class="mono">6.12</td><td class="mono">30.60</td><td><span class="bnd bad">HIGH</span></td></tr>
+          <tr class="grp"><td class="mono">250</td><td class="mono">4</td><td class="mono">3</td><td class="mono">1.35</td><td class="mono">6.75</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">250</td><td class="mono">4</td><td class="mono">7</td><td class="mono">2.85</td><td class="mono">14.25</td><td><span class="bnd ok">Safe</span></td></tr>
+          <tr><td class="mono">250</td><td class="mono">4</td><td class="mono">11</td><td class="mono">4.50</td><td class="mono">22.50</td><td><span class="bnd warn">CAUTION</span></td></tr>
+          <tr><td class="mono">250</td><td class="mono">4</td><td class="mono">15</td><td class="mono">6.12</td><td class="mono">30.60</td><td><span class="bnd bad">HIGH</span></td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </details>
+
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">04</span><h2>Blood Products &amp; Cold Chain</h2></div>
+  <p>Cold blood and warm blood are not the same product. The cooler keeps it viable and the warmer makes it usable, and skipping the second step spends the casualty temperature you cannot easily give back.</p>
+  <div class="scroll">
+  <table class="t">
+    <thead><tr><th>State</th><th>Flow multiplier</th><th>Core temperature</th><th>Clotting</th></tr></thead>
+    <tbody>
+      <tr><td>Warmed</td><td class="mono">1.10x</td><td>No penalty</td><td>Unaffected</td></tr>
+      <tr><td>Normal</td><td class="mono">1.00x</td><td>No penalty</td><td>Unaffected</td></tr>
+      <tr><td>Cold</td><td class="mono">0.65x</td><td>Drops</td><td>Degrades via hypothermia leg</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Cold product runs at roughly two thirds the rate of warmed, so the transfusion you needed to be fast is the one that is slowest. It also drops core temperature, which feeds the hypothermia leg of the {{lethal-triad|lethal triad}} and degrades clotting, so the product given to stop bleeding is making the blood worse at clotting while it goes in.</p>
+  <p>The temperature penalty is gated on the cold flag alone. Warmed and normal product carry none.</p>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Blood cooler</span><span class="dd-tag">Virtual container</span></summary>
+    <div class="dd-body">
+      <div class="kv">
+        <div><span class="k">Inside thaw rate</span><span class="v">0.20 /min</span></div>
+        <div><span class="k">Display states</span><span class="v">3</span></div>
+        <div><span class="k">Unload</span><span class="v">forced to inventory</span></div>
+        <div><span class="k">Bay</span><span class="v">highlights on hover</span></div>
+      </div>
+      <p>The cooler is a virtual container rather than real cargo, so its contents do not count against carry weight the way loose bags would. Product inside thaws slowly at 0.2 per minute, which is what gives you a working window rather than an instant decision.</p>
+      <p>Unloading forces the bag into your inventory rather than dropping it, because a bag on the ground is a bag nobody notices going warm.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Blood fridge</span><span class="dd-tag">Zeus placeable</span></summary>
+    <div class="dd-body">
+      <div class="kv">
+        <div><span class="k">Stock</span><span class="v">configurable</span></div>
+        <div><span class="k">Regen interval</span><span class="v">configurable</span></div>
+        <div><span class="k">Placement</span><span class="v">Zeus dialog</span></div>
+        <div><span class="k">Role</span><span class="v">resupply point</span></div>
+      </div>
+      <p>The fridge is the resupply end of the cold chain. Stock level and regeneration interval are both set at placement, so a mission can run a scarce cold chain or a generous one without a code change.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Y-line transfusion</span><span class="dd-tag">Two limbs, one patient</span></summary>
+    <div class="dd-body">
+      <p>A Y-line runs two products into one access site. The practical use is a unit of blood alongside a crystalloid or a warmed line alongside a cold one, without burning a second cannula on a casualty whose veins you have already had trouble with.</p>
+      <p>Each limb carries its own warmed, cold or normal state, so the flow multiplier and the temperature penalty are resolved per limb rather than for the line as a whole. Running one warmed limb does not rescue a cold one.</p>
     </div>
   </details>
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">04</span><h2>Y-Line Transfusion</h2></div>
-  <p>Runs blood and fluid through a shared line. The three temperature states apply here, and the collapse behaviour means a line that has been set up stays set up rather than needing rebuilding between units.</p>
-  <figure class="placeholder">Y-line and cooler screenshot goes here</figure>
-</section>
+  <div class="sec-head"><span class="sec-num">05</span><h2>Citrate &amp; Ionised Calcium</h2></div>
+  <p>Stored blood is anticoagulated with {{citrate|citrate}}, and citrate works by binding calcium. Transfuse enough fast enough and you strip the recipient of ionised calcium, which is itself a clotting factor. This is the mechanism behind calcium being a non-negotiable adjunct rather than an optional extra.</p>
+  <div class="kv">
+    <div><span class="k">Citrate load</span><span class="v">0.18 per litre</span></div>
+    <div><span class="k">CaCl credit</span><span class="v">0.12 per gram</span></div>
+    <div><span class="k">Calcium floor</span><span class="v">0.55</span></div>
+    <div><span class="k">MAP cost</span><span class="v">up to 40 mmHg</span></div>
+  </div>
+  <p>Below the {{ionised-calcium|ionised calcium}} threshold the clotting penalty reaches 1.4x and up to 40 mmHg of {{map|MAP}} is lost per unit of deficit. A massive transfusion run without calcium makes the patient bleed faster than the transfusion is replacing.</p>
+  <p>Calcium chloride and calcium gluconate both correct it. Chloride carries roughly three times the elemental calcium per mL, which is why its safe drop rates in the chart above are so much lower for the same effect.</p>
 
-<div class="flags">
-  <h3>Red Flags</h3>
-  <ul>
-    <li><b>Running cold blood into a casualty who is already cold.</b> You are feeding the leg of the lethal triad that is hardest to reverse in the field.</li>
-    <li><b>Repeated IV attempts on a damaged limb.</b> Each miss makes the next one harder. Go to IO.</li>
-    <li><b>Transfusing without calcium.</b> Citrate binds it, and you lose clotting and myocardial function together.</li>
-    <li><b>Leaving blood out of the cooler.</b> It warms, and once warm it does not go back.</li>
-  </ul>
-</div>
+  <div class="flags">
+    <h3>Red Flags</h3>
+    <ul>
+      <li><b>Reading a gtt/min without reading the bag size.</b> Same rate, different bag, different dose. It is the most common way to overshoot.</li>
+      <li><b>Massive transfusion without calcium.</b> Citrate strips 0.18 per litre and the clotting penalty compounds with hypothermia and acidosis.</li>
+      <li><b>Hanging cold product and calling it done.</b> It runs at 0.65x and actively cools the casualty you are trying to keep clotting.</li>
+      <li><b>Raising the bag to speed a titrated drip.</b> The hang boost lifts the ceiling only. If the clamp limits, height changes nothing.</li>
+      <li><b>Treating IO as the fast route.</b> It is roughly half the flow of a 16G peripheral.</li>
+    </ul>
+  </div>
+</section>

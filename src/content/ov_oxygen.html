@@ -9,7 +9,7 @@
 </div>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">01</span><h2>Who Owns SpO2</h2></div>
+  <div class="sec-head"><span class="sec-num">01</span><h2>Three Layers: ace_medical_spo2, TargetVitals &amp; getSpO2</h2></div>
   <p>There are three layers involved and they are easy to confuse because all three end up affecting a number labelled SpO2.</p>
   <table class="t">
     <thead><tr><th>Layer</th><th>Variable</th><th>Driven by</th></tr></thead>
@@ -44,7 +44,7 @@
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">02</span><h2>Breathing Effectiveness</h2></div>
+  <div class="sec-head"><span class="sec-num">02</span><h2>Breathing State Multipliers</h2></div>
   <p><b>ACM behaviour.</b> <code>getBreathingState</code> returns an effectiveness figure knocked down by pneumothorax, tension pneumothorax, hemothorax and CBRN exposure. Each insult multiplies.</p>
   <p><b>Override.</b> The model is reproduced verbatim, then a graded over-resuscitation pulmonary edema penalty is applied on top, multiplicatively, exactly like the hemothorax term it sits beside.</p>
   <table class="t">
@@ -68,27 +68,8 @@
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">03</span><h2>Delivery Versus Saturation</h2></div>
-  <p>Saturation tells you what fraction of the haemoglobin present is loaded. It says nothing about how much haemoglobin there is, or whether the pump is moving it. A casualty can read 96% while delivering almost nothing.</p>
-  <p>ACM Extended models delivery as haemoglobin concentration times saturation times {{cardiac-output|cardiac output}}, expressed as a fraction of normal. All three terms move independently, which is why it catches cases saturation alone cannot.</p>
-  <table class="t">
-    <thead><tr><th>State</th><th>Delivery</th><th>What saturation shows</th></tr></thead>
-    <tbody>
-      <tr><td>Healthy</td><td class="mono">1.01</td><td>Normal</td></tr>
-      <tr><td>Class II haemorrhage</td><td class="mono">0.80</td><td>Still normal</td></tr>
-      <tr><td>Class III haemorrhage</td><td class="mono">0.58</td><td>Often still normal</td></tr>
-      <tr><td>Class III plus crystalloid</td><td class="mono">0.70</td><td>Normal</td></tr>
-      <tr><td>Class III plus whole blood</td><td class="mono">1.10</td><td>Normal</td></tr>
-      <tr><td>Deep shock</td><td class="mono">0.35</td><td>May still look survivable</td></tr>
-    </tbody>
-  </table>
-  <p>Read the middle rows again. {{crystalloid|Crystalloid}} raises delivery less than blood does, and the display shows the same number for both.</p>
-  <div class="flags">
-    <h3>Red Flags</h3>
-    <ul>
-      <li><b>Writing <code>ace_medical_spo2</code> from anywhere.</b> It is recomputed every vitals pass and your value will oscillate against ACE's.</li>
-      <li><b>A new saturation writer without the vent guard.</b> Two owners produce a flickering number that is very hard to trace back.</li>
-      <li><b>Trusting saturation on a haemorrhaging casualty.</b> It stays normal well past the point where delivery has collapsed.</li>
-    </ul>
-  </div>
+  <div class="sec-head"><span class="sec-num">03</span><h2>Where DO2 Is Computed</h2></div>
+  <p>Delivery is haemoglobin concentration times saturation times {{cardiac-output|cardiac output}}, expressed as a fraction of normal. The clinical table of what each shock state delivers lives on the <b>Oxygen Delivery (DO2)</b> system page and is not repeated here.</p>
+  <p>What matters at this level is that all three terms are read fresh each tick rather than cached, and that none of them is derived from the others. Haemoglobin comes from blood volume, saturation from the ACM target layer described above, and cardiac output from stroke volume times rate. A change in any one moves delivery without touching the other two.</p>
+  <p>That independence is the reason the model catches cases a saturation reading cannot. A casualty can hold a normal saturation while haemoglobin halves, because saturation reports the fraction of what is present that is loaded and has no term for how much is present.</p>
 </section>

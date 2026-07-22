@@ -9,7 +9,7 @@
 </div>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">01</span><h2>Why Replacement, Not Wrapping</h2></div>
+  <div class="sec-head"><span class="sec-num">01</span><h2>Final Functions &amp; Why Wrapping Fails</h2></div>
   <p>The obvious way to change a function's behaviour is to keep a reference to the original, install your own, and call through. That does not work here, and understanding why explains the shape of everything else in this section.</p>
   <p>ACM compiles most of its own functions <b>final</b>. A final function cannot be reassigned at runtime. Assigning over it does not raise an error you will notice in normal play; the assignment is simply ignored and the original keeps running. Code that looks installed sits there doing nothing.</p>
 
@@ -48,7 +48,7 @@
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">02</span><h2>The Cost Of Replacing</h2></div>
+  <div class="sec-head"><span class="sec-num">02</span><h2>De-Macroing &amp; Re-Pull Discipline</h2></div>
   <p>Compile-time replacement means the whole function is yours. There is no original underneath to fall back to, so every line of the original behaviour has to be reproduced in your copy or it is gone.</p>
   <p>That has a maintenance consequence you should understand before extending anything here. <b>When ACM or ACE change a function we have replaced, our copy does not inherit the change.</b> It keeps running the old logic against a newer game. Nothing warns you.</p>
 
@@ -76,7 +76,7 @@
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">03</span><h2>Reading This Section</h2></div>
+  <div class="sec-head"><span class="sec-num">03</span><h2>How To Read This Section</h2></div>
   <p>Each page that follows covers one domain. The pattern is the same throughout:</p>
   <table class="t">
     <thead><tr><th>Heading</th><th>Means</th></tr></thead>

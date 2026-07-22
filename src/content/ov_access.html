@@ -9,7 +9,7 @@
 </div>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">01</span><h2>Catheter Bore</h2></div>
+  <div class="sec-head"><span class="sec-num">01</span><h2>Gauge Multipliers &amp; Base Flow Rate</h2></div>
   <p><b>ACM behaviour.</b> A flow table keyed by access type, with a base rate of 4.1667 mL per second inherited from ACE's medical engine. ACM models 16G, 14G, and two intraosseous devices.</p>
   <p><b>Override.</b> The table is reproduced and an 18G catheter is added. An 18G is a smaller bore than a 16G and flows correspondingly slower, which matters because 18G is the realistic field choice in a lot of situations where a 16G is not achievable.</p>
   <table class="t">
@@ -35,7 +35,7 @@
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">02</span><h2>The Roller Clamp</h2></div>
+  <div class="sec-head"><span class="sec-num">02</span><h2>Absolute Rate vs Fraction Of Gravity</h2></div>
   <p><b>Override.</b> The clamp publishes an absolute flow rate in mL per second for its access site, clamped to the gauge's physical maximum. It is not a fraction of the gravity rate.</p>
 
   <details class="dd">
@@ -59,7 +59,7 @@
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">03</span><h2>Where This Is Installed</h2></div>
+  <div class="sec-head"><span class="sec-num">03</span><h2>Install Point &amp; Re-Pull Note</h2></div>
   <p><code>ACM_circulation_fnc_getIVFlowRate</code> is compiled final by ACM, so an earlier runtime reassignment of it was silently ignored and had no effect at all. It is now replaced at compile time through <code>ACMI_overwrite_circulation</code>.</p>
   <p>The file is a full de-macroed replacement of ACM's flow table. If ACM changes its gauge multipliers, re-pull the source rather than editing our copy to match.</p>
   <div class="flags">

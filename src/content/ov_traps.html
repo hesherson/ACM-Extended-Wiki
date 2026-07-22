@@ -9,7 +9,7 @@
 </div>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">01</span><h2>The Trailing Comma</h2></div>
+  <div class="sec-head"><span class="sec-num">01</span><h2>Trailing Comma Kills postInit</h2></div>
   <p>A trailing comma inside an array kills <code>fn_postInit</code> at parse time. Everything registered after that point never registers.</p>
   <p>The symptom is not an error. It is that some arbitrary set of features are simply absent, with no pattern that makes sense, because the cut-off is wherever the comma happens to sit in the file rather than anywhere meaningful.</p>
   <table class="t">
@@ -24,7 +24,7 @@
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">02</span><h2>Action Condition Inheritance</h2></div>
+  <div class="sec-head"><span class="sec-num">02</span><h2>Action Condition &amp; Item Inheritance</h2></div>
   <p>An action that inherits from a hidden parent inherits the parent's condition, including a condition of <code>false</code>. The child then never appears, and the child's own definition looks completely correct because the problem is not in it.</p>
   <p><b>Restate conditions explicitly on every child.</b> Do not rely on inheritance to leave them alone.</p>
 
@@ -39,7 +39,7 @@
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">03</span><h2>Final Functions</h2></div>
+  <div class="sec-head"><span class="sec-num">03</span><h2>Final Functions: What Can &amp; Cannot Be Replaced</h2></div>
   <p>ACM compiles most of its functions final. A runtime reassignment is ignored, the original keeps running, and your code never executes. The full mechanism is on the <b>How overrides work</b> page; this is the checklist version.</p>
   <table class="t">
     <thead><tr><th>Symptom</th><th>Check</th></tr></thead>
@@ -53,7 +53,7 @@
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">04</span><h2>Two Writers, One Value</h2></div>
+  <div class="sec-head"><span class="sec-num">04</span><h2>Two Writers On One Cycled Value</h2></div>
   <p>Where a variable is recomputed on a cycle, writing it from your own tick does not give you ownership. Your write and the cycle's write alternate, and the value visibly flickers.</p>
   <p>This has caused three separate bugs: the ventilator respiratory rate against ACM's vitals cycle, saturation against ACE's gas exchange, and the altitude model against the ventilator shunt model.</p>
   <table class="t">
@@ -68,7 +68,7 @@
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">05</span><h2>Paths And Encoding</h2></div>
+  <div class="sec-head"><span class="sec-num">05</span><h2>Paths, Encoding &amp; Sound Format</h2></div>
   <p>Two small ones that produce confusing results rather than clean failures.</p>
   <table class="t">
     <thead><tr><th>Rule</th><th>Why</th></tr></thead>

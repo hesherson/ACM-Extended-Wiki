@@ -9,7 +9,7 @@
 </div>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">01</span><h2>The EKG Generator</h2></div>
+  <div class="sec-head"><span class="sec-num">01</span><h2>EKG Generation &amp; Rate Lock</h2></div>
   <p><b>ACM behaviour.</b> <code>displayAEDMonitor_generateEKG</code> builds a waveform by spacing beats and appending a complex. It is compiled final, so a runtime reassignment cannot replace it.</p>
   <p><b>Override.</b> Compile-time replacement reproducing ACM's waveforms verbatim, with three corrections.</p>
 
@@ -32,7 +32,7 @@
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">02</span><h2>The AED And Torsades</h2></div>
+  <div class="sec-head"><span class="sec-num">02</span><h2>AED Shockable Set &amp; Torsades (Rhythm 102)</h2></div>
   <p><b>ACM behaviour.</b> The shockable set is VF, pulseless VT and VT. Anything else returns no shock advised.</p>
   <p><b>Override.</b> The shockable test also includes the ACM Extended defibrillatable rhythms, currently torsades at code 102.</p>
 
@@ -57,7 +57,7 @@
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">03</span><h2>ROSC Gating</h2></div>
+  <div class="sec-head"><span class="sec-num">03</span><h2>ROSC Gating On Reversible Causes</h2></div>
   <p><b>ACM behaviour.</b> ACM already blocks ROSC on four reversible causes: hypoxia below its threshold, tension pneumothorax, and two others handled in its own circulation state function.</p>
   <p><b>Override.</b> Strictly additive. The causes ACM does not model are added to the same gate, and nothing else is changed.</p>
   <p>The design consequence is that compressions alone will not restart a heart that is arrested for a reason nobody has corrected. The medic has to work the differential, and the mechanic rewards that rather than rewarding persistence.</p>
@@ -73,7 +73,7 @@
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">04</span><h2>Pressors And Resistance</h2></div>
+  <div class="sec-head"><span class="sec-num">04</span><h2>Systemic Vascular Resistance &amp; Pressors</h2></div>
   <p>Blood pressure is cardiac output times systemic vascular resistance. A pure vasoconstrictor like norepinephrine raises pressure by raising resistance, and reproducing that turned out to be the only route available.</p>
   <p><b>The problem.</b> <code>getBloodPressure</code> is compiled final and unreachable, so a display offset path does not exist. <code>updateHeartRate</code> is likewise final.</p>
   <p><b>Override.</b> <code>ace_medical_vitals_fnc_updatePeripheralResistance</code> is <i>not</i> compiled final, verified by its absence from the runtime final-function list, so a compile-time replacement installs cleanly. Resistance is where the pressor acts.</p>

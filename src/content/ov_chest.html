@@ -9,7 +9,7 @@
 </div>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">01</span><h2>Respiration Rate</h2></div>
+  <div class="sec-head"><span class="sec-num">01</span><h2>updateRespirationRate: The Two Blocking Cases</h2></div>
   <p><b>ACM behaviour.</b> <code>updateRespirationRate</code> resolves through a series of cases. Two of them made mechanical ventilation impossible to represent, and both sat above the default so nothing downstream could correct them.</p>
   <table class="t">
     <thead><tr><th>ACM case</th><th>Result</th><th>Problem</th></tr></thead>
@@ -41,7 +41,7 @@
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">02</span><h2>Breathing State</h2></div>
+  <div class="sec-head"><span class="sec-num">02</span><h2>getBreathingState Multipliers</h2></div>
   <p><b>ACM behaviour.</b> Breathing effectiveness is knocked down multiplicatively by hemothorax fluid, pneumothorax, tension pneumothorax and CBRN exposure.</p>
   <p><b>Override.</b> The model is reproduced verbatim, with a graded pulmonary edema penalty added on top in the same multiplicative style. The full reasoning for degrading effectiveness rather than capping saturation is on the oxygen page.</p>
   <table class="t">
@@ -56,7 +56,7 @@
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">03</span><h2>Bagging Gates</h2></div>
+  <div class="sec-head"><span class="sec-num">03</span><h2>canUseBVM: The NRB Guard</h2></div>
   <p><b>ACM behaviour.</b> <code>canUseBVM</code> allows bagging an unconscious patient, or an awake patient who is lying down, and blocks a second medic from bagging a patient someone else is already bagging.</p>
   <p><b>Override.</b> Faithful de-macroed copy plus one guard at the front: <b>a patient wearing a non-rebreather mask cannot be bagged.</b> The mask has to come off before a bag mask seal is possible.</p>
   <p>The guard applies to both the plain and the oxygen-supplied bagging actions, because both route their condition through the same function.</p>
@@ -72,7 +72,7 @@
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">04</span><h2>Where This Is Installed</h2></div>
+  <div class="sec-head"><span class="sec-num">04</span><h2>Install Points</h2></div>
   <p>All four functions are replaced at compile time through <code>ACMI_overwrite_breathing</code> and <code>ACMI_overwrite_airway</code>. ACM prepares these normally rather than compiling them final, so compile-time replacement installs cleanly, the same way the circulation overrides do.</p>
   <div class="flags">
     <h3>Red Flags</h3>

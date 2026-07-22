@@ -9,7 +9,7 @@
 </div>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">01</span><h2>What It Models</h2></div>
+  <div class="sec-head"><span class="sec-num">01</span><h2>Barometric Pressure &amp; PaO2 At Altitude</h2></div>
   <div class="scroll">
   <table class="t">
     <thead><tr><th>Law</th><th>Effect</th><th>What you see</th></tr></thead>
@@ -23,7 +23,7 @@
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">02</span><h2>How Altitude Is Derived</h2></div>
+  <div class="sec-head"><span class="sec-num">02</span><h2>Altitude Derivation &amp; Sea Level Datum</h2></div>
   <p>Every flight system asks one function for altitude rather than reading position directly.</p>
 
   <details class="dd">
@@ -40,13 +40,14 @@
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">03</span><h2>Saturation Ownership</h2></div>
-  <p>One function owns saturation at a time. If a ventilator is driving the casualty, the shunt model owns it and folds altitude in through the same pressure ratio. The altitude tick exits early rather than writing as well.</p>
-  <p>Two writers on the same value would delete PEEP's effect above 500 m and would be invisible from outside. Anything new that touches saturation needs the same guard.</p>
+  <div class="sec-head"><span class="sec-num">03</span><h2>Interaction With The Ventilator</h2></div>
+  <p>The ventilator owns saturation whenever it is driving, because its shunt model already folds altitude in through the same ratio. The altitude tick stands down rather than writing a second value.</p>
+  <p>The practical consequence for a flight medic: a ventilated casualty gaining altitude has the altitude effect applied through the ventilator, not on top of it. You will not see two penalties stack.</p>
+  <p>The mechanism, and the guard any new saturation writer has to carry, is on the <b>SpO2 ownership &amp; DO2</b> page under Advanced Functions.</p>
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">04</span><h2>Before The Aircraft Moves</h2></div>
+  <div class="sec-head"><span class="sec-num">04</span><h2>Pre-Flight Checks</h2></div>
   <div class="scroll">
   <table class="t">
     <thead><tr><th>Item</th><th>Do</th><th>Why</th></tr></thead>
