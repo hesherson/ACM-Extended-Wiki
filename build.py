@@ -16,7 +16,9 @@ page is rewritten.
 ADDING A PAGE: drop a file in src/content/ and add a line to PAGES below. That is the whole process.
 ADDING AN IMAGE: put it in docs/img/ and reference it as img/thing.png from any page.
 """
-import os, re, shutil, datetime, json, sys, html as _html
+import os, re, datetime, json, sys
+
+sys.dont_write_bytecode = True   # keep src/ free of __pycache__
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "src"))
 from glossary_terms import TERMS
 
@@ -53,6 +55,7 @@ HEAD = """<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{title}</title>
+<link rel="icon" type="image/png" href="img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;900&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -255,7 +258,7 @@ def sidebar(current):
     """Sidebar nav. Search sits at the top of it. Every link carries an index so CSS can stagger the
     cascade without any JavaScript, which means the animation can never get stuck part way."""
     out = ['<aside class="side">',
-           '  <div class="brand">PILL<span>A</span>R</div>',
+           '  <a class="brand" href="index.html"><img src="img/pillar_mark.png" alt="PILLAR"></a>',
            f'  <div class="ver">ACM Extended // v{VERSION}</div>',
            '  <div class="tb-wrap">',
            '    <input id="q" class="tb-q" type="search" placeholder="Search" autocomplete="off" spellcheck="false">',
@@ -306,7 +309,7 @@ def build():
     for slug, fname, title, group in PAGES:
         if slug not in bodies:
             continue
-        page = (HEAD.format(title=f"PILLAR | {title}", css=css)
+        page = (HEAD.format(title=f"ACM Extended Wiki | {title}", css=css)
                 + sidebar(slug) + "\n" + bodies[slug]
                 + FOOT.format(version=VERSION, built=built, terms=terms_json, index=idx_json))
         open(os.path.join(OUT, fname), "w", encoding="utf-8").write(page)

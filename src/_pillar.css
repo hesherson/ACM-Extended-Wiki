@@ -20,13 +20,23 @@ body{
 .shell{display:block}
 .side{
   background:var(--navy-2);border-bottom:2px solid var(--red);
-  padding:20px 16px;
+  padding:22px 18px 18px;
 }
-.side .brand{
-  font-family:"Barlow Condensed",sans-serif;font-weight:900;
-  font-size:30px;line-height:.92;text-transform:uppercase;
+/* Below the breakpoint the sidebar stacks above the content. Nav collapses to a wrapped row so it reads
+   as a header strip rather than a long column the reader has to scroll past to reach the page. */
+@media (max-width:819px){
+  .nav{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+  .nav .grp{width:100%;margin:10px 0 2px}
+  .nav a{border-left:none;border:1px solid var(--rule);border-radius:3px;padding:6px 10px;font-size:13.5px}
+  .nav a.on{border-color:var(--red)}
+  .tb-res{width:min(420px,92vw)}
 }
-.side .brand span{color:var(--red)}
+.side .brand{display:block;line-height:0}
+.side .brand img{
+  width:100%;max-width:190px;height:auto;display:block;
+  opacity:.87;transition:opacity .2s ease;
+}
+.side .brand:hover img{opacity:1}
 .side .ver{
   font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.18em;
   text-transform:uppercase;color:var(--cream-dim);margin-top:6px;
@@ -44,15 +54,18 @@ body{
 .nav a:hover{color:var(--cream);background:rgba(237,227,204,.05)}
 .nav a.on{color:var(--cream);border-left-color:var(--red);background:rgba(190,24,24,.10)}
 
-.main{padding:24px 16px 80px;max-width:820px;margin:0 auto}
+.main{
+  padding:26px 18px 90px;max-width:820px;margin:0 auto;
+  animation:pageIn .34s cubic-bezier(.2,.8,.3,1) both;
+}
 
-@media (min-width:900px){
+@media (min-width:820px){
   .shell{display:grid;grid-template-columns:var(--sidebar) 1fr;min-height:100vh}
   .side{
     border-bottom:none;border-right:1px solid var(--rule);
     position:sticky;top:0;height:100vh;overflow-y:auto;padding:26px 18px;
   }
-  .main{padding:44px 40px 96px;max-width:900px;margin:0}
+  .main{padding:48px 48px 110px;max-width:880px;margin:0}
 }
 
 /* ---- Page head ---- */
@@ -65,12 +78,12 @@ h1{
   font-family:"Barlow Condensed",sans-serif;font-weight:900;
   font-size:clamp(36px,9vw,54px);line-height:.94;text-transform:uppercase;margin-top:8px;
 }
-.lede{color:var(--cream-dim);margin-top:10px;max-width:60ch}
-.rule{height:2px;background:var(--red);margin:20px 0 0}
+.lede{color:var(--cream-dim);margin-top:12px;max-width:60ch;line-height:1.6}
+.rule{height:2px;background:var(--red);margin:24px 0 0}
 
 /* ---- Sections ---- */
-.sec{margin-top:36px;scroll-margin-top:20px}
-.sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:12px}
+.sec{margin-top:56px;scroll-margin-top:90px}
+.sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:18px}
 .sec-num{font-family:"Space Mono",monospace;font-size:12px;color:var(--red);padding-top:3px}
 h2{
   font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:27px;
@@ -78,10 +91,14 @@ h2{
 }
 h3{
   font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:20px;
-  letter-spacing:.02em;text-transform:uppercase;margin-top:22px;
+  letter-spacing:.02em;text-transform:uppercase;margin-top:30px;margin-bottom:8px;
 }
-.sec p + p{margin-top:11px}
+.sec p + p{margin-top:14px}
 .sec p{max-width:70ch}
+.sec > p{margin-top:14px}
+.sec > p:first-of-type{margin-top:0}
+details.dd + p, .icard + p, .drug + p, table.t + p, .card + p, figure + p, .flags + p{margin-top:22px}
+p + details.dd, p + .icard, p + .drug, p + .card, p + figure{margin-top:20px}
 b,strong{color:#fff;font-weight:600}
 code{
   font-family:"Space Mono",monospace;font-size:.88em;
@@ -92,7 +109,7 @@ code{
 /* ---- Keystone / principle ---- */
 .principle{
   border-left:3px solid var(--red);background:var(--navy-2);
-  padding:14px 16px;margin:18px 0;border-radius:2px;
+  padding:17px 19px;margin:24px 0;border-radius:2px;
 }
 .principle .lab{
   font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.18em;
@@ -102,10 +119,10 @@ code{
 
 /* ---- Dropdown. The long-explanation component ---- */
 details.dd{border:1px solid var(--rule);border-radius:3px;background:var(--navy-2);overflow:hidden}
-details.dd + details.dd{margin-top:8px}
+details.dd + details.dd{margin-top:12px}
 details.dd[open]{border-color:var(--rule-2)}
 details.dd summary{
-  display:flex;align-items:baseline;gap:12px;padding:12px 14px;cursor:pointer;
+  display:flex;align-items:baseline;gap:12px;padding:15px 16px;cursor:pointer;
   list-style:none;-webkit-tap-highlight-color:transparent;
 }
 details.dd summary::-webkit-details-marker{display:none}
@@ -121,12 +138,12 @@ details.dd:not([open]) .dd-mark::before{content:"+"}
   font-family:"Space Mono",monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;
   color:var(--cream-dim);margin-left:auto;text-align:right;
 }
-.dd-body{padding:0 14px 14px;border-top:1px solid var(--rule);padding-top:12px;font-size:14.5px}
-.dd-body p + p{margin-top:9px}
+.dd-body{padding:0 16px 18px;border-top:1px solid var(--rule);padding-top:15px;font-size:14.5px}
+.dd-body p + p{margin-top:12px}
 
 /* ---- Card, for a discrete thing with settings ---- */
 .card{
-  border:1px solid var(--rule);border-radius:3px;margin-top:16px;
+  border:1px solid var(--rule);border-radius:3px;margin-top:20px;
   overflow:hidden;background:var(--navy-2);
 }
 .card > header{
@@ -157,13 +174,13 @@ details.dd:not([open]) .dd-mark::before{content:"+"}
 @media (min-width:640px){ .grid{grid-template-columns:repeat(4,1fr)} }
 
 /* ---- Table ---- */
-table.t{width:100%;border-collapse:collapse;margin-top:12px}
+table.t{width:100%;border-collapse:collapse;margin-top:18px}
 table.t thead th{
   font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.14em;
   text-transform:uppercase;color:var(--cream-dim);text-align:left;
   padding:0 10px 8px 0;border-bottom:1px solid var(--rule-2);
 }
-table.t tbody td{padding:11px 10px 11px 0;border-bottom:1px solid var(--rule);vertical-align:top;font-size:14.5px}
+table.t tbody td{padding:13px 12px 13px 0;border-bottom:1px solid var(--rule);vertical-align:top;font-size:14.5px}
 table.t tbody tr:last-child td{border-bottom:none}
 table.t td.mono{font-family:"Space Mono",monospace;font-size:13px}
 .scroll{overflow-x:auto}
@@ -182,9 +199,9 @@ figure.placeholder{
 }
 
 /* ---- Flags ---- */
-.flags{background:rgba(190,24,24,.10);border:1px solid rgba(190,24,24,.45);border-radius:3px;padding:15px 17px;margin-top:18px}
+.flags{background:rgba(190,24,24,.10);border:1px solid rgba(190,24,24,.45);border-radius:3px;padding:18px 20px;margin-top:34px}
 .flags h3{font-weight:900;font-size:19px;color:var(--bad-ink);margin:0}
-.flags ul{list-style:none;margin-top:9px;display:flex;flex-direction:column;gap:8px}
+.flags ul{list-style:none;margin-top:12px;display:flex;flex-direction:column;gap:12px}
 .flags li{padding-left:19px;position:relative;font-size:14.5px}
 .flags li::before{content:"";position:absolute;left:0;top:8px;width:8px;height:8px;background:var(--red);transform:rotate(45deg)}
 
@@ -211,7 +228,7 @@ footer .brand{color:var(--cream)}
 }
 
 /* ---- Drug card ---- */
-.drug{border:1px solid var(--rule);border-radius:3px;margin-top:18px;overflow:hidden;background:var(--navy-2)}
+.drug{border:1px solid var(--rule);border-radius:3px;margin-top:26px;overflow:hidden;background:var(--navy-2)}
 .drug > header{padding:12px 14px;border-bottom:1px solid var(--rule);display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
 .drug .dn{font-family:"Barlow Condensed",sans-serif;font-weight:900;font-size:24px;text-transform:uppercase;letter-spacing:.02em}
 .drug .dc{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-dim)}
@@ -270,7 +287,6 @@ footer .brand{color:var(--cream)}
 .tb-none{padding:12px 13px;color:var(--cream-dim);font-size:14px}
 
 /* ---- Entry animations. Pure CSS, so nothing can leave them half finished ---- */
-.main{animation:pageIn .34s cubic-bezier(.2,.8,.3,1) both}
 @keyframes pageIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
 .nav a,.nav .grp{animation:navIn .32s cubic-bezier(.2,.8,.3,1) both;animation-delay:calc(var(--i,0) * 26ms)}
@@ -325,11 +341,11 @@ button.gl:hover{color:#fff;border-bottom-style:solid}
   text-transform:uppercase;letter-spacing:.02em;
 }
 .gitem .gd{font-size:14.5px;color:var(--cream-dim);margin-top:4px}
-@media print{ .topbar,.glpop{display:none} button.gl{border-bottom:none;color:#000} }
+@media print{ .glpop{display:none} button.gl{border-bottom:none;color:#000} }
 
 /* ---- Injury / entity card, ported from the standalone reference cards ---- */
 .icard{
-  border:1px solid var(--rule);border-radius:3px;margin-top:18px;overflow:hidden;
+  border:1px solid var(--rule);border-radius:3px;margin-top:22px;overflow:hidden;
   background:linear-gradient(180deg,var(--navy-2),var(--navy));
 }
 .icard > header{
@@ -405,7 +421,7 @@ button.gl:hover{color:#fff;border-bottom-style:solid}
 .tl-key .k-du i{background:rgba(237,227,204,.13)}
 
 /* ---- Danger zone block ---- */
-.danger-zone{margin-top:26px;border:1px solid rgba(190,24,24,.45);border-radius:3px;overflow:hidden}
+.danger-zone{margin-top:34px;border:1px solid rgba(190,24,24,.45);border-radius:3px;overflow:hidden}
 .danger-zone > header{
   padding:11px 15px;background:rgba(190,24,24,.14);
   font-family:"Barlow Condensed",sans-serif;font-weight:900;font-size:19px;
