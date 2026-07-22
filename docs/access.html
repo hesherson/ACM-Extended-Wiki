@@ -245,7 +245,7 @@ footer .brand{color:var(--cream)}
 .drug details.dd{border:none;border-top:1px solid var(--rule);border-radius:0;background:transparent}
 .drug details.dd + details.dd{margin-top:0;border-top:1px solid var(--rule)}
 
-/* ---- Sticky top bar. Brand fades out on scroll, search stays ---- */
+/* ---- Sticky top bar. Compact search that expands on focus ---- */
 .topbar{
   position:sticky;top:0;z-index:60;
   display:flex;align-items:center;gap:12px;
@@ -260,18 +260,32 @@ footer .brand{color:var(--cream)}
 }
 .tb-brand span{color:var(--red)}
 .topbar.scrolled .tb-brand{opacity:0;max-width:0}
+
+/* Dim layer sits under the top bar and over everything else, so the bar stays usable while the page greys out. */
+.tb-veil{
+  position:fixed;inset:0;z-index:50;background:rgba(6,11,26,.66);
+  opacity:0;pointer-events:none;transition:opacity .22s ease;
+}
+.tb-veil.on{opacity:1;pointer-events:auto}
+
+.tb-wrap{margin-left:auto;position:relative;flex:none}
 .tb-q{
-  flex:1;min-width:0;background:var(--navy-2);color:var(--cream);
+  width:190px;
+  background:var(--navy-2);color:var(--cream);
   border:1px solid var(--rule-2);border-radius:3px;padding:8px 12px;
   font-family:"Instrument Sans",system-ui,sans-serif;font-size:14.5px;
+  transition:width .28s cubic-bezier(.2,.8,.3,1),border-color .2s ease;
 }
 .tb-q::placeholder{color:var(--cream-dim)}
-.tb-q:focus{outline:none;border-color:var(--red)}
+.tb-q:focus{outline:none;border-color:var(--red);width:min(460px,58vw)}
 .tb-res{
-  position:absolute;left:16px;right:16px;top:calc(100% + 6px);
+  position:absolute;right:0;top:calc(100% + 6px);width:min(460px,86vw);
   background:var(--navy-2);border:1px solid var(--rule-2);border-radius:3px;
-  max-height:70vh;overflow-y:auto;box-shadow:0 12px 32px rgba(0,0,0,.5);
+  max-height:66vh;overflow-y:auto;box-shadow:0 16px 40px rgba(0,0,0,.55);
+  transform-origin:top right;
+  animation:tbIn .18s cubic-bezier(.2,.8,.3,1);
 }
+@keyframes tbIn{from{opacity:0;transform:translateY(-6px) scale(.98)}to{opacity:1;transform:none}}
 .tb-res a{display:block;padding:10px 13px;border-bottom:1px solid var(--rule);text-decoration:none;color:var(--cream)}
 .tb-res a:last-child{border-bottom:none}
 .tb-res a:hover{background:rgba(190,24,24,.12)}
@@ -285,10 +299,11 @@ footer .brand{color:var(--cream)}
 }
 .tb-s{display:block;font-size:12.5px;color:var(--cream-dim);margin-top:3px;line-height:1.5}
 .tb-none{padding:12px 13px;color:var(--cream-dim);font-size:14px}
-@media (min-width:900px){
-  .topbar{padding:10px 24px}
-  .tb-res{left:auto;right:24px;width:min(560px,70vw)}
+@media (max-width:520px){
+  .tb-q{width:120px}
+  .tb-q:focus{width:min(340px,62vw)}
 }
+@media (min-width:900px){ .topbar{padding:10px 24px} }
 
 /* ---- Glossary term button and popup ---- */
 button.gl{
@@ -301,6 +316,9 @@ button.gl:hover{color:#fff;border-bottom-style:solid}
   padding:20px;background:rgba(6,11,26,.72);
   opacity:0;transition:opacity .18s ease;
 }
+/* A class rule with display:flex beats the browser's [hidden]{display:none}, which left this overlay
+   permanently covering the page and swallowing every click on the site. Both belt and braces here. */
+.glpop[hidden]{display:none;pointer-events:none}
 .glpop.on{opacity:1}
 .glpop-in{
   background:var(--navy-2);border:1px solid var(--rule-2);border-left:3px solid var(--red);
@@ -333,10 +351,13 @@ button.gl:hover{color:#fff;border-bottom-style:solid}
 </style>
 </head>
 <body>
+<div class="tb-veil" id="veil"></div>
 <div class="topbar">
   <div class="tb-brand">PILL<span>A</span>R</div>
-  <input id="q" class="tb-q" type="search" placeholder="Search the guide" autocomplete="off" spellcheck="false">
-  <div id="qr" class="tb-res" hidden></div>
+  <div class="tb-wrap">
+    <input id="q" class="tb-q" type="search" placeholder="Search" autocomplete="off" spellcheck="false">
+    <div id="qr" class="tb-res" hidden></div>
+  </div>
 </div>
 <div class="shell">
 <aside class="side">
@@ -510,11 +531,16 @@ var IDX=[{"p":"Start here","f":"index.html","a":"","h":"Start here","t":"PILLAR 
   function onScroll(){ tb.classList.toggle('scrolled', window.scrollY > 40); }
   window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
 
+  var veil=document.getElementById('veil');
+  function focusMode(on){ veil.classList.toggle('on',on); }
   q.addEventListener('input',run);
-  q.addEventListener('focus',run);
+  q.addEventListener('focus',function(){ focusMode(true); run(); });
+  function dismiss(){ qr.hidden=true; focusMode(false); q.blur(); }
+  veil.addEventListener('click',dismiss);
   document.addEventListener('click',function(ev){
-    if(!ev.target.closest('.topbar')) qr.hidden=true;
+    if(!ev.target.closest('.tb-wrap') && !ev.target.closest('.tb-veil')) { qr.hidden=true; focusMode(false); }
   });
+  q.addEventListener('keydown',function(ev){ if(ev.key==='Escape') dismiss(); });
 })();
 </script>
 </body>

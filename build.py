@@ -61,10 +61,13 @@ HEAD = """<!DOCTYPE html>
 </style>
 </head>
 <body>
+<div class="tb-veil" id="veil"></div>
 <div class="topbar">
   <div class="tb-brand">PILL<span>A</span>R</div>
-  <input id="q" class="tb-q" type="search" placeholder="Search the guide" autocomplete="off" spellcheck="false">
-  <div id="qr" class="tb-res" hidden></div>
+  <div class="tb-wrap">
+    <input id="q" class="tb-q" type="search" placeholder="Search" autocomplete="off" spellcheck="false">
+    <div id="qr" class="tb-res" hidden></div>
+  </div>
 </div>
 <div class="shell">
 """
@@ -138,11 +141,16 @@ var IDX={index};
   function onScroll(){{ tb.classList.toggle('scrolled', window.scrollY > 40); }}
   window.addEventListener('scroll',onScroll,{{passive:true}}); onScroll();
 
+  var veil=document.getElementById('veil');
+  function focusMode(on){{ veil.classList.toggle('on',on); }}
   q.addEventListener('input',run);
-  q.addEventListener('focus',run);
+  q.addEventListener('focus',function(){{ focusMode(true); run(); }});
+  function dismiss(){{ qr.hidden=true; focusMode(false); q.blur(); }}
+  veil.addEventListener('click',dismiss);
   document.addEventListener('click',function(ev){{
-    if(!ev.target.closest('.topbar')) qr.hidden=true;
+    if(!ev.target.closest('.tb-wrap') && !ev.target.closest('.tb-veil')) {{ qr.hidden=true; focusMode(false); }}
   }});
+  q.addEventListener('keydown',function(ev){{ if(ev.key==='Escape') dismiss(); }});
 }})();
 </script>
 </body>
