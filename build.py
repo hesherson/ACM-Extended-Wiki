@@ -133,17 +133,23 @@ var IDX={index};
     }}).join('');
     qr.hidden=false;
   }}
-  // Fade out before navigating so the change of page reads as a transition rather than a flash.
-  document.addEventListener('click',function(ev){{
-    var a=ev.target.closest('a[href]');
-    if(!a) return;
-    var href=a.getAttribute('href');
-    if(!href || href.charAt(0)==='#' || a.target || ev.metaKey || ev.ctrlKey || ev.shiftKey) return;
-    if(a.hostname && a.hostname!==location.hostname) return;
-    ev.preventDefault();
-    document.body.classList.add('leaving');
-    setTimeout(function(){{ location.href=href; }},170);
-  }});
+  // Contents rail: highlight the section currently in view. Read-only, so nothing here can block the page.
+  var toc=document.querySelector('.toc');
+  if(toc){{
+    var links=[].slice.call(toc.querySelectorAll('a'));
+    var heads=links.map(function(a){{ return document.getElementById(a.dataset.a); }});
+    var tick=false;
+    function spy(){{
+      var best=0, y=window.scrollY+140;
+      for(var i=0;i<heads.length;i++){{ if(heads[i] && heads[i].offsetTop<=y) best=i; }}
+      links.forEach(function(a,i){{ a.classList.toggle('on', i===best); }});
+      tick=false;
+    }}
+    window.addEventListener('scroll',function(){{
+      if(!tick){{ tick=true; requestAnimationFrame(spy); }}
+    }},{{passive:true}});
+    spy();
+  }}
 
   var veil=document.getElementById('veil');
   function focusMode(on){{ veil.classList.toggle('on',on); }}
@@ -155,7 +161,6 @@ var IDX={index};
   window.addEventListener('pageshow',function(){{
     qr.hidden=true; veil.classList.remove('on');
     if(document.activeElement===q) q.blur();
-    var m=document.querySelector('.main'); if(m) m.classList.remove('leaving');
   }});
 
   q.addEventListener('input',run);
@@ -168,23 +173,6 @@ var IDX={index};
     if(!ev.target.closest('.tb-wrap') && !ev.target.closest('.tb-veil')) {{ qr.hidden=true; focusMode(false); }}
   }});
   q.addEventListener('keydown',function(ev){{ if(ev.key==='Escape') dismiss(); }});
-
-  // PAGE TRANSITION. Fade the content, then follow the link. Guarded so it degrades to a plain
-  // navigation rather than trapping the user if anything goes wrong.
-  var main=document.querySelector('.main');
-  document.addEventListener('click',function(ev){{
-    var a=ev.target.closest('a[href]');
-    if(!a||!main) return;
-    var href=a.getAttribute('href');
-    if(!href||href.charAt(0)==='#'||a.target||ev.metaKey||ev.ctrlKey||ev.shiftKey||ev.button!==0) return;
-    if(a.hostname && a.hostname!==location.hostname) return;
-    ev.preventDefault();
-    main.classList.add('leaving');
-    var went=false;
-    function go(){{ if(!went){{ went=true; location.href=href; }} }}
-    setTimeout(go,160);
-    setTimeout(go,600);   // safety net: never leave the page faded and stranded
-  }});
 
   }})();
 </script>
@@ -220,6 +208,42 @@ def add_anchors(body):
         slug = re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
         return f'<h2 id="{slug}">{m.group(1)}</h2>'
     return re.sub(r"<h2>(.*?)</h2>", sub, body)
+
+
+def add_card_anchors(body):
+    """Give drug cards and injury cards ids too. On a page like medications the h2 sections are only
+    scaffolding and the real navigation targets are the 19 cards, so the rail needs to reach them."""
+    def drug(m):
+        slug = re.sub(r"[^a-z0-9]+", "-", m.group(1).lower()).strip("-")
+        return f'<div class="drug" id="d-{slug}"><header><span class="dn">{m.group(1)}</span>'
+    body = re.sub(r'<div class="drug">\s*<header><span class="dn">([^<]+)</span>', drug, body)
+
+    def inj(m):
+        slug = re.sub(r"[^a-z0-9]+", "-", m.group(1).lower()).strip("-")
+        return f'<article class="icard" id="c-{slug}"><header><span class="iname">{m.group(1)}</span>'
+    body = re.sub(r'<article class="icard">\s*<header><span class="iname">([^<]+)</span>', inj, body)
+    return body
+
+
+def toc(body):
+    """Right hand contents rail, in document order. Sections come from the h2 anchors, and named cards
+    are nested under whichever section they fall in, so the rail matches what the reader actually sees."""
+    marks = []
+    for m in re.finditer(r'<h2 id="([^"]+)">(.*?)</h2>', body, re.S):
+        marks.append((m.start(), "sec", m.group(1), re.sub(r"<[^>]+>", "", m.group(2)).strip()))
+    for m in re.finditer(r'id="d-([\w-]+)"><header><span class="dn">([^<]+)<', body):
+        marks.append((m.start(), "sub", "d-" + m.group(1), m.group(2).strip()))
+    for m in re.finditer(r'id="c-([\w-]+)"><header><span class="iname">([^<]+)<', body):
+        marks.append((m.start(), "sub", "c-" + m.group(1), m.group(2).strip()))
+    marks.sort()
+    if len(marks) < 2:
+        return ""
+    out = ['<aside class="toc"><div class="toc-h">On this page</div><nav>']
+    for _, kind, anchor, label in marks:
+        cls = " class=\"sub\"" if kind == "sub" else ""
+        out.append(f'  <a{cls} href="#{anchor}" data-a="{anchor}">{label}</a>')
+    out += ["</nav></aside>"]
+    return "\n".join(out)
 
 
 def index_page(slug, fname, title, body):
@@ -258,8 +282,10 @@ def sidebar(current):
     """Sidebar nav. Search sits at the top of it. Every link carries an index so CSS can stagger the
     cascade without any JavaScript, which means the animation can never get stuck part way."""
     out = ['<aside class="side">',
-           '  <a class="brand" href="index.html"><img src="img/pillar_mark.png" alt="PILLAR"></a>',
-           f'  <div class="ver">ACM Extended // v{VERSION}</div>',
+           '  <div class="side-head">',
+           '    <a class="brand" href="index.html"><img src="img/pillar_mark.png" alt="PILLAR"></a>',
+           f'    <div class="ver">ACM Extended // v{VERSION}</div>',
+           '  </div>',
            '  <div class="tb-wrap">',
            '    <input id="q" class="tb-q" type="search" placeholder="Search" autocomplete="off" spellcheck="false">',
            '    <div id="qr" class="tb-res" hidden></div>',
@@ -299,6 +325,7 @@ def build():
         body, miss = apply_terms(body)
         badterms += [(slug, m) for m in miss]
         body = add_anchors(body)
+        body = add_card_anchors(body)
         bodies[slug] = body
         index += index_page(slug, fname, title, body)
 
@@ -310,7 +337,7 @@ def build():
         if slug not in bodies:
             continue
         page = (HEAD.format(title=f"ACM Extended Wiki | {title}", css=css)
-                + sidebar(slug) + "\n" + bodies[slug]
+                + sidebar(slug) + "\n" + toc(bodies[slug]) + "\n" + bodies[slug]
                 + FOOT.format(version=VERSION, built=built, terms=terms_json, index=idx_json))
         open(os.path.join(OUT, fname), "w", encoding="utf-8").write(page)
 

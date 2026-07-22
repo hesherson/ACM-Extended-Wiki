@@ -13,8 +13,8 @@
    Edit here, run build.py, every page updates. */
 :root{
   --navy:#0B1530; --navy-2:#131F42; --red:#BE1818;
-  --cream:#EDE3CC; --cream-dim:#B9B09C;
-  --green:#3B8F4A; --amber:#D08A1E; --bad-ink:#F08A8A;
+  --cream:#F0E7D2; --cream-dim:#C0B7A2;
+  --green:#3B8F4A; --amber:#D9A441; --amber-dim:#B8862F; --bad-ink:#F08A8A;
   --rule:rgba(237,227,204,.16); --rule-2:rgba(237,227,204,.30);
   --sidebar:280px;
 }
@@ -55,7 +55,7 @@ body{
 .nav{margin-top:16px}
 .nav .grp{
   font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--red);margin:16px 0 6px;
+  text-transform:uppercase;color:var(--amber);margin:20px 0 7px;
 }
 .nav a{
   display:block;color:var(--cream-dim);text-decoration:none;
@@ -84,32 +84,32 @@ body{
   font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.22em;
   text-transform:uppercase;color:var(--cream-dim);
 }
-.eyebrow .tag{color:var(--red)}
+.eyebrow .tag{color:var(--amber)}
 h1{
   font-family:"Barlow Condensed",sans-serif;font-weight:900;
   font-size:clamp(36px,9vw,54px);line-height:.94;text-transform:uppercase;margin-top:8px;
 }
 .lede{color:var(--cream-dim);margin-top:12px;max-width:60ch;line-height:1.6}
-.rule{height:2px;background:var(--red);margin:24px 0 0}
+.rule{height:2px;background:var(--amber);margin:28px 0 0}
 
 /* ---- Sections ---- */
-.sec{margin-top:56px;scroll-margin-top:90px}
-.sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:18px}
-.sec-num{font-family:"Space Mono",monospace;font-size:12px;color:var(--red);padding-top:3px}
+.sec{margin-top:88px;scroll-margin-top:96px}
+.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px}
+.sec-num{font-family:"Space Mono",monospace;font-size:13px;color:var(--amber);padding-top:4px}
 h2{
-  font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:27px;
-  letter-spacing:.02em;text-transform:uppercase;
+  font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:33px;
+  letter-spacing:.02em;text-transform:uppercase;line-height:1.05;
 }
 h3{
-  font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:20px;
-  letter-spacing:.02em;text-transform:uppercase;margin-top:30px;margin-bottom:8px;
+  font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:23px;
+  letter-spacing:.02em;text-transform:uppercase;margin-top:40px;margin-bottom:10px;
 }
-.sec p + p{margin-top:14px}
+.sec p + p{margin-top:17px}
 .sec p{max-width:70ch}
-.sec > p{margin-top:14px}
+.sec > p{margin-top:17px}
 .sec > p:first-of-type{margin-top:0}
-details.dd + p, .icard + p, .drug + p, table.t + p, .card + p, figure + p, .flags + p{margin-top:22px}
-p + details.dd, p + .icard, p + .drug, p + .card, p + figure{margin-top:20px}
+details.dd + p, .icard + p, .drug + p, table.t + p, .card + p, figure + p, .flags + p{margin-top:30px}
+p + details.dd, p + .icard, p + .drug, p + .card, p + figure{margin-top:26px}
 b,strong{color:#fff;font-weight:600}
 code{
   font-family:"Space Mono",monospace;font-size:.88em;
@@ -119,18 +119,18 @@ code{
 
 /* ---- Keystone / principle ---- */
 .principle{
-  border-left:3px solid var(--red);background:var(--navy-2);
-  padding:17px 19px;margin:24px 0;border-radius:2px;
+  border-left:3px solid var(--amber);background:var(--navy-2);
+  padding:20px 22px;margin:30px 0;border-radius:2px;
 }
 .principle .lab{
-  font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--red);
+  font-family:"Space Mono",monospace;font-size:10.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--amber);
 }
 .principle p{margin-top:6px}
 
 /* ---- Dropdown. The long-explanation component ---- */
 details.dd{border:1px solid var(--rule);border-radius:3px;background:var(--navy-2);overflow:hidden}
-details.dd + details.dd{margin-top:12px}
+details.dd + details.dd{margin-top:16px}
 details.dd[open]{border-color:var(--rule-2)}
 details.dd summary{
   display:flex;align-items:baseline;gap:12px;padding:15px 16px;cursor:pointer;
@@ -138,7 +138,7 @@ details.dd summary{
 }
 details.dd summary::-webkit-details-marker{display:none}
 details.dd summary::marker{content:""}
-.dd-mark{font-family:"Space Mono",monospace;font-size:12px;color:var(--red);font-weight:700;width:12px;flex:none}
+.dd-mark{font-family:"Space Mono",monospace;font-size:13px;color:var(--amber);font-weight:700;width:13px;flex:none}
 details.dd[open] .dd-mark::before{content:"-"}
 details.dd:not([open]) .dd-mark::before{content:"+"}
 .dd-name{
@@ -154,7 +154,7 @@ details.dd:not([open]) .dd-mark::before{content:"+"}
 
 /* ---- Card, for a discrete thing with settings ---- */
 .card{
-  border:1px solid var(--rule);border-radius:3px;margin-top:20px;
+  border:1px solid var(--rule);border-radius:3px;margin-top:26px;
   overflow:hidden;background:var(--navy-2);
 }
 .card > header{
@@ -178,18 +178,18 @@ details.dd:not([open]) .dd-mark::before{content:"+"}
 .grid .cell{background:var(--navy);padding:10px 12px}
 .grid .cell.wide{grid-column:1 / -1}
 .grid .k{
-  font-family:"Space Mono",monospace;font-size:9.5px;letter-spacing:.12em;
-  text-transform:uppercase;color:var(--cream-dim);
+  font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--amber-dim);
 }
 .grid .v{font-family:"Space Mono",monospace;font-size:14px;color:#fff;margin-top:3px}
 @media (min-width:640px){ .grid{grid-template-columns:repeat(4,1fr)} }
 
 /* ---- Table ---- */
-table.t{width:100%;border-collapse:collapse;margin-top:18px}
+table.t{width:100%;border-collapse:collapse;margin-top:24px}
 table.t thead th{
-  font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--cream-dim);text-align:left;
-  padding:0 10px 8px 0;border-bottom:1px solid var(--rule-2);
+  font-family:"Space Mono",monospace;font-size:10.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--amber-dim);text-align:left;
+  padding:0 12px 10px 0;border-bottom:1px solid var(--rule-2);
 }
 table.t tbody td{padding:13px 12px 13px 0;border-bottom:1px solid var(--rule);vertical-align:top;font-size:14.5px}
 table.t tbody tr:last-child td{border-bottom:none}
@@ -210,7 +210,7 @@ figure.placeholder{
 }
 
 /* ---- Flags ---- */
-.flags{background:rgba(190,24,24,.10);border:1px solid rgba(190,24,24,.45);border-radius:3px;padding:18px 20px;margin-top:34px}
+.flags{background:rgba(190,24,24,.10);border:1px solid rgba(190,24,24,.45);border-radius:3px;padding:22px 24px;margin-top:52px}
 .flags h3{font-weight:900;font-size:19px;color:var(--bad-ink);margin:0}
 .flags ul{list-style:none;margin-top:12px;display:flex;flex-direction:column;gap:12px}
 .flags li{padding-left:19px;position:relative;font-size:14.5px}
@@ -239,20 +239,20 @@ footer .brand{color:var(--cream)}
 }
 
 /* ---- Drug card ---- */
-.drug{border:1px solid var(--rule);border-radius:3px;margin-top:26px;overflow:hidden;background:var(--navy-2)}
+.drug{border:1px solid var(--rule);border-radius:3px;margin-top:36px;overflow:hidden;background:var(--navy-2)}
 .drug > header{padding:12px 14px;border-bottom:1px solid var(--rule);display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
 .drug .dn{font-family:"Barlow Condensed",sans-serif;font-weight:900;font-size:24px;text-transform:uppercase;letter-spacing:.02em}
 .drug .dc{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-dim)}
-.drug .dd-dose{font-family:"Space Mono",monospace;font-size:12px;color:var(--red);font-weight:700;margin-left:auto}
+.drug .dd-dose{font-family:"Space Mono",monospace;font-size:12.5px;color:var(--amber);font-weight:700;margin-left:auto}
 .pk{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--rule)}
 @media (min-width:560px){ .pk{grid-template-columns:repeat(4,1fr)} }
 .pk .cell{background:var(--navy);padding:9px 11px}
-.pk .k{font-family:"Space Mono",monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-dim)}
+.pk .k{font-family:"Space Mono",monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber-dim)}
 .pk .v{font-family:"Space Mono",monospace;font-size:13px;color:#fff;margin-top:2px}
 .drug .sect{padding:12px 14px;border-top:1px solid var(--rule)}
 .drug .sect h4{
-  font-family:"Space Mono",monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--red);margin-bottom:5px;
+  font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--amber);margin-bottom:6px;
 }
 .drug .sect.anti h4{color:var(--green)}
 .drug .sect.contra h4{color:var(--bad-ink)}
@@ -292,7 +292,7 @@ footer .brand{color:var(--cream)}
 .tb-res a{display:block;padding:10px 13px;border-bottom:1px solid var(--rule);text-decoration:none;color:var(--cream)}
 .tb-res a:last-child{border-bottom:none}
 .tb-res a:hover{background:rgba(190,24,24,.12)}
-.tb-p{display:block;font-family:"Space Mono",monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
+.tb-p{display:block;font-family:"Space Mono",monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber)}
 .tb-h{display:block;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:17px;text-transform:uppercase;letter-spacing:.02em;margin-top:2px}
 .tb-s{display:block;font-size:12.5px;color:var(--cream-dim);margin-top:3px;line-height:1.5}
 .tb-none{padding:12px 13px;color:var(--cream-dim);font-size:14px}
@@ -303,12 +303,8 @@ footer .brand{color:var(--cream)}
 .nav a,.nav .grp{animation:navIn .32s cubic-bezier(.2,.8,.3,1) both;animation-delay:calc(var(--i,0) * 26ms)}
 @keyframes navIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
 
-/* Fade the content out on the way to the next page. Opacity only, no overlay, so it cannot trap clicks. */
-.main.leaving{opacity:0;transform:translateY(-6px);transition:opacity .16s ease,transform .16s ease}
-
 @media (prefers-reduced-motion:reduce){
   .main,.nav a,.nav .grp{animation:none}
-  .main.leaving{transition:none}
 }
 
 /* ---- Glossary term button and popup ---- */
@@ -356,7 +352,7 @@ button.gl:hover{color:#fff;border-bottom-style:solid}
 
 /* ---- Injury / entity card, ported from the standalone reference cards ---- */
 .icard{
-  border:1px solid var(--rule);border-radius:3px;margin-top:22px;overflow:hidden;
+  border:1px solid var(--rule);border-radius:3px;margin-top:28px;overflow:hidden;
   background:linear-gradient(180deg,var(--navy-2),var(--navy));
 }
 .icard > header{
@@ -383,8 +379,8 @@ button.gl:hover{color:#fff;border-bottom-style:solid}
 .sgrid .s.key .sv{color:#fff}
 .sgrid .s.danger{background:rgba(190,24,24,.12)}
 .sgrid .sk{
-  font-family:"Space Mono",monospace;font-size:9.5px;letter-spacing:.12em;
-  text-transform:uppercase;color:var(--cream-dim);
+  font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--amber-dim);
 }
 .sgrid .sv{font-family:"Space Mono",monospace;font-size:15px;color:var(--cream);margin-top:3px}
 .sgrid .sv small{display:block;font-size:10.5px;color:var(--cream-dim);margin-top:2px}
@@ -395,8 +391,8 @@ button.gl:hover{color:#fff;border-bottom-style:solid}
 .resp{padding:2px 15px 15px}
 .resp-h{
   display:flex;justify-content:space-between;align-items:baseline;
-  font-family:"Space Mono",monospace;font-size:9.5px;letter-spacing:.12em;
-  text-transform:uppercase;color:var(--cream-dim);padding:11px 0 7px;
+  font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--amber-dim);padding:13px 0 8px;
 }
 .resp-h .cols{color:var(--cream-dim)}
 .rrow{display:flex;align-items:center;gap:10px;margin-top:6px}
@@ -414,8 +410,8 @@ button.gl:hover{color:#fff;border-bottom-style:solid}
 /* ---- Drug timeline. Onset, peak, duration as one readable bar ---- */
 .tl{padding:13px 15px;border-top:1px solid var(--rule)}
 .tl-h{
-  font-family:"Space Mono",monospace;font-size:9.5px;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--red);margin-bottom:9px;
+  font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--amber);margin-bottom:10px;
 }
 .tl-bar{position:relative;height:26px;background:rgba(237,227,204,.06);border-radius:2px;overflow:hidden}
 .tl-bar .seg{position:absolute;top:0;bottom:0}
@@ -432,7 +428,7 @@ button.gl:hover{color:#fff;border-bottom-style:solid}
 .tl-key .k-du i{background:rgba(237,227,204,.13)}
 
 /* ---- Danger zone block ---- */
-.danger-zone{margin-top:34px;border:1px solid rgba(190,24,24,.45);border-radius:3px;overflow:hidden}
+.danger-zone{margin-top:52px;border:1px solid rgba(190,24,24,.45);border-radius:3px;overflow:hidden}
 .danger-zone > header{
   padding:11px 15px;background:rgba(190,24,24,.14);
   font-family:"Barlow Condensed",sans-serif;font-weight:900;font-size:19px;
@@ -442,14 +438,65 @@ button.gl:hover{color:#fff;border-bottom-style:solid}
 .danger-zone .dz:first-of-type{border-top:none}
 .danger-zone .dz b{color:#fff}
 
+/* ---- Centred sidebar head ---- */
+.side-head{display:flex;flex-direction:column;align-items:center;text-align:center}
+.side .brand{display:block;line-height:0;width:100%}
+.side .brand img{
+  width:100%;max-width:172px;height:auto;display:block;margin:0 auto;
+  opacity:.87;transition:opacity .2s ease;
+}
+.side .brand:hover img{opacity:1}
+.side .ver{
+  font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--cream-dim);margin-top:10px;text-align:center;
+}
+
+/* ---- Right hand contents rail ---- */
+.toc{display:none}
+@media (min-width:1180px){
+  .shell{grid-template-columns:var(--sidebar) minmax(0,1fr) 232px}
+  .toc{
+    display:block;position:sticky;top:0;align-self:start;
+    max-height:100vh;overflow-y:auto;
+    padding:48px 20px 60px 0;
+  }
+  .toc-h{
+    font-family:"Space Mono",monospace;font-size:9.5px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--amber);
+    padding-bottom:10px;margin-bottom:8px;border-bottom:1px solid var(--rule);
+  }
+  .toc nav{display:flex;flex-direction:column;gap:2px}
+  .toc a{
+    display:block;color:var(--cream-dim);text-decoration:none;font-size:13px;line-height:1.4;
+    padding:7px 10px;border-left:2px solid transparent;border-radius:0 3px 3px 0;
+    transition:color .18s ease,border-color .18s ease,background .18s ease,transform .18s ease;
+  }
+  .toc a:hover{color:var(--cream);background:rgba(240,231,210,.05)}
+  .toc a.on{
+    color:var(--cream);border-left-color:var(--amber);
+    background:rgba(217,164,65,.10);transform:translateX(2px);
+  }
+  .main{max-width:860px}
+}
+@media print{ .toc{display:none} }
+@media (min-width:1180px){
+  .toc a.sub{
+    font-size:12px;padding:5px 10px 5px 20px;color:rgba(192,183,162,.78);
+  }
+  .toc a.sub.on{color:var(--cream)}
+  .drug,.icard{scroll-margin-top:24px}
+}
+
 </style>
 </head>
 <body>
 <div class="tb-veil" id="veil"></div>
 <div class="shell">
 <aside class="side">
-  <a class="brand" href="index.html"><img src="img/pillar_mark.png" alt="PILLAR"></a>
-  <div class="ver">ACM Extended // v0.9.873</div>
+  <div class="side-head">
+    <a class="brand" href="index.html"><img src="img/pillar_mark.png" alt="PILLAR"></a>
+    <div class="ver">ACM Extended // v0.9.873</div>
+  </div>
   <div class="tb-wrap">
     <input id="q" class="tb-q" type="search" placeholder="Search" autocomplete="off" spellcheck="false">
     <div id="qr" class="tb-res" hidden></div>
@@ -478,6 +525,7 @@ button.gl:hover{color:#fff;border-bottom-style:solid}
   </nav>
 </aside>
 <main class="main">
+
 <div class="eyebrow">PILLAR <span class="tag">//</span> REFERENCE</div>
 <h1>Glossary</h1>
 <p class="lede">Every advanced term used in this guide, in plain language. Anywhere a term appears underlined you can tap it to see this same definition without leaving the page.</p>
@@ -673,17 +721,23 @@ var IDX=[{"p":"Start here","f":"index.html","a":"","h":"Start here","t":"PILLAR 
     }).join('');
     qr.hidden=false;
   }
-  // Fade out before navigating so the change of page reads as a transition rather than a flash.
-  document.addEventListener('click',function(ev){
-    var a=ev.target.closest('a[href]');
-    if(!a) return;
-    var href=a.getAttribute('href');
-    if(!href || href.charAt(0)==='#' || a.target || ev.metaKey || ev.ctrlKey || ev.shiftKey) return;
-    if(a.hostname && a.hostname!==location.hostname) return;
-    ev.preventDefault();
-    document.body.classList.add('leaving');
-    setTimeout(function(){ location.href=href; },170);
-  });
+  // Contents rail: highlight the section currently in view. Read-only, so nothing here can block the page.
+  var toc=document.querySelector('.toc');
+  if(toc){
+    var links=[].slice.call(toc.querySelectorAll('a'));
+    var heads=links.map(function(a){ return document.getElementById(a.dataset.a); });
+    var tick=false;
+    function spy(){
+      var best=0, y=window.scrollY+140;
+      for(var i=0;i<heads.length;i++){ if(heads[i] && heads[i].offsetTop<=y) best=i; }
+      links.forEach(function(a,i){ a.classList.toggle('on', i===best); });
+      tick=false;
+    }
+    window.addEventListener('scroll',function(){
+      if(!tick){ tick=true; requestAnimationFrame(spy); }
+    },{passive:true});
+    spy();
+  }
 
   var veil=document.getElementById('veil');
   function focusMode(on){ veil.classList.toggle('on',on); }
@@ -695,7 +749,6 @@ var IDX=[{"p":"Start here","f":"index.html","a":"","h":"Start here","t":"PILLAR 
   window.addEventListener('pageshow',function(){
     qr.hidden=true; veil.classList.remove('on');
     if(document.activeElement===q) q.blur();
-    var m=document.querySelector('.main'); if(m) m.classList.remove('leaving');
   });
 
   q.addEventListener('input',run);
@@ -708,23 +761,6 @@ var IDX=[{"p":"Start here","f":"index.html","a":"","h":"Start here","t":"PILLAR 
     if(!ev.target.closest('.tb-wrap') && !ev.target.closest('.tb-veil')) { qr.hidden=true; focusMode(false); }
   });
   q.addEventListener('keydown',function(ev){ if(ev.key==='Escape') dismiss(); });
-
-  // PAGE TRANSITION. Fade the content, then follow the link. Guarded so it degrades to a plain
-  // navigation rather than trapping the user if anything goes wrong.
-  var main=document.querySelector('.main');
-  document.addEventListener('click',function(ev){
-    var a=ev.target.closest('a[href]');
-    if(!a||!main) return;
-    var href=a.getAttribute('href');
-    if(!href||href.charAt(0)==='#'||a.target||ev.metaKey||ev.ctrlKey||ev.shiftKey||ev.button!==0) return;
-    if(a.hostname && a.hostname!==location.hostname) return;
-    ev.preventDefault();
-    main.classList.add('leaving');
-    var went=false;
-    function go(){ if(!went){ went=true; location.href=href; } }
-    setTimeout(go,160);
-    setTimeout(go,600);   // safety net: never leave the page faded and stranded
-  });
 
   })();
 </script>
