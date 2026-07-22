@@ -256,6 +256,31 @@ figure.placeholder{
   font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.12em;
   text-transform:uppercase;color:var(--cream-dim);
 }
+/* Two images that only make sense read against each other, side by side on anything wide enough. */
+.figpair{display:grid;grid-template-columns:1fr;gap:14px}
+@media (min-width:600px){ .figpair{grid-template-columns:1fr 1fr} }
+.figpair figure{margin:16px 0 0}
+
+/* ---- Icon key. The glyph beside what it does, because a description of an icon is useless
+   next to the icon itself. ---- */
+.iconkey{
+  display:grid;grid-template-columns:1fr;gap:1px;
+  background:var(--rule);border:1px solid var(--rule);border-radius:3px;
+  margin-top:18px;overflow:hidden;
+}
+@media (min-width:600px){ .iconkey{grid-template-columns:repeat(2,1fr)} }
+.ik{display:flex;align-items:center;gap:12px;background:var(--navy-2);padding:11px 13px}
+.ico{width:26px;height:26px;flex:none;object-fit:contain}
+/* The nav and strip glyphs are pure black on transparent, drawn to sit on the device's own white
+   screen. Inverting is what makes them readable here rather than shipping a second set of files.
+   Left alone in a light context, which is why it is opt in rather than blanket. */
+.ico.inv{filter:invert(1)}
+.ikn{
+  font-family:"Space Mono",monospace;font-size:10.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--amber);flex:none;width:96px;
+}
+.ikd{font-size:13.5px;color:var(--body-ink)}
+@media print{ .ico.inv{filter:none} }
 
 /* ---- Flags ---- */
 .flags{background:rgba(190,24,24,.10);border:1px solid rgba(190,24,24,.45);border-radius:3px;padding:22px 24px;margin-top:52px}

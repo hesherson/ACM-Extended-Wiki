@@ -14,9 +14,10 @@ page is rewritten.
     docs/                 output. This is the folder GitHub Pages serves.
 
 ADDING A PAGE: drop a file in src/content/ and add a line to PAGES below. That is the whole process.
-ADDING AN IMAGE: put it in docs/img/ and reference it as img/thing.png from any page.
+ADDING AN IMAGE: put it in src/img/ and reference it as img/thing.png. build.py copies
+                 src/img into docs/img every build, so docs/ can always be deleted safely.
 """
-import os, re, datetime, json, sys
+import os, re, datetime, json, sys, shutil
 
 sys.dont_write_bytecode = True   # keep src/ free of __pycache__
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "src"))
@@ -431,6 +432,19 @@ def build():
     css = open(os.path.join(SRC, "_pillar.css"), encoding="utf-8").read()
     os.makedirs(OUT, exist_ok=True)
     os.makedirs(os.path.join(OUT, "img"), exist_ok=True)
+
+    # IMAGES. src/img is the source of truth and docs/img is a copy, rebuilt from it every time.
+    # These used to live only in docs/img, which is build output: the documented fix for stale
+    # inlined CSS is to delete docs/ wholesale, and that silently took every image with it.
+    # Source and output must not share a directory.
+    src_img = os.path.join(SRC, "img")
+    copied = 0
+    if os.path.isdir(src_img):
+        for fn in sorted(os.listdir(src_img)):
+            s = os.path.join(src_img, fn)
+            if os.path.isfile(s):
+                shutil.copy2(s, os.path.join(OUT, "img", fn))
+                copied += 1
     built = datetime.date.today().isoformat()
 
     # PASS 1: read and transform every body, and build the search index from the result.
@@ -466,6 +480,26 @@ def build():
     open(os.path.join(OUT, ".nojekyll"), "w").write("")
 
     print(f"built {len(bodies)} page(s), {len(index)} search records, {len(TERMS)} glossary terms")
+    print(f"copied {copied} image(s) from src/img to docs/img")
+
+    # Every img/ reference must resolve, and every image should be used. A broken reference used to
+    # ship as a silent 404 that only showed up on someone else's screen.
+    have = set(os.listdir(src_img)) if os.path.isdir(src_img) else set()
+    want = set()
+    for slug, body in bodies.items():
+        for m in re.finditer(r'(?:src|href)="img/([^"]+)"', body):
+            want.add(m.group(1))
+    for chrome in ("pillar_mark.png", "favicon.png"):
+        want.add(chrome)
+    broken = sorted(want - have)
+    unused = sorted(have - want)
+    if broken:
+        print("BROKEN IMAGE REFERENCES (add to src/img/): " + ", ".join(broken))
+    if unused:
+        print("images in src/img not referenced by any page: " + ", ".join(unused))
+    if not broken:
+        print(f"all {len(want)} image reference(s) resolve")
+
     if badterms:
         print("UNKNOWN GLOSSARY TERMS (add to src/glossary_terms.py):")
         for pg, t in badterms:
