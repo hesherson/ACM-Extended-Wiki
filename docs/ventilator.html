@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
 <title>ACM Extended Wiki | Ventilator</title>
 <link rel="icon" type="image/png" href="img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,7 +14,7 @@
    Edit here, run build.py, every page updates. */
 :root{
   --navy:#0B1530; --navy-2:#131F42; --red:#BE1818;
-  --cream:#F0E7D2; --cream-dim:#C0B7A2;
+  --cream:#F0E7D2; --cream-dim:#C0B7A2; --body-ink:#D9D1C0;
   --green:#3B8F4A; --amber:#D9A441; --amber-dim:#B8862F; --bad-ink:#F08A8A;
   --rule:rgba(237,227,204,.16); --rule-2:rgba(237,227,204,.30);
   --sidebar:280px;
@@ -21,16 +22,16 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
 body{
-  background:var(--navy);color:var(--cream);
+  background:var(--navy);color:var(--body-ink);
   font-family:"Instrument Sans",system-ui,sans-serif;
-  font-size:16px;line-height:1.55;font-variant-numeric:tabular-nums;
+  font-size:16px;line-height:1.62;font-variant-numeric:tabular-nums;
   -webkit-font-smoothing:antialiased;
 }
 
 /* ---- Shell. Sidebar on desktop, stacked on mobile ---- */
 .shell{display:block}
 .side{
-  background:var(--navy-2);border-bottom:2px solid var(--red);
+  background:var(--navy-2);border-bottom:2px solid var(--amber);
   padding:22px 18px 18px;
 }
 /* Below the breakpoint the sidebar stacks above the content. Nav collapses to a wrapped row so it reads
@@ -39,7 +40,7 @@ body{
   .nav{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
   .nav .grp{width:100%;margin:10px 0 2px}
   .nav a{border-left:none;border:1px solid var(--rule);border-radius:3px;padding:6px 10px;font-size:13.5px}
-  .nav a.on{border-color:var(--red)}
+  .nav a.on{border-color:var(--amber)}
   .tb-res{width:min(420px,92vw)}
 }
 .side .brand{display:block;line-height:0}
@@ -62,12 +63,12 @@ body{
   padding:6px 10px;border-left:2px solid transparent;border-radius:0 3px 3px 0;
   font-size:14.5px;
 }
-.nav a:hover{color:var(--cream);background:rgba(237,227,204,.05)}
-.nav a.on{color:var(--cream);border-left-color:var(--red);background:rgba(190,24,24,.10)}
+.nav a:hover{color:var(--cream);background:rgba(240,231,210,.05)}
+.nav a.on{color:var(--cream);border-left-color:var(--amber);background:rgba(217,164,65,.11)}
 
 .main{
   padding:26px 18px 90px;max-width:820px;margin:0 auto;
-  animation:pageIn .34s cubic-bezier(.2,.8,.3,1) both;
+  animation:pageIn .18s ease-out both;
 }
 
 @media (min-width:820px){
@@ -281,7 +282,7 @@ footer .brand{color:var(--cream)}
   transition:border-color .2s ease,box-shadow .2s ease;
 }
 .tb-q::placeholder{color:var(--cream-dim)}
-.tb-q:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 3px rgba(190,24,24,.16)}
+.tb-q:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 3px rgba(217,164,65,.18)}
 .tb-res{
   position:absolute;left:0;top:calc(100% + 6px);width:min(420px,84vw);
   background:var(--navy-2);border:1px solid var(--rule-2);border-radius:3px;
@@ -291,28 +292,47 @@ footer .brand{color:var(--cream)}
 @keyframes tbIn{from{opacity:0;transform:translateY(-6px) scale(.98)}to{opacity:1;transform:none}}
 .tb-res a{display:block;padding:10px 13px;border-bottom:1px solid var(--rule);text-decoration:none;color:var(--cream)}
 .tb-res a:last-child{border-bottom:none}
-.tb-res a:hover{background:rgba(190,24,24,.12)}
+.tb-res a:hover{background:rgba(217,164,65,.12)}
 .tb-p{display:block;font-family:"Space Mono",monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber)}
 .tb-h{display:block;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:17px;text-transform:uppercase;letter-spacing:.02em;margin-top:2px}
 .tb-s{display:block;font-size:12.5px;color:var(--cream-dim);margin-top:3px;line-height:1.5}
 .tb-none{padding:12px 13px;color:var(--cream-dim);font-size:14px}
 
 /* ---- Entry animations. Pure CSS, so nothing can leave them half finished ---- */
-@keyframes pageIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes pageIn{from{opacity:0}to{opacity:1}}
 
-.nav a,.nav .grp{animation:navIn .32s cubic-bezier(.2,.8,.3,1) both;animation-delay:calc(var(--i,0) * 26ms)}
-@keyframes navIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
+}
 
 @media (prefers-reduced-motion:reduce){
-  .main,.nav a,.nav .grp{animation:none}
+  .main{animation:none}
 }
 
 /* ---- Glossary term button and popup ---- */
 button.gl{
-  font:inherit;color:var(--cream);background:none;border:none;padding:0;cursor:pointer;
-  border-bottom:1px dashed var(--red);
+  font:inherit;color:var(--cream);cursor:pointer;
+  background:rgba(217,164,65,.10);
+  border:1px solid rgba(217,164,65,.28);
+  border-radius:3px;
+  padding:0 5px;margin:0 1px;
+  line-height:1.35;display:inline;
+  transition:background .16s ease,border-color .16s ease,color .16s ease,box-shadow .16s ease;
 }
-button.gl:hover{color:#fff;border-bottom-style:solid}
+button.gl::after{
+  content:"";display:inline-block;width:3px;height:3px;border-radius:50%;
+  background:var(--amber);vertical-align:2px;margin-left:4px;opacity:.65;
+}
+button.gl:hover,button.gl:focus-visible{
+  background:rgba(217,164,65,.22);
+  border-color:rgba(217,164,65,.60);
+  color:#fff;outline:none;
+  box-shadow:0 0 0 2px rgba(217,164,65,.12);
+}
+button.gl:hover::after{opacity:1}
+button.gl.arming{
+  background:rgba(217,164,65,.30);
+  border-color:var(--amber);
+}
+
 .glpop{
   position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;
   padding:20px;background:rgba(6,11,26,.72);
@@ -323,7 +343,7 @@ button.gl:hover{color:#fff;border-bottom-style:solid}
 .glpop[hidden]{display:none;pointer-events:none}
 .glpop.on{opacity:1}
 .glpop-in{
-  background:var(--navy-2);border:1px solid var(--rule-2);border-left:3px solid var(--red);
+  background:var(--navy-2);border:1px solid var(--rule-2);border-left:3px solid var(--amber);
   border-radius:3px;padding:20px 22px;max-width:440px;width:100%;
   transform:translateY(10px) scale(.97);transition:transform .18s cubic-bezier(.2,.8,.3,1);
 }
@@ -338,7 +358,7 @@ button.gl:hover{color:#fff;border-bottom-style:solid}
   text-transform:uppercase;background:none;border:1px solid var(--rule-2);color:var(--cream-dim);
   padding:7px 14px;border-radius:2px;cursor:pointer;
 }
-.glpop-x:hover{color:var(--cream);border-color:var(--red)}
+.glpop-x:hover{color:var(--cream);border-color:var(--amber)}
 
 /* ---- Glossary page ---- */
 .glist{display:flex;flex-direction:column;gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:3px}
@@ -348,7 +368,7 @@ button.gl:hover{color:#fff;border-bottom-style:solid}
   text-transform:uppercase;letter-spacing:.02em;
 }
 .gitem .gd{font-size:14.5px;color:var(--cream-dim);margin-top:4px}
-@media print{ .glpop{display:none} button.gl{border-bottom:none;color:#000} }
+@media print{ .glpop{display:none} button.gl{background:none;border:none;padding:0;color:#000} button.gl::after{display:none} }
 
 /* ---- Injury / entity card, ported from the standalone reference cards ---- */
 .icard{
@@ -502,26 +522,26 @@ button.gl:hover{color:#fff;border-bottom-style:solid}
     <div id="qr" class="tb-res" hidden></div>
   </div>
   <nav class="nav">
-    <div class="grp" style="--i:0">Overview</div>
-    <a class="" style="--i:1" href="index.html">Start here</a>
-    <div class="grp" style="--i:2">Systems</div>
-    <a class="on" style="--i:3" href="ventilator.html">Ventilator</a>
-    <a class="" style="--i:4" href="oxygen.html">Oxygen delivery</a>
-    <a class="" style="--i:5" href="bleeding.html">Bleeding and shock</a>
-    <a class="" style="--i:6" href="airway.html">Airway and chest</a>
-    <a class="" style="--i:7" href="circulation.html">Arrest and Rhythms</a>
-    <a class="" style="--i:8" href="medications.html">Medications</a>
-    <a class="" style="--i:9" href="access.html">Access and blood</a>
-    <a class="" style="--i:10" href="tbi.html">Head injury</a>
-    <a class="" style="--i:11" href="flight.html">Flight and altitude</a>
-    <div class="grp" style="--i:12">Interface</div>
-    <a class="" style="--i:13" href="menu.html">Medical menu</a>
-    <a class="" style="--i:14" href="accessibility.html">Accessibility</a>
-    <div class="grp" style="--i:15">Reference</div>
-    <a class="" style="--i:16" href="overrides.html">Advanced Functions / Overrides</a>
-    <a class="" style="--i:17" href="glossary.html">Glossary</a>
-    <a class="" style="--i:18" href="settings.html">Settings reference</a>
-    <a class="" style="--i:19" href="zeus.html">Zeus modules</a>
+    <div class="grp">Overview</div>
+    <a href="index.html">Start here</a>
+    <div class="grp">Systems</div>
+    <a class="on" href="ventilator.html">Ventilator</a>
+    <a href="oxygen.html">Oxygen delivery</a>
+    <a href="bleeding.html">Bleeding and shock</a>
+    <a href="airway.html">Airway and chest</a>
+    <a href="circulation.html">Arrest and Rhythms</a>
+    <a href="medications.html">Medications</a>
+    <a href="access.html">Access and blood</a>
+    <a href="tbi.html">Head injury</a>
+    <a href="flight.html">Flight and altitude</a>
+    <div class="grp">Interface</div>
+    <a href="menu.html">Medical menu</a>
+    <a href="accessibility.html">Accessibility</a>
+    <div class="grp">Reference</div>
+    <a href="overrides.html">Advanced Functions / Overrides</a>
+    <a href="glossary.html">Glossary</a>
+    <a href="settings.html">Settings reference</a>
+    <a href="zeus.html">Zeus modules</a>
   </nav>
 </aside>
 <main class="main">
@@ -725,7 +745,7 @@ button.gl:hover{color:#fff;border-bottom-style:solid}
 </div>
 
 <footer>
-  <span class="brand">PILLAR</span> // ACM EXTENDED FIELD GUIDE // v0.9.873 // BUILT 2026-07-22
+  <span class="brand">PILLAR</span> // ACM EXTENDED FIELD GUIDE // v0.9.873 // BUILD 2026-07-22
 </footer>
 </main>
 </div>
@@ -751,9 +771,29 @@ var IDX=[{"p":"Start here","f":"index.html","a":"","h":"Start here","t":"PILLAR 
     pop.classList.remove('on');
     setTimeout(function(){pop.hidden=true;},180);
   }
+
+  // HOVER TO OPEN after a deliberate pause, so passing the cursor over a term does not fire it.
+  // Clicking still opens immediately. Touch devices never fire mouseenter, so they get the click path.
+  var hoverT=null, armed=null;
+  function clearArm(){
+    if(hoverT){ clearTimeout(hoverT); hoverT=null; }
+    if(armed){ armed.classList.remove('arming'); armed=null; }
+  }
+  document.addEventListener('mouseover',function(ev){
+    var b=ev.target.closest('.gl');
+    if(!b || b===armed) return;
+    clearArm();
+    armed=b; b.classList.add('arming');
+    hoverT=setTimeout(function(){ open(b.dataset.t); clearArm(); },1000);
+  });
+  document.addEventListener('mouseout',function(ev){
+    var b=ev.target.closest('.gl');
+    if(b && b===armed) clearArm();
+  });
+
   document.addEventListener('click',function(ev){
     var b=ev.target.closest('.gl');
-    if(b){ ev.preventDefault(); open(b.dataset.t); return; }
+    if(b){ ev.preventDefault(); clearArm(); open(b.dataset.t); return; }
     if(ev.target.closest('.glpop-x') || ev.target===pop) close();
   });
   document.addEventListener('keydown',function(ev){ if(ev.key==='Escape') close(); });

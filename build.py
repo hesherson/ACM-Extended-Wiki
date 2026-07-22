@@ -54,6 +54,7 @@ HEAD = """<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
 <title>{title}</title>
 <link rel="icon" type="image/png" href="img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -70,7 +71,7 @@ HEAD = """<!DOCTYPE html>
 
 FOOT = r"""
 <footer>
-  <span class="brand">PILLAR</span> // ACM EXTENDED FIELD GUIDE // v{version} // BUILT {built}
+  <span class="brand">PILLAR</span> // ACM EXTENDED FIELD GUIDE // v{version} // BUILD {built}
 </footer>
 </main>
 </div>
@@ -96,9 +97,29 @@ var IDX={index};
     pop.classList.remove('on');
     setTimeout(function(){{pop.hidden=true;}},180);
   }}
+
+  // HOVER TO OPEN after a deliberate pause, so passing the cursor over a term does not fire it.
+  // Clicking still opens immediately. Touch devices never fire mouseenter, so they get the click path.
+  var hoverT=null, armed=null;
+  function clearArm(){{
+    if(hoverT){{ clearTimeout(hoverT); hoverT=null; }}
+    if(armed){{ armed.classList.remove('arming'); armed=null; }}
+  }}
+  document.addEventListener('mouseover',function(ev){{
+    var b=ev.target.closest('.gl');
+    if(!b || b===armed) return;
+    clearArm();
+    armed=b; b.classList.add('arming');
+    hoverT=setTimeout(function(){{ open(b.dataset.t); clearArm(); }},1000);
+  }});
+  document.addEventListener('mouseout',function(ev){{
+    var b=ev.target.closest('.gl');
+    if(b && b===armed) clearArm();
+  }});
+
   document.addEventListener('click',function(ev){{
     var b=ev.target.closest('.gl');
-    if(b){{ ev.preventDefault(); open(b.dataset.t); return; }}
+    if(b){{ ev.preventDefault(); clearArm(); open(b.dataset.t); return; }}
     if(ev.target.closest('.glpop-x') || ev.target===pop) close();
   }});
   document.addEventListener('keydown',function(ev){{ if(ev.key==='Escape') close(); }});
@@ -292,15 +313,12 @@ def sidebar(current):
            '  </div>',
            '  <nav class="nav">']
     seen = []
-    i = 0
     for slug, fname, title, group in PAGES:
         if group not in seen:
             seen.append(group)
-            out.append(f'    <div class="grp" style="--i:{i}">{group}</div>')
-            i += 1
-        cls = "on" if slug == current else ""
-        out.append(f'    <a class="{cls}" style="--i:{i}" href="{fname}">{title}</a>')
-        i += 1
+            out.append(f'    <div class="grp">{group}</div>')
+        cls = ' class="on"' if slug == current else ""
+        out.append(f'    <a{cls} href="{fname}">{title}</a>')
     out += ['  </nav>', '</aside>', '<main class="main">']
     return "\n".join(out)
 
