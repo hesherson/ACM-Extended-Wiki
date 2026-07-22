@@ -68,7 +68,6 @@ body{
 
 .main{
   padding:26px 18px 90px;max-width:820px;margin:0 auto;
-  animation:pageIn .18s ease-out both;
 }
 
 @media (min-width:820px){
@@ -298,15 +297,6 @@ footer .brand{color:var(--cream)}
 .tb-s{display:block;font-size:12.5px;color:var(--cream-dim);margin-top:3px;line-height:1.5}
 .tb-none{padding:12px 13px;color:var(--cream-dim);font-size:14px}
 
-/* ---- Entry animations. Pure CSS, so nothing can leave them half finished ---- */
-@keyframes pageIn{from{opacity:0}to{opacity:1}}
-
-}
-
-@media (prefers-reduced-motion:reduce){
-  .main{animation:none}
-}
-
 /* ---- Glossary term button and popup ---- */
 button.gl{
   font:inherit;color:var(--cream);cursor:pointer;
@@ -472,39 +462,123 @@ button.gl.arming{
 }
 
 /* ---- Right hand contents rail ---- */
-.toc{display:none}
-@media (min-width:1180px){
-  .shell{grid-template-columns:var(--sidebar) minmax(0,1fr) 232px}
-  .toc{
-    display:block;position:sticky;top:0;align-self:start;
-    max-height:100vh;overflow-y:auto;
-    padding:48px 20px 60px 0;
-  }
-  .toc-h{
-    font-family:"Space Mono",monospace;font-size:9.5px;letter-spacing:.18em;
-    text-transform:uppercase;color:var(--amber);
-    padding-bottom:10px;margin-bottom:8px;border-bottom:1px solid var(--rule);
-  }
-  .toc nav{display:flex;flex-direction:column;gap:2px}
-  .toc a{
-    display:block;color:var(--cream-dim);text-decoration:none;font-size:13px;line-height:1.4;
-    padding:7px 10px;border-left:2px solid transparent;border-radius:0 3px 3px 0;
-    transition:color .18s ease,border-color .18s ease,background .18s ease,transform .18s ease;
-  }
-  .toc a:hover{color:var(--cream);background:rgba(240,231,210,.05)}
-  .toc a.on{
-    color:var(--cream);border-left-color:var(--amber);
-    background:rgba(217,164,65,.10);transform:translateX(2px);
-  }
-  .main{max-width:860px}
-}
-@media print{ .toc{display:none} }
+
 @media (min-width:1180px){
   .toc a.sub{
     font-size:12px;padding:5px 10px 5px 20px;color:rgba(192,183,162,.78);
   }
   .toc a.sub.on{color:var(--cream)}
   .drug,.icard{scroll-margin-top:24px}
+}
+
+/* ---- Section bar. Opaque, sticky, collapses to a thin strip on scroll ---- */
+.secbar{
+  position:sticky;top:0;z-index:40;
+  background:var(--navy);                 /* fully opaque: nothing shows through it */
+  border-bottom:1px solid var(--rule);
+  margin:0 -18px 22px;padding:0 18px;
+  transition:box-shadow .2s ease;
+}
+.secbar.thin{box-shadow:0 6px 18px rgba(6,11,26,.45)}
+.sb-in{position:relative}
+.sb-now{
+  display:flex;align-items:baseline;gap:10px;width:100%;
+  background:none;border:none;cursor:pointer;color:inherit;text-align:left;
+  padding:15px 0 13px;
+  transition:padding .22s cubic-bezier(.2,.8,.3,1);
+}
+.secbar.thin .sb-now{padding:8px 0 7px}
+.sb-lab{
+  font-family:"Space Mono",monospace;font-size:9.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--amber);flex:none;
+  opacity:1;max-width:120px;overflow:hidden;white-space:nowrap;
+  transition:opacity .22s ease,max-width .22s ease;
+}
+.secbar.thin .sb-lab{opacity:0;max-width:0}
+.sb-cur{
+  font-family:"Barlow Condensed",sans-serif;font-weight:700;
+  text-transform:uppercase;letter-spacing:.02em;color:var(--cream);
+  font-size:20px;line-height:1.1;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  transition:font-size .22s cubic-bezier(.2,.8,.3,1);
+}
+.secbar.thin .sb-cur{font-size:15px}
+.sb-caret{
+  margin-left:auto;flex:none;width:0;height:0;align-self:center;
+  border-left:5px solid transparent;border-right:5px solid transparent;
+  border-top:5px solid var(--amber);
+  transition:transform .2s ease;
+}
+.secbar.open .sb-caret{transform:rotate(180deg)}
+.sb-prog{height:2px;background:rgba(240,231,210,.08);border-radius:2px;overflow:hidden}
+.sb-prog i{display:block;height:100%;width:0;background:var(--amber);transition:width .12s linear}
+
+.sb-list{
+  position:absolute;left:-18px;right:-18px;top:100%;
+  background:var(--navy-2);border:1px solid var(--rule-2);border-top:none;
+  max-height:60vh;overflow-y:auto;
+  box-shadow:0 18px 40px rgba(6,11,26,.6);
+  display:flex;flex-direction:column;
+}
+.sb-list a{
+  display:block;color:var(--cream-dim);text-decoration:none;font-size:14px;
+  padding:9px 18px;border-left:2px solid transparent;
+  transition:color .15s ease,background .15s ease,border-color .15s ease;
+}
+.sb-list a:hover{color:var(--cream);background:rgba(240,231,210,.05)}
+.sb-list a.on{color:var(--cream);border-left-color:var(--amber);background:rgba(217,164,65,.11)}
+.sb-list a.sub{font-size:12.5px;padding-left:34px;color:rgba(192,183,162,.78)}
+.sb-list a.sub.on{color:var(--cream)}
+
+.sec{scroll-margin-top:96px}
+.drug,.icard{scroll-margin-top:96px}
+
+@media (min-width:820px){
+  .secbar{margin:0 -48px 26px;padding:0 48px}
+  .sb-list{left:-48px;right:-48px}
+  .sb-list a{padding-left:48px}
+  .sb-list a.sub{padding-left:66px}
+}
+@media (prefers-reduced-motion:reduce){
+  .sb-now,.sb-lab,.sb-cur,.sb-caret,.sb-prog i{transition:none}
+}
+@media print{ .secbar{display:none} }
+
+/* ---- Cross document page transition ----
+   Only the content column animates. The sidebar and the section bar are given their own transition
+   names, which tells the browser they are the SAME element either side of the navigation, so it holds
+   them still instead of repainting them. That is what stops the sidebar flashing.
+   Painting html and body in the page colour also removes the white flash browsers show between loads. */
+html{background:var(--navy)}
+
+@view-transition{ navigation:auto }
+
+.main{view-transition-name:pagecontent}
+.side{view-transition-name:sidechrome}
+
+/* Everything not explicitly named falls into root. Holding it at zero keeps the shell from moving. */
+::view-transition-group(root){animation-duration:0s}
+::view-transition-old(sidechrome),
+::view-transition-new(sidechrome){animation:none;mix-blend-mode:normal}
+
+::view-transition-old(pagecontent){
+  animation:contentOut .34s cubic-bezier(.4,0,.6,1) both;
+}
+::view-transition-new(pagecontent){
+  animation:contentIn .46s cubic-bezier(.2,.7,.3,1) .08s both;
+}
+@keyframes contentOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-10px)}}
+@keyframes contentIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* Fallback for browsers without cross document view transitions: fade the content only, same timing. */
+@supports not (view-transition-name:none){
+  .main{animation:contentIn .46s cubic-bezier(.2,.7,.3,1) both}
+}
+
+@media (prefers-reduced-motion:reduce){
+  ::view-transition-old(pagecontent),
+  ::view-transition-new(pagecontent){animation:none}
+  .main{animation:none}
 }
 
 </style>
@@ -545,11 +619,21 @@ button.gl.arming{
   </nav>
 </aside>
 <main class="main">
-<aside class="toc"><div class="toc-h">On this page</div><nav>
-  <a href="#structure" data-a="structure">Structure</a>
-  <a href="#colour" data-a="colour">Colour</a>
-  <a href="#turning-it-off" data-a="turning-it-off">Turning It Off</a>
-</nav></aside>
+<div class="secbar" id="secbar">
+  <div class="sb-in">
+    <button type="button" class="sb-now" id="sbNow" aria-expanded="false">
+      <span class="sb-lab">On this page</span>
+      <span class="sb-cur" id="sbCur"></span>
+      <span class="sb-caret"></span>
+    </button>
+    <div class="sb-prog"><i id="sbProg"></i></div>
+  </div>
+  <nav class="sb-list" id="sbList" hidden>
+    <a href="#structure" data-a="structure">Structure</a>
+    <a href="#colour" data-a="colour">Colour</a>
+    <a href="#turning-it-off" data-a="turning-it-off">Turning It Off</a>
+  </nav>
+</div>
 <div class="eyebrow">PILLAR <span class="tag">//</span> INTERFACE</div>
 <h1>Medical Menu</h1>
 <p class="lede">Grouped, collapsible, colour coded. Built to keep a long action list scannable under pressure.</p>
@@ -698,21 +782,46 @@ var IDX=[{"p":"Start here","f":"index.html","a":"","h":"Start here","t":"PILLAR 
     }).join('');
     qr.hidden=false;
   }
-  // Contents rail: highlight the section currently in view. Read-only, so nothing here can block the page.
-  var toc=document.querySelector('.toc');
-  if(toc){
-    var links=[].slice.call(toc.querySelectorAll('a'));
+  // SECTION BAR. Tracks which section is in view, fills a progress line, and collapses to a thin strip
+  // once the reader is past the top. Read-only apart from the toggle, so it cannot block the page.
+  var sb=document.getElementById('secbar');
+  if(sb){
+    var list=document.getElementById('sbList'), now=document.getElementById('sbNow');
+    var cur=document.getElementById('sbCur'), prog=document.getElementById('sbProg');
+    var links=[].slice.call(list.querySelectorAll('a'));
     var heads=links.map(function(a){ return document.getElementById(a.dataset.a); });
     var tick=false;
     function spy(){
-      var best=0, y=window.scrollY+140;
-      for(var i=0;i<heads.length;i++){ if(heads[i] && heads[i].offsetTop<=y) best=i; }
+      var y=window.scrollY, best=0;
+      for(var i=0;i<heads.length;i++){ if(heads[i] && heads[i].offsetTop<=y+120) best=i; }
       links.forEach(function(a,i){ a.classList.toggle('on', i===best); });
+      if(cur.textContent!==links[best].textContent) cur.textContent=links[best].textContent;
+      var doc=document.documentElement.scrollHeight-window.innerHeight;
+      prog.style.width=(doc>0 ? Math.min(100,(y/doc)*100) : 0)+'%';
+      sb.classList.toggle('thin', y>90);
       tick=false;
     }
     window.addEventListener('scroll',function(){
       if(!tick){ tick=true; requestAnimationFrame(spy); }
     },{passive:true});
+    now.addEventListener('click',function(){
+      var open=list.hidden;
+      list.hidden=!open;
+      now.setAttribute('aria-expanded', open?'true':'false');
+      sb.classList.toggle('open', open);
+    });
+    list.addEventListener('click',function(ev){
+      if(ev.target.tagName==='A'){
+        list.hidden=true; sb.classList.remove('open');
+        now.setAttribute('aria-expanded','false');
+      }
+    });
+    document.addEventListener('click',function(ev){
+      if(!ev.target.closest('.secbar') && !list.hidden){
+        list.hidden=true; sb.classList.remove('open');
+        now.setAttribute('aria-expanded','false');
+      }
+    });
     spy();
   }
 

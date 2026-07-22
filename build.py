@@ -154,21 +154,46 @@ var IDX={index};
     }}).join('');
     qr.hidden=false;
   }}
-  // Contents rail: highlight the section currently in view. Read-only, so nothing here can block the page.
-  var toc=document.querySelector('.toc');
-  if(toc){{
-    var links=[].slice.call(toc.querySelectorAll('a'));
+  // SECTION BAR. Tracks which section is in view, fills a progress line, and collapses to a thin strip
+  // once the reader is past the top. Read-only apart from the toggle, so it cannot block the page.
+  var sb=document.getElementById('secbar');
+  if(sb){{
+    var list=document.getElementById('sbList'), now=document.getElementById('sbNow');
+    var cur=document.getElementById('sbCur'), prog=document.getElementById('sbProg');
+    var links=[].slice.call(list.querySelectorAll('a'));
     var heads=links.map(function(a){{ return document.getElementById(a.dataset.a); }});
     var tick=false;
     function spy(){{
-      var best=0, y=window.scrollY+140;
-      for(var i=0;i<heads.length;i++){{ if(heads[i] && heads[i].offsetTop<=y) best=i; }}
+      var y=window.scrollY, best=0;
+      for(var i=0;i<heads.length;i++){{ if(heads[i] && heads[i].offsetTop<=y+120) best=i; }}
       links.forEach(function(a,i){{ a.classList.toggle('on', i===best); }});
+      if(cur.textContent!==links[best].textContent) cur.textContent=links[best].textContent;
+      var doc=document.documentElement.scrollHeight-window.innerHeight;
+      prog.style.width=(doc>0 ? Math.min(100,(y/doc)*100) : 0)+'%';
+      sb.classList.toggle('thin', y>90);
       tick=false;
     }}
     window.addEventListener('scroll',function(){{
       if(!tick){{ tick=true; requestAnimationFrame(spy); }}
     }},{{passive:true}});
+    now.addEventListener('click',function(){{
+      var open=list.hidden;
+      list.hidden=!open;
+      now.setAttribute('aria-expanded', open?'true':'false');
+      sb.classList.toggle('open', open);
+    }});
+    list.addEventListener('click',function(ev){{
+      if(ev.target.tagName==='A'){{
+        list.hidden=true; sb.classList.remove('open');
+        now.setAttribute('aria-expanded','false');
+      }}
+    }});
+    document.addEventListener('click',function(ev){{
+      if(!ev.target.closest('.secbar') && !list.hidden){{
+        list.hidden=true; sb.classList.remove('open');
+        now.setAttribute('aria-expanded','false');
+      }}
+    }});
     spy();
   }}
 
@@ -247,8 +272,9 @@ def add_card_anchors(body):
 
 
 def toc(body):
-    """Right hand contents rail, in document order. Sections come from the h2 anchors, and named cards
-    are nested under whichever section they fall in, so the rail matches what the reader actually sees."""
+    """Sticky section bar. Sits at the top of the content column, opaque so nothing shows through it,
+    and collapses to a thin strip as the reader scrolls. Sections come from the h2 anchors, and named
+    cards nest under them, so it can never disagree with the page."""
     marks = []
     for m in re.finditer(r'<h2 id="([^"]+)">(.*?)</h2>', body, re.S):
         marks.append((m.start(), "sec", m.group(1), re.sub(r"<[^>]+>", "", m.group(2)).strip()))
@@ -259,11 +285,20 @@ def toc(body):
     marks.sort()
     if len(marks) < 2:
         return ""
-    out = ['<aside class="toc"><div class="toc-h">On this page</div><nav>']
+    out = ['<div class="secbar" id="secbar">',
+           '  <div class="sb-in">',
+           '    <button type="button" class="sb-now" id="sbNow" aria-expanded="false">',
+           '      <span class="sb-lab">On this page</span>',
+           '      <span class="sb-cur" id="sbCur"></span>',
+           '      <span class="sb-caret"></span>',
+           '    </button>',
+           '    <div class="sb-prog"><i id="sbProg"></i></div>',
+           '  </div>',
+           '  <nav class="sb-list" id="sbList" hidden>']
     for _, kind, anchor, label in marks:
-        cls = " class=\"sub\"" if kind == "sub" else ""
-        out.append(f'  <a{cls} href="#{anchor}" data-a="{anchor}">{label}</a>')
-    out += ["</nav></aside>"]
+        cls = ' class="sub"' if kind == "sub" else ""
+        out.append(f'    <a{cls} href="#{anchor}" data-a="{anchor}">{label}</a>')
+    out += ["  </nav>", "</div>"]
     return "\n".join(out)
 
 
