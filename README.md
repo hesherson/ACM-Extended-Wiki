@@ -71,3 +71,26 @@ reported and skipped rather than written as a corrupt image. LZO decompression u
 Two practical notes. Decoding is pure Python, so a 2048x2048 texture takes a while; the 256 and 512 icons
 are near instant and are usually what a figure wants anyway. And a name filter is worth using, because
 converting all 213 at once is slow and most of them are body overlays that mean nothing out of context.
+
+## Glossary terms
+
+Terms live in `src/glossary_terms.py`. The glossary page and the in-page popups are both generated from
+that one dict, so they cannot disagree.
+
+To link a term in any content file:
+
+    {{peep}}                 renders as the term's own name
+    {{peep|hold pressure}}   renders your wording, same popup
+
+Unknown slugs are reported by name at build time rather than shipped as literal braces.
+
+Writing rules for definitions: assume no medical background, never define a term using another undefined
+term, two or three short sentences, and say what it IS before why it matters.
+
+## Search
+
+`build.py` builds one search record per section and inlines the index into every page, so search works
+even opened from disk with no server. Section anchors are generated automatically from h2 text.
+
+Large guides will grow the index. If page weight becomes a problem, switch to a single `search-index.json`
+fetched on demand, at the cost of search no longer working offline from a file.

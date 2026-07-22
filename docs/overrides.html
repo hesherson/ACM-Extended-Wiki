@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PILLAR | Flight and altitude</title>
+<title>PILLAR | What we override</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;900&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -354,89 +354,257 @@ button.gl:hover{color:#fff;border-bottom-style:solid}
     <a href="medications.html">Medications</a>
     <a href="access.html">Access and blood</a>
     <a href="tbi.html">Head injury</a>
-    <a href="flight.html" class="on">Flight and altitude</a>
+    <a href="flight.html">Flight and altitude</a>
     <div class="grp">Interface</div>
     <a href="menu.html">Medical menu</a>
     <a href="accessibility.html">Accessibility</a>
     <div class="grp">Reference</div>
-    <a href="overrides.html">What we override</a>
+    <a href="overrides.html" class="on">What we override</a>
     <a href="glossary.html">Glossary</a>
     <a href="settings.html">Settings reference</a>
     <a href="zeus.html">Zeus modules</a>
   </nav>
 </aside>
 <main class="main">
-<div class="eyebrow">PILLAR <span class="tag">//</span> SYSTEMS</div>
-<h1>Flight And Altitude</h1>
-<p class="lede">Two gas laws drive almost all of it. Everything here reads true altitude, corrected for the map, rather than raw engine height.</p>
+<div class="eyebrow">PILLAR <span class="tag">//</span> REFERENCE</div>
+<h1>What We Override</h1>
+<p class="lede">Where ACM Extended changes ACM or ACE behaviour, what the original did, and what it does now. Use the search bar above to jump straight to a system.</p>
 <div class="rule"></div>
 
 <div class="principle">
-  <div class="lab">The one thing</div>
-  <p><b>Climb rate matters more than cruise speed.</b> Speed sets how long you are exposed. Rate of climb sets how fast the pressure changes, which decides how quickly a <button type="button" class="gl" data-t="pneumothorax">pneumothorax</button> tensions and how much warning you get.</p>
+  <div class="lab">The rule we follow</div>
+  <p>Overrides are <b>additive wherever possible</b>. Where a gate exists, ACM Extended can make it harder to pass but never easier, so nothing here can accidentally save a casualty ACM would have let die.</p>
 </div>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">01</span><h2 id="what-it-models">What It Models</h2></div>
-  <div class="scroll">
-  <table class="t">
-    <thead><tr><th>Law</th><th>Effect</th><th>What you see</th></tr></thead>
-    <tbody>
-      <tr><td>Boyle</td><td>Trapped gas expands as pressure falls</td><td>Pneumothorax grows, cuffs over-pressurise</td></tr>
-      <tr><td>Dalton</td><td>Partial pressure of oxygen falls</td><td>Saturation drops with no change in injury</td></tr>
-    </tbody>
-  </table>
-  </div>
-  <p>Expansion runs at roughly 35% by 8,000 feet and 50% by 10,000. Thermal loss is handled separately and follows the altitude down, which is why a casualty you were already fighting to keep warm gets worse on the climb.</p>
-</section>
-
-<section class="sec">
-  <div class="sec-head"><span class="sec-num">02</span><h2 id="how-altitude-is-derived">How Altitude Is Derived</h2></div>
-  <p>Every flight system asks one function for altitude rather than reading position directly.</p>
+  <div class="sec-head"><span class="sec-num">01</span><h2 id="bleeding">Bleeding</h2></div>
 
   <details class="dd">
-    <summary><span class="dd-mark"></span><span class="dd-name">The map datum problem</span><span class="dd-tag">Why the correction exists</span></summary>
+    <summary><span class="dd-mark"></span><span class="dd-name">Blood loss multiplier</span><span class="dd-tag">getBloodVolumeChange</span></summary>
     <div class="dd-body">
-      <p>Engine height is measured from the engine's zero, which is only the same as sea level if the terrain author put the ocean there. Some terrains sit their base plate several thousand metres up.</p>
-      <p>On one of those, a casualty lying in the dirt reports as being at altitude. Saturation falls, a pneumothorax expands, and the medic chases a hypoxia that exists because of a mapping decision.</p>
-      <p>The lowest point on the map is sampled as a proxy for intended sea level, on a coarse grid scaled to world size so a small map and a large one cost the same. A terrain with an ocean has seabed below zero and gets no correction. A terrain with its floor at 6,000 m gets 6,000 m removed.</p>
-      <p>A threshold guards it, because a genuinely high altitude map is a legitimate design choice and its hypoxia should be modelled. Override with <code>ACMI_altitude_datumMode</code>: -1 auto, 0 for no correction, or an explicit value in metres.</p>
+      <p><b>ACE behaviour.</b> Blood loss per wound is a fixed rate by wound type and bandage state. Blood pressure has no effect on it at all.</p>
+      <p><b>Override.</b> Loss is multiplied by how hard the heart is pushing, referenced to a <button type="button" class="gl" data-t="map">MAP</button> of 70 so target pressure equals stock behaviour.</p>
+      <table class="t">
+        <thead><tr><th>MAP</th><th>Multiplier</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">40</td><td class="mono">0.55x</td><td>Floor. <button type="button" class="gl" data-t="permissive-hypotension">Permissive hypotension</button> working.</td></tr>
+          <tr><td class="mono">55</td><td class="mono">0.75x</td><td>Below target, bleeding slowed</td></tr>
+          <tr><td class="mono">70</td><td class="mono">1.00x</td><td>Reference. Stock ACE rate.</td></tr>
+          <tr><td class="mono">90</td><td class="mono">1.5x</td><td>Over-resuscitated</td></tr>
+          <tr><td class="mono">110</td><td class="mono">2.00x</td><td>Ceiling</td></tr>
+        </tbody>
+      </table>
+      <p>It applies to uncontrolled bleeding only, because ACE already returns zero for a bandaged wound, so the multiplier has nothing to act on once you have controlled it.</p>
     </div>
   </details>
 
-  <p>The result is published per casualty as a pressure ratio, which the expansion and oxygenation code both read. Sampling happens once and is cached, lazily on the first altitude tick, so a mission that never flies never pays for it.</p>
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Clotting quality</span><span class="dd-tag">Lethal triad</span></summary>
+    <div class="dd-body">
+      <p><b>ACE behaviour.</b> No <button type="button" class="gl" data-t="coagulopathy">Coagulopathy</button> model. Blood clots the same whatever the casualty's temperature or chemistry.</p>
+      <p><b>Override.</b> Three multiplying legs feed a single coagulation multiplier read by the same blood loss hook.</p>
+      <table class="t">
+        <thead><tr><th>Leg</th><th>Threshold</th><th>Worst case</th></tr></thead>
+        <tbody>
+          <tr><td><button type="button" class="gl" data-t="acidosis">Acidosis</button></td><td class="mono">0.30</td><td class="mono">1.3x</td></tr>
+          <tr><td>Hypothermia</td><td class="mono">below 35 C</td><td class="mono">compounds</td></tr>
+          <tr><td><button type="button" class="gl" data-t="ionised-calcium">Ionised calcium</button></td><td class="mono">below 1.0</td><td class="mono">1.4x</td></tr>
+        </tbody>
+      </table>
+      <p><button type="button" class="gl" data-t="citrate">Citrate</button> from stored blood chelates calcium at 0.18 per litre. Calcium chloride credits back 0.12 per gram, with a floor of 0.55 and up to 40 mmHg of MAP lost per unit below threshold.</p>
+    </div>
+  </details>
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">03</span><h2 id="saturation-ownership">Saturation Ownership</h2></div>
-  <p>One function owns saturation at a time. If a ventilator is driving the casualty, the shunt model owns it and folds altitude in through the same pressure ratio. The altitude tick exits early rather than writing as well.</p>
-  <p>Two writers on the same value would delete PEEP's effect above 500 m and would be invisible from outside. Anything new that touches saturation needs the same guard.</p>
+  <div class="sec-head"><span class="sec-num">02</span><h2 id="oxygen-and-saturation">Oxygen And Saturation</h2></div>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Who owns SpO2</span><span class="dd-tag">Layer separation</span></summary>
+    <div class="dd-body">
+      <p>This is the most important thing on this page for anyone extending the addon.</p>
+      <p><b>ACE behaviour.</b> <code>ace_medical_spo2</code> is driven by ventilation and gas exchange, with no blood volume term at all.</p>
+      <p><b>ACM behaviour.</b> Blood loss enters at the ACM <code>getSpO2</code> display layer as a read-time transform.</p>
+      <p><b>Override.</b> ACM Extended writes <code>ACM_core_TargetVitals_OxygenSaturation</code>, which is ACM's target layer, and never touches <code>ace_medical_spo2</code>. That is why there is no fight with ACE.</p>
+      <p>Internally only one function may own saturation at a time. When a ventilator is driving a casualty the shunt model owns it, and the altitude tick exits early rather than writing as well. Two writers would delete <button type="button" class="gl" data-t="peep">PEEP</button>'s entire effect above 500 m and would be invisible from outside.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Oxygen delivery</span><span class="dd-tag">New, no ACE equivalent</span></summary>
+    <div class="dd-body">
+      <p><button type="button" class="gl" data-t="oxygen-delivery">Oxygen delivery</button> does not exist in ACE or ACM in any form. It combines <button type="button" class="gl" data-t="haemoglobin">Haemoglobin</button> concentration, saturation and <button type="button" class="gl" data-t="cardiac-output">cardiac output</button>.</p>
+      <table class="t">
+        <thead><tr><th>State</th><th>Delivery</th><th><button type="button" class="gl" data-t="spo2">SpO2</button> shows</th></tr></thead>
+        <tbody>
+          <tr><td>Healthy</td><td class="mono">1.01</td><td>Normal</td></tr>
+          <tr><td>Class II haemorrhage</td><td class="mono">0.80</td><td>Normal</td></tr>
+          <tr><td>Class III haemorrhage</td><td class="mono">0.58</td><td>Often normal</td></tr>
+          <tr><td>Class III plus crystalloid</td><td class="mono">0.70</td><td>Normal</td></tr>
+          <tr><td>Class III plus whole blood</td><td class="mono">1.10</td><td>Normal</td></tr>
+          <tr><td>Deep shock</td><td class="mono">0.35</td><td>May look survivable</td></tr>
+        </tbody>
+      </table>
+      <p><button type="button" class="gl" data-t="crystalloid">Crystalloid</button> dilution decays with a half life of 20 minutes. Plasma is not decayed, because it is a <button type="button" class="gl" data-t="colloid">Colloid</button> and stays where you put it.</p>
+    </div>
+  </details>
 </section>
 
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">04</span><h2 id="before-the-aircraft-moves">Before The Aircraft Moves</h2></div>
-  <div class="scroll">
-  <table class="t">
-    <thead><tr><th>Item</th><th>Do</th><th>Why</th></tr></thead>
-    <tbody>
-      <tr><td>Chest</td><td>Tube any pneumothorax</td><td>It expands, and you cannot reassess in flight</td></tr>
-      <tr><td>Airway</td><td>Secure it now</td><td>You will not intubate well in a loud, vibrating cabin</td></tr>
-      <tr><td>Sedation</td><td>Established before loading</td><td>Titrating in flight is far harder</td></tr>
-    </tbody>
-  </table>
+  <div class="sec-head"><span class="sec-num">03</span><h2 id="circulation-and-rhythm">Circulation And Rhythm</h2></div>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">ROSC gate</span><span class="dd-tag">Additive only</span></summary>
+    <div class="dd-body">
+      <p><b>ACM behaviour.</b> <code>fn_updateCirculationState</code> decides whether <button type="button" class="gl" data-t="rosc">ROSC</button> is achieved from rhythm and CPR quality.</p>
+      <p><b>Override.</b> Additive and one directional: it can only flip a true to a false, never the reverse. Off entirely unless <code>ACMI_hcEff_rhythm</code> is enabled.</p>
+      <p>What it adds is the reversible causes ACM does not check: <button type="button" class="gl" data-t="hypoxia">Hypoxia</button>, <button type="button" class="gl" data-t="hypovolaemia">Hypovolaemia</button>, <button type="button" class="gl" data-t="tension-pneumothorax">tension pneumothorax</button> and <button type="button" class="gl" data-t="acidosis">Acidosis</button>. Oxygen delivery has <b>zero references</b> in the ROSC gate, so nothing in the delivery model can quietly make a casualty unrecoverable.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Amiodarone</span><span class="dd-tag">Extended past arrest</span></summary>
+    <div class="dd-body">
+      <p><b>ACM behaviour.</b> Amiodarone feeds <code>handleCPR</code> for VF and pulseless VT only, and its effect exits 30 seconds after ROSC. A casualty with a pulse gets nothing from it.</p>
+      <p><b>Override.</b> Perfusing rhythm control, gated on not being in arrest.</p>
+      <table class="t">
+        <thead><tr><th>Rhythm</th><th>ID</th><th>Converts at</th></tr></thead>
+        <tbody>
+          <tr><td>Atrial tachycardia</td><td class="mono">101</td><td class="mono">0.40</td></tr>
+          <tr><td>Atrial fibrillation with RVR</td><td class="mono">103</td><td class="mono">0.40</td></tr>
+          <tr><td>SVT</td><td class="mono">104</td><td class="mono">0.70</td></tr>
+        </tbody>
+      </table>
+      <p>Torsades is excluded, since amiodarone prolongs QT and causes it. A cumulative 2200 mg ceiling models the same concern.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Heart rate and ECG coupling</span><span class="dd-tag">Both must be set</span></summary>
+    <div class="dd-body">
+      <p>ACM and ACE each hold a heart rate. Setting only one produces a casualty whose monitor and pulse disagree, which took a while to track down the first time.</p>
+      <p>Anything changing heart rate must set <code>ace_medical_heartRate</code> and <code>ACM_core_TargetVitals_HeartRate</code> together.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Shock and acidosis timelines</span><span class="dd-tag">Rates</span></summary>
+    <div class="dd-body">
+      <table class="t">
+        <thead><tr><th>Value</th><th>Rate</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td>Shock initial severity</td><td class="mono">0.6</td><td>Where peri-arrest starts</td></tr>
+          <tr><td>Shock progression</td><td class="mono">0.006/s</td><td>About 66 s per 0.4</td></tr>
+          <tr><td>Tachycardic peak</td><td class="mono">120</td><td>Compensation working</td></tr>
+          <tr><td>Bradycardic floor</td><td class="mono">32</td><td>Compensation failed</td></tr>
+          <tr><td>Metabolic acidosis</td><td class="mono">0.004/s</td><td>Below MAP 55</td></tr>
+          <tr><td>Metabolic recovery</td><td class="mono">0.01/s</td><td>2.5x faster than it builds</td></tr>
+          <tr><td>Respiratory acidosis</td><td class="mono">0.006/s</td><td>PaCO2 above 45</td></tr>
+          <tr><td>Respiratory recovery</td><td class="mono">0.012/s</td><td>2x faster than it builds</td></tr>
+          <tr><td>Pressor blunting</td><td class="mono">up to 45%</td><td>Acidosis only affects this</td></tr>
+        </tbody>
+      </table>
+      <p>Recovery being faster than accrual is what keeps casualties recoverable rather than accumulating debt they can never repay.</p>
+    </div>
+  </details>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">04</span><h2 id="chest-and-airway">Chest And Airway</h2></div>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Needle decompression condition</span><span class="dd-tag">Opened up</span></summary>
+    <div class="dd-body">
+      <p><b>ACM behaviour.</b> <button type="button" class="gl" data-t="ncd">NCD</button> is offered when the game already knows a tension is present, so the action appearing is itself the diagnosis.</p>
+      <p><b>Override.</b> The condition opens to any living casualty. Indication is checked inside the callback instead, before performing the decompression.</p>
+      <p>If it was not indicated, a developing simple <button type="button" class="gl" data-t="pneumothorax">Pneumothorax</button> is seeded at state 1. Repeat unnecessary needles raise the <button type="button" class="gl" data-t="iatrogenic">Iatrogenic</button> tension chance cumulatively at 0.35, declaring after 90 seconds. Disable with <code>ACMI_ncd_iatrogenicTension</code>.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Positive pressure and preload</span><span class="dd-tag">New</span></summary>
+    <div class="dd-body">
+      <p>Neither ACE nor ACM models the cost of <button type="button" class="gl" data-t="ppv">positive pressure ventilation</button> on <button type="button" class="gl" data-t="preload">Preload</button>.</p>
+      <table class="t">
+        <thead><tr><th>Volume state</th><th><button type="button" class="gl" data-t="stroke-volume">Stroke volume</button> penalty</th></tr></thead>
+        <tbody>
+          <tr><td>Full</td><td class="mono">about 0%</td></tr>
+          <tr><td>Class III haemorrhage</td><td class="mono">15 to 19%</td></tr>
+          <tr><td>Maximum modelled</td><td class="mono">35%</td></tr>
+        </tbody>
+      </table>
+      <p>High PEEP multiplies it up to 1.5x. Reads both the ventilator and manual bagging, so enthusiastic BVM technique on a shocked casualty does real harm.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Thoracostomy visibility</span><span class="dd-tag">Inheritance trap</span></summary>
+    <div class="dd-body">
+      <p>Worth recording because it cost real time. ACE action classes inherit their parent's condition unless it is restated, so a child action can silently never appear despite its own condition being correct.</p>
+      <p>Any new action inheriting from an existing one needs its condition stated explicitly rather than assumed.</p>
+    </div>
+  </details>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">05</span><h2 id="head-injury">Head Injury</h2></div>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">ICP and CPP</span><span class="dd-tag">New, no ACM equivalent</span></summary>
+    <div class="dd-body">
+      <table class="t">
+        <thead><tr><th>Value</th><th>Setting</th></tr></thead>
+        <tbody>
+          <tr><td>Baseline <button type="button" class="gl" data-t="icp">ICP</button></td><td class="mono">10</td></tr>
+          <tr><td>ICP ceiling</td><td class="mono">40</td></tr>
+          <tr><td>Rise from swelling</td><td class="mono">0.02/s</td></tr>
+          <tr><td>Rise from CO2</td><td class="mono">0.2/s</td></tr>
+          <tr><td>Low <button type="button" class="gl" data-t="cpp">CPP</button> threshold</td><td class="mono">30</td></tr>
+          <tr><td>Severity from low CPP</td><td class="mono">0.003/s</td></tr>
+          <tr><td>Severity from hypoxia</td><td class="mono">0.004/s</td></tr>
+        </tbody>
+      </table>
+      <p>CO2 moves ICP ten times faster than swelling does, which makes ventilation the fastest lever in either direction. The hypoxic <button type="button" class="gl" data-t="secondary-insult">secondary insult</button> reads oxygen delivery rather than saturation.</p>
+      <p><button type="button" class="gl" data-t="herniation">Herniation</button> at stage 2 is the only permanent damage anywhere in the addon. Everything else heals, and <button type="button" class="gl" data-t="osmotherapy">Osmotherapy</button> doubles the rate.</p>
+    </div>
+  </details>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">06</span><h2 id="interface">Interface</h2></div>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Medical menu rebuild</span><span class="dd-tag">Every frame</span></summary>
+    <div class="dd-body">
+      <p>ACE's <code>ace_medical_gui_actions</code> is a flat array that the menu PFH rebuilds <b>every frame</b>. Grouping works by rewriting that array on each rebuild rather than by patching it once.</p>
+      <p>Matching is by resolved display name rather than class name, because ACM's classes go through stringtable lookups and the class name is not what the player sees.</p>
+      <p>Grouping requires left aligned text, since markers and indentation are invisible when centred. Revert with <code>ACMI_menuNestEnabled</code>.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Colour handling</span><span class="dd-tag">Every row, every frame</span></summary>
+    <div class="dd-body">
+      <p>Controls are recycled between frames, so a row that is coloured once keeps that colour when it is reused for something else. Every row must be coloured on every frame, including back to default.</p>
+      <p>All colour passes through a single resolver so the colourblind transform cannot be forgotten on anything added later. Ventilator colours go through a second wrapper first, which applies display brightness before the correction, since correcting first would let it undo the dimming.</p>
+    </div>
+  </details>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">07</span><h2 id="known-traps">Known Traps</h2></div>
+  <div class="flags">
+    <h3>If You Are Extending This</h3>
+    <ul>
+      <li><b>Two writers on one vital.</b> Copy the <code>ACMI_vent_driving</code> guard for anything touching saturation.</li>
+      <li><b>Heart rate needs both variables set.</b> ACM and ACE each hold one.</li>
+      <li><b>Action condition inheritance.</b> State the condition explicitly on any child action.</li>
+      <li><b>Config texture and sound paths take single backslashes.</b> Doubling them breaks silently at runtime rather than at build.</li>
+      <li><b>Trailing commas in an array kill postInit.</b> Everything after the throw never initialises, which presents as an unrelated system failing.</li>
+      <li><b>All sounds must be mono.</b> Stereo files will not play positionally.</li>
+    </ul>
   </div>
-  <figure class="placeholder">Altitude effects screenshot goes here</figure>
 </section>
-
-<div class="flags">
-  <h3>Red Flags</h3>
-  <ul>
-    <li><b>Needle decompression as your only chest intervention.</b> It can occlude or dislodge in flight and you will not know until they arrest.</li>
-    <li><b>Untreated pneumothorax on an unpressurised climb.</b> Rotary cabin altitude equals flight altitude, so there is no buffer.</li>
-    <li><b>Relying on an audible alarm.</b> A rotary cabin is loud enough that you will miss it. Set visual cues before takeoff.</li>
-    <li><b>Saturation falling on the climb.</b> Treat it as real until you have proven it is vibration artefact.</li>
-  </ul>
-</div>
 
 <footer>
   <span class="brand">PILLAR</span> // ACM EXTENDED FIELD GUIDE // v0.9.873 // BUILT 2026-07-22

@@ -234,3 +234,88 @@ footer .brand{color:var(--cream)}
 .drug .sect li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;background:var(--rule-2);transform:rotate(45deg)}
 .drug details.dd{border:none;border-top:1px solid var(--rule);border-radius:0;background:transparent}
 .drug details.dd + details.dd{margin-top:0;border-top:1px solid var(--rule)}
+
+/* ---- Sticky top bar. Brand fades out on scroll, search stays ---- */
+.topbar{
+  position:sticky;top:0;z-index:60;
+  display:flex;align-items:center;gap:12px;
+  padding:10px 16px;background:rgba(11,21,48,.92);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--rule);
+}
+.tb-brand{
+  font-family:"Barlow Condensed",sans-serif;font-weight:900;font-size:22px;
+  text-transform:uppercase;letter-spacing:.02em;flex:none;
+  opacity:1;transition:opacity .25s ease,max-width .25s ease;
+  max-width:160px;overflow:hidden;white-space:nowrap;
+}
+.tb-brand span{color:var(--red)}
+.topbar.scrolled .tb-brand{opacity:0;max-width:0}
+.tb-q{
+  flex:1;min-width:0;background:var(--navy-2);color:var(--cream);
+  border:1px solid var(--rule-2);border-radius:3px;padding:8px 12px;
+  font-family:"Instrument Sans",system-ui,sans-serif;font-size:14.5px;
+}
+.tb-q::placeholder{color:var(--cream-dim)}
+.tb-q:focus{outline:none;border-color:var(--red)}
+.tb-res{
+  position:absolute;left:16px;right:16px;top:calc(100% + 6px);
+  background:var(--navy-2);border:1px solid var(--rule-2);border-radius:3px;
+  max-height:70vh;overflow-y:auto;box-shadow:0 12px 32px rgba(0,0,0,.5);
+}
+.tb-res a{display:block;padding:10px 13px;border-bottom:1px solid var(--rule);text-decoration:none;color:var(--cream)}
+.tb-res a:last-child{border-bottom:none}
+.tb-res a:hover{background:rgba(190,24,24,.12)}
+.tb-p{
+  display:block;font-family:"Space Mono",monospace;font-size:9px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--red);
+}
+.tb-h{
+  display:block;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:17px;
+  text-transform:uppercase;letter-spacing:.02em;margin-top:2px;
+}
+.tb-s{display:block;font-size:12.5px;color:var(--cream-dim);margin-top:3px;line-height:1.5}
+.tb-none{padding:12px 13px;color:var(--cream-dim);font-size:14px}
+@media (min-width:900px){
+  .topbar{padding:10px 24px}
+  .tb-res{left:auto;right:24px;width:min(560px,70vw)}
+}
+
+/* ---- Glossary term button and popup ---- */
+button.gl{
+  font:inherit;color:var(--cream);background:none;border:none;padding:0;cursor:pointer;
+  border-bottom:1px dashed var(--red);
+}
+button.gl:hover{color:#fff;border-bottom-style:solid}
+.glpop{
+  position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;
+  padding:20px;background:rgba(6,11,26,.72);
+  opacity:0;transition:opacity .18s ease;
+}
+.glpop.on{opacity:1}
+.glpop-in{
+  background:var(--navy-2);border:1px solid var(--rule-2);border-left:3px solid var(--red);
+  border-radius:3px;padding:20px 22px;max-width:440px;width:100%;
+  transform:translateY(10px) scale(.97);transition:transform .18s cubic-bezier(.2,.8,.3,1);
+}
+.glpop.on .glpop-in{transform:translateY(0) scale(1)}
+.glpop-t{
+  font-family:"Barlow Condensed",sans-serif;font-weight:900;font-size:26px;
+  text-transform:uppercase;letter-spacing:.02em;
+}
+.glpop-d{margin-top:8px;font-size:15px;line-height:1.6}
+.glpop-x{
+  margin-top:16px;font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;background:none;border:1px solid var(--rule-2);color:var(--cream-dim);
+  padding:7px 14px;border-radius:2px;cursor:pointer;
+}
+.glpop-x:hover{color:var(--cream);border-color:var(--red)}
+
+/* ---- Glossary page ---- */
+.glist{display:flex;flex-direction:column;gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:3px}
+.gitem{background:var(--navy-2);padding:13px 15px;scroll-margin-top:80px}
+.gitem .gt{
+  font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:19px;
+  text-transform:uppercase;letter-spacing:.02em;
+}
+.gitem .gd{font-size:14.5px;color:var(--cream-dim);margin-top:4px}
+@media print{ .topbar,.glpop{display:none} button.gl{border-bottom:none;color:#000} }
