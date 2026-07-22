@@ -366,6 +366,10 @@ footer .brand{color:var(--cream)}
 }
 .drug .sect.anti h4{color:var(--green)}
 .drug .sect.contra h4{color:var(--bad-ink)}
+/* Special considerations: what this addon does differently. Amber left edge marks it as the
+   modelled behaviour rather than the general pharmacology above it. */
+.drug .sect.special{border-left:3px solid var(--amber);background:rgba(var(--amber-rgb),.05)}
+.drug .sect.special h4{color:var(--amber)}
 .drug .sect p{font-size:14px}
 .drug .sect ul{list-style:none;font-size:14px}
 .drug .sect li{padding-left:14px;position:relative;margin-top:3px}
