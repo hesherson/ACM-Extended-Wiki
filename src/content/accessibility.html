@@ -1,0 +1,63 @@
+<div class="eyebrow">PILLAR <span class="tag">//</span> INTERFACE</div>
+<h1>Accessibility</h1>
+<p class="lede">All client side. Every player sets their own and nothing needs to match across a server.</p>
+<div class="rule"></div>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Settings</h2></div>
+  <p>All of these live under <code>Addon Options</code>, <b>ACM Extended: Accessibility</b>.</p>
+  <div class="scroll">
+  <table class="t">
+    <thead><tr><th>Setting</th><th>Default</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td>Left-align medical menu</td><td class="mono">off</td><td>Moves button text to the left edge. Prerequisite for grouping.</td></tr>
+      <tr><td>Group menu into dropdowns</td><td class="mono">on</td><td>Collapsible sections. Requires left-align.</td></tr>
+      <tr><td>Colour group headers</td><td class="mono">on</td><td>Per-section colour, dimmed while expanded.</td></tr>
+      <tr><td>Colourblind mode</td><td class="mono">off</td><td>Off, protanopia, deuteranopia, tritanopia.</td></tr>
+      <tr><td>Correction strength</td><td class="mono">1.0</td><td>Dial the correction back if it overshoots.</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">02</span><h2>Colourblind Correction</h2></div>
+  <p>Applies to <b>everything the addon draws</b>, not just the menu: ventilator panel and its alarm tiers, EMMA capnograph, blood cooler states, chest seal states.</p>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Why a transform, not a second palette</span><span class="dd-tag">Design</span></summary>
+    <div class="dd-body">
+      <p>Hand-authoring an alternate palette per mode would mean four versions of every colour in the addon, and every colour added later would have to be authored four times or silently fall back to the wrong one.</p>
+      <p>A transform applied at the point of use is much harder to forget, and anything added later inherits it for free.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">These are corrections, not simulations</span><span class="dd-tag">Important</span></summary>
+    <div class="dd-body">
+      <p>Each mode takes the difference a given deficiency cannot resolve and pushes it onto an axis that deficiency still has. They are corrections applied for the viewer, rather than simulations of what a colourblind person sees.</p>
+      <p>For protanopia and deuteranopia that means carrying the red-green difference on blue. For tritanopia it means carrying the blue-yellow difference on red-green.</p>
+      <p>Measured against the actual palette, by simulating what each deficiency perceives and checking the closest pair of colours: protanopia improves from 0.063 to 0.185, deuteranopia from 0.109 to 0.162, tritanopia from 0.087 to 0.164.</p>
+      <p>Greys, whites and blacks pass through untouched, because an achromatic colour has no difference to redistribute.</p>
+    </div>
+  </details>
+
+  <p>The alarm tiers get particular attention, because red HIGH against yellow MEDIUM is the pair red-green deficiency collapses and it is the most safety critical distinction in the addon. It widens in all three modes and is protected against being dimmed toward the panel background.</p>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Ventilator Brightness</h2></div>
+  <p>Separate from the above, on the panel itself at <code>MENU / ADV. SETTINGS / BRIGHTNESS</code>.</p>
+  <div class="scroll">
+  <table class="t">
+    <thead><tr><th>Level</th><th>Output</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">NIGHT</td><td class="mono">0.055</td><td>Unreadable unaided. Lifts to 0.85 under image intensifiers.</td></tr>
+      <tr><td class="mono">1</td><td class="mono">0.300</td><td></td></tr>
+      <tr><td class="mono">3</td><td class="mono">0.620</td><td>Default</td></tr>
+      <tr><td class="mono">5</td><td class="mono">1.000</td><td>Full</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Selecting NIGHT also drops alarm volume once, matching the real Robust behaviour where brightness and volume lower together. You can turn the volume back up afterwards and it stays where you put it.</p>
+</section>

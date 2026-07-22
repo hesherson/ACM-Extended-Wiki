@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PILLAR | Accessibility</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;900&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* PILLAR GUIDE. One stylesheet, inlined into every page at build time.
+   Edit here, run build.py, every page updates. */
+:root{
+  --navy:#0B1530; --navy-2:#131F42; --red:#BE1818;
+  --cream:#EDE3CC; --cream-dim:#B9B09C;
+  --green:#3B8F4A; --amber:#D08A1E; --bad-ink:#F08A8A;
+  --rule:rgba(237,227,204,.16); --rule-2:rgba(237,227,204,.30);
+  --sidebar:280px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  background:var(--navy);color:var(--cream);
+  font-family:"Instrument Sans",system-ui,sans-serif;
+  font-size:16px;line-height:1.55;font-variant-numeric:tabular-nums;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---- Shell. Sidebar on desktop, stacked on mobile ---- */
+.shell{display:block}
+.side{
+  background:var(--navy-2);border-bottom:2px solid var(--red);
+  padding:20px 16px;
+}
+.side .brand{
+  font-family:"Barlow Condensed",sans-serif;font-weight:900;
+  font-size:30px;line-height:.92;text-transform:uppercase;
+}
+.side .brand span{color:var(--red)}
+.side .ver{
+  font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--cream-dim);margin-top:6px;
+}
+.nav{margin-top:16px}
+.nav .grp{
+  font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--red);margin:16px 0 6px;
+}
+.nav a{
+  display:block;color:var(--cream-dim);text-decoration:none;
+  padding:6px 10px;border-left:2px solid transparent;border-radius:0 3px 3px 0;
+  font-size:14.5px;
+}
+.nav a:hover{color:var(--cream);background:rgba(237,227,204,.05)}
+.nav a.on{color:var(--cream);border-left-color:var(--red);background:rgba(190,24,24,.10)}
+
+.main{padding:24px 16px 80px;max-width:820px;margin:0 auto}
+
+@media (min-width:900px){
+  .shell{display:grid;grid-template-columns:var(--sidebar) 1fr;min-height:100vh}
+  .side{
+    border-bottom:none;border-right:1px solid var(--rule);
+    position:sticky;top:0;height:100vh;overflow-y:auto;padding:26px 18px;
+  }
+  .main{padding:44px 40px 96px;max-width:900px;margin:0}
+}
+
+/* ---- Page head ---- */
+.eyebrow{
+  font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--cream-dim);
+}
+.eyebrow .tag{color:var(--red)}
+h1{
+  font-family:"Barlow Condensed",sans-serif;font-weight:900;
+  font-size:clamp(36px,9vw,54px);line-height:.94;text-transform:uppercase;margin-top:8px;
+}
+.lede{color:var(--cream-dim);margin-top:10px;max-width:60ch}
+.rule{height:2px;background:var(--red);margin:20px 0 0}
+
+/* ---- Sections ---- */
+.sec{margin-top:36px;scroll-margin-top:20px}
+.sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:12px}
+.sec-num{font-family:"Space Mono",monospace;font-size:12px;color:var(--red);padding-top:3px}
+h2{
+  font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:27px;
+  letter-spacing:.02em;text-transform:uppercase;
+}
+h3{
+  font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:20px;
+  letter-spacing:.02em;text-transform:uppercase;margin-top:22px;
+}
+.sec p + p{margin-top:11px}
+.sec p{max-width:70ch}
+b,strong{color:#fff;font-weight:600}
+code{
+  font-family:"Space Mono",monospace;font-size:.88em;
+  background:var(--navy-2);border:1px solid var(--rule);
+  padding:1px 5px;border-radius:3px;color:var(--cream);
+}
+
+/* ---- Keystone / principle ---- */
+.principle{
+  border-left:3px solid var(--red);background:var(--navy-2);
+  padding:14px 16px;margin:18px 0;border-radius:2px;
+}
+.principle .lab{
+  font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--red);
+}
+.principle p{margin-top:6px}
+
+/* ---- Dropdown. The long-explanation component ---- */
+details.dd{border:1px solid var(--rule);border-radius:3px;background:var(--navy-2);overflow:hidden}
+details.dd + details.dd{margin-top:8px}
+details.dd[open]{border-color:var(--rule-2)}
+details.dd summary{
+  display:flex;align-items:baseline;gap:12px;padding:12px 14px;cursor:pointer;
+  list-style:none;-webkit-tap-highlight-color:transparent;
+}
+details.dd summary::-webkit-details-marker{display:none}
+details.dd summary::marker{content:""}
+.dd-mark{font-family:"Space Mono",monospace;font-size:12px;color:var(--red);font-weight:700;width:12px;flex:none}
+details.dd[open] .dd-mark::before{content:"-"}
+details.dd:not([open]) .dd-mark::before{content:"+"}
+.dd-name{
+  font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:19px;
+  text-transform:uppercase;letter-spacing:.02em;
+}
+.dd-tag{
+  font-family:"Space Mono",monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--cream-dim);margin-left:auto;text-align:right;
+}
+.dd-body{padding:0 14px 14px;border-top:1px solid var(--rule);padding-top:12px;font-size:14.5px}
+.dd-body p + p{margin-top:9px}
+
+/* ---- Card, for a discrete thing with settings ---- */
+.card{
+  border:1px solid var(--rule);border-radius:3px;margin-top:16px;
+  overflow:hidden;background:var(--navy-2);
+}
+.card > header{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:12px 14px;border-bottom:1px solid var(--rule);
+}
+.card .name{
+  font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:21px;
+  text-transform:uppercase;letter-spacing:.02em;
+}
+.badge{
+  font-family:"Space Mono",monospace;font-size:9px;letter-spacing:.12em;
+  text-transform:uppercase;padding:4px 7px;border-radius:2px;
+  border:1px solid var(--rule-2);color:var(--cream-dim);
+}
+.badge.on{color:var(--green);border-color:rgba(59,143,74,.5)}
+.badge.warn{color:var(--amber);border-color:rgba(208,138,30,.5)}
+.badge.off{color:var(--bad-ink);border-color:rgba(190,24,24,.5)}
+.card .body{padding:13px 14px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--rule)}
+.grid .cell{background:var(--navy);padding:10px 12px}
+.grid .cell.wide{grid-column:1 / -1}
+.grid .k{
+  font-family:"Space Mono",monospace;font-size:9.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--cream-dim);
+}
+.grid .v{font-family:"Space Mono",monospace;font-size:14px;color:#fff;margin-top:3px}
+@media (min-width:640px){ .grid{grid-template-columns:repeat(4,1fr)} }
+
+/* ---- Table ---- */
+table.t{width:100%;border-collapse:collapse;margin-top:12px}
+table.t thead th{
+  font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--cream-dim);text-align:left;
+  padding:0 10px 8px 0;border-bottom:1px solid var(--rule-2);
+}
+table.t tbody td{padding:11px 10px 11px 0;border-bottom:1px solid var(--rule);vertical-align:top;font-size:14.5px}
+table.t tbody tr:last-child td{border-bottom:none}
+table.t td.mono{font-family:"Space Mono",monospace;font-size:13px}
+.scroll{overflow-x:auto}
+
+/* ---- Figure. Drop images in later ---- */
+figure{margin:16px 0;border:1px solid var(--rule);border-radius:3px;overflow:hidden;background:var(--navy-2)}
+figure img{display:block;width:100%;height:auto}
+figure figcaption{
+  padding:9px 12px;font-family:"Space Mono",monospace;font-size:11px;
+  color:var(--cream-dim);letter-spacing:.04em;border-top:1px solid var(--rule);
+}
+figure.placeholder{
+  border-style:dashed;padding:26px 16px;text-align:center;
+  font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--cream-dim);
+}
+
+/* ---- Flags ---- */
+.flags{background:rgba(190,24,24,.10);border:1px solid rgba(190,24,24,.45);border-radius:3px;padding:15px 17px;margin-top:18px}
+.flags h3{font-weight:900;font-size:19px;color:var(--bad-ink);margin:0}
+.flags ul{list-style:none;margin-top:9px;display:flex;flex-direction:column;gap:8px}
+.flags li{padding-left:19px;position:relative;font-size:14.5px}
+.flags li::before{content:"";position:absolute;left:0;top:8px;width:8px;height:8px;background:var(--red);transform:rotate(45deg)}
+
+/* ---- Footer ---- */
+footer{
+  margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);
+  font-family:"Space Mono",monospace;font-size:11px;color:var(--cream-dim);
+  line-height:1.7;letter-spacing:.03em;
+}
+footer .brand{color:var(--cream)}
+
+/* ---- Print. A laminated card still beats a phone ---- */
+@media print{
+  body{background:#fff;color:#000}
+  .side,.nav{display:none}
+  .main{max-width:none;padding:0}
+  .card,.principle,details.dd{border-color:#999;background:#fff}
+  details.dd{display:block}
+  details.dd > summary{list-style:none}
+  details.dd .dd-body{display:block !important}
+  .grid .cell{background:#fff}
+  .grid .v,b,strong,h1,h2,h3{color:#000}
+  a{color:#000;text-decoration:none}
+}
+
+/* ---- Drug card ---- */
+.drug{border:1px solid var(--rule);border-radius:3px;margin-top:18px;overflow:hidden;background:var(--navy-2)}
+.drug > header{padding:12px 14px;border-bottom:1px solid var(--rule);display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.drug .dn{font-family:"Barlow Condensed",sans-serif;font-weight:900;font-size:24px;text-transform:uppercase;letter-spacing:.02em}
+.drug .dc{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-dim)}
+.drug .dd-dose{font-family:"Space Mono",monospace;font-size:12px;color:var(--red);font-weight:700;margin-left:auto}
+.pk{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--rule)}
+@media (min-width:560px){ .pk{grid-template-columns:repeat(4,1fr)} }
+.pk .cell{background:var(--navy);padding:9px 11px}
+.pk .k{font-family:"Space Mono",monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-dim)}
+.pk .v{font-family:"Space Mono",monospace;font-size:13px;color:#fff;margin-top:2px}
+.drug .sect{padding:12px 14px;border-top:1px solid var(--rule)}
+.drug .sect h4{
+  font-family:"Space Mono",monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--red);margin-bottom:5px;
+}
+.drug .sect.anti h4{color:var(--green)}
+.drug .sect.contra h4{color:var(--bad-ink)}
+.drug .sect p{font-size:14px}
+.drug .sect ul{list-style:none;font-size:14px}
+.drug .sect li{padding-left:14px;position:relative;margin-top:3px}
+.drug .sect li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;background:var(--rule-2);transform:rotate(45deg)}
+.drug details.dd{border:none;border-top:1px solid var(--rule);border-radius:0;background:transparent}
+.drug details.dd + details.dd{margin-top:0;border-top:1px solid var(--rule)}
+
+</style>
+</head>
+<body>
+<div class="shell">
+<aside class="side">
+  <div class="brand">PILL<span>A</span>R</div>
+  <div class="ver">ACM Extended // v0.9.873</div>
+  <nav class="nav">
+    <div class="grp">Overview</div>
+    <a href="index.html">Start here</a>
+    <div class="grp">Systems</div>
+    <a href="ventilator.html">Ventilator</a>
+    <a href="oxygen.html">Oxygen delivery</a>
+    <a href="bleeding.html">Bleeding and shock</a>
+    <a href="airway.html">Airway and chest</a>
+    <a href="circulation.html">Rhythms and drugs</a>
+    <a href="medications.html">Medications</a>
+    <a href="access.html">Access and blood</a>
+    <a href="tbi.html">Head injury</a>
+    <a href="flight.html">Flight and altitude</a>
+    <div class="grp">Interface</div>
+    <a href="menu.html">Medical menu</a>
+    <a href="accessibility.html" class="on">Accessibility</a>
+    <div class="grp">Reference</div>
+    <a href="settings.html">Settings reference</a>
+    <a href="zeus.html">Zeus modules</a>
+  </nav>
+</aside>
+<main class="main">
+<div class="eyebrow">PILLAR <span class="tag">//</span> INTERFACE</div>
+<h1>Accessibility</h1>
+<p class="lede">All client side. Every player sets their own and nothing needs to match across a server.</p>
+<div class="rule"></div>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Settings</h2></div>
+  <p>All of these live under <code>Addon Options</code>, <b>ACM Extended: Accessibility</b>.</p>
+  <div class="scroll">
+  <table class="t">
+    <thead><tr><th>Setting</th><th>Default</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td>Left-align medical menu</td><td class="mono">off</td><td>Moves button text to the left edge. Prerequisite for grouping.</td></tr>
+      <tr><td>Group menu into dropdowns</td><td class="mono">on</td><td>Collapsible sections. Requires left-align.</td></tr>
+      <tr><td>Colour group headers</td><td class="mono">on</td><td>Per-section colour, dimmed while expanded.</td></tr>
+      <tr><td>Colourblind mode</td><td class="mono">off</td><td>Off, protanopia, deuteranopia, tritanopia.</td></tr>
+      <tr><td>Correction strength</td><td class="mono">1.0</td><td>Dial the correction back if it overshoots.</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">02</span><h2>Colourblind Correction</h2></div>
+  <p>Applies to <b>everything the addon draws</b>, not just the menu: ventilator panel and its alarm tiers, EMMA capnograph, blood cooler states, chest seal states.</p>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Why a transform, not a second palette</span><span class="dd-tag">Design</span></summary>
+    <div class="dd-body">
+      <p>Hand-authoring an alternate palette per mode would mean four versions of every colour in the addon, and every colour added later would have to be authored four times or silently fall back to the wrong one.</p>
+      <p>A transform applied at the point of use is much harder to forget, and anything added later inherits it for free.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">These are corrections, not simulations</span><span class="dd-tag">Important</span></summary>
+    <div class="dd-body">
+      <p>Each mode takes the difference a given deficiency cannot resolve and pushes it onto an axis that deficiency still has. They are corrections applied for the viewer, rather than simulations of what a colourblind person sees.</p>
+      <p>For protanopia and deuteranopia that means carrying the red-green difference on blue. For tritanopia it means carrying the blue-yellow difference on red-green.</p>
+      <p>Measured against the actual palette, by simulating what each deficiency perceives and checking the closest pair of colours: protanopia improves from 0.063 to 0.185, deuteranopia from 0.109 to 0.162, tritanopia from 0.087 to 0.164.</p>
+      <p>Greys, whites and blacks pass through untouched, because an achromatic colour has no difference to redistribute.</p>
+    </div>
+  </details>
+
+  <p>The alarm tiers get particular attention, because red HIGH against yellow MEDIUM is the pair red-green deficiency collapses and it is the most safety critical distinction in the addon. It widens in all three modes and is protected against being dimmed toward the panel background.</p>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Ventilator Brightness</h2></div>
+  <p>Separate from the above, on the panel itself at <code>MENU / ADV. SETTINGS / BRIGHTNESS</code>.</p>
+  <div class="scroll">
+  <table class="t">
+    <thead><tr><th>Level</th><th>Output</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">NIGHT</td><td class="mono">0.055</td><td>Unreadable unaided. Lifts to 0.85 under image intensifiers.</td></tr>
+      <tr><td class="mono">1</td><td class="mono">0.300</td><td></td></tr>
+      <tr><td class="mono">3</td><td class="mono">0.620</td><td>Default</td></tr>
+      <tr><td class="mono">5</td><td class="mono">1.000</td><td>Full</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Selecting NIGHT also drops alarm volume once, matching the real Robust behaviour where brightness and volume lower together. You can turn the volume back up afterwards and it stays where you put it.</p>
+</section>
+
+<footer>
+  <span class="brand">PILLAR</span> // ACM EXTENDED FIELD GUIDE // v0.9.873 // BUILT 2026-07-21
+</footer>
+</main>
+</div>
+</body>
+</html>

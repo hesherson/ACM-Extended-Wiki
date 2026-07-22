@@ -1,0 +1,71 @@
+<div class="eyebrow">PILLAR <span class="tag">//</span> SYSTEMS</div>
+<h1>Flight And Altitude</h1>
+<p class="lede">Two gas laws drive almost all of it. Everything here reads true altitude, corrected for the map, rather than raw engine height.</p>
+<div class="rule"></div>
+
+<div class="principle">
+  <div class="lab">The one thing</div>
+  <p><b>Climb rate matters more than cruise speed.</b> Speed sets how long you are exposed. Rate of climb sets how fast the pressure changes, which decides how quickly a pneumothorax tensions and how much warning you get.</p>
+</div>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">01</span><h2>What It Models</h2></div>
+  <div class="scroll">
+  <table class="t">
+    <thead><tr><th>Law</th><th>Effect</th><th>What you see</th></tr></thead>
+    <tbody>
+      <tr><td>Boyle</td><td>Trapped gas expands as pressure falls</td><td>Pneumothorax grows, cuffs over-pressurise</td></tr>
+      <tr><td>Dalton</td><td>Partial pressure of oxygen falls</td><td>Saturation drops with no change in injury</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Expansion runs at roughly 35% by 8,000 feet and 50% by 10,000. Thermal loss is handled separately and follows the altitude down, which is why a casualty you were already fighting to keep warm gets worse on the climb.</p>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">02</span><h2>How Altitude Is Derived</h2></div>
+  <p>Every flight system asks one function for altitude rather than reading position directly.</p>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">The map datum problem</span><span class="dd-tag">Why the correction exists</span></summary>
+    <div class="dd-body">
+      <p>Engine height is measured from the engine's zero, which is only the same as sea level if the terrain author put the ocean there. Some terrains sit their base plate several thousand metres up.</p>
+      <p>On one of those, a casualty lying in the dirt reports as being at altitude. Saturation falls, a pneumothorax expands, and the medic chases a hypoxia that exists because of a mapping decision.</p>
+      <p>The lowest point on the map is sampled as a proxy for intended sea level, on a coarse grid scaled to world size so a small map and a large one cost the same. A terrain with an ocean has seabed below zero and gets no correction. A terrain with its floor at 6,000 m gets 6,000 m removed.</p>
+      <p>A threshold guards it, because a genuinely high altitude map is a legitimate design choice and its hypoxia should be modelled. Override with <code>ACMI_altitude_datumMode</code>: -1 auto, 0 for no correction, or an explicit value in metres.</p>
+    </div>
+  </details>
+
+  <p>The result is published per casualty as a pressure ratio, which the expansion and oxygenation code both read. Sampling happens once and is cached, lazily on the first altitude tick, so a mission that never flies never pays for it.</p>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Saturation Ownership</h2></div>
+  <p>One function owns saturation at a time. If a ventilator is driving the casualty, the shunt model owns it and folds altitude in through the same pressure ratio. The altitude tick exits early rather than writing as well.</p>
+  <p>Two writers on the same value would delete PEEP's effect above 500 m and would be invisible from outside. Anything new that touches saturation needs the same guard.</p>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">04</span><h2>Before The Aircraft Moves</h2></div>
+  <div class="scroll">
+  <table class="t">
+    <thead><tr><th>Item</th><th>Do</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td>Chest</td><td>Tube any pneumothorax</td><td>It expands, and you cannot reassess in flight</td></tr>
+      <tr><td>Airway</td><td>Secure it now</td><td>You will not intubate well in a loud, vibrating cabin</td></tr>
+      <tr><td>Sedation</td><td>Established before loading</td><td>Titrating in flight is far harder</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <figure class="placeholder">Altitude effects screenshot goes here</figure>
+</section>
+
+<div class="flags">
+  <h3>Red Flags</h3>
+  <ul>
+    <li><b>Needle decompression as your only chest intervention.</b> It can occlude or dislodge in flight and you will not know until they arrest.</li>
+    <li><b>Untreated pneumothorax on an unpressurised climb.</b> Rotary cabin altitude equals flight altitude, so there is no buffer.</li>
+    <li><b>Relying on an audible alarm.</b> A rotary cabin is loud enough that you will miss it. Set visual cues before takeoff.</li>
+    <li><b>Saturation falling on the climb.</b> Treat it as real until you have proven it is vibration artefact.</li>
+  </ul>
+</div>

@@ -1,0 +1,80 @@
+<div class="eyebrow">PILLAR <span class="tag">//</span> SYSTEMS</div>
+<h1>Oxygen Delivery</h1>
+<p class="lede">The number that decides whether a casualty is dying. There is no readout for it anywhere, on purpose.</p>
+<div class="rule"></div>
+
+<div class="principle">
+  <div class="lab">The one thing</div>
+  <p><b>Saturation tells you what fraction of the haemoglobin is loaded, and nothing about how much haemoglobin there is.</b> A casualty can read 96% while delivering almost nothing.</p>
+</div>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">01</span><h2>What It Models</h2></div>
+  <p>Delivery is haemoglobin concentration times saturation times cardiac output, expressed as a fraction of normal. All three terms move independently, which is why it catches cases saturation alone cannot.</p>
+  <div class="scroll">
+  <table class="t">
+    <thead><tr><th>State</th><th>Delivery</th><th>What saturation shows</th></tr></thead>
+    <tbody>
+      <tr><td>Healthy</td><td class="mono">1.01</td><td>Normal</td></tr>
+      <tr><td>Class II haemorrhage</td><td class="mono">0.80</td><td>Still normal</td></tr>
+      <tr><td>Class III haemorrhage</td><td class="mono">0.58</td><td>Often still normal</td></tr>
+      <tr><td>Class III plus crystalloid</td><td class="mono">0.70</td><td>Normal</td></tr>
+      <tr><td>Class III plus whole blood</td><td class="mono">1.10</td><td>Normal</td></tr>
+      <tr><td>Pure hypoxia</td><td class="mono">0.89</td><td>Low, obviously</td></tr>
+      <tr><td>Deep shock</td><td class="mono">0.35</td><td>May still look survivable</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Read the middle rows again. <b>Crystalloid raises delivery less than blood does</b>, and the display shows the same number for both.</p>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">02</span><h2>Detail</h2></div>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Why stroke volume falls faster than volume</span><span class="dd-tag">Frank-Starling</span></summary>
+    <div class="dd-body">
+      <p>A linear preload term produces nonsense at the bottom end, because the Frank-Starling curve is steep in exactly the region a shocked casualty is sitting in. Losing preload costs stroke volume faster than proportionally.</p>
+      <p>The model uses an exponent above one for this, which is why the gap between class II and class III is much larger than the difference in blood volume suggests.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Why crystalloid fades</span><span class="dd-tag">Dilution</span></summary>
+    <div class="dd-body">
+      <p>Crystalloid raises volume without adding carriers, so it dilutes haemoglobin. Delivery improves because output improves, but less than blood would, and the dilution decays with a half-life of twenty minutes as fluid leaves the intravascular space.</p>
+      <p>Plasma is not decayed, because it is a colloid and stays where you put it.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Why waking up sticks</span><span class="dd-tag">Three guards</span></summary>
+    <div class="dd-body">
+      <p>Low delivery drives acidosis, and without protection a casualty could be woken and then immediately pushed back under by debt accrued while they were down. Three guards prevent it.</p>
+      <p>An awake casualty saturating above the consciousness floor never accrues debt at all. Entry and clearing thresholds are separated so the state does not chatter at the boundary. And a reperfusion window after ROSC gives circulation time to catch up before anything is charged.</p>
+      <p>A ventilated casualty with a secured airway and good saturations counts as winning in the same way an awake one does.</p>
+    </div>
+  </details>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">03</span><h2>What It Drives</h2></div>
+  <table class="t">
+    <thead><tr><th>Consumer</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td>Metabolic acidosis</td><td>Accrues below the critical fraction, faster toward lethal</td></tr>
+      <tr><td>Head injury</td><td>Secondary hypoxic insult reads delivery, not saturation</td></tr>
+      <tr><td>Pressor support</td><td>Acidosis blunts it by up to 45%</td></tr>
+    </tbody>
+  </table>
+  <p>Acidosis blunts <b>pressor support only</b>. It does not touch consciousness, and delivery has no part in the ROSC gate, so nothing here can quietly make a casualty unrecoverable.</p>
+</section>
+
+<div class="flags">
+  <h3>Red Flags</h3>
+  <ul>
+    <li><b>Trusting a good saturation in a bleeding casualty.</b> The failure this whole system exists to teach.</li>
+    <li><b>Filling with crystalloid and moving on.</b> It buys cardiac output without adding carriers, and the benefit fades.</li>
+    <li><b>Ventilating without filling.</b> Positive pressure costs preload, which costs output, which costs delivery.</li>
+  </ul>
+</div>

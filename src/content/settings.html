@@ -1,0 +1,48 @@
+<div class="eyebrow">PILLAR <span class="tag">//</span> REFERENCE</div>
+<h1>Settings</h1>
+<p class="lede">Where each category lives and what it controls. Full tunable values sit in the patch notes shipped with each build.</p>
+<div class="rule"></div>
+
+<div class="principle">
+  <div class="lab">Before you change anything</div>
+  <p>Every system can be switched off individually under <b>ACM Extended: Systems</b>. If something in this addon is not working for your unit, turn that system off rather than tuning it into irrelevance. The defaults are balanced against each other.</p>
+</div>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Categories</h2></div>
+  <p>All under <code>Addon Options</code>.</p>
+  <div class="scroll">
+  <table class="t">
+    <thead><tr><th>Category</th><th>Contains</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">ACM Extended: Systems</td><td>Master on/off per system. Junctional wounds, direct pressure, chest seal mini-game, HPMK and rewarming, hang bag, TBI model, and the rest.</td></tr>
+      <tr><td class="mono">ACM Extended: Circulation</td><td>Shock progression, acidosis, pressor support, rhythm behaviour.</td></tr>
+      <tr><td class="mono">ACM Extended: Trauma</td><td>Bleeding multipliers, clotting, calcium and citrate.</td></tr>
+      <tr><td class="mono">ACM Extended: Neuro &amp; TBI</td><td>ICP, perfusion pressure, secondary insults, reversibility.</td></tr>
+      <tr><td class="mono">ACM Extended: Infusion &amp; IV</td><td>Access, infusion rates, blood products, cooler behaviour.</td></tr>
+      <tr><td class="mono">ACM Extended: Accessibility</td><td>Menu layout, colourblind correction. Client side.</td></tr>
+      <tr><td class="mono">ACM Extended: Debug</td><td>Debug actions and verbose logging. Off by default.</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">02</span><h2>Server And Client</h2></div>
+  <p>Accessibility settings are client side. Every player sets their own and nothing needs to match across a server.</p>
+  <p>Everything else is server side and should be set once by whoever runs the mission. A mismatch will not crash anything, but two clients disagreeing about whether the TBI model is on will disagree about what a casualty is doing.</p>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Turning a system off cleanly</span><span class="dd-tag">What happens</span></summary>
+    <div class="dd-body">
+      <p>Each system checks its own switch before doing anything, so disabling one leaves ACM and ACE behaviour in place underneath rather than leaving a half-treated casualty.</p>
+      <p>The exception worth knowing is that some systems feed others. Disabling the oxygen delivery model also removes the hypoxic secondary insult from the head injury model, because that insult reads delivery. Nothing breaks, but the head injury becomes easier than intended.</p>
+    </div>
+  </details>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Debug</h2></div>
+  <p>Enabling debug adds a group to the medical menu with fifteen entries covering the states that are otherwise invisible: obtundation, prone state, forced shake, and the rest. The group is hidden entirely unless debug is on, so players will not see it.</p>
+  <p>Use it to verify a scenario behaves the way you expect before running it with students.</p>
+</section>

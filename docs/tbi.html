@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PILLAR | Head injury</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;900&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* PILLAR GUIDE. One stylesheet, inlined into every page at build time.
+   Edit here, run build.py, every page updates. */
+:root{
+  --navy:#0B1530; --navy-2:#131F42; --red:#BE1818;
+  --cream:#EDE3CC; --cream-dim:#B9B09C;
+  --green:#3B8F4A; --amber:#D08A1E; --bad-ink:#F08A8A;
+  --rule:rgba(237,227,204,.16); --rule-2:rgba(237,227,204,.30);
+  --sidebar:280px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  background:var(--navy);color:var(--cream);
+  font-family:"Instrument Sans",system-ui,sans-serif;
+  font-size:16px;line-height:1.55;font-variant-numeric:tabular-nums;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---- Shell. Sidebar on desktop, stacked on mobile ---- */
+.shell{display:block}
+.side{
+  background:var(--navy-2);border-bottom:2px solid var(--red);
+  padding:20px 16px;
+}
+.side .brand{
+  font-family:"Barlow Condensed",sans-serif;font-weight:900;
+  font-size:30px;line-height:.92;text-transform:uppercase;
+}
+.side .brand span{color:var(--red)}
+.side .ver{
+  font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--cream-dim);margin-top:6px;
+}
+.nav{margin-top:16px}
+.nav .grp{
+  font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--red);margin:16px 0 6px;
+}
+.nav a{
+  display:block;color:var(--cream-dim);text-decoration:none;
+  padding:6px 10px;border-left:2px solid transparent;border-radius:0 3px 3px 0;
+  font-size:14.5px;
+}
+.nav a:hover{color:var(--cream);background:rgba(237,227,204,.05)}
+.nav a.on{color:var(--cream);border-left-color:var(--red);background:rgba(190,24,24,.10)}
+
+.main{padding:24px 16px 80px;max-width:820px;margin:0 auto}
+
+@media (min-width:900px){
+  .shell{display:grid;grid-template-columns:var(--sidebar) 1fr;min-height:100vh}
+  .side{
+    border-bottom:none;border-right:1px solid var(--rule);
+    position:sticky;top:0;height:100vh;overflow-y:auto;padding:26px 18px;
+  }
+  .main{padding:44px 40px 96px;max-width:900px;margin:0}
+}
+
+/* ---- Page head ---- */
+.eyebrow{
+  font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--cream-dim);
+}
+.eyebrow .tag{color:var(--red)}
+h1{
+  font-family:"Barlow Condensed",sans-serif;font-weight:900;
+  font-size:clamp(36px,9vw,54px);line-height:.94;text-transform:uppercase;margin-top:8px;
+}
+.lede{color:var(--cream-dim);margin-top:10px;max-width:60ch}
+.rule{height:2px;background:var(--red);margin:20px 0 0}
+
+/* ---- Sections ---- */
+.sec{margin-top:36px;scroll-margin-top:20px}
+.sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:12px}
+.sec-num{font-family:"Space Mono",monospace;font-size:12px;color:var(--red);padding-top:3px}
+h2{
+  font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:27px;
+  letter-spacing:.02em;text-transform:uppercase;
+}
+h3{
+  font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:20px;
+  letter-spacing:.02em;text-transform:uppercase;margin-top:22px;
+}
+.sec p + p{margin-top:11px}
+.sec p{max-width:70ch}
+b,strong{color:#fff;font-weight:600}
+code{
+  font-family:"Space Mono",monospace;font-size:.88em;
+  background:var(--navy-2);border:1px solid var(--rule);
+  padding:1px 5px;border-radius:3px;color:var(--cream);
+}
+
+/* ---- Keystone / principle ---- */
+.principle{
+  border-left:3px solid var(--red);background:var(--navy-2);
+  padding:14px 16px;margin:18px 0;border-radius:2px;
+}
+.principle .lab{
+  font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--red);
+}
+.principle p{margin-top:6px}
+
+/* ---- Dropdown. The long-explanation component ---- */
+details.dd{border:1px solid var(--rule);border-radius:3px;background:var(--navy-2);overflow:hidden}
+details.dd + details.dd{margin-top:8px}
+details.dd[open]{border-color:var(--rule-2)}
+details.dd summary{
+  display:flex;align-items:baseline;gap:12px;padding:12px 14px;cursor:pointer;
+  list-style:none;-webkit-tap-highlight-color:transparent;
+}
+details.dd summary::-webkit-details-marker{display:none}
+details.dd summary::marker{content:""}
+.dd-mark{font-family:"Space Mono",monospace;font-size:12px;color:var(--red);font-weight:700;width:12px;flex:none}
+details.dd[open] .dd-mark::before{content:"-"}
+details.dd:not([open]) .dd-mark::before{content:"+"}
+.dd-name{
+  font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:19px;
+  text-transform:uppercase;letter-spacing:.02em;
+}
+.dd-tag{
+  font-family:"Space Mono",monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--cream-dim);margin-left:auto;text-align:right;
+}
+.dd-body{padding:0 14px 14px;border-top:1px solid var(--rule);padding-top:12px;font-size:14.5px}
+.dd-body p + p{margin-top:9px}
+
+/* ---- Card, for a discrete thing with settings ---- */
+.card{
+  border:1px solid var(--rule);border-radius:3px;margin-top:16px;
+  overflow:hidden;background:var(--navy-2);
+}
+.card > header{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:12px 14px;border-bottom:1px solid var(--rule);
+}
+.card .name{
+  font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:21px;
+  text-transform:uppercase;letter-spacing:.02em;
+}
+.badge{
+  font-family:"Space Mono",monospace;font-size:9px;letter-spacing:.12em;
+  text-transform:uppercase;padding:4px 7px;border-radius:2px;
+  border:1px solid var(--rule-2);color:var(--cream-dim);
+}
+.badge.on{color:var(--green);border-color:rgba(59,143,74,.5)}
+.badge.warn{color:var(--amber);border-color:rgba(208,138,30,.5)}
+.badge.off{color:var(--bad-ink);border-color:rgba(190,24,24,.5)}
+.card .body{padding:13px 14px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--rule)}
+.grid .cell{background:var(--navy);padding:10px 12px}
+.grid .cell.wide{grid-column:1 / -1}
+.grid .k{
+  font-family:"Space Mono",monospace;font-size:9.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--cream-dim);
+}
+.grid .v{font-family:"Space Mono",monospace;font-size:14px;color:#fff;margin-top:3px}
+@media (min-width:640px){ .grid{grid-template-columns:repeat(4,1fr)} }
+
+/* ---- Table ---- */
+table.t{width:100%;border-collapse:collapse;margin-top:12px}
+table.t thead th{
+  font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--cream-dim);text-align:left;
+  padding:0 10px 8px 0;border-bottom:1px solid var(--rule-2);
+}
+table.t tbody td{padding:11px 10px 11px 0;border-bottom:1px solid var(--rule);vertical-align:top;font-size:14.5px}
+table.t tbody tr:last-child td{border-bottom:none}
+table.t td.mono{font-family:"Space Mono",monospace;font-size:13px}
+.scroll{overflow-x:auto}
+
+/* ---- Figure. Drop images in later ---- */
+figure{margin:16px 0;border:1px solid var(--rule);border-radius:3px;overflow:hidden;background:var(--navy-2)}
+figure img{display:block;width:100%;height:auto}
+figure figcaption{
+  padding:9px 12px;font-family:"Space Mono",monospace;font-size:11px;
+  color:var(--cream-dim);letter-spacing:.04em;border-top:1px solid var(--rule);
+}
+figure.placeholder{
+  border-style:dashed;padding:26px 16px;text-align:center;
+  font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--cream-dim);
+}
+
+/* ---- Flags ---- */
+.flags{background:rgba(190,24,24,.10);border:1px solid rgba(190,24,24,.45);border-radius:3px;padding:15px 17px;margin-top:18px}
+.flags h3{font-weight:900;font-size:19px;color:var(--bad-ink);margin:0}
+.flags ul{list-style:none;margin-top:9px;display:flex;flex-direction:column;gap:8px}
+.flags li{padding-left:19px;position:relative;font-size:14.5px}
+.flags li::before{content:"";position:absolute;left:0;top:8px;width:8px;height:8px;background:var(--red);transform:rotate(45deg)}
+
+/* ---- Footer ---- */
+footer{
+  margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);
+  font-family:"Space Mono",monospace;font-size:11px;color:var(--cream-dim);
+  line-height:1.7;letter-spacing:.03em;
+}
+footer .brand{color:var(--cream)}
+
+/* ---- Print. A laminated card still beats a phone ---- */
+@media print{
+  body{background:#fff;color:#000}
+  .side,.nav{display:none}
+  .main{max-width:none;padding:0}
+  .card,.principle,details.dd{border-color:#999;background:#fff}
+  details.dd{display:block}
+  details.dd > summary{list-style:none}
+  details.dd .dd-body{display:block !important}
+  .grid .cell{background:#fff}
+  .grid .v,b,strong,h1,h2,h3{color:#000}
+  a{color:#000;text-decoration:none}
+}
+
+/* ---- Drug card ---- */
+.drug{border:1px solid var(--rule);border-radius:3px;margin-top:18px;overflow:hidden;background:var(--navy-2)}
+.drug > header{padding:12px 14px;border-bottom:1px solid var(--rule);display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.drug .dn{font-family:"Barlow Condensed",sans-serif;font-weight:900;font-size:24px;text-transform:uppercase;letter-spacing:.02em}
+.drug .dc{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-dim)}
+.drug .dd-dose{font-family:"Space Mono",monospace;font-size:12px;color:var(--red);font-weight:700;margin-left:auto}
+.pk{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--rule)}
+@media (min-width:560px){ .pk{grid-template-columns:repeat(4,1fr)} }
+.pk .cell{background:var(--navy);padding:9px 11px}
+.pk .k{font-family:"Space Mono",monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-dim)}
+.pk .v{font-family:"Space Mono",monospace;font-size:13px;color:#fff;margin-top:2px}
+.drug .sect{padding:12px 14px;border-top:1px solid var(--rule)}
+.drug .sect h4{
+  font-family:"Space Mono",monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--red);margin-bottom:5px;
+}
+.drug .sect.anti h4{color:var(--green)}
+.drug .sect.contra h4{color:var(--bad-ink)}
+.drug .sect p{font-size:14px}
+.drug .sect ul{list-style:none;font-size:14px}
+.drug .sect li{padding-left:14px;position:relative;margin-top:3px}
+.drug .sect li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;background:var(--rule-2);transform:rotate(45deg)}
+.drug details.dd{border:none;border-top:1px solid var(--rule);border-radius:0;background:transparent}
+.drug details.dd + details.dd{margin-top:0;border-top:1px solid var(--rule)}
+
+</style>
+</head>
+<body>
+<div class="shell">
+<aside class="side">
+  <div class="brand">PILL<span>A</span>R</div>
+  <div class="ver">ACM Extended // v0.9.873</div>
+  <nav class="nav">
+    <div class="grp">Overview</div>
+    <a href="index.html">Start here</a>
+    <div class="grp">Systems</div>
+    <a href="ventilator.html">Ventilator</a>
+    <a href="oxygen.html">Oxygen delivery</a>
+    <a href="bleeding.html">Bleeding and shock</a>
+    <a href="airway.html">Airway and chest</a>
+    <a href="circulation.html">Rhythms and drugs</a>
+    <a href="medications.html">Medications</a>
+    <a href="access.html">Access and blood</a>
+    <a href="tbi.html" class="on">Head injury</a>
+    <a href="flight.html">Flight and altitude</a>
+    <div class="grp">Interface</div>
+    <a href="menu.html">Medical menu</a>
+    <a href="accessibility.html">Accessibility</a>
+    <div class="grp">Reference</div>
+    <a href="settings.html">Settings reference</a>
+    <a href="zeus.html">Zeus modules</a>
+  </nav>
+</aside>
+<main class="main">
+<div class="eyebrow">PILLAR <span class="tag">//</span> SYSTEMS</div>
+<h1>Head Injury</h1>
+<p class="lede">The only system here that can leave permanent damage, and only at the last stage. Everything before that heals.</p>
+<div class="rule"></div>
+
+<div class="principle">
+  <div class="lab">The one thing</div>
+  <p><b>The impact is already done. What you manage is everything that follows it.</b> Every point of severity after the initial injury comes from hypoxia, hypotension or CO2, and all three are yours to control.</p>
+</div>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Pressure Inside The Skull</h2></div>
+  <p>The skull is a closed box. Swelling has nowhere to go, so it raises intracranial pressure, and perfusion is whatever is left over after ICP is subtracted from mean arterial pressure.</p>
+  <div class="card">
+    <header><span class="name">ICP</span><span class="badge warn">Rises with severity</span></header>
+    <div class="grid">
+      <div class="cell"><div class="k">Baseline</div><div class="v">10</div></div>
+      <div class="cell"><div class="k">Ceiling</div><div class="v">40</div></div>
+      <div class="cell"><div class="k">Rise rate</div><div class="v">0.02/s</div></div>
+      <div class="cell"><div class="k">CO2 driven</div><div class="v">0.2/s</div></div>
+    </div>
+  </div>
+  <p>That last figure is the one to remember: <b>CO2 raises ICP ten times faster than swelling does</b>. Ventilation is the fastest lever you have on a rising pressure, and it is also the fastest way to make it worse.</p>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Why CO2 moves it so fast</span><span class="dd-tag">Cerebral vasodilation</span></summary>
+    <div class="dd-body">
+      <p>Cerebral vessels respond directly to CO2. Retain it and they dilate, which increases blood volume inside a box that has no spare room, which raises pressure immediately.</p>
+      <p>Blow it off and they constrict, pressure falls, and this is the mechanism behind hyperventilating a herniating patient. It works. It is also why it is a temporary measure rather than a treatment: constrict the vessels too far and you have traded raised pressure for outright ischaemia.</p>
+      <p>In practice you aim for 35 to 38 rather than driving it as low as it will go, and letting a head injury hypoventilate is one of the fastest ways to kill them.</p>
+    </div>
+  </details>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">02</span><h2>The Two Secondary Insults</h2></div>
+  <div class="scroll">
+  <table class="t">
+    <thead><tr><th>Insult</th><th>Trigger</th><th>Severity per second</th></tr></thead>
+    <tbody>
+      <tr><td>Low perfusion pressure</td><td class="mono">CPP below 30</td><td class="mono">0.003</td></tr>
+      <tr><td>Hypoxia</td><td class="mono">delivery below 0.70</td><td class="mono">0.004</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Hypoxia reads <b>oxygen delivery, not saturation</b>. A head injured casualty who is also bleeding accrues damage while their pulse oximeter reads normally, because saturation cannot see that there is nothing left to carry the oxygen.</p>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">The conflict with permissive hypotension</span><span class="dd-tag">No clean answer</span></summary>
+    <div class="dd-body">
+      <p>Permissive hypotension is correct for uncontrolled haemorrhage: lower pressure, less bleeding. A head injury wants the opposite, because perfusion is MAP minus ICP and dropping MAP starves the brain directly.</p>
+      <p>In a casualty with both, these are not reconcilable. You are choosing which one is currently more likely to kill them, and that choice can change over the course of a single casualty.</p>
+      <p>The practical guidance is that catastrophic haemorrhage wins until it is controlled, because a perfectly perfused brain in a body that has bled out is not a save. Once bleeding is controlled, the priority flips and you want the pressure back up.</p>
+    </div>
+  </details>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">03</span><h2>What Is Reversible</h2></div>
+  <p>Almost all of it. A brain that has not herniated heals back to zero, and osmotherapy doubles that rate. The exception is herniation, which is stage two only and is the single piece of permanent damage anywhere in this addon.</p>
+  <p>Everything else is built so a casualty managed correctly, even late, comes back.</p>
+  <figure class="placeholder">Pupil assessment screenshot goes here</figure>
+</section>
+
+<div class="flags">
+  <h3>Red Flags</h3>
+  <ul>
+    <li><b>Letting a head injury hypoventilate.</b> CO2 raises ICP faster than anything else in the model.</li>
+    <li><b>Hyperventilating for longer than it takes to get them to definitive care.</b> Push it too far and you trade raised pressure for outright ischaemia.</li>
+    <li><b>Trusting saturation.</b> The hypoxic insult reads delivery, which saturation cannot show you.</li>
+    <li><b>High PEEP in a head injury.</b> It raises intrathoracic pressure, which impedes venous drainage from the head.</li>
+    <li><b>Blown pupil with a falling heart rate.</b> Herniation, and the one thing here you cannot take back.</li>
+  </ul>
+</div>
+
+<footer>
+  <span class="brand">PILLAR</span> // ACM EXTENDED FIELD GUIDE // v0.9.873 // BUILT 2026-07-21
+</footer>
+</main>
+</div>
+</body>
+</html>

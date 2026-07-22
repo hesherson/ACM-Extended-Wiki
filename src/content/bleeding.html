@@ -1,0 +1,91 @@
+<div class="eyebrow">PILLAR <span class="tag">//</span> SYSTEMS</div>
+<h1>Bleeding And Shock</h1>
+<p class="lede">Pressure drives bleeding, and three things decide whether blood clots. Both are modelled, and they pull against each other.</p>
+<div class="rule"></div>
+
+<div class="principle">
+  <div class="lab">The one thing</div>
+  <p><b>Lower pressure means less bleeding.</b> That much holds up, and it is the whole argument for permissive hypotension. The catch is that the same low pressure starves a head injury and drives the acidosis that stops blood clotting at all.</p>
+</div>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Permissive Hypotension</h2></div>
+  <p>Blood loss is multiplied by how hard the heart is pushing. The reference is a MAP of 70, so at target pressure nothing changes from stock behaviour. Below it bleeding slows, above it bleeding accelerates, clamped between 0.55x and 2.0x.</p>
+  <p>It self-limits to <b>uncontrolled</b> bleeding only, because ACE already returns zero blood loss for a wound that has been bandaged. Once you have controlled it, the multiplier has nothing to act on.</p>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Clot pop</span><span class="dd-tag">Pressure reopens wounds</span></summary>
+    <div class="dd-body">
+      <p>A formed clot is not permanent. Drive the pressure up and it can be blown off, which is the mechanism behind the classic warning about over-resuscitating a casualty who has stopped bleeding.</p>
+      <p>Chance scales with MAP up to a ceiling of 100, at which point the rate is 1.8 times baseline. Push someone to a textbook blood pressure with uncontrolled bleeding and you will reopen wounds you had already won.</p>
+    </div>
+  </details>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">02</span><h2>The Lethal Triad</h2></div>
+  <p>Three things independently degrade clotting, and they multiply rather than add. This is why a casualty who was manageable becomes unmanageable without any new injury.</p>
+  <div class="scroll">
+  <table class="t">
+    <thead><tr><th>Leg</th><th>Threshold</th><th>Worst case</th></tr></thead>
+    <tbody>
+      <tr><td>Acidosis</td><td class="mono">0.30</td><td class="mono">1.3x bleeding</td></tr>
+      <tr><td>Hypothermia</td><td class="mono">below 35 C</td><td class="mono">compounds</td></tr>
+      <tr><td>Ionised calcium</td><td class="mono">below 1.0</td><td class="mono">1.4x bleeding</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Calcium and citrate</span><span class="dd-tag">The transfusion trap</span></summary>
+    <div class="dd-body">
+      <p>Stored blood is anticoagulated with citrate, and citrate works by binding calcium. Transfuse enough of it and you chelate the casualty's own ionised calcium, at 0.18 per litre in the model.</p>
+      <p>That costs you twice. Calcium is required for the clotting cascade, so it worsens the bleeding you are transfusing for, and low ionised calcium depresses the myocardium, costing up to 40 mmHg of MAP per unit below threshold.</p>
+      <p>Calcium chloride credits back at 0.12 per gram. This is why calcium sits in current massive transfusion guidance, and the model rewards giving it early rather than after things go wrong.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Acidosis, and how it clears</span><span class="dd-tag">Recovers faster than it accrues</span></summary>
+    <div class="dd-body">
+      <p>Two sources. Metabolic acidosis accrues below a MAP of 55 at 0.004 per second and from low oxygen delivery. Respiratory acidosis comes from CO2 retention at 0.006 per second once PaCO2 passes 45.</p>
+      <p>Both clear faster than they build, at 0.01 and 0.012 per second respectively, so fixing the cause lets the casualty recover instead of carrying a debt they can never pay off.</p>
+      <p>Acidosis blunts pressor support by up to 45%, which is the in-game version of the real observation that a shocked, acidotic patient stops responding to the drugs that worked ten minutes ago.</p>
+    </div>
+  </details>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Shock Progression</h2></div>
+  <div class="card">
+    <header><span class="name">Peri-arrest</span><span class="badge warn">Progressive</span></header>
+    <div class="grid">
+      <div class="cell"><div class="k">Initial severity</div><div class="v">0.6</div></div>
+      <div class="cell"><div class="k">Progress rate</div><div class="v">0.006/s</div></div>
+      <div class="cell"><div class="k">Tachy peak</div><div class="v">120</div></div>
+      <div class="cell"><div class="k">Brady floor</div><div class="v">32</div></div>
+    </div>
+  </div>
+  <p>The rate rises to a tachycardic peak then falls away to a bradycardic floor. <b>A slowing heart in a shocked casualty means the compensation has run out.</b> It is the last thing that happens before arrest.</p>
+</section>
+
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">04</span><h2>Rewarming</h2></div>
+  <p>Hypothermia is the leg of the triad you can act on directly in the field, and the HPMK is the tool for it.</p>
+  <figure>
+    <img src="img/HPMK_ca.png" alt="HPMK">
+    <figcaption>Hypothermia Prevention and Management Kit</figcaption>
+  </figure>
+</section>
+
+<div class="flags">
+  <h3>Red Flags</h3>
+  <ul>
+    <li><b>Chasing a normal blood pressure with uncontrolled bleeding.</b> You will pop clots you had already formed.</li>
+    <li><b>Transfusing without calcium.</b> Each unit costs ionised calcium, which costs clotting and myocardial function.</li>
+    <li><b>Treating hypothermia as a comfort problem.</b> Cold blood does not clot, and the effect multiplies with the other two legs.</li>
+    <li><b>A heart rate that is falling on its own.</b> The compensation is failing, and arrest usually follows.</li>
+    <li><b>Head injury plus haemorrhage.</b> Permissive hypotension and cerebral perfusion want opposite pressures. Pick deliberately.</li>
+  </ul>
+</div>

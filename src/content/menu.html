@@ -1,0 +1,63 @@
+<div class="eyebrow">PILLAR <span class="tag">//</span> INTERFACE</div>
+<h1>Medical Menu</h1>
+<p class="lede">Grouped, collapsible, colour coded. Built to keep a long action list scannable under pressure.</p>
+<div class="rule"></div>
+
+<div class="principle">
+  <div class="lab">Requirement</div>
+  <p>Grouping needs <b>left-aligned menu text</b>. The markers and indentation that show which group a row belongs to are invisible when text is centred, so the renderer enforces it and the title says so.</p>
+</div>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Structure</h2></div>
+  <p>Groups expand in place rather than opening a sub page, so you keep your bearings and the row you want stays where you left it.</p>
+  <div class="card">
+    <header><span class="name">Airway</span><span class="badge on">Grouped</span></header>
+    <div class="body">
+      <p><b>Flat:</b> Check Airway and Breathing, Inspect Chest, Inspect with Stethoscope.</p>
+      <p><b>Groups:</b> Adjuncts (OPA, NPA, i-gel, Intubate, Surgical, Stitch), Ventilation (four BVM oxygen variants plus NRB apply and remove), Chest, Suction, Positioning, Capnography.</p>
+    </div>
+  </div>
+  <div class="card">
+    <header><span class="name">Advanced</span><span class="badge on">Grouped</span></header>
+    <div class="body">
+      <p>Flat actions, plus an AED group of fifteen entries, plus a Debug group that stays hidden unless debug is enabled.</p>
+    </div>
+  </div>
+  <p>Examine, Bandage and Medication stay flat. Head Position was folded into Examine rather than kept as its own group.</p>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">02</span><h2>Colour</h2></div>
+  <p>Each group header carries its own colour and its children are grey, so you can find a section by colour and still read the actions without them competing.</p>
+  <div class="scroll">
+  <table class="t">
+    <thead><tr><th>Group</th><th>Colour</th></tr></thead>
+    <tbody>
+      <tr><td>Adjuncts</td><td class="mono">blue</td></tr>
+      <tr><td>Ventilation</td><td class="mono">teal</td></tr>
+      <tr><td>Chest</td><td class="mono">purple</td></tr>
+      <tr><td>Suction</td><td class="mono">olive</td></tr>
+      <tr><td>Positioning</td><td class="mono">pale green</td></tr>
+      <tr><td>Capnography</td><td class="mono">pink</td></tr>
+      <tr><td>AED</td><td class="mono">burnt orange</td></tr>
+      <tr><td>Debug</td><td class="mono">gold</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>An open group dims to 55% within its own hue, which shows you what is expanded without introducing a second colour to learn.</p>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Why there is no red group</span><span class="dd-tag">Reserved</span></summary>
+    <div class="dd-body">
+      <p>Red belongs to bleeding and tourniquets on the body image. Using it for a menu section would put the same colour on a warning and on an ordinary navigation header, which costs you the one colour that should always mean the same thing.</p>
+      <p>The palette was also re-solved by search after a first attempt came out too similar: minimum separation between any two group colours was raised from 0.01 to 0.30, counting hue or luminance, with luminance spread widened from 0.17 to 0.44.</p>
+    </div>
+  </details>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Turning It Off</h2></div>
+  <p>Set <code>ACMI_menuNestEnabled</code> to false for the flat list. Colour headers have their own switch, so you can keep grouping without colour if you prefer.</p>
+  <figure class="placeholder">Grouped menu screenshot goes here</figure>
+</section>

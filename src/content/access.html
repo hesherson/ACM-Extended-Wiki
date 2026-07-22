@@ -1,0 +1,75 @@
+<div class="eyebrow">PILLAR <span class="tag">//</span> SYSTEMS</div>
+<h1>Access And Blood</h1>
+<p class="lede">Getting a line in, keeping blood cold, and what temperature costs you when you run it.</p>
+<div class="rule"></div>
+
+<div class="principle">
+  <div class="lab">The one thing</div>
+  <p><b>Cold blood is not the same product as warm blood.</b> It runs slower, it drops core temperature, and it feeds the same hypothermia that stops the casualty clotting. Warming it is worth the time it takes.</p>
+</div>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">01</span><h2>IV Access</h2></div>
+  <p>Establishing a line is a mini-game rather than a timer. You palpate for the vessel, feel for the dot, and stick when you have it.</p>
+  <div class="card">
+    <header><span class="name">What it tracks</span><span class="badge on">Per limb</span></header>
+    <div class="body">
+      <p>Catheter gauge and rotation, misses and the bruising they cause, which sites you have already used, cap state, and whether a band is on. Marks persist on the limb, so a casualty who has been stuck four times looks like it.</p>
+    </div>
+  </div>
+  <p>A band is required before you can cannulate, and the native ACM insert actions are hidden so there is one route in rather than two.</p>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">Why misses are tracked</span><span class="dd-tag">Consequence</span></summary>
+    <div class="dd-body">
+      <p>A failed cannulation costs a site. Bruise a vein and it is harder to use again, which is why a casualty who has been worked on badly is harder to work on than a fresh one.</p>
+      <p>This is also the argument for IO. When access is difficult, the drill is faster and more reliable than a fifth attempt at a vein you have already damaged, and the model rewards making that call early rather than after exhausting every site.</p>
+    </div>
+  </details>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">02</span><h2>IO Access</h2></div>
+  <p>Faster and more reliable than a difficult IV, with one cost attached: pain on the fluid bolus rather than on insertion.</p>
+  <p>That timing is right. The drill going in is tolerable; the pressure of fluid entering the marrow space is what casualties actually complain about, and it is why lidocaine into an IO before running fluid is standard practice.</p>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Cold Chain</h2></div>
+  <p>Blood exists in three states, and the state travels with the unit.</p>
+  <div class="scroll">
+  <table class="t">
+    <thead><tr><th>State</th><th>Flow rate</th><th>Effect on casualty</th></tr></thead>
+    <tbody>
+      <tr><td>Warmed</td><td class="mono">1.1x</td><td>No temperature penalty</td></tr>
+      <tr><td>Normal</td><td class="mono">1.0x</td><td>No temperature penalty</td></tr>
+      <tr><td>Cold</td><td class="mono">0.65x</td><td>Drops core temperature</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>The temperature drop is gated on the cold flag alone, so room temperature blood does not chill anybody. Cold blood runs at roughly two thirds the rate of warm, which matters when you are trying to move volume quickly.</p>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">The cooler</span><span class="dd-tag">Virtual container</span></summary>
+    <div class="dd-body">
+      <p>The cooler holds units in its own inventory and keeps them cold. Blood left inside thaws slowly at a fifth of the outside rate, so a cooler buys you time rather than holding the state forever.</p>
+      <p>Unloading forces the unit into your inventory rather than dropping it, which avoids losing a bag on the ground in the middle of a transfusion.</p>
+    </div>
+  </details>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">04</span><h2>Y-Line Transfusion</h2></div>
+  <p>Runs blood and fluid through a shared line. The three temperature states apply here, and the collapse behaviour means a line that has been set up stays set up rather than needing rebuilding between units.</p>
+  <figure class="placeholder">Y-line and cooler screenshot goes here</figure>
+</section>
+
+<div class="flags">
+  <h3>Red Flags</h3>
+  <ul>
+    <li><b>Running cold blood into a casualty who is already cold.</b> You are feeding the leg of the lethal triad that is hardest to reverse in the field.</li>
+    <li><b>Repeated IV attempts on a damaged limb.</b> Each miss makes the next one harder. Go to IO.</li>
+    <li><b>Transfusing without calcium.</b> Citrate binds it, and you lose clotting and myocardial function together.</li>
+    <li><b>Leaving blood out of the cooler.</b> It warms, and once warm it does not go back.</li>
+  </ul>
+</div>

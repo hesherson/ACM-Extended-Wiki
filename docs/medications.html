@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PILLAR | Medications</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;900&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* PILLAR GUIDE. One stylesheet, inlined into every page at build time.
+   Edit here, run build.py, every page updates. */
+:root{
+  --navy:#0B1530; --navy-2:#131F42; --red:#BE1818;
+  --cream:#EDE3CC; --cream-dim:#B9B09C;
+  --green:#3B8F4A; --amber:#D08A1E; --bad-ink:#F08A8A;
+  --rule:rgba(237,227,204,.16); --rule-2:rgba(237,227,204,.30);
+  --sidebar:280px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  background:var(--navy);color:var(--cream);
+  font-family:"Instrument Sans",system-ui,sans-serif;
+  font-size:16px;line-height:1.55;font-variant-numeric:tabular-nums;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---- Shell. Sidebar on desktop, stacked on mobile ---- */
+.shell{display:block}
+.side{
+  background:var(--navy-2);border-bottom:2px solid var(--red);
+  padding:20px 16px;
+}
+.side .brand{
+  font-family:"Barlow Condensed",sans-serif;font-weight:900;
+  font-size:30px;line-height:.92;text-transform:uppercase;
+}
+.side .brand span{color:var(--red)}
+.side .ver{
+  font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--cream-dim);margin-top:6px;
+}
+.nav{margin-top:16px}
+.nav .grp{
+  font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--red);margin:16px 0 6px;
+}
+.nav a{
+  display:block;color:var(--cream-dim);text-decoration:none;
+  padding:6px 10px;border-left:2px solid transparent;border-radius:0 3px 3px 0;
+  font-size:14.5px;
+}
+.nav a:hover{color:var(--cream);background:rgba(237,227,204,.05)}
+.nav a.on{color:var(--cream);border-left-color:var(--red);background:rgba(190,24,24,.10)}
+
+.main{padding:24px 16px 80px;max-width:820px;margin:0 auto}
+
+@media (min-width:900px){
+  .shell{display:grid;grid-template-columns:var(--sidebar) 1fr;min-height:100vh}
+  .side{
+    border-bottom:none;border-right:1px solid var(--rule);
+    position:sticky;top:0;height:100vh;overflow-y:auto;padding:26px 18px;
+  }
+  .main{padding:44px 40px 96px;max-width:900px;margin:0}
+}
+
+/* ---- Page head ---- */
+.eyebrow{
+  font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--cream-dim);
+}
+.eyebrow .tag{color:var(--red)}
+h1{
+  font-family:"Barlow Condensed",sans-serif;font-weight:900;
+  font-size:clamp(36px,9vw,54px);line-height:.94;text-transform:uppercase;margin-top:8px;
+}
+.lede{color:var(--cream-dim);margin-top:10px;max-width:60ch}
+.rule{height:2px;background:var(--red);margin:20px 0 0}
+
+/* ---- Sections ---- */
+.sec{margin-top:36px;scroll-margin-top:20px}
+.sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:12px}
+.sec-num{font-family:"Space Mono",monospace;font-size:12px;color:var(--red);padding-top:3px}
+h2{
+  font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:27px;
+  letter-spacing:.02em;text-transform:uppercase;
+}
+h3{
+  font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:20px;
+  letter-spacing:.02em;text-transform:uppercase;margin-top:22px;
+}
+.sec p + p{margin-top:11px}
+.sec p{max-width:70ch}
+b,strong{color:#fff;font-weight:600}
+code{
+  font-family:"Space Mono",monospace;font-size:.88em;
+  background:var(--navy-2);border:1px solid var(--rule);
+  padding:1px 5px;border-radius:3px;color:var(--cream);
+}
+
+/* ---- Keystone / principle ---- */
+.principle{
+  border-left:3px solid var(--red);background:var(--navy-2);
+  padding:14px 16px;margin:18px 0;border-radius:2px;
+}
+.principle .lab{
+  font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--red);
+}
+.principle p{margin-top:6px}
+
+/* ---- Dropdown. The long-explanation component ---- */
+details.dd{border:1px solid var(--rule);border-radius:3px;background:var(--navy-2);overflow:hidden}
+details.dd + details.dd{margin-top:8px}
+details.dd[open]{border-color:var(--rule-2)}
+details.dd summary{
+  display:flex;align-items:baseline;gap:12px;padding:12px 14px;cursor:pointer;
+  list-style:none;-webkit-tap-highlight-color:transparent;
+}
+details.dd summary::-webkit-details-marker{display:none}
+details.dd summary::marker{content:""}
+.dd-mark{font-family:"Space Mono",monospace;font-size:12px;color:var(--red);font-weight:700;width:12px;flex:none}
+details.dd[open] .dd-mark::before{content:"-"}
+details.dd:not([open]) .dd-mark::before{content:"+"}
+.dd-name{
+  font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:19px;
+  text-transform:uppercase;letter-spacing:.02em;
+}
+.dd-tag{
+  font-family:"Space Mono",monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--cream-dim);margin-left:auto;text-align:right;
+}
+.dd-body{padding:0 14px 14px;border-top:1px solid var(--rule);padding-top:12px;font-size:14.5px}
+.dd-body p + p{margin-top:9px}
+
+/* ---- Card, for a discrete thing with settings ---- */
+.card{
+  border:1px solid var(--rule);border-radius:3px;margin-top:16px;
+  overflow:hidden;background:var(--navy-2);
+}
+.card > header{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:12px 14px;border-bottom:1px solid var(--rule);
+}
+.card .name{
+  font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:21px;
+  text-transform:uppercase;letter-spacing:.02em;
+}
+.badge{
+  font-family:"Space Mono",monospace;font-size:9px;letter-spacing:.12em;
+  text-transform:uppercase;padding:4px 7px;border-radius:2px;
+  border:1px solid var(--rule-2);color:var(--cream-dim);
+}
+.badge.on{color:var(--green);border-color:rgba(59,143,74,.5)}
+.badge.warn{color:var(--amber);border-color:rgba(208,138,30,.5)}
+.badge.off{color:var(--bad-ink);border-color:rgba(190,24,24,.5)}
+.card .body{padding:13px 14px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--rule)}
+.grid .cell{background:var(--navy);padding:10px 12px}
+.grid .cell.wide{grid-column:1 / -1}
+.grid .k{
+  font-family:"Space Mono",monospace;font-size:9.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--cream-dim);
+}
+.grid .v{font-family:"Space Mono",monospace;font-size:14px;color:#fff;margin-top:3px}
+@media (min-width:640px){ .grid{grid-template-columns:repeat(4,1fr)} }
+
+/* ---- Table ---- */
+table.t{width:100%;border-collapse:collapse;margin-top:12px}
+table.t thead th{
+  font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--cream-dim);text-align:left;
+  padding:0 10px 8px 0;border-bottom:1px solid var(--rule-2);
+}
+table.t tbody td{padding:11px 10px 11px 0;border-bottom:1px solid var(--rule);vertical-align:top;font-size:14.5px}
+table.t tbody tr:last-child td{border-bottom:none}
+table.t td.mono{font-family:"Space Mono",monospace;font-size:13px}
+.scroll{overflow-x:auto}
+
+/* ---- Figure. Drop images in later ---- */
+figure{margin:16px 0;border:1px solid var(--rule);border-radius:3px;overflow:hidden;background:var(--navy-2)}
+figure img{display:block;width:100%;height:auto}
+figure figcaption{
+  padding:9px 12px;font-family:"Space Mono",monospace;font-size:11px;
+  color:var(--cream-dim);letter-spacing:.04em;border-top:1px solid var(--rule);
+}
+figure.placeholder{
+  border-style:dashed;padding:26px 16px;text-align:center;
+  font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--cream-dim);
+}
+
+/* ---- Flags ---- */
+.flags{background:rgba(190,24,24,.10);border:1px solid rgba(190,24,24,.45);border-radius:3px;padding:15px 17px;margin-top:18px}
+.flags h3{font-weight:900;font-size:19px;color:var(--bad-ink);margin:0}
+.flags ul{list-style:none;margin-top:9px;display:flex;flex-direction:column;gap:8px}
+.flags li{padding-left:19px;position:relative;font-size:14.5px}
+.flags li::before{content:"";position:absolute;left:0;top:8px;width:8px;height:8px;background:var(--red);transform:rotate(45deg)}
+
+/* ---- Footer ---- */
+footer{
+  margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);
+  font-family:"Space Mono",monospace;font-size:11px;color:var(--cream-dim);
+  line-height:1.7;letter-spacing:.03em;
+}
+footer .brand{color:var(--cream)}
+
+/* ---- Print. A laminated card still beats a phone ---- */
+@media print{
+  body{background:#fff;color:#000}
+  .side,.nav{display:none}
+  .main{max-width:none;padding:0}
+  .card,.principle,details.dd{border-color:#999;background:#fff}
+  details.dd{display:block}
+  details.dd > summary{list-style:none}
+  details.dd .dd-body{display:block !important}
+  .grid .cell{background:#fff}
+  .grid .v,b,strong,h1,h2,h3{color:#000}
+  a{color:#000;text-decoration:none}
+}
+
+/* ---- Drug card ---- */
+.drug{border:1px solid var(--rule);border-radius:3px;margin-top:18px;overflow:hidden;background:var(--navy-2)}
+.drug > header{padding:12px 14px;border-bottom:1px solid var(--rule);display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.drug .dn{font-family:"Barlow Condensed",sans-serif;font-weight:900;font-size:24px;text-transform:uppercase;letter-spacing:.02em}
+.drug .dc{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-dim)}
+.drug .dd-dose{font-family:"Space Mono",monospace;font-size:12px;color:var(--red);font-weight:700;margin-left:auto}
+.pk{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--rule)}
+@media (min-width:560px){ .pk{grid-template-columns:repeat(4,1fr)} }
+.pk .cell{background:var(--navy);padding:9px 11px}
+.pk .k{font-family:"Space Mono",monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-dim)}
+.pk .v{font-family:"Space Mono",monospace;font-size:13px;color:#fff;margin-top:2px}
+.drug .sect{padding:12px 14px;border-top:1px solid var(--rule)}
+.drug .sect h4{
+  font-family:"Space Mono",monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--red);margin-bottom:5px;
+}
+.drug .sect.anti h4{color:var(--green)}
+.drug .sect.contra h4{color:var(--bad-ink)}
+.drug .sect p{font-size:14px}
+.drug .sect ul{list-style:none;font-size:14px}
+.drug .sect li{padding-left:14px;position:relative;margin-top:3px}
+.drug .sect li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;background:var(--rule-2);transform:rotate(45deg)}
+.drug details.dd{border:none;border-top:1px solid var(--rule);border-radius:0;background:transparent}
+.drug details.dd + details.dd{margin-top:0;border-top:1px solid var(--rule)}
+
+</style>
+</head>
+<body>
+<div class="shell">
+<aside class="side">
+  <div class="brand">PILL<span>A</span>R</div>
+  <div class="ver">ACM Extended // v0.9.873</div>
+  <nav class="nav">
+    <div class="grp">Overview</div>
+    <a href="index.html">Start here</a>
+    <div class="grp">Systems</div>
+    <a href="ventilator.html">Ventilator</a>
+    <a href="oxygen.html">Oxygen delivery</a>
+    <a href="bleeding.html">Bleeding and shock</a>
+    <a href="airway.html">Airway and chest</a>
+    <a href="circulation.html">Rhythms and drugs</a>
+    <a href="medications.html" class="on">Medications</a>
+    <a href="access.html">Access and blood</a>
+    <a href="tbi.html">Head injury</a>
+    <a href="flight.html">Flight and altitude</a>
+    <div class="grp">Interface</div>
+    <a href="menu.html">Medical menu</a>
+    <a href="accessibility.html">Accessibility</a>
+    <div class="grp">Reference</div>
+    <a href="settings.html">Settings reference</a>
+    <a href="zeus.html">Zeus modules</a>
+  </nav>
+</aside>
+<main class="main">
+<div class="eyebrow">PILLAR <span class="tag">//</span> SYSTEMS</div>
+<h1>Medications</h1>
+<p class="lede">Every drug the addon can deliver, with what it does and what it does differently here. Doses shown are the therapeutic dose the registry uses.</p>
+<div class="rule"></div>
+
+<div class="principle">
+  <div class="lab">Reading these</div>
+  <p>The clinical detail is standard prehospital pharmacology. The <b>In this addon</b> dropdown on each card is where the modelled behaviour lives: the interactions, the traps, and anything that works differently from stock ACM.</p>
+</div>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Infusions Versus Pushes</h2></div>
+  <p>Anything given as an infusion runs through the roller clamp and ramps in over about 45 seconds, decaying over 120 seconds after the line stops. Pushes act on ACM's own onset curve.</p>
+  <p>Several drugs are in the <b>vesicant table</b>, where extravasation causes progressive three stage tissue damage over time rather than an immediate injury. That means a bad line is something you find out about later, so check the site before starting and after any move.</p>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">02</span><h2>Drug Cards</h2></div>
+<div class="drug">
+  <header><span class="dn">Epinephrine</span><span class="dc">Catecholamine / vasopressor</span><span class="dd-dose">1 mg arrest | 10 mcg push dose</span></header>
+  <div class="pk">
+    <div class="cell"><div class="k">Route</div><div class="v">IV, IO, IM, ETT</div></div>
+    <div class="cell"><div class="k">Onset</div><div class="v">1 min IV</div></div>
+    <div class="cell"><div class="k">Peak</div><div class="v">2 to 5 min</div></div>
+    <div class="cell"><div class="k">Duration</div><div class="v">5 to 10 min</div></div>
+  </div>
+  <div class="sect"><h4>Mechanism</h4><p>Alpha 1 causes vasoconstriction and raises systemic vascular resistance. Beta 1 raises rate and contractility. In arrest the alpha effect is what matters, because it raises coronary and cerebral perfusion pressure during compressions.</p></div>
+  <div class="sect"><h4>Indications</h4><ul><li>Cardiac arrest, any rhythm</li><li>Anaphylaxis</li><li>Symptomatic bradycardia unresponsive to atropine</li><li>Push dose for transient hypotension</li></ul></div>
+  <div class="sect contra"><h4>Contraindications and cautions</h4><ul><li>No absolute contraindication in arrest</li><li>Caution in a casualty who is empty, because you are squeezing a tank that has nothing in it</li></ul></div>
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">In this addon</span><span class="dd-tag">Special considerations</span></summary>
+    <div class="dd-body"><p>Push dose has <b>tachyphylaxis</b>. Each push returns less than the last, dropping to about a fifth by the sixth dose, and recovering on a half life of 420 seconds. The model is telling you the drug is a bridge and the answer is usually blood. Pressor support also ramps over 45 seconds rather than appearing instantly, and decays over 120 seconds after the line stops. Acidosis blunts the whole effect by up to 45%, so correcting pH does more than another dose.</p></div>
+  </details>
+</div>
+<div class="drug">
+  <header><span class="dn">Norepinephrine</span><span class="dc">Catecholamine / vasopressor</span><span class="dd-dose">4 mg in 250 mL, titrated</span></header>
+  <div class="pk">
+    <div class="cell"><div class="k">Route</div><div class="v">IV or IO infusion</div></div>
+    <div class="cell"><div class="k">Onset</div><div class="v">1 to 2 min</div></div>
+    <div class="cell"><div class="k">Peak</div><div class="v">5 min</div></div>
+    <div class="cell"><div class="k">Duration</div><div class="v">minutes after stopping</div></div>
+  </div>
+  <div class="sect"><h4>Mechanism</h4><p>Predominantly alpha 1 with modest beta 1. Raises mean arterial pressure through vasoconstriction with less tachycardia than epinephrine.</p></div>
+  <div class="sect"><h4>Indications</h4><ul><li>Shock with adequate volume where pressure remains inadequate</li><li>Post ROSC hypotension</li></ul></div>
+  <div class="sect contra"><h4>Contraindications and cautions</h4><ul><li>Hypovolaemia that has not been corrected first</li><li>Extravasation risk if the line is not secure</li></ul></div>
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">In this addon</span><span class="dd-tag">Special considerations</span></summary>
+    <div class="dd-body"><p>This is an <b>infusion, not a push</b>, so it uses the roller clamp and the same 45 second ramp. It is in the vesicant table: extravasation causes progressive three stage tissue damage over time rather than an instant injury, so a bad line is a problem you discover later. Check the site before you start and after any move.</p></div>
+  </details>
+</div>
+<div class="drug">
+  <header><span class="dn">Amiodarone</span><span class="dc">Class III antiarrhythmic</span><span class="dd-dose">300 mg arrest | 150 mg over 10 min</span></header>
+  <div class="pk">
+    <div class="cell"><div class="k">Route</div><div class="v">IV or IO</div></div>
+    <div class="cell"><div class="k">Onset</div><div class="v">minutes</div></div>
+    <div class="cell"><div class="k">Peak</div><div class="v">variable</div></div>
+    <div class="cell"><div class="k">Duration</div><div class="v">long, cumulative</div></div>
+  </div>
+  <div class="sect"><h4>Mechanism</h4><p>Blocks potassium channels and prolongs repolarisation and the refractory period. Also has sodium channel, beta and calcium channel activity, which is why it does so many things and has so many side effects.</p></div>
+  <div class="sect"><h4>Indications</h4><ul><li>VF or pulseless VT refractory to defibrillation</li><li>VT with a pulse</li><li>Atrial fibrillation with rapid ventricular response</li><li>SVT after adenosine</li></ul></div>
+  <div class="sect contra"><h4>Contraindications and cautions</h4><ul><li>Torsades de pointes</li><li>Known QT prolongation</li><li>Second or third degree block without pacing</li></ul></div>
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">In this addon</span><span class="dd-tag">Special considerations</span></summary>
+    <div class="dd-body"><p>ACM only implements amiodarone for arrest. This addon adds <b>perfusing rhythm control</b>: atrial fibrillation with RVR and atrial tachycardia convert at an effect of 0.40, SVT at 0.70 because adenosine is first line. <b>Torsades is deliberately excluded</b>, since amiodarone prolongs QT and causes it. A cumulative 2200 mg ceiling models the same concern. Arrest dosing is a 300 mg push; with a pulse it is 150 mg over 10 minutes, and faster than 25 mg per minute causes hypotension.</p></div>
+  </details>
+</div>
+<div class="drug">
+  <header><span class="dn">Lidocaine</span><span class="dc">Class IB antiarrhythmic / local</span><span class="dd-dose">100 mg, then 2 mg/min</span></header>
+  <div class="pk">
+    <div class="cell"><div class="k">Route</div><div class="v">IV, IO, infiltration</div></div>
+    <div class="cell"><div class="k">Onset</div><div class="v">45 to 90 s</div></div>
+    <div class="cell"><div class="k">Peak</div><div class="v">1 to 2 min</div></div>
+    <div class="cell"><div class="k">Duration</div><div class="v">10 to 20 min</div></div>
+  </div>
+  <div class="sect"><h4>Mechanism</h4><p>Blocks fast sodium channels preferentially in ischaemic tissue, shortening the action potential and suppressing ventricular ectopy.</p></div>
+  <div class="sect"><h4>Indications</h4><ul><li>VF or pulseless VT as an alternative to amiodarone</li><li>VT with a pulse</li><li>Local anaesthesia</li><li>Into an IO before a fluid bolus</li></ul></div>
+  <div class="sect contra"><h4>Contraindications and cautions</h4><ul><li>Second or third degree block without pacing</li><li>Known amide anaesthetic allergy</li></ul></div>
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">In this addon</span><span class="dd-tag">Special considerations</span></summary>
+    <div class="dd-body"><p>The most detailed drug model here. A therapeutic dose sits at effect 0.6 and holds <b>full effect for 30 minutes</b>, ramping to zero by 90 minutes. While on board it deterministically terminates VT with a pulse and raises defibrillation conversion odds from a floor of 0.2 to certainty at full effect.<br><br>There is also a <b>serum level accumulator with a toxicity arc</b>, because the ACM effect value saturates at 1.0 and cannot represent overdose. Plateau in mcg/mL is the drip rate in mg per minute divided by clearance, so 2 mg/min settles around 3.2, which is therapeutic, and 8 mg/min reaches roughly 12.8, which is the seizure band. Half life is compressed to about 5.5 minutes against a real 100 so a careless drip reaches toxicity inside a scenario. <b>Shock reduces clearance to 60% and esmolol to 70%</b>, which raises the plateau and lengthens the half life, so the casualty who most needs the drug clears it worst. Above the seizure threshold an unconscious casualty seizes, and the tell is apnea.</p></div>
+  </details>
+</div>
+<div class="drug">
+  <header><span class="dn">Magnesium Sulfate</span><span class="dc">Electrolyte / antiarrhythmic</span><span class="dd-dose">2 g</span></header>
+  <div class="pk">
+    <div class="cell"><div class="k">Route</div><div class="v">IV or IO</div></div>
+    <div class="cell"><div class="k">Onset</div><div class="v">minutes</div></div>
+    <div class="cell"><div class="k">Peak</div><div class="v">rapid</div></div>
+    <div class="cell"><div class="k">Duration</div><div class="v">30 min</div></div>
+  </div>
+  <div class="sect"><h4>Mechanism</h4><p>Stabilises the myocardial membrane and is a cofactor in cardiac conduction. In torsades it suppresses the early afterdepolarisations that trigger the arrhythmia.</p></div>
+  <div class="sect"><h4>Indications</h4><ul><li>Torsades de pointes, with or without a pulse</li><li>Refractory VF where hypomagnesaemia is suspected</li><li>Severe asthma</li></ul></div>
+  <div class="sect contra"><h4>Contraindications and cautions</h4><ul><li>Renal failure</li><li>Known heart block</li></ul></div>
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">In this addon</span><span class="dd-tag">Special considerations</span></summary>
+    <div class="dd-body"><p>This is the <b>correct answer for torsades</b>, which is why amiodarone is excluded from it. An effect of 0.35 terminates active torsades and 0.25 suppresses recurrence, both reachable on a drip. If you are looking at a polymorphic wide complex, reach for this rather than the antiarrhythmic you would use for anything else.</p></div>
+  </details>
+</div>
+<div class="drug">
+  <header><span class="dn">Calcium Chloride</span><span class="dc">Electrolyte</span><span class="dd-dose">1 g</span></header>
+  <div class="pk">
+    <div class="cell"><div class="k">Route</div><div class="v">IV or IO, large vein</div></div>
+    <div class="cell"><div class="k">Onset</div><div class="v">immediate</div></div>
+    <div class="cell"><div class="k">Peak</div><div class="v">minutes</div></div>
+    <div class="cell"><div class="k">Duration</div><div class="v">30 to 60 min</div></div>
+  </div>
+  <div class="sect"><h4>Mechanism</h4><p>Supplies ionised calcium, which is required for the clotting cascade and for myocardial contractility. Chloride salt delivers roughly three times the elemental calcium of gluconate per gram.</p></div>
+  <div class="sect"><h4>Indications</h4><ul><li>Massive transfusion</li><li>Hyperkalaemia</li><li>Calcium channel blocker overdose</li><li>Hypocalcaemia with a low ionised level</li></ul></div>
+  <div class="sect contra"><h4>Contraindications and cautions</h4><ul><li>Do not run in the same line as bicarbonate or ceftriaxone, it precipitates</li></ul></div>
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">In this addon</span><span class="dd-tag">Special considerations</span></summary>
+    <div class="dd-body"><p>Central to the <b>lethal triad model</b>. Stored blood is citrated, and citrate chelates calcium at 0.18 per litre transfused. Below an ionised level of 1.0 you lose clotting, worth up to 1.4 times bleeding, and you lose myocardial function, worth up to 40 mmHg of MAP per unit below threshold. Calcium chloride credits back 0.12 per gram. <b>Give it early in a massive transfusion rather than after things go wrong</b>, because you are racing the citrate rather than treating a number. Gluconate is also stocked at 3 g, which is roughly dose equivalent to 1 g of chloride.</p></div>
+  </details>
+</div>
+<div class="drug">
+  <header><span class="dn">Tranexamic Acid</span><span class="dc">Antifibrinolytic</span><span class="dd-dose">1 g over 10 min</span></header>
+  <div class="pk">
+    <div class="cell"><div class="k">Route</div><div class="v">IV or IO</div></div>
+    <div class="cell"><div class="k">Onset</div><div class="v">minutes</div></div>
+    <div class="cell"><div class="k">Peak</div><div class="v">within the hour</div></div>
+    <div class="cell"><div class="k">Duration</div><div class="v">about 8 h</div></div>
+  </div>
+  <div class="sect"><h4>Mechanism</h4><p>Blocks the lysine binding sites on plasminogen, preventing plasmin from breaking down formed clot. It does not make clot, it stops clot being dismantled.</p></div>
+  <div class="sect"><h4>Indications</h4><ul><li>Haemorrhagic shock within 3 hours of injury</li><li>Significant traumatic haemorrhage</li></ul></div>
+  <div class="sect contra"><h4>Contraindications and cautions</h4><ul><li>More than 3 hours from injury, where it increases mortality</li><li>Known thromboembolic disease</li></ul></div>
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">In this addon</span><span class="dd-tag">Special considerations</span></summary>
+    <div class="dd-body"><p>Push it slowly. Given fast it causes hypotension, which is the last thing a bleeding casualty needs. The time window is the teaching point: <b>early it helps and late it harms</b>, so it is a drug that rewards giving it at the point of injury rather than at the aid post.</p></div>
+  </details>
+</div>
+<div class="drug">
+  <header><span class="dn">Ketamine</span><span class="dc">Dissociative anaesthetic</span><span class="dd-dose">50 mg analgesia | higher for RSI</span></header>
+  <div class="pk">
+    <div class="cell"><div class="k">Route</div><div class="v">IV, IO, IM, intranasal</div></div>
+    <div class="cell"><div class="k">Onset</div><div class="v">30 s IV, 3 to 5 min IM</div></div>
+    <div class="cell"><div class="k">Peak</div><div class="v">1 min IV</div></div>
+    <div class="cell"><div class="k">Duration</div><div class="v">10 to 20 min</div></div>
+  </div>
+  <div class="sect"><h4>Mechanism</h4><p>NMDA receptor antagonist producing dissociation. Preserves airway reflexes and respiratory drive far better than other anaesthetics, and is generally haemodynamically supportive through sympathetic outflow.</p></div>
+  <div class="sect"><h4>Indications</h4><ul><li>Analgesia in trauma</li><li>Induction for intubation, especially in shock</li><li>Agitation requiring sedation</li></ul></div>
+  <div class="sect contra"><h4>Contraindications and cautions</h4><ul><li>Caution in catecholamine depleted casualties, where the sympathomimetic effect is absent and direct myocardial depression shows instead</li></ul></div>
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">In this addon</span><span class="dd-tag">Special considerations</span></summary>
+    <div class="dd-body"><p>The addon tracks whether ketamine is on board via <code>fn_ketamineOnBoard</code>, which matters for the <b>sedation and paralysis relationship</b>. A paralysed casualty who is not sedated is a specific failure the model can represent, and ketamine is one of the two agents that answers it. It is the induction agent of choice in a shocked casualty precisely because it does not drop pressure the way propofol does.</p></div>
+  </details>
+</div>
+<div class="drug">
+  <header><span class="dn">Propofol</span><span class="dc">Sedative hypnotic</span><span class="dd-dose">100 mg</span></header>
+  <div class="pk">
+    <div class="cell"><div class="k">Route</div><div class="v">IV or IO</div></div>
+    <div class="cell"><div class="k">Onset</div><div class="v">30 s</div></div>
+    <div class="cell"><div class="k">Peak</div><div class="v">1 min</div></div>
+    <div class="cell"><div class="k">Duration</div><div class="v">5 to 10 min</div></div>
+  </div>
+  <div class="sect"><h4>Mechanism</h4><p>GABA A agonist. Rapid, clean, short acting, with no analgesic effect at all.</p></div>
+  <div class="sect"><h4>Indications</h4><ul><li>Induction</li><li>Ongoing sedation of a ventilated casualty</li></ul></div>
+  <div class="sect contra"><h4>Contraindications and cautions</h4><ul><li>Hypovolaemia</li><li>Haemodynamic instability</li><li>Egg or soy allergy</li></ul></div>
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">In this addon</span><span class="dd-tag">Special considerations</span></summary>
+    <div class="dd-body"><p><b>Drops blood pressure, which is why it is the wrong induction agent in trauma.</b> It is here for the ventilated casualty who is already stable. It provides no analgesia, so a casualty on propofol alone is sedated and still in pain, which is a distinction the sedation model cares about.</p></div>
+  </details>
+</div>
+<div class="drug">
+  <header><span class="dn">Midazolam</span><span class="dc">Benzodiazepine</span><span class="dd-dose">5 mg</span></header>
+  <div class="pk">
+    <div class="cell"><div class="k">Route</div><div class="v">IV, IO, IM, intranasal</div></div>
+    <div class="cell"><div class="k">Onset</div><div class="v">2 to 5 min IV</div></div>
+    <div class="cell"><div class="k">Peak</div><div class="v">5 to 7 min</div></div>
+    <div class="cell"><div class="k">Duration</div><div class="v">30 to 60 min</div></div>
+  </div>
+  <div class="sect"><h4>Mechanism</h4><p>GABA A agonist producing sedation, anxiolysis, anterograde amnesia and anticonvulsant effect.</p></div>
+  <div class="sect"><h4>Indications</h4><ul><li>Seizure</li><li>Sedation of a ventilated or agitated casualty</li><li>Anxiolysis</li></ul></div>
+  <div class="sect contra"><h4>Contraindications and cautions</h4><ul><li>Respiratory depression, particularly stacked with opioids</li></ul></div>
+  <div class="sect anti"><h4>Reversal</h4><p>Flumazenil, rarely appropriate in trauma</p></div>
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">In this addon</span><span class="dd-tag">Special considerations</span></summary>
+    <div class="dd-body"><p>Modelled with a <b>ramp rather than a step</b>, through <code>fn_midazolamTick</code>, so sedation deepens over time after you give it. That means giving a second dose because the first has not worked yet is a real mistake you can make. It provides no analgesia. Reversal with flumazenil is possible but rarely appropriate, since it can precipitate seizures.</p></div>
+  </details>
+</div>
+<div class="drug">
+  <header><span class="dn">Fentanyl</span><span class="dc">Opioid analgesic</span><span class="dd-dose">100 mcg</span></header>
+  <div class="pk">
+    <div class="cell"><div class="k">Route</div><div class="v">IV, IO, IM, intranasal, OTFC</div></div>
+    <div class="cell"><div class="k">Onset</div><div class="v">1 to 2 min IV</div></div>
+    <div class="cell"><div class="k">Peak</div><div class="v">3 to 5 min</div></div>
+    <div class="cell"><div class="k">Duration</div><div class="v">30 to 60 min</div></div>
+  </div>
+  <div class="sect"><h4>Mechanism</h4><p>Mu opioid receptor agonist. Roughly 100 times the potency of morphine, with no histamine release and therefore far less hypotension.</p></div>
+  <div class="sect"><h4>Indications</h4><ul><li>Moderate to severe pain in trauma</li></ul></div>
+  <div class="sect contra"><h4>Contraindications and cautions</h4><ul><li>Respiratory depression</li><li>Reduced consciousness where you cannot monitor the airway</li></ul></div>
+  <div class="sect anti"><h4>Reversal</h4><p>Naloxone</p></div>
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">In this addon</span><span class="dd-tag">Special considerations</span></summary>
+    <div class="dd-body"><p>The <b>preferred trauma opioid</b> over morphine because it does not drop pressure. Oral transmucosal fentanyl citrate is the lozenge form used when there is no line, and it is worth knowing it is slower and harder to titrate. Naloxone exists in the addon as a reversal agent.</p></div>
+  </details>
+</div>
+<div class="drug">
+  <header><span class="dn">Morphine</span><span class="dc">Opioid analgesic</span><span class="dd-dose">10 mg</span></header>
+  <div class="pk">
+    <div class="cell"><div class="k">Route</div><div class="v">IV, IO, IM</div></div>
+    <div class="cell"><div class="k">Onset</div><div class="v">5 to 10 min IV</div></div>
+    <div class="cell"><div class="k">Peak</div><div class="v">20 min</div></div>
+    <div class="cell"><div class="k">Duration</div><div class="v">3 to 4 h</div></div>
+  </div>
+  <div class="sect"><h4>Mechanism</h4><p>Mu opioid receptor agonist. Causes histamine release, which produces vasodilation.</p></div>
+  <div class="sect"><h4>Indications</h4><ul><li>Moderate to severe pain where fentanyl is unavailable</li></ul></div>
+  <div class="sect contra"><h4>Contraindications and cautions</h4><ul><li>Haemorrhagic shock</li><li>Head injury where you need serial neurological examination</li><li>Respiratory depression</li></ul></div>
+  <div class="sect anti"><h4>Reversal</h4><p>Naloxone</p></div>
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">In this addon</span><span class="dd-tag">Special considerations</span></summary>
+    <div class="dd-body"><p>Present, but <b>fentanyl is the better choice in almost every trauma scenario in this addon</b>, because morphine's histamine release drops pressure in a casualty who cannot spare it and its long duration makes it hard to undo. Reversible with naloxone.</p></div>
+  </details>
+</div>
+<div class="drug">
+  <header><span class="dn">Naloxone</span><span class="dc">Opioid antagonist</span><span class="dd-dose">0.4 to 2 mg</span></header>
+  <div class="pk">
+    <div class="cell"><div class="k">Route</div><div class="v">IV, IO, IM, intranasal</div></div>
+    <div class="cell"><div class="k">Onset</div><div class="v">1 to 2 min IV</div></div>
+    <div class="cell"><div class="k">Peak</div><div class="v">5 min</div></div>
+    <div class="cell"><div class="k">Duration</div><div class="v">30 to 90 min</div></div>
+  </div>
+  <div class="sect"><h4>Mechanism</h4><p>Competitive mu opioid receptor antagonist. Displaces the opioid from the receptor.</p></div>
+  <div class="sect"><h4>Indications</h4><ul><li>Opioid induced respiratory depression</li></ul></div>
+  <div class="sect contra"><h4>Contraindications and cautions</h4><ul><li>Titrate to respiratory rate, not to consciousness, or you remove all analgesia and get a casualty in agony</li></ul></div>
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">In this addon</span><span class="dd-tag">Special considerations</span></summary>
+    <div class="dd-body"><p>Worth knowing its <b>duration can be shorter than the opioid it is reversing</b>, so a casualty who wakes up can go back down again. Reverse the breathing and keep watching rather than treating it as solved.</p></div>
+  </details>
+</div>
+<div class="drug">
+  <header><span class="dn">Rocuronium</span><span class="dc">Neuromuscular blocker</span><span class="dd-dose">RSI dose by weight</span></header>
+  <div class="pk">
+    <div class="cell"><div class="k">Route</div><div class="v">IV or IO</div></div>
+    <div class="cell"><div class="k">Onset</div><div class="v">45 to 60 s</div></div>
+    <div class="cell"><div class="k">Peak</div><div class="v">1 to 2 min</div></div>
+    <div class="cell"><div class="k">Duration</div><div class="v">30 to 60 min</div></div>
+  </div>
+  <div class="sect"><h4>Mechanism</h4><p>Non depolarising competitive acetylcholine antagonist at the neuromuscular junction. Produces paralysis with no sedation, no analgesia and no amnesia whatsoever.</p></div>
+  <div class="sect"><h4>Indications</h4><ul><li>Rapid sequence intubation</li><li>Facilitating ventilation in a casualty fighting the tube</li></ul></div>
+  <div class="sect contra"><h4>Contraindications and cautions</h4><ul><li>Any airway you cannot secure</li><li>Never without sedation</li></ul></div>
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">In this addon</span><span class="dd-tag">Special considerations</span></summary>
+    <div class="dd-body"><p>Tracked by <code>fn_rocuroniumOnBoard</code>. <b>A paralysed casualty who is not sedated is aware, in pain, and unable to indicate any of it</b>, which is the single worst thing you can do to a patient in this addon and is deliberately representable. Rocuronium also required a fix so that paralysis does not falsely register breathing effectiveness. If you paralyse, you sedate, and you keep sedating.</p></div>
+  </details>
+</div>
+<div class="drug">
+  <header><span class="dn">Hypertonic Saline 3%</span><span class="dc">Osmotic / volume</span><span class="dd-dose">250 mL</span></header>
+  <div class="pk">
+    <div class="cell"><div class="k">Route</div><div class="v">IV or IO</div></div>
+    <div class="cell"><div class="k">Onset</div><div class="v">minutes</div></div>
+    <div class="cell"><div class="k">Peak</div><div class="v">15 to 30 min</div></div>
+    <div class="cell"><div class="k">Duration</div><div class="v">2 to 4 h</div></div>
+  </div>
+  <div class="sect"><h4>Mechanism</h4><p>Draws water out of the intracellular and interstitial space by osmotic gradient, reducing cerebral oedema while expanding intravascular volume with a small volume infused.</p></div>
+  <div class="sect"><h4>Indications</h4><ul><li>Raised intracranial pressure</li><li>Head injury with signs of herniation</li><li>Volume expansion where carrying capacity is limited</li></ul></div>
+  <div class="sect contra"><h4>Contraindications and cautions</h4><ul><li>Hypernatraemia</li><li>Rapid correction risks central pontine myelinolysis</li></ul></div>
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">In this addon</span><span class="dd-tag">Special considerations</span></summary>
+    <div class="dd-body"><p>The reason to prefer it over mannitol in trauma is that it <b>expands volume rather than removing it</b>. In the head injury model, osmotherapy doubles the rate at which severity heals back toward zero, so it is worth giving early rather than as a last resort.</p></div>
+  </details>
+</div>
+<div class="drug">
+  <header><span class="dn">Mannitol</span><span class="dc">Osmotic diuretic</span><span class="dd-dose">100 g</span></header>
+  <div class="pk">
+    <div class="cell"><div class="k">Route</div><div class="v">IV or IO</div></div>
+    <div class="cell"><div class="k">Onset</div><div class="v">15 to 30 min</div></div>
+    <div class="cell"><div class="k">Peak</div><div class="v">1 to 2 h</div></div>
+    <div class="cell"><div class="k">Duration</div><div class="v">6 to 8 h</div></div>
+  </div>
+  <div class="sect"><h4>Mechanism</h4><p>Osmotic gradient pulls water from brain tissue, then acts as a diuretic.</p></div>
+  <div class="sect"><h4>Indications</h4><ul><li>Raised intracranial pressure</li></ul></div>
+  <div class="sect contra"><h4>Contraindications and cautions</h4><ul><li>Hypovolaemia</li><li>Hypotension</li><li>Renal failure</li></ul></div>
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">In this addon</span><span class="dd-tag">Special considerations</span></summary>
+    <div class="dd-body"><p><b>Hypertonic saline is usually the better choice in a trauma casualty</b>, because mannitol's diuresis costs volume from someone who may already be bleeding. Both count as osmotherapy for the head injury healing rate.</p></div>
+  </details>
+</div>
+<div class="drug">
+  <header><span class="dn">Esmolol</span><span class="dc">Beta 1 blocker</span><span class="dd-dose">2.5 g in 250 mL</span></header>
+  <div class="pk">
+    <div class="cell"><div class="k">Route</div><div class="v">IV or IO infusion</div></div>
+    <div class="cell"><div class="k">Onset</div><div class="v">1 to 2 min</div></div>
+    <div class="cell"><div class="k">Peak</div><div class="v">5 min</div></div>
+    <div class="cell"><div class="k">Duration</div><div class="v">10 to 20 min</div></div>
+  </div>
+  <div class="sect"><h4>Mechanism</h4><p>Cardioselective beta 1 antagonist with a very short half life, which is what makes it usable in an unstable patient.</p></div>
+  <div class="sect"><h4>Indications</h4><ul><li>Rate control in tachyarrhythmia</li><li>Reducing myocardial oxygen demand</li></ul></div>
+  <div class="sect contra"><h4>Contraindications and cautions</h4><ul><li>Decompensated heart failure</li><li>Bradycardia</li><li>Hypotension</li><li>Reactive airway disease</li></ul></div>
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">In this addon</span><span class="dd-tag">Special considerations</span></summary>
+    <div class="dd-body"><p>Interacts with lidocaine. Beta blockade on board <b>multiplies lidocaine clearance down to 70%</b>, which raises the serum plateau and lengthens the half life, pushing a therapeutic drip toward the toxic band. Running both is a genuine trap rather than a coincidence.</p></div>
+  </details>
+</div>
+<div class="drug">
+  <header><span class="dn">Ondansetron</span><span class="dc">Antiemetic</span><span class="dd-dose">4 mg</span></header>
+  <div class="pk">
+    <div class="cell"><div class="k">Route</div><div class="v">IV, IO, IM, oral</div></div>
+    <div class="cell"><div class="k">Onset</div><div class="v">5 to 15 min IV</div></div>
+    <div class="cell"><div class="k">Peak</div><div class="v">30 min</div></div>
+    <div class="cell"><div class="k">Duration</div><div class="v">4 to 8 h</div></div>
+  </div>
+  <div class="sect"><h4>Mechanism</h4><p>Selective 5 HT3 receptor antagonist, blocking serotonin mediated emesis centrally and at the gut.</p></div>
+  <div class="sect"><h4>Indications</h4><ul><li>Nausea and vomiting, particularly opioid or ketamine associated</li><li>Before moving a casualty who will be jostled</li></ul></div>
+  <div class="sect contra"><h4>Contraindications and cautions</h4><ul><li>Known QT prolongation, since it prolongs QT itself</li></ul></div>
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">In this addon</span><span class="dd-tag">Special considerations</span></summary>
+    <div class="dd-body"><p>Small drug, real value. A vomiting casualty with a compromised airway is a much bigger problem than nausea suggests, and the QT interaction matters if you are also giving amiodarone.</p></div>
+  </details>
+</div>
+<div class="drug">
+  <header><span class="dn">Ceftriaxone</span><span class="dc">Third generation cephalosporin</span><span class="dd-dose">1 g</span></header>
+  <div class="pk">
+    <div class="cell"><div class="k">Route</div><div class="v">IV, IO, IM</div></div>
+    <div class="cell"><div class="k">Onset</div><div class="v">within the hour</div></div>
+    <div class="cell"><div class="k">Peak</div><div class="v">1 to 2 h</div></div>
+    <div class="cell"><div class="k">Duration</div><div class="v">24 h</div></div>
+  </div>
+  <div class="sect"><h4>Mechanism</h4><p>Beta lactam that inhibits bacterial cell wall synthesis. Broad spectrum with good tissue penetration.</p></div>
+  <div class="sect"><h4>Indications</h4><ul><li>Open fractures</li><li>Penetrating abdominal wounds</li><li>Significant contaminated wounds</li><li>Burns</li></ul></div>
+  <div class="sect contra"><h4>Contraindications and cautions</h4><ul><li>Known cephalosporin or severe penicillin allergy</li><li>Do not mix with calcium containing solutions, it precipitates</li></ul></div>
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">In this addon</span><span class="dd-tag">Special considerations</span></summary>
+    <div class="dd-body"><p>Antibiotics do nothing you will see inside a single scenario, which is exactly why they get forgotten. The <b>calcium incompatibility is the practical trap</b>: massive transfusion means calcium, and running ceftriaxone through the same line precipitates. Flush between, or use a different line.</p></div>
+  </details>
+</div>
+</section>
+
+<div class="flags">
+  <h3>Interactions Worth Memorising</h3>
+  <ul>
+    <li><b>Amiodarone and torsades.</b> Amiodarone prolongs QT and causes torsades. Magnesium is the answer.</li>
+    <li><b>Esmolol and lidocaine.</b> Beta blockade cuts lidocaine clearance to 70%, pushing a therapeutic drip toward the seizure band.</li>
+    <li><b>Shock and lidocaine.</b> Shock cuts clearance to 60%, so the casualty who needs it most clears it worst.</li>
+    <li><b>Ceftriaxone and calcium.</b> They precipitate. Massive transfusion means calcium, so use a different line.</li>
+    <li><b>Rocuronium without sedation.</b> Paralysed, aware, in pain, and unable to tell you.</li>
+    <li><b>Naloxone outlasted by its opioid.</b> They can wake up and go back down. Keep watching.</li>
+  </ul>
+</div>
+
+<footer>
+  <span class="brand">PILLAR</span> // ACM EXTENDED FIELD GUIDE // v0.9.873 // BUILT 2026-07-21
+</footer>
+</main>
+</div>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<div class="eyebrow">PILLAR <span class="tag">//</span> SYSTEMS</div>
+<h1>Ventilator</h1>
+<p class="lede">Ventway Sparrow. Turbine driven, so it needs no oxygen to ventilate. Power is what runs out.</p>
+<div class="rule"></div>
+
+<div class="principle">
+  <div class="lab">The one thing</div>
+  <p><b>Every mode guarantees one thing and lets the other float.</b> The danger is always in the one that floats.</p>
+</div>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Modes</h2></div>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">SIMV VC PS</span><span class="dd-tag">Volume guaranteed</span></summary>
+    <div class="dd-body">
+      <p>You set the volume. The machine delivers exactly that every mandatory breath, at whatever pressure it takes. Synchronised means it waits a fraction for the patient's own effort; pressure support tops up breaths they take in between.</p>
+      <p>You know precisely what minute ventilation they are getting, which is what you want when you are also controlling CO2 in a head injury.</p>
+      <p>Volume is guaranteed so <b>pressure is not</b>. If the lung stiffens, the machine forces the set volume in at whatever pressure that now needs. Peak pressure is the number that moves when the patient changes.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">SIMV PC</span><span class="dd-tag">Pressure guaranteed</span></summary>
+    <div class="dd-body">
+      <p>You set the pressure. The machine goes to it and holds it, and whatever volume that moves is whatever it moves.</p>
+      <p>This is the mode for a lung you do not trust: blast, aspiration, contusion. Pressure is capped by definition so you cannot barotraumatise them by accident.</p>
+      <p>Pressure is safe and <b>volume is not guaranteed</b>. If the lung stiffens further, the same pressure moves less air and they quietly hypoventilate. Watch delivered tidal volume and EtCO2.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">CPAP PS HF</span><span class="dd-tag">Needs a drive</span></summary>
+    <div class="dd-body">
+      <p>No set rate and no guaranteed breath. Constant positive pressure splints the airway open and each breath the patient starts gets a boost.</p>
+      <p>Right for a casualty who is breathing but tiring, or who has an oxygenation problem rather than a ventilation one.</p>
+      <p>Requires a <b>reliable respiratory drive</b>. On a heavily sedated, opiated or head-injured casualty the machine will sit there supporting breaths they are not taking.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary><span class="dd-mark"></span><span class="dd-name">IMV VC (CPR)</span><span class="dd-tag">Sync off</span></summary>
+    <div class="dd-body">
+      <p>Fixed mandatory breaths, trigger off. It will not synchronise with anything.</p>
+      <p>Compressions produce pressure changes that look exactly like a patient trying to breathe, so a synchronised mode reads every compression as an effort and stacks breath on breath. Intrathoracic pressure climbs, venous return falls, and the machine makes your compressions worse while trying to help.</p>
+      <p>Change it back after ROSC.</p>
+    </div>
+  </details>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">02</span><h2>Battery</h2></div>
+  <p>The Sparrow draws ambient air, so it ventilates indefinitely as far as gas goes. Oxygen is optional enrichment up to 95%. The clock that matters is electrical.</p>
+  <p>Drain is not flat. The turbine works harder against high PEEP, a fast rate and stiff lungs, so <b>the settings that keep a bad casualty alive are the ones that eat the battery</b>.</p>
+  <div class="scroll">
+  <table class="t">
+    <thead><tr><th>Settings</th><th>Load</th><th>Runtime</th></tr></thead>
+    <tbody>
+      <tr><td>PEEP 5, RR 12, PIP 20</td><td class="mono">1.02x</td><td class="mono">54 min</td></tr>
+      <tr><td>PEEP 10, RR 18, PIP 30</td><td class="mono">1.39x</td><td class="mono">40 min</td></tr>
+      <tr><td>PEEP 15, RR 24, PIP 40</td><td class="mono">1.82x</td><td class="mono">30 min</td></tr>
+      <tr><td>PEEP 20, RR 35, PIP 50</td><td class="mono">2.46x</td><td class="mono">22 min</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Vehicle power with the engine running stops the drain and recharges over 90 minutes. <b>LOW BATTERY</b> at 25%, <b>BATTERY CRITICAL</b> at 10%, and at zero the vent stops and hands the casualty back to be bagged. It never dies without warning twice first.</p>
+  <div class="card">
+    <header><span class="name">Weight</span><span class="badge warn">Carry decision</span></header>
+    <div class="grid">
+      <div class="cell"><div class="k">Ventilator</div><div class="v">40</div></div>
+      <div class="cell"><div class="k">Spare battery</div><div class="v">28</div></div>
+      <div class="cell"><div class="k">Swap time</div><div class="v">6 s</div></div>
+      <div class="cell"><div class="k">Swap offered</div><div class="v">below 90%</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Panel And Menu</h2></div>
+  <p>Menu structure follows the real device.</p>
+  <div class="card"><div class="body">
+    <p class="mono" style="font-family:'Space Mono',monospace;font-size:13px;line-height:1.9">
+      MENU<br>
+      &nbsp;&nbsp;ADV. SETTINGS<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;BRIGHTNESS<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;ALARM VOLUME<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;TECH MODE
+    </p>
+  </div></div>
+  <p>Brightness and alarm volume are dial edited in place. <b>NIGHT</b> is the Robust setting: the screen drops to a faint glow that is unreadable to the naked eye and lifts back to normal under image intensifiers. Selecting it also drops the alarm volume once, which you can then turn back up and it stays.</p>
+  <figure>
+  <img src="img/ventway_sparrow_robust_icon_ca.png" alt="Ventway Sparrow Robust">
+  <figcaption>Ventway Sparrow Robust, inventory icon</figcaption>
+</figure>
+<figure>
+  <img src="img/alarm_ca.png" alt="Alarm indicator">
+  <figcaption>Alarm indicator, and the silenced state</figcaption>
+</figure>
+<figure class="placeholder">Live panel screenshot goes here</figure>
+</section>
+
+<div class="flags">
+  <h3>Red Flags</h3>
+  <ul>
+    <li><b>Ventilating a casualty who is empty.</b> Positive pressure opposes venous return. At low volume it can cost a fifth of their stroke volume. Fill them before you tube them.</li>
+    <li><b>Rising peak pressure in volume control.</b> The lung is stiffening and the machine is forcing through it. Change mode rather than turning up the volume.</li>
+    <li><b>Falling delivered Vt in pressure control.</b> The same stiffening lung showing itself the other way round, and nothing alarms for it on its own.</li>
+    <li><b>CPAP on someone without a drive.</b> The machine supports breaths they are not taking.</li>
+    <li><b>Leaving CPR mode on after ROSC.</b> They now have their own effort and the vent is ignoring it.</li>
+  </ul>
+</div>
