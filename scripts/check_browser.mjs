@@ -119,8 +119,8 @@ try {
       await page.goto(pathToFileURL(resolve(root,"docs",file)).href);
       const charts=page.locator(".physiology-chart svg");chartCount+=await charts.count();
       for(const chart of await charts.all()){
-        assert(await chart.locator("title").textContent());
-        assert(await chart.locator("desc").textContent());
+        assert(await chart.locator(":scope > title").textContent());
+        assert(await chart.locator(":scope > desc").textContent());
       }
     }
     assert.equal(chartCount,5,"Physiology graph count");
