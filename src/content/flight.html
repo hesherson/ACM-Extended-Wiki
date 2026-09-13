@@ -32,7 +32,7 @@
       <p>Engine height is measured from the engine's zero, which is only the same as sea level if the terrain author put the ocean there. Some terrains sit their base plate several thousand metres up.</p>
       <p>On one of those, a casualty lying in the dirt reports as being at altitude. Saturation falls, a pneumothorax expands, and the medic chases a hypoxia that exists because of a mapping decision.</p>
       <p>The lowest point on the map is sampled as a proxy for intended sea level, on a coarse grid scaled to world size so a small map and a large one cost the same. A terrain with an ocean has seabed below zero and gets no correction. A terrain with its floor at 6,000 m gets 6,000 m removed.</p>
-      <p>A threshold guards it, because a genuinely high altitude map is a legitimate design choice and its hypoxia should be modelled. Override with <code>ACMI_altitude_datumMode</code>: -1 auto, 0 for no correction, or an explicit value in metres.</p>
+      <p>Terrain-height correction is automatic. The current build does not expose a datum-mode selector in Addon Options. Use <b>ACM Extended: Systems → Systems → Flight physiology</b> to enable or disable the modeled flight effects.</p>
     </div>
   </details>
 

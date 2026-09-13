@@ -26,6 +26,18 @@ Add a page to `PAGES` in `build.py` and create its body in `src/content/`. Put i
 
 ## Current reference review
 
+The medication, rhythm, settings and medical-menu references were updated against ACM Extended commit `eabd2f2e88fba4754d81bda8543b81303a72964d`:
+
+- 33 medication cards, each with the same nine clinical game-reference fields
+- 39 effect graphs with 0%, 50% and 100% marks, onset markers, peak and duration labels
+- 13 rhythm presentations, entry patterns, transition timing, causes and treatment responses
+- Visible Addon Options labels in place of internal-code instructions
+- Stable disclosure spacing; removed Known traps page and navigation
+
+The build workflow runs Chromium checks at desktop and mobile widths for disclosure position, section menus, medication fields, graph labels and interaction search.
+
+Earlier reference review:
+
 Checked against ACM Extended commit `5bce47c26e70924ec5832eac792b19988e86e22c`:
 
 - 33 medication/product cards and 39 native effect-envelope graphs
@@ -41,10 +53,10 @@ The other system articles remain available with a review notice. Remove an artic
 ## Remaining rewrite work
 
 - Integrate the supplied ACM Extended logo. Its image bytes could not be accessed during the reference refresh; the header currently uses text.
-- Verify the retained airway, ventilator, circulation, bleeding, TBI, altitude, interface, settings and Zeus articles.
-- Verify the remaining terminology and code-mechanism pages against the fork.
+- Complete the detailed review of the airway, ventilator, bleeding, TBI, altitude, accessibility and Zeus articles.
+- Review the remaining terminology and the detailed mechanics behind the shorter supplementary overviews.
 - Inspect the attached upstream ACM, ACE3 and Animate archives when the local workspace is available.
-- Review the layout in desktop and mobile browsers, including zoom, drawer focus, calculator entry and print output.
+- Complete manual visual review, zoom and print checks. Automated browser checks cover the updated medication and rhythm pages.
 
 ## Hosting
 

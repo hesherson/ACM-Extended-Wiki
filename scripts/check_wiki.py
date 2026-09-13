@@ -42,6 +42,9 @@ def normalize(text):
 pages = {path.name: Page(path.read_text(encoding="utf-8"))
          for path in DOCS.glob("*.html")}
 errors = []
+expected = set(re.findall(r'^    \("[^"]+", "([^"]+)"', (ROOT / "build.py").read_text(), re.M))
+if set(pages) != expected:
+    errors.append("Generated page set differs from build.py: " + str(set(pages) ^ expected))
 for filename, page in pages.items():
     errors.extend(f"{filename}: duplicate id {value}" for value in page.duplicates)
     for href in page.links:

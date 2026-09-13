@@ -28,7 +28,7 @@ SRC = os.path.join(ROOT, "src")
 OUT = os.path.join(ROOT, "docs")
 
 VERSION = "1.2.0-r0"
-REVIEWED = {"index", "access", "medications", "descriptors", "fluids", "ov_access"}
+REVIEWED = {"index", "access", "medications", "descriptors", "fluids", "ov_access", "circulation", "settings", "menu", "ov_intro", "ov_circ"}
 
 # slug, filename, nav title, nav group.
 # Order here is the order in the sidebar. Groups are emitted in first-seen order.
@@ -43,21 +43,20 @@ PAGES = [
     ("airway", "airway.html", "Airway & Chest", "Systems"),
     ("oxygen", "oxygen.html", "Oxygen Delivery (DO2)", "Systems"),
     ("bleeding", "bleeding.html", "Haemorrhage & Shock", "Systems"),
-    ("circulation", "circulation.html", "Arrest & Rhythms", "Systems"),
+    ("circulation", "circulation.html", "Cardiac rhythms", "Systems"),
     ("tbi", "tbi.html", "Traumatic Brain Injury", "Systems"),
     ("flight", "flight.html", "Flight & Altitude", "Systems"),
     ("menu", "menu.html", "Medical Menu", "Interface"),
     ("accessibility", "accessibility.html", "Accessibility", "Interface"),
     ("settings", "settings.html", "Settings reference", "Reference"),
     ("zeus", "zeus.html", "Zeus modules", "Reference"),
-    ("ov_intro", "ov_intro.html", "Override mechanism", "System mechanics"),
-    ("ov_bleeding", "ov_bleeding.html", "Blood loss & coagulation", "System mechanics"),
-    ("ov_oxygen", "ov_oxygen.html", "SpO2 ownership & DO2", "System mechanics"),
-    ("ov_circ", "ov_circ.html", "EKG, AED & ROSC gating", "System mechanics"),
-    ("ov_chest", "ov_chest.html", "Respiratory rate & BVM", "System mechanics"),
-    ("ov_tbi", "ov_tbi.html", "ICP & Cushing response", "System mechanics"),
-    ("ov_access", "ov_access.html", "Flow calculation reference", "System mechanics"),
-    ("ov_traps", "ov_traps.html", "Known traps", "System mechanics"),
+    ("ov_intro", "ov_intro.html", "How systems connect", "Further reference"),
+    ("ov_bleeding", "ov_bleeding.html", "Bleeding & resuscitation", "Further reference"),
+    ("ov_oxygen", "ov_oxygen.html", "Oxygen readings", "Further reference"),
+    ("ov_circ", "ov_circ.html", "Rhythm treatment reference", "Further reference"),
+    ("ov_chest", "ov_chest.html", "Breathing support", "Further reference"),
+    ("ov_tbi", "ov_tbi.html", "Head injury assessment", "Further reference"),
+    ("ov_access", "ov_access.html", "Flow calculation reference", "Further reference"),
 ]
 
 HEAD = """<!DOCTYPE html>
@@ -477,7 +476,7 @@ def index_page(slug, fname, title, body):
         chunk = re.sub(r"<svg\b[^>]*>.*?</svg>", " ", body[match.start():end], flags=re.S)
         text = re.sub(r"<[^>]+>", " ", chunk)
         recs.append({"p": title, "f": fname, "a": match.group(1), "h": match.group(2),
-                     "t": re.sub(r"\s+", " ", text).strip()[:1600]})
+                     "t": re.sub(r"\s+", " ", text).strip()[:4000]})
     return recs
 
 
