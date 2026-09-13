@@ -28,7 +28,7 @@ SRC = os.path.join(ROOT, "src")
 OUT = os.path.join(ROOT, "docs")
 
 VERSION = "1.2.0-r0"
-REVIEWED = {"index", "access", "medications", "descriptors", "fluids", "ov_access", "circulation", "settings", "menu", "ov_intro", "ov_circ", "oxygen", "flight", "bleeding"}
+REVIEWED = {"obtunded", "blast", "index", "access", "medications", "descriptors", "fluids", "ov_access", "circulation", "settings", "menu", "ov_intro", "ov_circ", "oxygen", "flight", "bleeding"}
 
 # slug, filename, nav title, nav group.
 # Order here is the order in the sidebar. Groups are emitted in first-seen order.
@@ -45,6 +45,8 @@ PAGES = [
     ("bleeding", "bleeding.html", "Haemorrhage & Shock", "Systems"),
     ("circulation", "circulation.html", "Cardiac rhythms", "Systems"),
     ("tbi", "tbi.html", "Traumatic Brain Injury", "Systems"),
+    ("obtunded", "obtunded.html", "Obtunded states", "Systems"),
+    ("blast", "blast.html", "Blast overpressure", "Systems"),
     ("flight", "flight.html", "Flight Physiology", "Systems"),
     ("menu", "menu.html", "Medical Menu", "Interface"),
     ("accessibility", "accessibility.html", "Accessibility", "Interface"),
