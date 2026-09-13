@@ -1,108 +1,89 @@
-# PILLAR // ACM Extended Field Guide
+# ACM Extended Wiki
 
-Living documentation. Every output page is self-contained: CSS inlined, no external stylesheet, no framework,
-no build dependency at read time. That is deliberate. It means a page survives being emailed, saved to a phone,
-opened with no signal, and printed.
+Static reference site for ACM Extended. The existing Python builder produces self-contained HTML pages in `docs/`, with offline search, inline styles and inline browser scripts.
 
-## Editing
+## Edit and build
 
-    src/_pillar.css        the stylesheet. Edit once, applies to every page.
-    src/content/*.html     one file per page. BODY CONTENT ONLY, no <html>, no <style>.
-    build.py               inlines the CSS into the layout and writes docs/
-    docs/                  output. This is what GitHub Pages serves.
+- `src/content/*.html`: article bodies
+- `src/_pillar.css`: shared styles
+- `src/reference.js`: calculators, curve inspection, automatic glossary links, keyboard controls and printing
+- `src/glossary_terms.py`: glossary definitions
+- `src/reference-data.json`: source snapshot used for the reference refresh
+- `build.py`: navigation, layout, glossary expansion and search index
+- `docs/`: output served by the existing GitHub Pages configuration
 
-Rebuild after any change:
+Run:
 
-    python3 build.py
+```sh
+python3 build.py
+python3 scripts/check_wiki.py
+node --check src/reference.js
+```
 
-It prints which pages still have no content file, so the to-do list maintains itself.
+The output comparison in `check_wiki.py` is intended for CI after generated pages are committed. During editing, it reports the pages that need to be rebuilt and included in the commit. The builder uses Python's standard library.
 
-## Adding a page
+Add a page to `PAGES` in `build.py` and create its body in `src/content/`. Put images in `src/img/`; the builder copies them into `docs/img/`.
 
-1. Create `src/content/myslug.html` with body content only.
-2. Add a line to `PAGES` in `build.py`: slug, filename, nav title, nav group.
-3. Run `python3 build.py`. The sidebar updates itself everywhere.
+## Current reference review
 
-## Adding a picture
+The medication, rhythm, settings and medical-menu references were updated against ACM Extended commit `eabd2f2e88fba4754d81bda8543b81303a72964d`:
 
-Drop it in `docs/img/` and reference it as `img/name.png`:
+- 33 medication cards, each with the same nine clinical game-reference fields
+- 39 effect graphs with 0%, 50% and 100% marks, onset markers, peak and duration labels
+- 13 rhythm presentations, entry patterns, transition timing, causes and treatment responses
+- Visible Addon Options labels in place of internal-code instructions
+- Stable disclosure spacing; removed Known traps page and navigation
 
-    <figure>
-      <img src="img/vent-panel.png" alt="Ventilator panel">
-      <figcaption>Sparrow panel, live screen</figcaption>
-    </figure>
+The build workflow runs Chromium checks at desktop and mobile widths for disclosure position, section menus, medication fields, graph labels and interaction search.
 
-There is a dashed placeholder style for pictures you have not taken yet:
+Earlier reference review:
 
-    <figure class="placeholder">Panel screenshot goes here</figure>
+Checked against ACM Extended commit `5bce47c26e70924ec5832eac792b19988e86e22c`:
 
-## Components
+- 33 medication/product cards and 39 native effect-envelope graphs
+- 14G, 16G, 18G, 20G, EJ and IO reference
+- Roller-clamp formula and requested-flow calculator
+- Admitted fluid, leakage, volume compartments and gradual conversion
+- Examination thresholds and 38 shared descriptor pairs
 
-    .principle        the one-thing callout at the top of a page
-    details.dd        dropdown for anything needing a long explanation
-    .card + .grid     a discrete thing with settings in cells
-    table.t           plain table, wrap in .scroll if wide
-    .flags            red flags list
-    figure            picture, or figure.placeholder for a gap
+Source links are attached to the corresponding articles. Medication effect references, stock concentrations and infusion registry targets are labeled separately. The card graphs use the route-specific native function, without claiming to predict separate ACME drug systems.
 
-## Hosting on GitHub Pages
+The other system articles remain available with a review notice. Remove an article from that notice only after checking it against the current fork, then add its slug to `REVIEWED` in `build.py`.
 
-Settings, Pages, source: deploy from branch, folder `/docs`. Nothing else.
-`.nojekyll` is written automatically so Jekyll does not eat underscore files.
+## Latest reference controls
 
-## Known limitation
+- All 39 medication curves and five physiology curves support pointer/touch inspection and numeric input.
+- Medication readouts show seconds, delivered reference dose and relative game effect. They do not claim measured serum concentration.
+- Route-specific peak values are listed vertically. Matching medication fields share row sizing across adjacent desktop cards.
+- The glossary provides shared definitions, with automatic links in article text and support for common abbreviations, inflections and spelling variants.
+- Example prepared-bag concentrations round upward to two decimals with explicit units; unrounded calculations remain available for arithmetic.
+- The sidebar branding is centered; Ventilator Settings and Pulse labels are explicit.
+- The cardiology table distinguishes direct volume/resistance calculations, indirect calcium and acid-base effects, and physiology not independently simulated. This check uses ACM Extended commit `302b811ba90b4e2347b5614b8c74fb41b5442245`.
 
-Fonts load from Google Fonts, so offline they fall back to system defaults. The layout survives, the
-typography does not. To fix, drop the woff2 files into `docs/fonts/` and swap the `<link>` in `build.py`
-for a local `@font-face` block.
+## Remaining rewrite work
 
-## Converting game textures to figures
+- Complete the detailed review of the airway, ventilator, bleeding, TBI, altitude, accessibility and Zeus articles.
+- Review the remaining terminology and the detailed mechanics behind the shorter supplementary overviews.
+- Inspect the attached upstream ACM, ACE3 and Animate archives when the local workspace is available.
+- Complete manual visual review, zoom and print checks. Automated browser checks cover the updated medication and rhythm pages.
 
-`paa2png.py` decodes the addon's `.paa` textures so they can be used as figures.
+## Hosting
 
-    python3 paa2png.py <paa-dir> <out-dir> [name-filter ...]
-    python3 paa2png.py ../work4/acmi_infusion/ui docs/img alarm HPMK
+Preserve the existing GitHub Pages source: the `main` branch, `/docs` directory. The reference refresh is prepared on a separate branch for review.
 
-Every texture in this addon is DXT5 (type 0xFF05), which is the only codec implemented. Anything else is
-reported and skipped rather than written as a corrupt image. LZO decompression uses `python-lzo`:
+No external font request is required. Each HTML page contains the shared search index, glossary definitions, styling and reference controls.
 
-    pip install python-lzo
+## Texture conversion
 
-Two practical notes. Decoding is pure Python, so a 2048x2048 texture takes a while; the 256 and 512 icons
-are near instant and are usually what a figure wants anyway. And a name filter is worth using, because
-converting all 213 at once is slow and most of them are body overlays that mean nothing out of context.
+The existing `paa2png.py` supports the DXT5 workflow documented in its source and uses `python-lzo` for compressed textures. Converted figures belong in `src/img/` so rebuilding `docs/` preserves them.
 
-## Glossary terms
+## Readability and consciousness/blast update
 
-Terms live in `src/glossary_terms.py`. The glossary page and the in-page popups are both generated from
-that one dict, so they cannot disagree.
+- Replaced visible arrow separators with greater-than signs.
+- Cream body text and headings, bright underlined links with a tinted background, and more space within facts, lists, tables and disclosures.
+- Added sedation assessment, including ketamine nystagmus conditions and interpretation.
+- Added obtunded-state and blast-overpressure pages to navigation, the home page and offline search.
+- Documented fracture-pressure arousal, current movement behavior, default recovery thresholds, blast cover/reflection and delayed lung findings.
+- References use ACM Extended commit `302b811ba90b4e2347b5614b8c74fb41b5442245`.
 
-To link a term in any content file:
-
-    {{peep}}                 renders as the term's own name
-    {{peep|hold pressure}}   renders your wording, same popup
-
-Unknown slugs are reported by name at build time rather than shipped as literal braces.
-
-Writing rules for definitions: assume no medical background, never define a term using another undefined
-term, two or three short sentences, and say what it IS before why it matters.
-
-## Search
-
-`build.py` builds one search record per section and inlines the index into every page, so search works
-even opened from disk with no server. Section anchors are generated automatically from h2 text.
-
-Large guides will grow the index. If page weight becomes a problem, switch to a single `search-index.json`
-fetched on demand, at the cost of search no longer working offline from a file.
-
-## If a page looks like an older version
-
-Every page inlines its own CSS, so a cached HTML file means cached styling. If some pages look updated and
-others do not, you are seeing a mix of old and new files rather than a styling bug.
-
-1. Delete the old `docs/` folder entirely before copying a new build over it. Copying on top leaves stale files.
-2. Hard refresh in the browser: Ctrl+Shift+R, or Cmd+Shift+R on Mac.
-3. On GitHub Pages, give the CDN a minute after pushing, then hard refresh.
-
-The footer of every page prints the version and build date. If two pages disagree there, the files on disk
-are from different builds.
+Known source issue: `fn_blastLungTick.sqf` adds positive rates named healing to severity and subtracts rates named worsening. The blast reference documents the implemented direction; this website update does not change mod code. Older obtundation setting descriptions also retain obsolete forced-posture wording.

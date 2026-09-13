@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
-<title>ACM Extended Wiki | Glossary</title>
+<title>ACM Extended Wiki | Obtunded states</title>
 <link rel="icon" type="image/png" href="img/acme-favicon.png">
 <style>
 /* PILLAR GUIDE. One stylesheet, inlined into every page at build time.
@@ -1089,10 +1089,7 @@ try{if(localStorage.getItem('pillarNight')==='1'){document.documentElement.class
     <a href="access.html">IV access & infusions</a>
     <a href="fluids.html">Fluids & blood volume</a>
     <a href="descriptors.html">Clinical descriptors</a>
-    <a class="on" aria-current="page" href="glossary.html">Glossary</a>
-    <div class="subnav">
-      <a href="#all-terms" data-s="all-terms">All Terms</a>
-    </div>
+    <a href="glossary.html">Glossary</a>
     <div class="grp">Systems</div>
     <a href="ventilator.html">Ventilator Settings</a>
     <a href="airway.html">Airway & Chest</a>
@@ -1100,7 +1097,14 @@ try{if(localStorage.getItem('pillarNight')==='1'){document.documentElement.class
     <a href="bleeding.html">Haemorrhage & Shock</a>
     <a href="circulation.html">Cardiac rhythms</a>
     <a href="tbi.html">Traumatic Brain Injury</a>
-    <a href="obtunded.html">Obtunded states</a>
+    <a class="on" aria-current="page" href="obtunded.html">Obtunded states</a>
+    <div class="subnav">
+      <a href="#recognize-the-state" data-s="recognize-the-state">Recognize the state</a>
+      <a href="#entry-and-recovery" data-s="entry-and-recovery">Entry and recovery</a>
+      <a href="#fracture-pressure" data-s="fracture-pressure">Fracture pressure can wake a patient</a>
+      <a href="#other-recovery-nuances" data-s="other-recovery-nuances">Other recovery nuances</a>
+      <a href="#where-to-enable-it" data-s="where-to-enable-it">Where to enable it</a>
+    </div>
     <a href="blast.html">Blast overpressure</a>
     <a href="flight.html">Flight Physiology</a>
     <div class="grp">Interface</div>
@@ -1123,329 +1127,73 @@ try{if(localStorage.getItem('pillarNight')==='1'){document.documentElement.class
     <span class="nb-sw"><i></i></span>
   </button>
 </aside>
-<main class="main page-glossary" id="mainContent" tabindex="-1">
-
-<div class="article-status">This article is retained from the previous guide and awaits review against the current fork. See the <a href="index.html#article-revision">article revision notes</a>.</div><div class="eyebrow">ACM EXTENDED <span class="tag">//</span> REFERENCE</div>
-<h1>Glossary</h1>
-<p class="lede">Every advanced term used in this guide, in plain language. Anywhere a term appears underlined you can tap it to see this same definition without leaving the page.</p>
+<main class="main page-obtunded" id="mainContent" tabindex="-1">
+<div class="secbar" id="secbar">
+  <div class="sb-in">
+    <button type="button" class="sb-now" id="sbNow" aria-expanded="false">
+      <span class="sb-lab">On this page</span>
+      <span class="sb-cur" id="sbCur"></span>
+      <span class="sb-caret"></span>
+    </button>
+    <div class="sb-prog"><i id="sbProg"></i></div>
+  </div>
+  <nav class="sb-list" id="sbList" hidden>
+    <a href="#recognize-the-state" data-a="recognize-the-state">Recognize the state</a>
+    <a href="#entry-and-recovery" data-a="entry-and-recovery">Entry and recovery</a>
+    <a href="#fracture-pressure" data-a="fracture-pressure">Fracture pressure can wake a patient</a>
+    <a href="#other-recovery-nuances" data-a="other-recovery-nuances">Other recovery nuances</a>
+    <a href="#where-to-enable-it" data-a="where-to-enable-it">Where to enable it</a>
+  </nav>
+</div>
+<div class="eyebrow">ACM EXTENDED <span class="tag">/</span> SYSTEMS</div>
+<h1>Obtunded states</h1>
+<p class="lede">Clouded consciousness, recovery checks and the actions that can rapidly rouse a patient.</p>
 <div class="rule"></div>
-<section class="sec"><div class="sec-head"><span class="sec-num">01</span><h2 id="all-terms">All Terms</h2></div>
-<div class="glist">
-  <div class="gitem" id="term-ht3"><div class="gt">5 HT3 receptor</div><div class="gd">A serotonin switch in the brain and gut that triggers vomiting. Blocking it is how most antiemetics work.</div></div>
-  <div class="gitem" id="term-acetylcholine"><div class="gt">Acetylcholine</div><div class="gd">The chemical messenger nerves use to tell muscles to contract. Block it and the muscle cannot move, however hard the nerve tries.</div></div>
-  <div class="gitem" id="term-acidosis"><div class="gt">Acidosis</div><div class="gd">An increase in body acidity, which can develop with poor circulation or carbon dioxide retention. In the mod, worsening acidosis increases bleeding and reduces pressure-support effects.</div></div>
-  <div class="gitem" id="term-adenosine"><div class="gt">Adenosine</div><div class="gd">A medication that briefly slows electrical conduction through the AV node. The mod uses a rapid delivered dose to attempt conversion of its SVT rhythm; it does not deliberately create asystole.</div></div>
-  <div class="gitem" id="term-aed"><div class="gt">AED</div><div class="gd">Automated external defibrillator: a device that analyzes heart rhythm and can deliver a shock for suitable arrest rhythms.</div></div>
-  <div class="gitem" id="term-afterdepolarisation"><div class="gt">Afterdepolarisation</div><div class="gd">A stray electrical twitch happening while the heart cell is still resetting. It is the trigger that starts torsades.</div></div>
-  <div class="gitem" id="term-afterload"><div class="gt">Afterload</div><div class="gd">The pressure and resistance the heart must overcome to push blood out. ACME changes vascular resistance and blood pressure, but the reviewed flow calculations do not use a separate afterload value.</div></div>
-  <div class="gitem" id="term-agonal"><div class="gt">Agonal respirations</div><div class="gd">Occasional gasping that does not provide normal effective breathing.</div></div>
-  <div class="gitem" id="term-agonist"><div class="gt">Agonist</div><div class="gd">A substance that activates a receptor and produces an effect.</div></div>
-  <div class="gitem" id="term-alpha-1"><div class="gt">Alpha 1 receptor</div><div class="gd">A target for chemical signals that can narrow blood vessels and increase resistance.</div></div>
-  <div class="gitem" id="term-alveolar"><div class="gt">Alveolar</div><div class="gd">Related to the tiny air sacs in the lungs where gases pass between air and blood.</div></div>
-  <div class="gitem" id="term-pao2-alveolar"><div class="gt">Alveolar oxygen pressure</div><div class="gd">The oxygen pressure inside the tiny air sacs of the lungs, before oxygen enters the blood.</div></div>
-  <div class="gitem" id="term-alveoli"><div class="gt">Alveoli</div><div class="gd">Tiny air sacs in the lungs where oxygen enters the blood and carbon dioxide leaves it.</div></div>
-  <div class="gitem" id="term-amide"><div class="gt">Amide anaesthetic</div><div class="gd">One of the two chemical families of local anaesthetic, which includes lidocaine. Allergy to one family does not mean allergy to the other.</div></div>
-  <div class="gitem" id="term-amiodarone"><div class="gt">Amiodarone</div><div class="gd">A medication used by the mod for selected abnormal heart rhythms. Its card lists the supported rhythms and dose-related effects.</div></div>
-  <div class="gitem" id="term-analgesia"><div class="gt">Analgesia</div><div class="gd">Pain relief. Worth separating from sedation, because a drug can make someone unresponsive while leaving them fully able to feel pain.</div></div>
-  <div class="gitem" id="term-anaphylaxis"><div class="gt">Anaphylaxis</div><div class="gd">A severe, whole-body allergic reaction. Blood vessels dump their pressure and the airway swells shut, and it kills within minutes without adrenaline.</div></div>
-  <div class="gitem" id="term-anisocoria"><div class="gt">Anisocoria</div><div class="gd">Unequal pupil sizes.</div></div>
-  <div class="gitem" id="term-antagonist"><div class="gt">Antagonist</div><div class="gd">A substance that blocks or reduces another substance's effect.</div></div>
-  <div class="gitem" id="term-amnesia"><div class="gt">Anterograde amnesia</div><div class="gd">Not forming new memories from the moment the drug takes effect. The casualty may be responsive at the time and remember none of it afterwards.</div></div>
-  <div class="gitem" id="term-antiarrhythmic"><div class="gt">Antiarrhythmic</div><div class="gd">A drug that corrects an abnormal heart rhythm, usually by changing how electrical signals move through heart muscle.</div></div>
-  <div class="gitem" id="term-anticoagulation"><div class="gt">Anticoagulation</div><div class="gd">Reduction of the blood's ability to form clots.</div></div>
-  <div class="gitem" id="term-antifibrinolytic"><div class="gt">Antifibrinolytic</div><div class="gd">A medication that slows the breakdown of existing blood clots.</div></div>
-  <div class="gitem" id="term-anxiolysis"><div class="gt">Anxiolysis</div><div class="gd">Taking the edge off fear and agitation without knocking someone out. A casualty who is calm rather than fighting you is easier and safer to treat.</div></div>
-  <div class="gitem" id="term-apnea"><div class="gt">Apnea</div><div class="gd">Not breathing. In a sedated or paralysed casualty this is expected and you breathe for them, and in anyone else it is an emergency.</div></div>
-  <div class="gitem" id="term-ards"><div class="gt">ARDS</div><div class="gd">Acute respiratory distress syndrome. The lungs flood with fluid from inflammation rather than from a failing heart, so they stiffen and oxygen struggles to cross into the blood. It needs low volumes and real PEEP, and it is why a lung can look clear from the outside and still be almost impossible to ventilate.</div></div>
-  <div class="gitem" id="term-arrhythmia"><div class="gt">Arrhythmia</div><div class="gd">An abnormal heart rhythm, which may be too fast, too slow, irregular or ineffective.</div></div>
-  <div class="gitem" id="term-arteriole"><div class="gt">Arteriole</div><div class="gd">A small artery that helps control resistance and the amount of blood reaching nearby tissue.</div></div>
-  <div class="gitem" id="term-aspiration"><div class="gt">Aspiration</div><div class="gd">Material such as vomit entering the airway or lungs.</div></div>
-  <div class="gitem" id="term-asystole"><div class="gt">Asystole</div><div class="gd">No effective electrical activity from the heart. The monitor shows a near-flat trace and there is no pulse.</div></div>
-  <div class="gitem" id="term-atelectasis"><div class="gt">Atelectasis</div><div class="gd">Collapse or loss of air in part of the lung, reducing the area available for gas exchange.</div></div>
-  <div class="gitem" id="term-afib"><div class="gt">Atrial fibrillation (AFib)</div><div class="gd">Disorganized activity in the upper heart chambers that produces an irregular heartbeat. RVR means the lower chambers are also beating rapidly.</div></div>
-  <div class="gitem" id="term-atrial-kick"><div class="gt">Atrial kick</div><div class="gd">The extra filling supplied when the upper heart chambers squeeze before the lower chambers. The reviewed DO2 calculation does not track this separately.</div></div>
-  <div class="gitem" id="term-atrial-tachycardia"><div class="gt">Atrial tachycardia</div><div class="gd">A fast rhythm that begins in the upper chambers of the heart, outside the usual pacemaker.</div></div>
-  <div class="gitem" id="term-atrium"><div class="gt">Atrium</div><div class="gd">One of the heart's two upper chambers, which receives returning blood.</div></div>
-  <div class="gitem" id="term-atropine"><div class="gt">Atropine</div><div class="gd">A drug that speeds up a heart that is beating too slowly, by removing the brake the nervous system keeps on it.</div></div>
-  <div class="gitem" id="term-auscultation"><div class="gt">Auscultation</div><div class="gd">Listening to body sounds with a stethoscope, such as breath sounds in the chest.</div></div>
-  <div class="gitem" id="term-auto-peep"><div class="gt">Auto-PEEP</div><div class="gd">Pressure left in the lungs because the patient did not fully breathe out before the next breath.</div></div>
-  <div class="gitem" id="term-av-node"><div class="gt">AV node</div><div class="gd">The electrical relay between the upper and lower heart chambers. Slowing this relay can slow some fast rhythms.</div></div>
-  <div class="gitem" id="term-barometric"><div class="gt">Barometric pressure</div><div class="gd">The pressure of the surrounding air. It falls as altitude increases.</div></div>
-  <div class="gitem" id="term-barotrauma"><div class="gt">Barotrauma</div><div class="gd">Tissue damage caused by a pressure difference, including injury to the lungs during excessive pressure.</div></div>
-  <div class="gitem" id="term-benzodiazepine"><div class="gt">Benzodiazepine</div><div class="gd">A medication group that can calm, sedate and treat seizures.</div></div>
-  <div class="gitem" id="term-beta-1"><div class="gt">Beta 1 receptor</div><div class="gd">A target for chemical signals that can increase heart rate and contraction strength.</div></div>
-  <div class="gitem" id="term-beta-lactam"><div class="gt">Beta lactam</div><div class="gd">The largest family of antibiotics, including penicillins and cephalosporins. They kill bacteria by preventing them building a cell wall.</div></div>
-  <div class="gitem" id="term-bilateral"><div class="gt">Bilateral</div><div class="gd">Present on both sides of the body.</div></div>
-  <div class="gitem" id="term-blast-lung"><div class="gt">Blast lung</div><div class="gd">Lung injury caused by blast pressure. The game can produce delayed gas-exchange impairment, air hunger, associated pneumothorax and progression to ARDS. The current reference page records a recovery-rate sign inconsistency in the reviewed build.</div></div>
-  <div class="gitem" id="term-blast-overpressure"><div class="gt">Blast overpressure</div><div class="gd">A pressure rise from an explosion. ACM Extended estimates effective pressure using charge size, distance, cover, orientation and enclosure, then applies enabled injury systems at game thresholds.</div></div>
-  <div class="gitem" id="term-bolus"><div class="gt">Bolus</div><div class="gd">A quick, measured amount of fluid or drug given all at once rather than dripped in.</div></div>
-  <div class="gitem" id="term-boyles-law"><div class="gt">Boyle's Law</div><div class="gd">For a fixed amount of gas at constant temperature, lower surrounding pressure permits a larger gas volume. Body structures and leaks can limit how trapped gas actually expands.</div></div>
-  <div class="gitem" id="term-bpm"><div class="gt">BPM</div><div class="gd">Beats per minute, the unit used for heart rate.</div></div>
-  <div class="gitem" id="term-bradycardia"><div class="gt">Bradycardia</div><div class="gd">A heart rate that is too slow. In a shocked casualty it usually means the body has run out of ability to compensate.</div></div>
-  <div class="gitem" id="term-bradypnea"><div class="gt">Bradypnea</div><div class="gd">Slow breathing.</div></div>
-  <div class="gitem" id="term-broad-spectrum"><div class="gt">Broad spectrum</div><div class="gd">An antibiotic that covers many different bacteria rather than one specific type. The right choice when you do not know what is in the wound.</div></div>
-  <div class="gitem" id="term-bronchospasm"><div class="gt">Bronchospasm</div><div class="gd">Tightening of the muscles around smaller airways, narrowing them and making airflow harder.</div></div>
-  <div class="gitem" id="term-buccal"><div class="gt">Buccal</div><div class="gd">Delivered against the inside of the cheek, where medication can be absorbed through the lining of the mouth.</div></div>
-  <div class="gitem" id="term-bvm"><div class="gt">BVM</div><div class="gd">Bag valve mask: a hand-squeezed bag used to provide breaths. In the game, active bagging is a continuing provider action.</div></div>
-  <div class="gitem" id="term-cabin-altitude"><div class="gt">Cabin altitude</div><div class="gd">The effective altitude inside the aircraft. A helicopter has none, so the cabin is at whatever height it is flying.</div></div>
-  <div class="gitem" id="term-calcium-chloride"><div class="gt">Calcium chloride</div><div class="gd">A calcium-containing medication. The mod uses delivered calcium to correct modeled calcium deficit and tracks excess exposure.</div></div>
-  <div class="gitem" id="term-calcium-gluconate"><div class="gt">Calcium gluconate</div><div class="gd">A calcium-containing medication with less elemental calcium per gram than calcium chloride. The mod accounts for this difference.</div></div>
-  <div class="gitem" id="term-cannulation"><div class="gt">Cannulation</div><div class="gd">Getting a plastic tube into a vein so fluid and drugs can be given. Each failed attempt damages the vein and makes the next one harder.</div></div>
-  <div class="gitem" id="term-capillary-refill"><div class="gt">Capillary refill</div><div class="gd">How long color takes to return after pressure is released from a fingertip or similar area. It is one clue about circulation.</div></div>
-  <div class="gitem" id="term-cardiac-arrest"><div class="gt">Cardiac arrest</div><div class="gd">Loss of effective circulation because the heart is not pumping useful blood flow.</div></div>
-  <div class="gitem" id="term-cardiac-output"><div class="gt">Cardiac output</div><div class="gd">The amount of blood pumped over time. It depends on heart rate and the amount ejected with each effective beat.</div></div>
-  <div class="gitem" id="term-cardioselective"><div class="gt">Cardioselective</div><div class="gd">A drug that acts mainly on the heart and mostly leaves the lungs alone. It matters because non-selective versions can close the airways of an asthmatic.</div></div>
-  <div class="gitem" id="term-cardioversion"><div class="gt">Cardioversion</div><div class="gd">An electrical shock timed to an organized heartbeat to treat an appropriate abnormal rhythm.</div></div>
-  <div class="gitem" id="term-catecholamine"><div class="gt">Catecholamine</div><div class="gd">A group of chemical messengers that includes epinephrine and norepinephrine. Their effects on the heart and blood vessels depend on the substance and dose.</div></div>
-  <div class="gitem" id="term-catheter"><div class="gt">Catheter</div><div class="gd">A small tube placed in the body. An IV catheter provides a route for fluid and medication into a vein.</div></div>
-  <div class="gitem" id="term-cbrn"><div class="gt">CBRN</div><div class="gd">Chemical, biological, radiological and nuclear hazards.</div></div>
-  <div class="gitem" id="term-ceftriaxone"><div class="gt">Ceftriaxone</div><div class="gd">An antibiotic medication. Its card describes the routes and effects supported in the game.</div></div>
-  <div class="gitem" id="term-myelinolysis"><div class="gt">Central pontine myelinolysis</div><div class="gd">Brain damage caused by correcting a sodium problem too quickly. It is the reason concentrated salt is given carefully rather than fast.</div></div>
-  <div class="gitem" id="term-cerebral"><div class="gt">Cerebral</div><div class="gd">Related to the brain.</div></div>
-  <div class="gitem" id="term-chelate"><div class="gt">Chelate</div><div class="gd">To bind a substance chemically so less of it remains freely available.</div></div>
-  <div class="gitem" id="term-chronotropy"><div class="gt">Chronotropy</div><div class="gd">Anything affecting how fast the heart beats. Positive speeds it up, negative slows it down.</div></div>
-  <div class="gitem" id="term-citrate"><div class="gt">Citrate</div><div class="gd">A chemical used in stored blood to prevent clotting by binding calcium. Large transfusions can reduce the recipient's available calcium.</div></div>
-  <div class="gitem" id="term-clearance"><div class="gt">Clearance</div><div class="gd">How fast the body removes a drug. Poor circulation and other drugs can slow it, which makes a normal dose build up to a dangerous level.</div></div>
-  <div class="gitem" id="term-coagulation"><div class="gt">Coagulation</div><div class="gd">The process of forming a blood clot.</div></div>
-  <div class="gitem" id="term-coagulopathy"><div class="gt">Coagulopathy</div><div class="gd">Impaired blood clotting. It can make bleeding harder to control.</div></div>
-  <div class="gitem" id="term-colloid"><div class="gt">Colloid</div><div class="gd">A fluid with large molecules that stay inside blood vessels rather than leaking out. It holds volume better than salt water does.</div></div>
-  <div class="gitem" id="term-competitive-antagonist"><div class="gt">Competitive antagonist</div><div class="gd">A drug that competes with something else for the same receptor and wins by outnumbering it. Give enough and it displaces whatever was there.</div></div>
-  <div class="gitem" id="term-compliance"><div class="gt">Compliance</div><div class="gd">How easily lungs stretch. Stiff lungs have low compliance, so the same push moves less air.</div></div>
-  <div class="gitem" id="term-contractility"><div class="gt">Contractility</div><div class="gd">How hard the heart squeezes on each beat, separate from how fast it beats or how full it is.</div></div>
-  <div class="gitem" id="term-contraindication"><div class="gt">Contraindication</div><div class="gd">A reason a treatment should not be used or needs special caution.</div></div>
-  <div class="gitem" id="term-coronary"><div class="gt">Coronary</div><div class="gd">Related to the blood vessels that supply the heart muscle.</div></div>
-  <div class="gitem" id="term-coronary-perfusion"><div class="gt">Coronary perfusion</div><div class="gd">Blood reaching the heart muscle itself. During CPR this is the thing chest compressions are trying to achieve, because a starved heart will not restart.</div></div>
-  <div class="gitem" id="term-cpp"><div class="gt">CPP</div><div class="gd">Cerebral perfusion pressure. What is left to push blood into the brain after skull pressure is subtracted from blood pressure. Low blood pressure or high skull pressure both starve the brain.</div></div>
-  <div class="gitem" id="term-cpr"><div class="gt">CPR</div><div class="gd">Cardiopulmonary resuscitation: chest compressions and breathing support during cardiac arrest.</div></div>
-  <div class="gitem" id="term-crystalloid"><div class="gt">Crystalloid</div><div class="gd">A fluid containing dissolved small substances, such as salts. Saline and PlasmaLyte are examples; they add fluid without adding red blood cells.</div></div>
-  <div class="gitem" id="term-cumulative"><div class="gt">Cumulative dose</div><div class="gd">The total amount given across repeated doses.</div></div>
-  <div class="gitem" id="term-cushing-response"><div class="gt">Cushing response</div><div class="gd">A pattern associated with severe pressure inside the skull: rising blood pressure, slowing pulse and abnormal breathing.</div></div>
-  <div class="gitem" id="term-cyanosis"><div class="gt">Cyanosis</div><div class="gd">A blue or dusky appearance of skin or visible tissue.</div></div>
-  <div class="gitem" id="term-daltons-law"><div class="gt">Dalton's Law</div><div class="gd">The pressure driving oxygen into the blood falls as you climb, even though the air is still 21 percent oxygen. A casualty who was borderline at ground level becomes hypoxic in the air.</div></div>
-  <div class="gitem" id="term-dead-space"><div class="gt">Dead space</div><div class="gd">Air that is moved with breathing but does not take part in gas exchange.</div></div>
-  <div class="gitem" id="term-defibrillation"><div class="gt">Defibrillation</div><div class="gd">An electrical shock used to stop a shockable cardiac-arrest rhythm.</div></div>
-  <div class="gitem" id="term-diaphoretic"><div class="gt">Diaphoretic</div><div class="gd">Sweaty.</div></div>
-  <div class="gitem" id="term-diastole"><div class="gt">Diastole</div><div class="gd">The part of the heartbeat when the heart relaxes and fills with blood.</div></div>
-  <div class="gitem" id="term-diastolic"><div class="gt">Diastolic pressure</div><div class="gd">The lower number in a blood-pressure reading, measured between heartbeats.</div></div>
-  <div class="gitem" id="term-dimercaprol"><div class="gt">Dimercaprol</div><div class="gd">A medication used for the mod's lewisite chemical-exposure treatment.</div></div>
-  <div class="gitem" id="term-dissociation"><div class="gt">Dissociation</div><div class="gd">A state where someone is disconnected from what is happening to them rather than asleep. Their eyes may be open and they keep breathing, but they are not present.</div></div>
-  <div class="gitem" id="term-dissociation-curve"><div class="gt">Dissociation curve</div><div class="gd">The S-shaped relationship between oxygen pressure and how loaded the blood is. Its shape means a healthy person can lose a lot of pressure safely and a sick one cannot.</div></div>
-  <div class="gitem" id="term-distributive-shock"><div class="gt">Distributive shock</div><div class="gd">Poor circulation caused partly by blood vessels losing their normal tone and distributing blood ineffectively.</div></div>
-  <div class="gitem" id="term-diuresis"><div class="gt">Diuresis</div><div class="gd">Making someone produce a lot of urine. It removes water from the whole body, which is unhelpful if they are already short of volume.</div></div>
-  <div class="gitem" id="term-ecg"><div class="gt">ECG</div><div class="gd">Electrocardiogram: a recording of the heart's electrical activity. It shows rhythm but does not confirm a pulse.</div></div>
-  <div class="gitem" id="term-ectopy"><div class="gt">Ectopy</div><div class="gd">Extra heartbeats fired from the wrong place. A few are harmless, and a run of them can turn into a lethal rhythm.</div></div>
-  <div class="gitem" id="term-elemental-calcium"><div class="gt">Elemental calcium</div><div class="gd">The actual calcium contained in a calcium salt. Equal masses of different calcium salts do not contain equal amounts of calcium.</div></div>
-  <div class="gitem" id="term-emesis"><div class="gt">Emesis</div><div class="gd">Vomiting. In a casualty with a poor airway it is far more dangerous than it sounds, because what comes up can go down into the lungs.</div></div>
-  <div class="gitem" id="term-endobronchial"><div class="gt">Endobronchial</div><div class="gd">Inside one of the main branches of the windpipe. A tube placed too deeply can ventilate mainly one lung.</div></div>
-  <div class="gitem" id="term-epinephrine"><div class="gt">Epinephrine</div><div class="gd">A medication with heart-rate and pressure effects. The mod has separate reference amounts and delivery rules for standard and measured push doses.</div></div>
-  <div class="gitem" id="term-ertapenem"><div class="gt">Ertapenem</div><div class="gd">An antibiotic medication with route-specific timing in the game.</div></div>
-  <div class="gitem" id="term-esketamine"><div class="gt">Esketamine</div><div class="gd">A ketamine-related medication supplied as a nasal product in the game.</div></div>
-  <div class="gitem" id="term-esmolol"><div class="gt">Esmolol</div><div class="gd">A medication that slows heart rate. The mod also models reduced pressure and dose-related toxicity.</div></div>
-  <div class="gitem" id="term-etco2"><div class="gt">EtCO2</div><div class="gd">Carbon dioxide measured at the end of an exhaled breath. It is influenced by breathing, circulation and measurement conditions.</div></div>
-  <div class="gitem" id="term-ett"><div class="gt">ETT</div><div class="gd">Endotracheal tube. The breathing tube that goes through the vocal cords into the windpipe. It is the most secure airway there is.</div></div>
-  <div class="gitem" id="term-ej"><div class="gt">External jugular (EJ)</div><div class="gd">A vein near the surface of the side of the neck. The mod provides a separate IV placement site here.</div></div>
-  <div class="gitem" id="term-extravasation"><div class="gt">Extravasation</div><div class="gd">A drug leaking out of the vein into surrounding tissue. Harmless with some drugs and destructive with others.</div></div>
-  <div class="gitem" id="term-fentanyl"><div class="gt">Fentanyl</div><div class="gd">An opioid pain medication available in injectable and lozenge forms. The mod handles their doses and onset differently.</div></div>
-  <div class="gitem" id="term-fibrin"><div class="gt">Fibrin</div><div class="gd">Protein strands that form the supporting mesh of a blood clot.</div></div>
-  <div class="gitem" id="term-fibrinolysis"><div class="gt">Fibrinolysis</div><div class="gd">The process that breaks down blood clots.</div></div>
-  <div class="gitem" id="term-fio2"><div class="gt">FiO2</div><div class="gd">The fraction of oxygen in the air being delivered, as a percentage. Room air is 21 percent, and this ventilator can enrich up to 95.</div></div>
-  <div class="gitem" id="term-fowlers"><div class="gt">Fowler's position</div><div class="gd">Sitting with the upper body raised.</div></div>
-  <div class="gitem" id="term-frank-starling"><div class="gt">Frank-Starling</div><div class="gd">The relationship between heart filling and the force of contraction, within limits. The mod uses a simplified volume-based relationship to estimate stroke volume.</div></div>
-  <div class="gitem" id="term-gaba"><div class="gt">GABA A agonist</div><div class="gd">A drug that boosts the brain's main calming signal. The result is sedation, and at higher doses unconsciousness. Most sedatives work this way.</div></div>
-  <div class="gitem" id="term-gauge"><div class="gt">Gauge</div><div class="gd">The thickness of a needle or cannula. Confusingly, a lower number means a wider tube, and wider means faster flow.</div></div>
-  <div class="gitem" id="term-haemoglobin"><div class="gt">Haemoglobin</div><div class="gd">The protein in red blood cells that carries oxygen. Lose blood and you lose carriers, so you can be fully saturated and still delivering almost nothing.</div></div>
-  <div class="gitem" id="term-half-life"><div class="gt">Half-life</div><div class="gd">The time it takes for half the drug to leave the body. Short means it wears off fast and needs repeating, long means a mistake stays with you.</div></div>
-  <div class="gitem" id="term-heart-rate"><div class="gt">Heart rate</div><div class="gd">The number of heartbeats per minute. A monitor may show electrical activity even when there is no effective pulse.</div></div>
-  <div class="gitem" id="term-hematocrit"><div class="gt">Hematocrit</div><div class="gd">The fraction of blood volume occupied by red blood cells.</div></div>
-  <div class="gitem" id="term-hemodilution"><div class="gt">Hemodilution</div><div class="gd">A lower concentration of blood cells after fluid is added to the circulation.</div></div>
-  <div class="gitem" id="term-hemorrhage"><div class="gt">Hemorrhage</div><div class="gd">Bleeding, either outside the body or into an internal space.</div></div>
-  <div class="gitem" id="term-hemostasis"><div class="gt">Hemostasis</div><div class="gd">Stopping bleeding through vessel response, clot formation or treatment.</div></div>
-  <div class="gitem" id="term-hemothorax"><div class="gt">Hemothorax</div><div class="gd">Blood collecting in the space around a lung, usually from a torn vessel rather than the lung itself. It presses the lung down from below, so the casualty cannot fill it however hard the machine pushes, and the fix is to drain it rather than to raise the pressure.</div></div>
-  <div class="gitem" id="term-henrys-law"><div class="gt">Henry's Law</div><div class="gd">Gas dissolved in liquid comes out of solution as pressure falls, like opening a fizzy drink. It matters for anyone who has been diving recently.</div></div>
-  <div class="gitem" id="term-herniation"><div class="gt">Herniation</div><div class="gd">Brain tissue displaced by pressure inside the skull. It is a severe complication of swelling or bleeding.</div></div>
-  <div class="gitem" id="term-histamine"><div class="gt">Histamine release</div><div class="gd">Some drugs make the body dump histamine, which widens blood vessels and drops blood pressure. It is why morphine is a poor choice in someone who is bleeding.</div></div>
-  <div class="gitem" id="term-hyaluronidase"><div class="gt">Hyaluronidase</div><div class="gd">A local treatment for selected medication-leak injuries in the mod. It is applied around the affected tissue.</div></div>
-  <div class="gitem" id="term-hypercapnia"><div class="gt">Hypercapnia</div><div class="gd">Too much carbon dioxide in the blood, commonly from inadequate breathing.</div></div>
-  <div class="gitem" id="term-hyperkalaemia"><div class="gt">Hyperkalaemia</div><div class="gd">An elevated potassium level in the blood. Large changes can disrupt the heart's electrical activity.</div></div>
-  <div class="gitem" id="term-hypernatraemia"><div class="gt">Hypernatraemia</div><div class="gd">Too much sodium in the blood. A risk when giving concentrated salt solutions, and correcting it too fast causes its own harm.</div></div>
-  <div class="gitem" id="term-hypertension"><div class="gt">Hypertension</div><div class="gd">High blood pressure.</div></div>
-  <div class="gitem" id="term-hyperthermia"><div class="gt">Hyperthermia</div><div class="gd">An abnormally high body temperature.</div></div>
-  <div class="gitem" id="term-hypertonic-saline"><div class="gt">Hypertonic saline</div><div class="gd">A salt solution more concentrated than ordinary saline. The mod uses 3% saline for its brain-pressure treatment system.</div></div>
-  <div class="gitem" id="term-hyperventilation"><div class="gt">Hyperventilation</div><div class="gd">Breathing that removes carbon dioxide faster than the body produces it.</div></div>
-  <div class="gitem" id="term-hypnosis"><div class="gt">Hypnosis</div><div class="gd">Medication-induced reduction in awareness or consciousness. It does not by itself describe pain relief or muscle paralysis.</div></div>
-  <div class="gitem" id="term-hypocalcaemia"><div class="gt">Hypocalcaemia</div><div class="gd">A low level of available calcium. Calcium is needed for clotting, muscle contraction and other cell functions.</div></div>
-  <div class="gitem" id="term-hypocapnia"><div class="gt">Hypocapnia</div><div class="gd">Less carbon dioxide in the blood than normal, often from breathing more than needed.</div></div>
-  <div class="gitem" id="term-hypoglycemia"><div class="gt">Hypoglycemia</div><div class="gd">Low blood sugar.</div></div>
-  <div class="gitem" id="term-hypokalemia"><div class="gt">Hypokalemia</div><div class="gd">Low potassium in the blood. Potassium helps heart and muscle cells work electrically.</div></div>
-  <div class="gitem" id="term-hypoperfusion"><div class="gt">Hypoperfusion</div><div class="gd">Too little blood flow reaching the tissues.</div></div>
-  <div class="gitem" id="term-hypotension"><div class="gt">Hypotension</div><div class="gd">Blood pressure that is low. Interpret it together with pulse, mental status, bleeding and other signs of blood flow.</div></div>
-  <div class="gitem" id="term-hypothermia"><div class="gt">Hypothermia</div><div class="gd">An abnormally low body temperature. In the mod, severe cooling affects clotting, circulation and medication response.</div></div>
-  <div class="gitem" id="term-hypoventilation"><div class="gt">Hypoventilation</div><div class="gd">Breathing too little, so carbon dioxide builds up. Slow, shallow, or not often enough, and the casualty becomes acidic.</div></div>
-  <div class="gitem" id="term-hypovolaemia"><div class="gt">Hypovolaemia</div><div class="gd">Not enough blood or fluid in the circulation. Usually from bleeding, and it is the reason most trauma casualties are unstable.</div></div>
-  <div class="gitem" id="term-hypovolemic-shock"><div class="gt">Hypovolemic shock</div><div class="gd">Poor circulation caused by too little circulating fluid or blood.</div></div>
-  <div class="gitem" id="term-hypoxemia"><div class="gt">Hypoxemia</div><div class="gd">Too little oxygen in the arterial blood. This differs from poor tissue oxygen delivery caused by inadequate blood flow.</div></div>
-  <div class="gitem" id="term-hypoxia"><div class="gt">Hypoxia</div><div class="gd">Not enough oxygen reaching tissue. Organs start failing, and the brain is the first to complain and the first to be permanently damaged.</div></div>
-  <div class="gitem" id="term-ie-ratio"><div class="gt">I:E ratio</div><div class="gd">How long the machine spends pushing a breath in compared with letting it out. 1:2 means expiration lasts twice as long as inspiration. Too little expiratory time and the next breath starts before the last one has finished leaving, which stacks pressure in the chest.</div></div>
-  <div class="gitem" id="term-iatrogenic"><div class="gt">Iatrogenic</div><div class="gd">Caused by the treatment rather than the injury. A pneumothorax you made with a needle is iatrogenic.</div></div>
-  <div class="gitem" id="term-icp"><div class="gt">ICP</div><div class="gd">Intracranial pressure: pressure inside the skull. Swelling or bleeding can raise it and reduce blood flow to the brain.</div></div>
-  <div class="gitem" id="term-im"><div class="gt">IM</div><div class="gd">Intramuscular: medication delivered into a muscle. It must be absorbed before reaching the bloodstream.</div></div>
-  <div class="gitem" id="term-impulse"><div class="gt">Impulse</div><div class="gd">Pressure accumulated over time. The blast solver records a triangular estimate from effective peak pressure and positive-phase duration, in kPa·ms.</div></div>
-  <div class="gitem" id="term-infiltration"><div class="gt">Infiltration</div><div class="gd">Fluid leaking from an IV into nearby tissue instead of entering the bloodstream.</div></div>
-  <div class="gitem" id="term-inhaled"><div class="gt">Inhaled</div><div class="gd">Breathed into the lungs.</div></div>
-  <div class="gitem" id="term-intranasal"><div class="gt">Intranasal</div><div class="gd">Delivered through the nose, usually as a spray or mist.</div></div>
-  <div class="gitem" id="term-intrathoracic-pressure"><div class="gt">Intrathoracic pressure</div><div class="gd">The pressure inside the chest cavity. Raising it, which is what any ventilator does, makes it harder for blood to flow back into the heart.</div></div>
-  <div class="gitem" id="term-intubation"><div class="gt">Intubation</div><div class="gd">Placing a breathing tube into the windpipe to provide an airway for ventilation.</div></div>
-  <div class="gitem" id="term-io"><div class="gt">IO</div><div class="gd">Intraosseous. A needle drilled into bone marrow when a vein cannot be found. It works as fast as a vein and is far more reliable in shock.</div></div>
-  <div class="gitem" id="term-ionised-calcium"><div class="gt">Ionised calcium</div><div class="gd">The freely available form of calcium in blood, used in processes including clotting and muscle contraction.</div></div>
-  <div class="gitem" id="term-ischemia"><div class="gt">Ischemia</div><div class="gd">Insufficient blood supply to a tissue, reducing the oxygen and nutrients it receives.</div></div>
-  <div class="gitem" id="term-iv"><div class="gt">IV</div><div class="gd">Intravenous. Into a vein, which is the usual route for fluids and drugs when you can find one.</div></div>
-  <div class="gitem" id="term-jaundice"><div class="gt">Jaundice</div><div class="gd">Yellow discoloration of skin or the whites of the eyes.</div></div>
-  <div class="gitem" id="term-ketamine"><div class="gt">Ketamine</div><div class="gd">A medication used in the mod for pain relief and sedation, with different effects depending on dose and route.</div></div>
-  <div class="gitem" id="term-laminar"><div class="gt">Laminar flow</div><div class="gd">Smooth flow in layers. Poiseuille's relationship assumes this type of flow.</div></div>
-  <div class="gitem" id="term-laryngoscopy"><div class="gt">Laryngoscopy</div><div class="gd">Using a scope to see the opening of the windpipe during breathing-tube placement.</div></div>
-  <div class="gitem" id="term-laryngospasm"><div class="gt">Laryngospasm</div><div class="gd">A sudden tightening at the voice box that can block airflow.</div></div>
-  <div class="gitem" id="term-lateral-recumbent"><div class="gt">Lateral recumbent</div><div class="gd">Lying on one side.</div></div>
-  <div class="gitem" id="term-lethal-triad"><div class="gt">Lethal triad</div><div class="gd">Hypothermia, acidosis and impaired clotting occurring together in severe injury. The mod also tracks calcium deficit as a contributor to worsening bleeding and circulation.</div></div>
-  <div class="gitem" id="term-lidocaine"><div class="gt">Lidocaine</div><div class="gd">A medication used in the mod for selected ventricular rhythms and local pain treatment. Its effect depends on route and dose.</div></div>
-  <div class="gitem" id="term-local-anesthetic"><div class="gt">Local anesthetic</div><div class="gd">A medication that reduces sensation in a particular area.</div></div>
-  <div class="gitem" id="term-lucid"><div class="gt">Lucid</div><div class="gd">Clearer awareness. Brief lucid periods can reduce obtundation effects in the game while the underlying impaired state remains active.</div></div>
-  <div class="gitem" id="term-lumen"><div class="gt">Lumen</div><div class="gd">The hollow inside of a tube, catheter or blood vessel.</div></div>
-  <div class="gitem" id="term-magnesium-sulfate"><div class="gt">Magnesium sulfate</div><div class="gd">A medication used by the mod to treat torsades. The infusion effect develops as the medication is delivered.</div></div>
-  <div class="gitem" id="term-mannitol"><div class="gt">Mannitol</div><div class="gd">A medication used to draw water out of swollen tissue. In the game its brain-pressure effect depends on the delivery action and amount.</div></div>
-  <div class="gitem" id="term-map"><div class="gt">MAP</div><div class="gd">Mean arterial pressure. The average pressure in the arteries over a whole heartbeat, which is what actually pushes blood into organs. Around 65 is the usual minimum for keeping organs alive.</div></div>
-  <div class="gitem" id="term-moa"><div class="gt">Mechanism of action</div><div class="gd">How a drug actually produces its effect at the level of the body's machinery, rather than what it is used for.</div></div>
-  <div class="gitem" id="term-metabolic"><div class="gt">Metabolic</div><div class="gd">Related to chemical processes in the body's cells, such as using energy and producing waste.</div></div>
-  <div class="gitem" id="term-midazolam"><div class="gt">Midazolam</div><div class="gd">A medication used for sedation and selected seizure treatments in the mod. It can reduce breathing and blood pressure.</div></div>
-  <div class="gitem" id="term-minute-ventilation"><div class="gt">Minute ventilation</div><div class="gd">The volume of air moved in one minute: breath size multiplied by breathing rate.</div></div>
-  <div class="gitem" id="term-miosis"><div class="gt">Miosis</div><div class="gd">Small or narrowed pupils.</div></div>
-  <div class="gitem" id="term-morphine"><div class="gt">Morphine</div><div class="gd">An opioid pain medication. The mod also models reduced breathing and other dose-related effects.</div></div>
-  <div class="gitem" id="term-mottled"><div class="gt">Mottled</div><div class="gd">Patchy changes in skin color, often seen when circulation is poor.</div></div>
-  <div class="gitem" id="term-mu-opioid"><div class="gt">Mu opioid receptor</div><div class="gd">A cell target through which opioid medications produce effects including pain relief, sedation and reduced breathing.</div></div>
-  <div class="gitem" id="term-mydriasis"><div class="gt">Mydriasis</div><div class="gd">Large or widened pupils.</div></div>
-  <div class="gitem" id="term-myocardial"><div class="gt">Myocardial</div><div class="gd">Related to the heart muscle.</div></div>
-  <div class="gitem" id="term-myocardial-depression"><div class="gt">Myocardial depression</div><div class="gd">Reduced strength of heart-muscle contraction.</div></div>
-  <div class="gitem" id="term-naloxone"><div class="gt">Naloxone</div><div class="gd">A medication that reverses opioid effects. Other causes of sedation or unconsciousness can remain.</div></div>
-  <div class="gitem" id="term-ncd"><div class="gt">NCD</div><div class="gd">Needle chest decompression. Putting a needle through the chest wall to let trapped air escape and relieve a tension pneumothorax.</div></div>
-  <div class="gitem" id="term-neuromuscular-blocker"><div class="gt">Neuromuscular blocker</div><div class="gd">A drug that paralyses muscles. It does nothing for pain or awareness, so a casualty given one without sedation is awake and unable to move or tell you.</div></div>
-  <div class="gitem" id="term-nmj"><div class="gt">Neuromuscular junction</div><div class="gd">The connection where a motor nerve signals a muscle to contract. Blocking this signal can stop movement without reducing awareness.</div></div>
-  <div class="gitem" id="term-newtonian"><div class="gt">Newtonian fluid</div><div class="gd">A fluid whose viscosity stays constant as its rate of flow changes. This is one assumption in the ideal Poiseuille equation.</div></div>
-  <div class="gitem" id="term-nmda"><div class="gt">NMDA antagonist</div><div class="gd">A substance that blocks a brain receptor involved in pain and awareness. Ketamine acts through this pathway; breathing can still be impaired, particularly with other medications.</div></div>
-  <div class="gitem" id="term-norepinephrine"><div class="gt">Norepinephrine</div><div class="gd">A medication used to support blood pressure, mainly through increased vascular resistance in the reviewed game model.</div></div>
-  <div class="gitem" id="term-nystagmus"><div class="gt">Nystagmus</div><div class="gd">Rapid involuntary eye movement. In ACM Extended, Assess Pupils can append this finding when an unconscious, living, non-arrested and non-paralyzed patient has ketamine at or above its induction threshold and a larger ketamine contribution than propofol plus midazolam combined. It supports recognition of deep ketamine sedation; its absence does not establish inadequate sedation.</div></div>
-  <div class="gitem" id="term-obstructive-shock"><div class="gt">Obstructive shock</div><div class="gd">Poor circulation caused by a physical obstacle to blood flow, such as pressure from a tension pneumothorax.</div></div>
-  <div class="gitem" id="term-obtundation"><div class="gt">Obtundation</div><div class="gd">The state of being obtunded: awake with impaired awareness. ACM Extended can apply it automatically from oxygenation or perfusion changes, or manually through Zeus/debug controls.</div></div>
-  <div class="gitem" id="term-obtunded"><div class="gt">Obtunded</div><div class="gd">Awake with clouded awareness and reduced responsiveness. The current ACM Extended player state adds visual and audio impairment while preserving movement and posture. Automatic episodes depend on sustained or severe SpO2/MAP changes when enabled.</div></div>
-  <div class="gitem" id="term-occlusion"><div class="gt">Occlusion</div><div class="gd">A blockage that prevents normal flow.</div></div>
-  <div class="gitem" id="term-ondansetron"><div class="gt">Ondansetron</div><div class="gd">A medication used to reduce nausea and vomiting.</div></div>
-  <div class="gitem" id="term-opioid"><div class="gt">Opioid</div><div class="gd">A medication group used for pain relief that can also reduce breathing and alertness.</div></div>
-  <div class="gitem" id="term-oral"><div class="gt">Oral</div><div class="gd">Taken by mouth and swallowed.</div></div>
-  <div class="gitem" id="term-osmotherapy"><div class="gt">Osmotherapy</div><div class="gd">Using a concentrated fluid to pull water out of swollen brain tissue, which lowers pressure inside the skull.</div></div>
-  <div class="gitem" id="term-osmotic"><div class="gt">Osmotic gradient</div><div class="gd">Water moving toward whatever is more concentrated. Put concentrated fluid in the blood and water is pulled out of swollen tissue into it.</div></div>
-  <div class="gitem" id="term-otfc"><div class="gt">OTFC</div><div class="gd">Oral transmucosal fentanyl citrate. A fentanyl lozenge absorbed through the cheek, used when there is no line. Slower and harder to control than an injection.</div></div>
-  <div class="gitem" id="term-oxygen-delivery"><div class="gt">Oxygen delivery</div><div class="gd">Oxygen reaching the tissues through the circulation. It is cardiac output multiplied by arterial oxygen content, so normal saturation alone does not establish adequate delivery.</div></div>
-  <div class="gitem" id="term-p-wave"><div class="gt">P wave</div><div class="gd">The ECG wave representing electrical activation of the upper heart chambers.</div></div>
-  <div class="gitem" id="term-paco2"><div class="gt">PaCO2</div><div class="gd">The pressure of carbon dioxide in arterial blood. ACME tracks retained carbon dioxide separately from the exhaled EtCO2 reading.</div></div>
-  <div class="gitem" id="term-palpation"><div class="gt">Palpation</div><div class="gd">Checking by touch, such as feeling for a pulse or vein.</div></div>
-  <div class="gitem" id="term-pao2"><div class="gt">PaO2</div><div class="gd">The pressure of oxygen dissolved in arterial blood. It is different from the percentage of hemoglobin carrying oxygen.</div></div>
-  <div class="gitem" id="term-paracetamol"><div class="gt">Paracetamol</div><div class="gd">A pain medication delivered through a fixed product treatment action in the game.</div></div>
-  <div class="gitem" id="term-paralysis"><div class="gt">Paralysis</div><div class="gd">Loss of muscle movement. A paralytic can stop breathing without providing pain relief or unconsciousness.</div></div>
-  <div class="gitem" id="term-partial-pressure"><div class="gt">Partial pressure</div><div class="gd">The contribution of one gas, such as oxygen, to the total pressure of a gas mixture.</div></div>
-  <div class="gitem" id="term-patency"><div class="gt">Patency</div><div class="gd">How open a passage is. An open airway permits airflow; an open IV line permits fluid flow.</div></div>
-  <div class="gitem" id="term-peep"><div class="gt">PEEP</div><div class="gd">Positive end expiratory pressure: pressure maintained in the lungs between breaths. It can help keep air sacs open but can also reduce blood returning to the heart.</div></div>
-  <div class="gitem" id="term-penthrox"><div class="gt">Penthrox</div><div class="gd">An inhaled pain-relief product supplied through a treatment action in the game.</div></div>
-  <div class="gitem" id="term-perfusion"><div class="gt">Perfusion</div><div class="gd">Blood actually reaching tissue and delivering oxygen to it. A casualty can have a pulse and still be perfusing badly.</div></div>
-  <div class="gitem" id="term-peripheral-resistance"><div class="gt">Peripheral resistance</div><div class="gd">The resistance opposing blood flow through the body. The game combines several effects into a resistance value used to calculate blood pressure; its scale is not a clinical SVR measurement.</div></div>
-  <div class="gitem" id="term-permissive-hypotension"><div class="gt">Permissive hypotension</div><div class="gd">Deliberately keeping blood pressure lower than normal while bleeding is uncontrolled, because lower pressure means less blood pushed out of the hole.</div></div>
-  <div class="gitem" id="term-perrl"><div class="gt">PERRL</div><div class="gd">Pupils equal, round and reactive to light.</div></div>
-  <div class="gitem" id="term-pfc"><div class="gt">PFC</div><div class="gd">Prolonged field care: continued casualty care when evacuation is delayed.</div></div>
-  <div class="gitem" id="term-phentolamine"><div class="gt">Phentolamine</div><div class="gd">A local treatment for selected vasopressor-leak injuries in the mod.</div></div>
-  <div class="gitem" id="term-pip"><div class="gt">PIP</div><div class="gd">Peak inspiratory pressure. The highest pressure reached while pushing a breath in. A rising number means the lungs are getting stiffer.</div></div>
-  <div class="gitem" id="term-plasmin"><div class="gt">Plasmin</div><div class="gd">The enzyme that dissolves clots. Useful for clearing old clot, and unhelpful when it dismantles the clot holding a wound shut.</div></div>
-  <div class="gitem" id="term-plasminogen"><div class="gt">Plasminogen</div><div class="gd">The inactive form of the clot-dissolving enzyme, sitting in blood waiting to be switched on. Blocking that switch protects clot you have already made.</div></div>
-  <div class="gitem" id="term-plateau-level"><div class="gt">Plateau</div><div class="gd">The steady level a drug settles at when what you are giving matches what the body is removing. Raise the rate or slow the clearance and the plateau climbs.</div></div>
-  <div class="gitem" id="term-platelet"><div class="gt">Platelet</div><div class="gd">A small blood component that helps form a plug at an injured vessel.</div></div>
-  <div class="gitem" id="term-pleural"><div class="gt">Pleural</div><div class="gd">Related to the thin lining around the lung and the space between the lung and chest wall.</div></div>
-  <div class="gitem" id="term-pneumothorax"><div class="gt">Pneumothorax</div><div class="gd">Air in the space between the lung and chest wall, which reduces lung expansion. Its effect depends on the amount of air and whether pressure is building.</div></div>
-  <div class="gitem" id="term-poiseuille"><div class="gt">Poiseuille’s law</div><div class="gd">An ideal laminar-flow relationship: flow increases with pressure difference and the fourth power of internal radius, and decreases with viscosity and length. The assumptions limit direct application to living vessels and ventilator circuits.</div></div>
-  <div class="gitem" id="term-potassium-channel"><div class="gt">Potassium channel</div><div class="gd">A gate in heart cells that controls how quickly the cell resets between beats. Blocking it lengthens the reset, which is how some rhythm drugs work.</div></div>
-  <div class="gitem" id="term-ppv"><div class="gt">PPV</div><div class="gd">Positive pressure ventilation: delivering breaths by pushing air into the lungs. In the mod, active support adds a filling penalty when circulating volume is low.</div></div>
-  <div class="gitem" id="term-precipitate"><div class="gt">Precipitate</div><div class="gd">Two compatible-looking fluids reacting in the line and forming solid particles. It blocks the line and can send solid material into the casualty.</div></div>
-  <div class="gitem" id="term-preload"><div class="gt">Preload</div><div class="gd">The heart's filling and stretch before a contraction. ACME estimates its contribution from circulating volume and applies an additional penalty during positive pressure ventilation when volume is low.</div></div>
-  <div class="gitem" id="term-pressor"><div class="gt">Pressor</div><div class="gd">A drug that raises blood pressure, usually by tightening blood vessels. It moves the number without fixing why the number was low.</div></div>
-  <div class="gitem" id="term-prone"><div class="gt">Prone</div><div class="gd">Lying face down.</div></div>
-  <div class="gitem" id="term-prophylaxis"><div class="gt">Prophylaxis</div><div class="gd">Treatment intended to prevent a problem.</div></div>
-  <div class="gitem" id="term-propofol"><div class="gt">Propofol</div><div class="gd">A sedative that reduces awareness. The mod also models effects on breathing and blood pressure.</div></div>
-  <div class="gitem" id="term-pulsatile"><div class="gt">Pulsatile</div><div class="gd">Changing in pulses with each heartbeat.</div></div>
-  <div class="gitem" id="term-pulse-pressure"><div class="gt">Pulse pressure</div><div class="gd">The difference between systolic and diastolic pressure. For 120/80, pulse pressure is 40 mmHg.</div></div>
-  <div class="gitem" id="term-pea"><div class="gt">Pulseless electrical activity (PEA)</div><div class="gd">Electrical activity appears on the monitor, but the heart is not producing an effective pulse. The game treats true PEA as having no mechanical cardiac output.</div></div>
-  <div class="gitem" id="term-pupillary"><div class="gt">Pupillary</div><div class="gd">Related to the pupils, the openings in the eyes that change size in response to light.</div></div>
-  <div class="gitem" id="term-qrs"><div class="gt">QRS complex</div><div class="gd">The main spike on an ECG. It represents electrical activation of the lower pumping chambers.</div></div>
-  <div class="gitem" id="term-qt"><div class="gt">QT interval</div><div class="gd">A measurement on the ECG of how long the heart takes to reset between beats. Stretch it too far and the heart becomes prone to a lethal rhythm called torsades.</div></div>
-  <div class="gitem" id="term-rr-interval"><div class="gt">R-R interval</div><div class="gd">The time between successive main ECG spikes. A shorter interval means a faster electrical rate.</div></div>
-  <div class="gitem" id="term-receptor"><div class="gt">Receptor</div><div class="gd">A target on or inside a cell that responds to a chemical signal or medication.</div></div>
-  <div class="gitem" id="term-refractory-period"><div class="gt">Refractory period</div><div class="gd">The brief time after electrical activation when heart cells cannot activate again normally.</div></div>
-  <div class="gitem" id="term-reperfusion"><div class="gt">Reperfusion</div><div class="gd">Restoring blood flow to tissue that previously received too little.</div></div>
-  <div class="gitem" id="term-repolarisation"><div class="gt">Repolarisation</div><div class="gd">The heart cell resetting electrically after a beat so it is ready for the next one. Slow it too much and the rhythm becomes unstable.</div></div>
-  <div class="gitem" id="term-respiratory-depression"><div class="gt">Respiratory depression</div><div class="gd">Breathing that becomes slower or less effective, sometimes because of medication.</div></div>
-  <div class="gitem" id="term-respiratory-drive"><div class="gt">Respiratory drive</div><div class="gd">The body's signal to take breaths. Sedatives, opioids and injury can change it.</div></div>
-  <div class="gitem" id="term-respiratory-rate"><div class="gt">Respiratory rate</div><div class="gd">The number of breaths taken or delivered in one minute.</div></div>
-  <div class="gitem" id="term-rocuronium"><div class="gt">Rocuronium</div><div class="gd">A medication that blocks muscle movement, including breathing. It provides neither pain relief nor unconsciousness.</div></div>
-  <div class="gitem" id="term-rosc"><div class="gt">ROSC</div><div class="gd">Return of spontaneous circulation. The heart starting to beat on its own again after cardiac arrest, which is the goal of everything you do during CPR.</div></div>
-  <div class="gitem" id="term-rsi"><div class="gt">RSI</div><div class="gd">Rapid sequence intubation. Giving a sedative and a paralytic together to place a breathing tube quickly and safely.</div></div>
-  <div class="gitem" id="term-rvr"><div class="gt">RVR</div><div class="gd">Rapid ventricular response. The lower chambers of the heart beating too fast because the upper chambers are firing chaotically. The heart pumps poorly at that rate.</div></div>
-  <div class="gitem" id="term-scleral-icterus"><div class="gt">Scleral icterus</div><div class="gd">Yellow discoloration of the whites of the eyes.</div></div>
-  <div class="gitem" id="term-secondary-insult"><div class="gt">Secondary insult</div><div class="gd">Extra brain damage happening after the original impact, caused by low oxygen, low blood pressure or high carbon dioxide. It is the part you can prevent.</div></div>
-  <div class="gitem" id="term-sedation"><div class="gt">Sedation</div><div class="gd">Medication-induced reduction in alertness, ranging from drowsiness to unconsciousness. Pain relief and paralysis are separate effects.</div></div>
-  <div class="gitem" id="term-semi-fowlers"><div class="gt">Semi-Fowler's position</div><div class="gd">Lying with the head and upper body partly raised.</div></div>
-  <div class="gitem" id="term-sepsis"><div class="gt">Sepsis</div><div class="gd">A harmful body-wide response to infection that can impair organ function.</div></div>
-  <div class="gitem" id="term-serum-level"><div class="gt">Serum level</div><div class="gd">The concentration of a substance in the liquid portion of blood. The wiki's medication graphs show a relative game-effect envelope, not a measured blood concentration.</div></div>
-  <div class="gitem" id="term-shunt"><div class="gt">Shunt</div><div class="gd">Blood flowing past parts of the lung that are not working, so it comes back still unoxygenated. Giving more oxygen barely helps, because the blood never meets it.</div></div>
-  <div class="gitem" id="term-pneumothorax-simple"><div class="gt">Simple pneumothorax</div><div class="gd">Air between the lung and chest wall that reduces lung expansion without the pressure effects of tension pneumothorax.</div></div>
-  <div class="gitem" id="term-sinus-rhythm"><div class="gt">Sinus rhythm</div><div class="gd">A rhythm started by the heart's normal pacemaker. It can still be too fast or too slow for the patient's condition.</div></div>
-  <div class="gitem" id="term-sodium-channel"><div class="gt">Sodium channel</div><div class="gd">The gate that starts each heartbeat's electrical signal. Blocking it slows conduction, which suppresses extra beats coming from damaged muscle.</div></div>
-  <div class="gitem" id="term-spo2"><div class="gt">SpO2</div><div class="gd">An estimate of the percentage of hemoglobin carrying oxygen. It does not measure the amount of hemoglobin present or the blood flow reaching tissues.</div></div>
-  <div class="gitem" id="term-stroke-volume"><div class="gt">Stroke volume</div><div class="gd">The amount of blood pushed out by a lower heart chamber with each effective beat. The game uses simplified filling-based estimates in its pressure and oxygen-delivery calculations.</div></div>
-  <div class="gitem" id="term-sugammadex"><div class="gt">Sugammadex</div><div class="gd">A medication that binds available rocuronium and reduces its paralytic effect. In the mod, reversal depends on the amounts and active effects of both drugs.</div></div>
-  <div class="gitem" id="term-supine"><div class="gt">Supine</div><div class="gd">Lying flat on the back, face up.</div></div>
-  <div class="gitem" id="term-svt"><div class="gt">Supraventricular tachycardia (SVT)</div><div class="gd">A fast rhythm that starts above the lower pumping chambers of the heart. In this guide, SVT means the mod's specific regular fast rhythm.</div></div>
-  <div class="gitem" id="term-sympathetic-outflow"><div class="gt">Sympathetic outflow</div><div class="gd">Nerve signals that help the body respond to stress, including changes in heart rate and blood-vessel tone.</div></div>
-  <div class="gitem" id="term-sympathomimetic"><div class="gt">Sympathomimetic</div><div class="gd">A drug that mimics the fight-or-flight response. Raises heart rate, blood pressure and alertness.</div></div>
-  <div class="gitem" id="term-sync"><div class="gt">SYNC</div><div class="gd">Synchronization mode: times a shock to a detected heartbeat. The game uses it for cardioversion of suitable organized fast rhythms.</div></div>
-  <div class="gitem" id="term-systemic"><div class="gt">Systemic</div><div class="gd">Affecting the body through the circulation, rather than only the place where treatment was applied.</div></div>
-  <div class="gitem" id="term-svr"><div class="gt">Systemic vascular resistance</div><div class="gd">Resistance to blood flow through the systemic circulation. Arteriolar narrowing increases it; a maintained blood pressure can coexist with reduced cardiac output.</div></div>
-  <div class="gitem" id="term-systole"><div class="gt">Systole</div><div class="gd">The part of the heartbeat when the heart contracts and pushes blood out.</div></div>
-  <div class="gitem" id="term-systolic"><div class="gt">Systolic pressure</div><div class="gd">The upper number in a blood-pressure reading, measured during the pumping part of the heartbeat.</div></div>
-  <div class="gitem" id="term-t-wave"><div class="gt">T wave</div><div class="gd">The ECG wave showing the lower heart chambers resetting electrically after a beat.</div></div>
-  <div class="gitem" id="term-tachyarrhythmia"><div class="gt">Tachyarrhythmia</div><div class="gd">An abnormal heart rhythm that is fast.</div></div>
-  <div class="gitem" id="term-tachycardia"><div class="gt">Tachycardia</div><div class="gd">A heart rate that is too fast. Often the first sign of blood loss, because the body speeds up to make up for smaller beats.</div></div>
-  <div class="gitem" id="term-tachyphylaxis"><div class="gt">Tachyphylaxis</div><div class="gd">A decreasing response to repeated doses over a short period. The same dose can produce less effect.</div></div>
-  <div class="gitem" id="term-tachypnea"><div class="gt">Tachypnea</div><div class="gd">Fast breathing.</div></div>
-  <div class="gitem" id="term-tbi"><div class="gt">TBI</div><div class="gd">Traumatic brain injury: damage to the brain caused by trauma.</div></div>
-  <div class="gitem" id="term-tccc"><div class="gt">TCCC</div><div class="gd">Tactical Combat Casualty Care: a framework for treating casualties in a tactical setting.</div></div>
-  <div class="gitem" id="term-tension-pneumothorax"><div class="gt">Tension pneumothorax</div><div class="gd">Air building up in the chest with no way out, squashing the lung and the heart. It is rapidly fatal and is fixed with a needle or a tube.</div></div>
-  <div class="gitem" id="term-tfc"><div class="gt">TFC</div><div class="gd">Tactical field care: casualty treatment during the tactical phase after immediate fire-related danger is addressed.</div></div>
-  <div class="gitem" id="term-therapeutic-window"><div class="gt">Therapeutic window</div><div class="gd">The range between a useful medication exposure and one likely to cause harmful effects.</div></div>
-  <div class="gitem" id="term-thoracostomy"><div class="gt">Thoracostomy</div><div class="gd">An opening through the chest wall into the space around the lung, used to release trapped air or fluid.</div></div>
-  <div class="gitem" id="term-tidal-volume"><div class="gt">Tidal volume</div><div class="gd">The size of one breath, measured in millilitres. Too small and they build up carbon dioxide, too big and you tear the lung.</div></div>
-  <div class="gitem" id="term-titrate"><div class="gt">Titrate</div><div class="gd">Adjust a medication dose or delivery rate in steps while reassessing its effect.</div></div>
-  <div class="gitem" id="term-tnt-equivalent"><div class="gt">TNT equivalent</div><div class="gd">An estimated explosive mass expressed as kilograms of TNT. The game derives it from ammunition configuration unless a class-specific override is supplied.</div></div>
-  <div class="gitem" id="term-torsades"><div class="gt">Torsades de pointes</div><div class="gd">A specific lethal rhythm where the ECG trace twists around the baseline. It is caused by a stretched QT interval, and magnesium is the treatment.</div></div>
-  <div class="gitem" id="term-toxicity"><div class="gt">Toxicity</div><div class="gd">Harmful effects caused by a substance or medication.</div></div>
-  <div class="gitem" id="term-tranexamic-acid"><div class="gt">Tranexamic acid (TXA)</div><div class="gd">A medication that reduces clot breakdown. It supports bleeding treatment but does not close a wound or replace lost blood.</div></div>
-  <div class="gitem" id="term-trendelenburg"><div class="gt">Trendelenburg</div><div class="gd">A position with the head lower than the legs.</div></div>
-  <div class="gitem" id="term-turbulent"><div class="gt">Turbulent flow</div><div class="gd">Flow with irregular mixing and swirls. It does not follow the simple laminar-flow relationship.</div></div>
-  <div class="gitem" id="term-tympanic"><div class="gt">Tympanic</div><div class="gd">Relating to the eardrum. The blast model records a tympanic injury flag at an effective pressure of at least 100 kPa.</div></div>
-  <div class="gitem" id="term-unilateral"><div class="gt">Unilateral</div><div class="gd">Present on one side of the body.</div></div>
-  <div class="gitem" id="term-vasoconstriction"><div class="gt">Vasoconstriction</div><div class="gd">Narrowing of blood vessels as their smooth muscle contracts. Arteriolar constriction raises resistance; venous constriction can support venous return.</div></div>
-  <div class="gitem" id="term-vasodilation"><div class="gt">Vasodilation</div><div class="gd">Blood vessels widening. The pipes get bigger, so pressure falls even though the amount of blood has not changed.</div></div>
-  <div class="gitem" id="term-venous-return"><div class="gt">Venous return</div><div class="gd">Blood flowing back to the heart through the veins.</div></div>
-  <div class="gitem" id="term-ventricle"><div class="gt">Ventricle</div><div class="gd">One of the heart's two lower pumping chambers. The right sends blood to the lungs; the left sends it to the body.</div></div>
-  <div class="gitem" id="term-vf"><div class="gt">Ventricular fibrillation (VF)</div><div class="gd">Chaotic electrical activity in the lower heart chambers that prevents effective pumping. This is a shockable cardiac-arrest rhythm in the game.</div></div>
-  <div class="gitem" id="term-vt"><div class="gt">Ventricular tachycardia (VT)</div><div class="gd">A fast rhythm starting in the heart's lower pumping chambers. A patient may have a pulse or may be in cardiac arrest, so check directly.</div></div>
-  <div class="gitem" id="term-vesicant"><div class="gt">Vesicant</div><div class="gd">A drug that damages tissue if it leaks out of the vein. The injury develops over hours, so a bad line causes a problem you find out about later.</div></div>
-  <div class="gitem" id="term-viscosity"><div class="gt">Viscosity</div><div class="gd">How strongly a fluid resists flowing. A more viscous fluid needs more pressure to move through the same tube.</div></div>
+<section class="sec">
+<div class="sec-head"><span class="sec-num">01</span><h2 id="recognize-the-state">Recognize the state</h2></div>
+<p><b>An obtunded player is awake with impaired awareness.</b> Blur, dim vision, heavy blinking, head sway and muffled sound can fluctuate. Brief clearer periods can occur while the underlying state continues.</p>
+<div class="scroll" tabindex="0" role="region" aria-label="Consciousness states"><table class="t"><thead><tr><th scope="col">State</th><th scope="col">What to expect</th></tr></thead><tbody><tr><th scope="row">Obtunded</th><td>The player keeps their current posture and can move. Getting up from a lying state is deliberately slow, about 5.5 seconds by default.</td></tr>
+<tr><th scope="row">Sprint attempt</th><td>A fresh sprint attempt has a 35% default chance of a brief 1.25 second fall when free to move. This fall does not set ACE medical unconsciousness.</td></tr>
+<tr><th scope="row">Unconscious</th><td>ACE owns the loss of consciousness. Automatic obtundation does not take over an already unconscious patient.</td></tr>
+<tr><th scope="row">Sedated</th><td>Medication exposure drives this separately. Check <a href="medications.html#sedation-assessment">sedation assessment</a> and the drugs given.</td></tr>
+<tr><th scope="row">Paralyzed</th><td>Movement cannot demonstrate sedation depth. Rocuronium has no sedative contribution.</td></tr></tbody></table></div>
+<p>Current obtundation allows normal movement controls. Older option descriptions still mention a forced prone or supine posture; those posture settings no longer describe the active behavior.</p>
+</section>
+<section class="sec">
+<div class="sec-head"><span class="sec-num">02</span><h2 id="entry-and-recovery">Entry and recovery</h2></div>
+<p>Automatic entry applies to players when <b>Obtundation [BETA]</b> and <b>Automatic entry from vitals</b> are enabled. The master switch is off by default.</p>
+<div class="scroll" tabindex="0" role="region" aria-label="Obtundation default thresholds"><table class="t"><thead><tr><th scope="col">Default condition</th><th scope="col">Result</th></tr></thead><tbody><tr><th scope="row">SpO2 70% to below 88%, or MAP 55 to below 65 mmHg</th><td>Enter after 8 continuous seconds in the band. Leaving it resets the timer.</td></tr>
+<tr><th scope="row">SpO2 below 83%, or MAP below 59 mmHg</th><td>Enter on the next evaluation, without the 8 second wait, provided the patient is still above the critical floors and awake.</td></tr>
+<tr><th scope="row">SpO2 at least 92% and MAP at least 70 mmHg</th><td>Clear automatic obtundation after active treatment ends.</td></tr>
+<tr><th scope="row">After recovery</th><td>For 45 seconds, ordinary re-entry needs 20 continuous seconds. The immediate thresholds still apply.</td></tr>
+<tr><th scope="row">SpO2 below 70%, MAP below 55 mmHg, cardiac arrest or ACE unconsciousness</th><td>Automatic obtundation releases its state; the native unconsciousness and vital-sign systems handle deterioration.</td></tr></tbody></table></div>
+<p>Vitals are evaluated about every 1.5 seconds. Server or mission settings can change the thresholds. A state manually applied through Zeus or debug controls is excluded from automatic recovery.</p>
+</section>
+<section class="sec">
+<div class="sec-head"><span class="sec-num">03</span><h2 id="fracture-pressure">Fracture pressure can wake a patient</h2></div>
+<p><b>Applying direct pressure over a fractured limb can immediately wake a lightly unconscious patient.</b> The severe pain response can also clear obtundation.</p>
+<ul>
+<li>The patient must pass the same stable-vitals and forced-unconsciousness checks used by the game's ammonia and slap wake paths.</li>
+<li>After those checks pass, wake probability increases with SpO2: 50% at 80%, about 95% at 97%, and 100% at 99%. Lower saturation is blocked by the native stable-vitals check.</li>
+<li>A successful wake leaves the patient lying down. It does not automatically make them stand or resolve the fracture, bleeding or other causes of illness.</li>
+<li>The fracture pain response has an 8 second cooldown per limb. A successful wake grants 8 seconds of protection from automatic obtundation re-entry.</li>
+<li>The response adds severe pain. It does not add a new wound or extra bleeding by itself.</li>
+</ul>
+<p>Use direct pressure for hemorrhage control with awareness of this response. Reassess the patient after they wake.</p>
+</section>
+<section class="sec">
+<div class="sec-head"><span class="sec-num">04</span><h2 id="other-recovery-nuances">Other recovery nuances</h2></div>
+<div class="quick-facts">
+<div class="quick-fact"><h3>Ammonia inhalant</h3><p>A new ammonia use can clear automatic obtundation when vitals are stable and forced unconsciousness is absent. It grants a 20 second wake-stimulus grace period by default. Persistent hypoxia or shock still needs treatment.</p></div>
+<div class="quick-fact"><h3>Black-screen cap</h3><p>With the obtundation master and consciousness-budget option enabled, a continuous non-arrest knockout reaches a gameplay recovery window after 300 seconds. The default hold lasts 45 seconds. It may raise SpO2 to 85% and cap pain at 0.5 to support wakefulness.</p><p>Cardiac arrest is excluded. When the window ends, unresolved illness can cause another loss of consciousness. This timed assistance is not evidence that treatment corrected the cause.</p></div>
+<div class="quick-fact"><h3>Bedside checks</h3><p>Recheck bleeding, blood pressure, SpO2, breathing and recent medication. Use <a href="descriptors.html">clinical descriptors</a> and <a href="medications.html#sedation-assessment">pupil findings during sedation</a> alongside the player's response.</p></div>
 </div>
 </section>
+<section class="sec">
+<div class="sec-head"><span class="sec-num">05</span><h2 id="where-to-enable-it">Where to enable it</h2></div>
+<p><b>Options &gt; Addon Options &gt; ACM Extended: Trauma &gt; 2. Obtundation</b></p><p>Enable <b>1. Obtundation [BETA]</b> for the physiological system. <b>2. Automatic entry from vitals</b> controls automatic episodes. The option labeled <b>8. Two-posture cascade and black-screen cap</b> still controls the timed consciousness budget; its posture wording is outdated.</p>
+</section>
+<details class="dd"><summary><span class="dd-mark"></span><span class="dd-name">Sources and revision</span></summary><div class="dd-body"><p>Game behavior checked against ACM Extended revision <code>302b811</code> on 13 September 2026. Values describe this build with default settings.</p><ul><li><a href="https://github.com/hesherson/ACM-Extended/blob/302b811ba90b4e2347b5614b8c74fb41b5442245/addons/acm_extended/functions/fn_obtundedAuto.sqf">Automatic entry, recovery and ammonia</a></li><li><a href="https://github.com/hesherson/ACM-Extended/blob/302b811ba90b4e2347b5614b8c74fb41b5442245/addons/acm_extended/functions/fn_obtundedSet.sqf">Active posture behavior</a></li><li><a href="https://github.com/hesherson/ACM-Extended/blob/302b811ba90b4e2347b5614b8c74fb41b5442245/addons/acm_extended/functions/fn_obtundedTick.sqf">Visual effects and sprint falls</a></li><li><a href="https://github.com/hesherson/ACM-Extended/blob/302b811ba90b4e2347b5614b8c74fb41b5442245/addons/acm_extended/functions/fn_initConsciousnessConfig.sqf">Default thresholds and timers</a></li><li><a href="https://github.com/hesherson/ACM-Extended/blob/302b811ba90b4e2347b5614b8c74fb41b5442245/addons/acm_extended/functions/fn_directPressureFracturePain.sqf">Fracture pressure and wake checks</a></li><li><a href="https://github.com/hesherson/ACM-Extended/blob/302b811ba90b4e2347b5614b8c74fb41b5442245/addons/core/overrides/fnc_hasStableVitals.sqf">Native stable-vitals check</a></li><li><a href="https://github.com/hesherson/ACM-Extended/blob/302b811ba90b4e2347b5614b8c74fb41b5442245/addons/acm_extended/functions/fn_consciousnessBudget.sqf">Consciousness budget</a></li><li><a href="https://github.com/hesherson/ACM-Extended/blob/302b811ba90b4e2347b5614b8c74fb41b5442245/addons/core/functions/fnc_getUp.sqf">Slow Get Up</a></li><li><a href="https://github.com/hesherson/ACM-Extended/blob/302b811ba90b4e2347b5614b8c74fb41b5442245/addons/acm_extended/XEH_preInit.sqf">Addon Options</a></li></ul></div></details>
 <footer>
   ACM Extended Wiki / Source build 1.2.0-r0 / Updated 2026-09-13
 </footer>
