@@ -27,34 +27,37 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(ROOT, "src")
 OUT = os.path.join(ROOT, "docs")
 
-VERSION = "0.9.873"
+VERSION = "1.2.0-r0"
+REVIEWED = {"index", "access", "medications", "descriptors", "fluids", "ov_access"}
 
 # slug, filename, nav title, nav group.
 # Order here is the order in the sidebar. Groups are emitted in first-seen order.
 PAGES = [
-    ("index",        "index.html",        "Start here",          "Overview"),
-    ("ov_intro",     "ov_intro.html",     "Override mechanism",  "Advanced Functions"),
-    ("ov_bleeding",  "ov_bleeding.html",  "Blood loss & coagulation", "Advanced Functions"),
-    ("ov_oxygen",    "ov_oxygen.html",    "SpO2 ownership & DO2", "Advanced Functions"),
-    ("ov_circ",      "ov_circ.html",      "EKG, AED & ROSC gating", "Advanced Functions"),
-    ("ov_chest",     "ov_chest.html",     "Respiratory rate & BVM", "Advanced Functions"),
-    ("ov_tbi",       "ov_tbi.html",       "ICP & Cushing response", "Advanced Functions"),
-    ("ov_access",    "ov_access.html",    "IV flow & clamp maths", "Advanced Functions"),
-    ("ov_traps",     "ov_traps.html",     "Known traps",         "Advanced Functions"),
-    ("ventilator",   "ventilator.html",   "Ventilation",         "Systems"),
-    ("airway",       "airway.html",       "Airway & Chest",      "Systems"),
-    ("oxygen",       "oxygen.html",       "Oxygen Delivery (DO2)", "Systems"),
-    ("bleeding",     "bleeding.html",     "Haemorrhage & Shock", "Systems"),
-    ("circulation",  "circulation.html",  "Arrest & Rhythms",    "Systems"),
-    ("medications",  "medications.html",  "Medications",         "Systems"),
-    ("access",       "access.html",       "Access, Infusions & Blood", "Systems"),
-    ("tbi",          "tbi.html",          "Traumatic Brain Injury", "Systems"),
-    ("flight",       "flight.html",       "Flight & Altitude",   "Systems"),
-    ("menu",         "menu.html",         "Medical Menu",        "Interface"),
-    ("accessibility","accessibility.html","Accessibility",       "Interface"),
-    ("glossary",     "glossary.html",     "Glossary",            "Reference"),
-    ("settings",     "settings.html",     "Settings reference",  "Reference"),
-    ("zeus",         "zeus.html",         "Zeus modules",        "Reference"),
+    ("index", "index.html", "Wiki home", "Quick reference"),
+    ("medications", "medications.html", "Medication cards", "Quick reference"),
+    ("access", "access.html", "IV access & infusions", "Quick reference"),
+    ("fluids", "fluids.html", "Fluids & blood volume", "Quick reference"),
+    ("descriptors", "descriptors.html", "Clinical descriptors", "Quick reference"),
+    ("glossary", "glossary.html", "Glossary", "Quick reference"),
+    ("ventilator", "ventilator.html", "Ventilation", "Systems"),
+    ("airway", "airway.html", "Airway & Chest", "Systems"),
+    ("oxygen", "oxygen.html", "Oxygen Delivery (DO2)", "Systems"),
+    ("bleeding", "bleeding.html", "Haemorrhage & Shock", "Systems"),
+    ("circulation", "circulation.html", "Arrest & Rhythms", "Systems"),
+    ("tbi", "tbi.html", "Traumatic Brain Injury", "Systems"),
+    ("flight", "flight.html", "Flight & Altitude", "Systems"),
+    ("menu", "menu.html", "Medical Menu", "Interface"),
+    ("accessibility", "accessibility.html", "Accessibility", "Interface"),
+    ("settings", "settings.html", "Settings reference", "Reference"),
+    ("zeus", "zeus.html", "Zeus modules", "Reference"),
+    ("ov_intro", "ov_intro.html", "Override mechanism", "System mechanics"),
+    ("ov_bleeding", "ov_bleeding.html", "Blood loss & coagulation", "System mechanics"),
+    ("ov_oxygen", "ov_oxygen.html", "SpO2 ownership & DO2", "System mechanics"),
+    ("ov_circ", "ov_circ.html", "EKG, AED & ROSC gating", "System mechanics"),
+    ("ov_chest", "ov_chest.html", "Respiratory rate & BVM", "System mechanics"),
+    ("ov_tbi", "ov_tbi.html", "ICP & Cushing response", "System mechanics"),
+    ("ov_access", "ov_access.html", "Flow calculation reference", "System mechanics"),
+    ("ov_traps", "ov_traps.html", "Known traps", "System mechanics"),
 ]
 
 HEAD = """<!DOCTYPE html>
@@ -65,9 +68,6 @@ HEAD = """<!DOCTYPE html>
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
 <title>{title}</title>
 <link rel="icon" type="image/png" href="img/favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;900&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 {css}
 </style>
@@ -78,6 +78,7 @@ try{{if(localStorage.getItem('pillarNight')==='1'){{document.documentElement.cla
 </script>
 </head>
 <body>
+<a class="skip-link" href="#mainContent">Skip to content</a>
 <header class="mbar" id="mbar">
   <button type="button" class="mbar-burger" id="navBtn" aria-label="Open navigation" aria-expanded="false" aria-controls="sideNav">
     <span></span><span></span><span></span>
@@ -97,7 +98,7 @@ try{{if(localStorage.getItem('pillarNight')==='1'){{document.documentElement.cla
 
 FOOT = r"""
 <footer>
-  <span class="brand">PILLAR</span> // ACM EXTENDED FIELD GUIDE // v{version} // BUILD {built}
+  ACM Extended Wiki / Source build {version} / Updated {built}
 </footer>
 </main>
 </div>
@@ -321,9 +322,17 @@ var IDX={index};
   if(!btn||!side) return;
   var lastFocus=null;
   function setOpen(on){{
+    var mobile=window.innerWidth<820;
+    side.inert=mobile&&!on;
+    var main=document.querySelector('main');
+    if(main) main.inert=mobile&&on;
     document.body.classList.toggle('nav-open',on);
     btn.setAttribute('aria-expanded',on?'true':'false');
-    if(on){{ lastFocus=document.activeElement; }}
+    if(on){{
+      lastFocus=document.activeElement;
+      var first=side.querySelector('a,button,input');
+      if(first) first.focus();
+    }}
     else if(lastFocus&&lastFocus.focus){{ lastFocus.focus(); }}
   }}
   btn.addEventListener('click',function(){{ setOpen(!document.body.classList.contains('nav-open')); }});
@@ -343,10 +352,27 @@ var IDX={index};
   }});
   /* Rotating to a wide screen must not leave the body locked from a drawer that no longer exists. */
   var mq=window.matchMedia('(min-width:820px)');
-  function sync(){{ if(mq.matches) setOpen(false); }}
+  function sync(){{
+    if(mq.matches) setOpen(false);
+    else side.inert=!document.body.classList.contains('nav-open');
+  }}
+  document.addEventListener('keydown',function(ev){{
+    if(ev.key!=='Tab'||mq.matches||!document.body.classList.contains('nav-open')) return;
+    var items=[btn].concat([].slice.call(side.querySelectorAll('a,button,input,select,[tabindex="0"]')));
+    items=items.filter(function(el){{return !el.disabled&&el.getClientRects().length;}});
+    var index=items.indexOf(document.activeElement), next=index+(ev.shiftKey?-1:1);
+    if(index<0||next<0||next>=items.length){{
+      ev.preventDefault();
+      (ev.shiftKey?items[items.length-1]:items[0]).focus();
+    }}
+  }});
+  sync();
   if(mq.addEventListener) mq.addEventListener('change',sync); else if(mq.addListener) mq.addListener(sync);
 }})();
 
+</script>
+<script>
+{reference_js}
 </script>
 </body>
 </html>
@@ -441,6 +467,17 @@ def index_page(slug, fname, title, body):
         txt = re.sub(r"<[^>]+>", " ", chunk)
         recs.append({"p": title, "f": fname, "a": anchor, "h": head,
                      "t": re.sub(r"\s+", " ", txt).strip()[:900]})
+    # Index each medication card separately, including cards deep inside one h2 section.
+    cards = list(re.finditer(r'<div class="drug" id="([^"]+)"><header><span class="dn">([^<]+)</span>', body))
+    for i, match in enumerate(cards):
+        end = cards[i + 1].start() if i + 1 < len(cards) else len(body)
+        next_section = re.search(r'<h2 id="', body[match.end():end])
+        if next_section:
+            end = match.end() + next_section.start()
+        chunk = re.sub(r"<svg\b[^>]*>.*?</svg>", " ", body[match.start():end], flags=re.S)
+        text = re.sub(r"<[^>]+>", " ", chunk)
+        recs.append({"p": title, "f": fname, "a": match.group(1), "h": match.group(2),
+                     "t": re.sub(r"\s+", " ", text).strip()[:1600]})
     return recs
 
 
@@ -472,11 +509,11 @@ def sidebar(current, sections=()):
     the top. Sub links are same page anchors, so following one never reloads."""
     out = ['<aside class="side" id="sideNav">',
            '  <div class="side-head">',
-           '    <a class="brand" href="index.html"><img src="img/pillar_mark.png" alt="PILLAR"></a>',
-           f'    <div class="ver">ACM Extended // v{VERSION}</div>',
+           '    <a class="brand-text" href="index.html">ACM Extended<small>Game reference</small></a>',
+           f'    <div class="ver">Source build {VERSION}</div>',
            '  </div>',
            '  <div class="tb-wrap">',
-           '    <input id="q" class="tb-q" type="search" placeholder="Search" autocomplete="off" spellcheck="false">',
+           '    <input id="q" class="tb-q" type="search" placeholder="Search the wiki /" aria-label="Search the wiki" autocomplete="off" spellcheck="false">',
            '    <div id="qr" class="tb-res" hidden></div>',
            '  </div>',
            '  <nav class="nav">']
@@ -485,7 +522,7 @@ def sidebar(current, sections=()):
         if group not in seen:
             seen.append(group)
             out.append(f'    <div class="grp">{group}</div>')
-        cls = ' class="on"' if slug == current else ""
+        cls = ' class="on" aria-current="page"' if slug == current else ""
         out.append(f'    <a{cls} href="{fname}">{title}</a>')
         if slug == current and sections:
             out.append('    <div class="subnav">')
@@ -497,12 +534,13 @@ def sidebar(current, sections=()):
             '    <span class="nb-lab">Night mode</span>',
             '    <span class="nb-sw"><i></i></span>',
             '  </button>',
-            '</aside>', '<main class="main">']
+            '</aside>', '<main class="main" id="mainContent" tabindex="-1">']
     return "\n".join(out)
 
 
 def build():
     css = open(os.path.join(SRC, "_pillar.css"), encoding="utf-8").read()
+    reference_js = open(os.path.join(SRC, "reference.js"), encoding="utf-8").read()
     os.makedirs(OUT, exist_ok=True)
     os.makedirs(os.path.join(OUT, "img"), exist_ok=True)
 
@@ -531,6 +569,11 @@ def build():
                 missing.append(slug)
                 continue
             body = open(cpath, encoding="utf-8").read()
+        if slug not in REVIEWED:
+            body = ('<div class="article-status">This article is retained from the previous guide '
+                    'and awaits review against the current fork. See the '
+                    '<a href="index.html#article-revision">article revision notes</a>.</div>') + body
+        body = body.replace("PILLAR", "ACM EXTENDED")
         body, miss = apply_terms(body)
         badterms += [(slug, m) for m in miss]
         body = add_anchors(body)
@@ -547,7 +590,7 @@ def build():
             continue
         page = (HEAD.format(title=f"ACM Extended Wiki | {title}", css=css)
                 + sidebar(slug, page_sections(bodies[slug])) + "\n" + toc(bodies[slug]) + "\n" + bodies[slug]
-                + FOOT.format(version=VERSION, built=built, terms=terms_json, index=idx_json))
+                + FOOT.format(version=VERSION, built=built, terms=terms_json, index=idx_json, reference_js=reference_js))
         open(os.path.join(OUT, fname), "w", encoding="utf-8").write(page)
 
     open(os.path.join(OUT, ".nojekyll"), "w").write("")
@@ -562,7 +605,7 @@ def build():
     for slug, body in bodies.items():
         for m in re.finditer(r'(?:src|href)="img/([^"]+)"', body):
             want.add(m.group(1))
-    for chrome in ("pillar_mark.png", "favicon.png"):
+    for chrome in ("favicon.png",):
         want.add(chrome)
     broken = sorted(want - have)
     unused = sorted(have - want)

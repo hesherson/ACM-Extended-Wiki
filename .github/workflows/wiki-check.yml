@@ -1,0 +1,18 @@
+name: Wiki build
+on:
+  push:
+    branches: [main, wiki/reference-refresh]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Build the wiki
+        run: python3 build.py
+      - name: Check pages, anchors and assets
+        run: python3 scripts/check_wiki.py
+      - name: Check browser script syntax
+        run: node --check src/reference.js

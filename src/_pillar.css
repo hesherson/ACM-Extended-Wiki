@@ -773,3 +773,134 @@ button.gl.arming{
    other and the outgoing text then vanished. Painting html in the page colour is kept, because that is
    what removes the white flash browsers show between loads, and it is a paint fix rather than motion. */
 html{background:var(--navy)}
+
+
+/* Quick-reference layout. Keep existing diagrams and content components compatible. */
+:root{
+  --navy:#0b1119;--navy-2:#111c29;--surface-key:#172536;
+  --cream:#f2e8d2;--cream-dim:#bac7d4;--body-ink:#dde5ed;
+  --amber:#65b2ff;--amber-dim:#8ac3fb;--amber-rgb:101,178,255;
+  --fill-rgb:214,227,241;--sub-ink:#aebccc;--sidebar:274px;
+  --rule:rgba(173,194,216,.18);--rule-2:rgba(173,194,216,.35);
+}
+html.night{--navy:#05080c;--navy-2:#0b1017;--surface-key:#111923}
+body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:1rem;line-height:1.65}
+h1,h2,h3,.drug .dn,.dd-name,.tb-h,.sb-cur,.card .name{
+  font-family:inherit;letter-spacing:-.025em;text-transform:none;
+}
+h1{font-size:clamp(2rem,5vw,3rem);line-height:1.15;max-width:24ch}
+h2{font-size:clamp(1.4rem,3vw,1.8rem);line-height:1.25;color:var(--cream)}
+h3{font-size:1.2rem;line-height:1.35}
+.main{min-width:0}
+.lede{max-width:75ch;font-size:1.05rem;line-height:1.65;color:var(--cream-dim)}
+.sec{margin-top:2.5rem}
+.sec-head{gap:.8rem;align-items:baseline}
+.sec-num{font-size:.85rem;color:var(--amber)}
+.eyebrow,.side .ver,footer{font-family:inherit;font-size:.8rem;letter-spacing:.06em}
+.principle{border-left:3px solid var(--amber);background:#122032}
+.principle .lab,.grid .k,.kv .k,.pk .k,.drug .sect h4,.nav .grp,.sb-lab{
+  font-family:inherit;font-size:.85rem;letter-spacing:.04em;line-height:1.4;
+}
+.side{background:var(--navy-2)}
+.side-head{align-items:flex-start;text-align:left}
+.side .brand-text{font-size:1.35rem;line-height:1.25;font-weight:800;text-decoration:none;color:var(--cream);letter-spacing:-.035em}
+.side .brand-text small{display:block;font-weight:500;font-size:.85rem;color:var(--cream-dim);letter-spacing:.02em;margin-top:.3rem}
+.side .ver{font-size:.8rem;text-align:left;line-height:1.4;margin-top:.75rem}
+.nav .grp{font-size:.8rem;color:var(--cream-dim);margin-top:1.5rem}
+.nav a{font-size:.94rem;line-height:1.4;padding-block:.7rem;border-radius:0 .3rem .3rem 0}
+.nav .subnav a{font-size:.875rem;line-height:1.4;padding-block:.45rem}
+.tb-q{font-family:inherit;font-size:1rem;min-height:44px}
+.tb-p{font-family:inherit;font-size:.8rem;letter-spacing:.04em}
+.tb-h{font-size:1.05rem;line-height:1.4}
+.tb-s{font-size:.875rem}
+.skip-link{position:fixed;top:.5rem;left:.5rem;z-index:200;background:var(--cream);color:#0b1119;padding:.7rem 1rem;transform:translateY(-200%)}
+.skip-link:focus{transform:none}
+:focus-visible{outline:3px solid #86c5ff;outline-offset:3px}
+[hidden]{display:none!important}
+button,input,select{font:inherit}
+input,select{color:var(--body-ink);background:var(--navy);border:1px solid var(--rule-2);border-radius:.35rem;padding:.65rem .75rem;min-height:44px;max-width:100%}
+input:focus,select:focus{border-color:var(--amber)}
+.scroll{max-width:100%;overflow-x:auto;overscroll-behavior-inline:contain}
+table.t{width:100%;min-width:460px}
+table.t thead th{font-family:inherit;font-size:.875rem;letter-spacing:.01em;line-height:1.45;text-transform:none;color:var(--cream);padding:.8rem;background:#152130}
+table.t tbody td{font-size:1rem;line-height:1.55;padding:.85rem;overflow-wrap:anywhere}
+table.t td.mono{font-size:.9rem}
+table.t tbody tr:nth-child(even){background:rgba(var(--fill-rgb),.025)}
+.drug{margin-top:1.5rem;border:1px solid var(--rule-2);border-radius:.65rem;overflow:hidden;scroll-margin-top:6rem}
+.drug>header{padding:1rem 1.25rem;background:#152130;display:flex;align-items:baseline;flex-wrap:wrap;gap:.4rem 1rem}
+.drug .dn{font-size:1.35rem}
+.drug .dc{font-family:inherit;font-size:.875rem;letter-spacing:0;text-transform:none}
+.drug .sect{padding:.9rem 1.25rem}
+.drug .sect p,.drug .sect ul,.dd-body{font-size:1rem}
+.drug .pk .v,.grid .v,.kv .v{font-family:inherit;font-size:1rem;line-height:1.4}
+.drug .pk{grid-template-columns:repeat(2,minmax(0,1fr))}
+.drug .pk .cell{min-width:0}
+.drug .dd{border-width:1px 0 0;margin:0;border-radius:0}
+.dd-name{font-size:1.05rem;line-height:1.4}
+.dd-tag{font-family:inherit;font-size:.8rem;letter-spacing:0}
+details>summary{min-height:48px;align-items:center}
+.med-index{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:.4rem 1rem}
+.med-index a{padding:.45rem 0;line-height:1.4}
+.reference-chart{background:#0e1925;border:1px solid var(--rule);border-radius:.5rem;padding:1rem;overflow:auto}
+.reference-chart svg{display:block;width:100%;min-width:540px;height:auto;font-family:inherit}
+.reference-chart figcaption{font-family:inherit;font-size:.875rem;letter-spacing:0;text-transform:none;margin-top:.5rem;line-height:1.5}
+.ref-calculator{padding:1.25rem;border:1px solid var(--rule-2);border-radius:.65rem;background:#111d2b;margin:1rem 0}
+.ref-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+.ref-fields label{display:flex;flex-direction:column;gap:.4rem;font-size:.9rem;min-width:0}
+.ref-fields input,.ref-fields select{width:100%}
+.ref-results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-top:1.4rem;padding-top:1rem;border-top:1px solid var(--rule)}
+.ref-results>span{font-size:.85rem;color:var(--cream-dim)}
+.ref-results strong{display:block;font-size:1.25rem;color:var(--cream);line-height:1.5}
+.ref-error{color:#ffb0b0;margin-top:1rem}
+.guide-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+.guide-link{display:block;text-decoration:none;padding:1.15rem;border:1px solid var(--rule-2);border-radius:.5rem;background:#111d2b;color:var(--body-ink)}
+.guide-link:hover{background:#17283a;border-color:var(--amber)}
+.guide-link strong{display:block;font-size:1.15rem;line-height:1.35;color:var(--cream)}
+.guide-link span{display:block;font-size:.95rem;color:var(--cream-dim);margin-top:.5rem}
+.article-status{padding:.8rem 1rem;border:1px solid #796c44;border-radius:.4rem;font-size:.9rem;line-height:1.55;margin:1rem 0;background:#262319;color:#ecdfb9}
+.article-status a{color:inherit}
+.mbar-home{font-family:inherit;font-size:.95rem;letter-spacing:0;text-transform:none}
+.mbar-burger,.mbar-search{width:44px;height:44px;flex-basis:44px}
+.nightbtn,.nb-lab,.glpop-x{font-family:inherit;font-size:.875rem;letter-spacing:0;min-height:44px}
+.gitem .gt{font-family:inherit;font-size:1.1rem}
+.gitem .gd{font-size:1rem}
+.sb-cur{font-size:1.05rem;line-height:1.4}
+.sb-list a{font-size:.95rem;line-height:1.4}
+footer{line-height:1.6}
+@media(min-width:820px){
+ .main{max-width:1180px;padding:2.5rem clamp(1.5rem,4vw,4rem) 5rem}
+ .side{width:var(--sidebar)}
+ .shell{grid-template-columns:var(--sidebar) minmax(0,1fr)}
+}
+@media(min-width:1200px){.drug .pk{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:819px){
+ .mbar{height:58px}
+ .main{padding-top:82px}
+ .side-head{display:block}
+ .side .ver{font-size:.8rem}
+ .secbar{top:58px}
+ h2,.drug{scroll-margin-top:115px}
+}
+@media(max-width:540px){
+ .guide-grid,.ref-fields{grid-template-columns:1fr}
+ .ref-results{grid-template-columns:1fr 1fr}
+ .med-index{grid-template-columns:1fr}
+ .drug>header,.drug .sect{padding:1rem}
+}
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto}
+ *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+@media print{
+ body{color:#111;background:white}
+ .skip-link,.mbar,.secbar,.article-status,.ref-calculator{display:none!important}
+ .main{max-width:none;margin:0;padding:0}
+ .reference-chart{background:white;color:#111;break-inside:avoid;overflow:visible}
+ .reference-chart svg{min-width:0;max-width:100%}
+ table.t{min-width:0}
+ .scroll{overflow:visible}
+ .drug,.guide-link{border-color:#999;background:white}
+ .drug>header,table.t thead th{background:#eee;color:#111}
+ .drug .dn,.drug .dc,.guide-link strong,.guide-link span{color:#111}
+ .reference-chart text{fill:#111}
+}
