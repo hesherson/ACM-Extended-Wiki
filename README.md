@@ -55,7 +55,7 @@ The other system articles remain available with a review notice. Remove an artic
 - All 39 medication curves and five physiology curves support pointer/touch inspection and numeric input.
 - Medication readouts show seconds, delivered reference dose and relative game effect. They do not claim measured serum concentration.
 - Route-specific peak values are listed vertically. Matching medication fields share row sizing across adjacent desktop cards.
-- The glossary provides 305 definitions, with automatic links in article text and support for common abbreviations, inflections and spelling variants.
+- The glossary provides shared definitions, with automatic links in article text and support for common abbreviations, inflections and spelling variants.
 - Example prepared-bag concentrations round upward to two decimals with explicit units; unrounded calculations remain available for arithmetic.
 - The sidebar branding is centered; Ventilator Settings and Pulse labels are explicit.
 - The cardiology table distinguishes direct volume/resistance calculations, indirect calcium and acid-base effects, and physiology not independently simulated. This check uses ACM Extended commit `302b811ba90b4e2347b5614b8c74fb41b5442245`.
@@ -76,3 +76,14 @@ No external font request is required. Each HTML page contains the shared search 
 ## Texture conversion
 
 The existing `paa2png.py` supports the DXT5 workflow documented in its source and uses `python-lzo` for compressed textures. Converted figures belong in `src/img/` so rebuilding `docs/` preserves them.
+
+## Readability and consciousness/blast update
+
+- Replaced visible arrow separators with greater-than signs.
+- Cream body text and headings, bright underlined links with a tinted background, and more space within facts, lists, tables and disclosures.
+- Added sedation assessment, including ketamine nystagmus conditions and interpretation.
+- Added obtunded-state and blast-overpressure pages to navigation, the home page and offline search.
+- Documented fracture-pressure arousal, current movement behavior, default recovery thresholds, blast cover/reflection and delayed lung findings.
+- References use ACM Extended commit `302b811ba90b4e2347b5614b8c74fb41b5442245`.
+
+Known source issue: `fn_blastLungTick.sqf` adds positive rates named healing to severity and subtracts rates named worsening. The blast reference documents the implemented direction; this website update does not change mod code. Older obtundation setting descriptions also retain obsolete forced-posture wording.
