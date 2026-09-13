@@ -6,7 +6,7 @@ Static reference site for ACM Extended. The existing Python builder produces sel
 
 - `src/content/*.html`: article bodies
 - `src/_pillar.css`: shared styles
-- `src/reference.js`: drip calculator, keyboard shortcut, anchor reveal and printing
+- `src/reference.js`: calculators, curve inspection, automatic glossary links, keyboard controls and printing
 - `src/glossary_terms.py`: glossary definitions
 - `src/reference-data.json`: source snapshot used for the reference refresh
 - `build.py`: navigation, layout, glossary expansion and search index
@@ -50,9 +50,18 @@ Source links are attached to the corresponding articles. Medication effect refer
 
 The other system articles remain available with a review notice. Remove an article from that notice only after checking it against the current fork, then add its slug to `REVIEWED` in `build.py`.
 
+## Latest reference controls
+
+- All 39 medication curves and five physiology curves support pointer/touch inspection and numeric input.
+- Medication readouts show seconds, delivered reference dose and relative game effect. They do not claim measured serum concentration.
+- Route-specific peak values are listed vertically. Matching medication fields share row sizing across adjacent desktop cards.
+- The glossary provides 305 definitions, with automatic links in article text and support for common abbreviations, inflections and spelling variants.
+- Example prepared-bag concentrations round upward to two decimals with explicit units; unrounded calculations remain available for arithmetic.
+- The sidebar branding is centered; Ventilator Settings and Pulse labels are explicit.
+- The cardiology table distinguishes direct volume/resistance calculations, indirect calcium and acid-base effects, and physiology not independently simulated. This check uses ACM Extended commit `302b811ba90b4e2347b5614b8c74fb41b5442245`.
+
 ## Remaining rewrite work
 
-- Integrate the supplied ACM Extended logo. Its image bytes could not be accessed during the reference refresh; the header currently uses text.
 - Complete the detailed review of the airway, ventilator, bleeding, TBI, altitude, accessibility and Zeus articles.
 - Review the remaining terminology and the detailed mechanics behind the shorter supplementary overviews.
 - Inspect the attached upstream ACM, ACE3 and Animate archives when the local workspace is available.

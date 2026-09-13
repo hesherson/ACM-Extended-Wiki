@@ -39,7 +39,7 @@ PAGES = [
     ("fluids", "fluids.html", "Fluids & blood volume", "Quick reference"),
     ("descriptors", "descriptors.html", "Clinical descriptors", "Quick reference"),
     ("glossary", "glossary.html", "Glossary", "Quick reference"),
-    ("ventilator", "ventilator.html", "Ventilation", "Systems"),
+    ("ventilator", "ventilator.html", "Ventilator Settings", "Systems"),
     ("airway", "airway.html", "Airway & Chest", "Systems"),
     ("oxygen", "oxygen.html", "Oxygen Delivery (DO2)", "Systems"),
     ("bleeding", "bleeding.html", "Haemorrhage & Shock", "Systems"),
@@ -101,7 +101,7 @@ FOOT = r"""
 </footer>
 </main>
 </div>
-<div id="glpop" class="glpop" hidden>
+<div id="glpop" class="glpop" role="dialog" aria-label="Medical term definition" hidden>
   <div class="glpop-in">
     <div class="glpop-t"></div>
     <div class="glpop-d"></div>

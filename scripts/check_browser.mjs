@@ -124,6 +124,63 @@ try {
       }
     }
     assert.equal(chartCount,5,"Physiology graph count");
+
+    // Curve readouts must track the plot and retain exact keyboard-entered time.
+    await page.goto(pathToFileURL(resolve(root,"docs/medications.html")).href);
+    assert.equal(await page.locator(".chart-inspector").count(),39);
+    const graph=page.locator(".med-curve").first();
+    await graph.evaluate(el=>el.closest("details").open=true);
+    const time=graph.locator('input[type="number"]');
+    await time.fill("0.5");
+    assert((await graph.locator(".chart-readout").textContent()).includes("0.5 s"));
+    assert((await graph.locator(".chart-readout").textContent()).includes("6 mg"));
+    const half=await graph.locator(".chart-cursor circle").first().evaluate(el=>({x:+el.getAttribute("cx"),y:+el.getAttribute("cy")}));
+    assert(Math.abs(half.x-(68+622*.5/15))<1e-7);
+    assert(Math.abs(half.y-(184-144*Math.sin(.5/(2/3.113))))<1e-7);
+    await time.press("End");
+    assert((await graph.locator(".chart-readout").textContent()).includes("Relative game effect: 0%"));
+    await time.fill("");
+    assert((await graph.locator(".chart-readout").textContent()).includes("Enter a value"));
+    const svg=graph.locator("svg");
+    await svg.scrollIntoViewIfNeeded();
+    // Scroll containers and SVG viewBox scaling must not change pointer coordinates.
+    await svg.evaluate(el=>{const p=el.createSVGPoint();p.x=379;p.y=110;const screen=p.matrixTransform(el.getScreenCTM());el.dispatchEvent(new PointerEvent("pointermove",{clientX:screen.x,clientY:screen.y,bubbles:true}));});
+    assert(Math.abs(Number(await time.inputValue())-7.5)<.001);
+    assert(await graph.locator(".chart-cursor").isVisible());
+    await svg.dispatchEvent("pointerleave");
+    assert(!(await graph.locator(".chart-cursor").isVisible()));
+    await svg.evaluate(el=>{const p=el.createSVGPoint();p.x=223.5;p.y=100;const screen=p.matrixTransform(el.getScreenCTM());el.dispatchEvent(new PointerEvent("pointerdown",{pointerType:"touch",clientX:screen.x,clientY:screen.y,bubbles:true}));});
+    assert(Math.abs(Number(await time.inputValue())-3.75)<.001);
+    const peakLists=page.locator("#d-atropine .route-peaks li");
+    assert.equal(await peakLists.count(),2);
+    assert((await peakLists.nth(0).textContent()).includes("IV / IO"));
+    assert((await peakLists.nth(1).textContent()).includes("IM"));
+    if(width>=1280){
+      const aligned=await page.locator(".med-card-grid>.drug").evaluateAll(cards=>[cards[0],cards[1]].map(card=>Array.from(card.querySelectorAll(".med-fact")).map(el=>({y:el.getBoundingClientRect().y,h:el.getBoundingClientRect().height}))));
+      for(let i=0;i<9;i++){assert(Math.abs(aligned[0][i].y-aligned[1][i].y)<1);assert(Math.abs(aligned[0][i].h-aligned[1][i].h)<1);}
+      const center=await page.locator(".side-head").evaluate(el=>{const head=el.getBoundingClientRect(),logo=el.querySelector(".brand-logo").getBoundingClientRect();return Math.abs(head.x+head.width/2-logo.x-logo.width/2);});
+      assert(center<1,"Sidebar logo is not centered");
+    }
+    await page.goto(pathToFileURL(resolve(root,"docs/bleeding.html")).href);
+    const definition=page.locator('.gl[data-t="afterload"]').first();
+    assert(await definition.count()>0,"Afterload is missing its definition");
+    await definition.focus();await definition.press("Enter");
+    assert(await page.locator("#glpop").isVisible());
+    assert((await page.locator(".glpop-d").textContent()).includes("separate afterload"));
+    await page.keyboard.press("Escape");
+    await page.waitForTimeout(200);
+    assert(!(await page.locator("#glpop").isVisible()));
+    assert.equal(await page.locator('.nav > a[href="ventilator.html"]').textContent(),"Ventilator Settings");
+    assert.equal(await page.locator(".chart-inspector").count(),2);
+    assert.equal(await page.locator("a .gl,button .gl,summary .gl,svg .gl").count(),0,"Glossary links nested in controls");
+    assert(await page.locator(".hemorrhage-classes td:nth-child(3)").first().evaluate(el=>getComputedStyle(el).whiteSpace==="nowrap"));
+    await page.goto(pathToFileURL(resolve(root,"docs/access.html")).href);
+    const concentrations=await page.locator("[data-concentration-mg]").evaluateAll(cells=>cells.map(el=>({actual:+el.dataset.concentrationMg,text:el.textContent,title:el.title})));
+    assert.equal(concentrations.length,15);
+    for(const c of concentrations){const unit=c.text.includes("mcg")?1000:1;const shown=Number(c.text.match(/[\d.]+/)[0]);assert(shown+1e-9>=c.actual*unit);assert(shown-c.actual*unit<.010001);assert(c.title.includes("Unrounded"));}
+    await page.goto(pathToFileURL(resolve(root,"docs/circulation.html")).href);
+    for(const label of await page.locator(".rhythm-strip-label").allTextContents())assert(label.startsWith("Pulse: "));
+
     assert.deepEqual(errors, [], "Browser script errors");
     await page.close();
   }

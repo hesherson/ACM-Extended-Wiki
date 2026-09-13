@@ -931,3 +931,32 @@ table.t tbody th{font-size:.95rem;font-weight:650;text-align:left;vertical-align
 @media(min-width:1280px){.med-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:420px){.med-facts{grid-template-columns:minmax(0,1fr)}.med-fact{grid-column:1!important;border-right:0!important}}
 @media print{.med-card-grid{display:block}.med-card-grid .drug{margin:1rem 0;background:white;color:#111}.med-card-grid .drug>header{background:#eee}.med-fact dt,table.t tbody th{color:#111}.formula{background:white;color:#111}.med-facts{display:block}}
+
+/* Aligned facts keep neighboring medication cards easy to compare. */
+.side .side-head{display:flex;flex-direction:column;align-items:center;text-align:center}
+.side .brand-text,.side .ver{width:100%;text-align:center}
+.side .brand-logo{margin:0 auto .65rem}
+.med-fact{min-height:6.5rem}
+.med-details{min-width:0}
+.route-peaks{list-style:none;margin:0;padding:0;display:grid;gap:.45rem}
+.route-peaks li{display:flex;flex-direction:column;gap:.1rem;margin:0;padding:0}
+.route-peaks strong{font-weight:600;color:var(--cream-dim)}
+table.hemorrhage-classes th:nth-child(3),table.hemorrhage-classes td:nth-child(3){min-width:12rem;white-space:nowrap;overflow-wrap:normal}
+@supports(grid-template-rows:subgrid){
+ @media(min-width:1280px){
+  .med-card-grid{align-items:stretch}
+  .med-card-grid>.drug{display:grid;grid-template-rows:subgrid;grid-row:span 9}
+  .med-card-grid .med-facts{grid-template-rows:subgrid;grid-row:span 7}
+  .med-card-grid .med-details{align-self:start}
+ }
+}
+.chart-inspector{display:grid;gap:.55rem;margin:.8rem 0 .3rem;padding:.75rem;border:1px solid var(--rule-2);border-radius:.4rem;background:var(--navy-2)}
+.chart-inspector label{display:flex;align-items:center;gap:.65rem;flex-wrap:wrap;font-size:.85rem}
+.chart-inspector input{width:8rem;min-height:36px;padding:.35rem .5rem}
+.chart-readout{font-size:.875rem;line-height:1.6;overflow-wrap:anywhere}
+.chart-readout span{display:block}
+.chart-readout strong{color:var(--cream)}
+.chart-cursor{pointer-events:none}
+.chart-interactive{cursor:crosshair;touch-action:pan-y}
+.gl[role="button"]{display:inline;font:inherit;text-transform:inherit;letter-spacing:inherit;padding:0;white-space:normal}
+@media print{.chart-inspector,.chart-cursor{display:none!important}.med-card-grid>.drug,.med-card-grid .med-facts{display:block}.med-fact{min-height:0}.gl{border:0;background:none;color:inherit}}
