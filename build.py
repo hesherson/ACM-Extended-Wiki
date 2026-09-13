@@ -28,7 +28,7 @@ SRC = os.path.join(ROOT, "src")
 OUT = os.path.join(ROOT, "docs")
 
 VERSION = "1.2.0-r0"
-REVIEWED = {"index", "access", "medications", "descriptors", "fluids", "ov_access", "circulation", "settings", "menu", "ov_intro", "ov_circ"}
+REVIEWED = {"index", "access", "medications", "descriptors", "fluids", "ov_access", "circulation", "settings", "menu", "ov_intro", "ov_circ", "oxygen", "flight", "bleeding"}
 
 # slug, filename, nav title, nav group.
 # Order here is the order in the sidebar. Groups are emitted in first-seen order.
@@ -45,7 +45,7 @@ PAGES = [
     ("bleeding", "bleeding.html", "Haemorrhage & Shock", "Systems"),
     ("circulation", "circulation.html", "Cardiac rhythms", "Systems"),
     ("tbi", "tbi.html", "Traumatic Brain Injury", "Systems"),
-    ("flight", "flight.html", "Flight & Altitude", "Systems"),
+    ("flight", "flight.html", "Flight Physiology", "Systems"),
     ("menu", "menu.html", "Medical Menu", "Interface"),
     ("accessibility", "accessibility.html", "Accessibility", "Interface"),
     ("settings", "settings.html", "Settings reference", "Reference"),
@@ -66,7 +66,7 @@ HEAD = """<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
 <title>{title}</title>
-<link rel="icon" type="image/png" href="img/favicon.png">
+<link rel="icon" type="image/png" href="img/acme-favicon.png">
 <style>
 {css}
 </style>
@@ -477,6 +477,11 @@ def index_page(slug, fname, title, body):
         text = re.sub(r"<[^>]+>", " ", chunk)
         recs.append({"p": title, "f": fname, "a": match.group(1), "h": match.group(2),
                      "t": re.sub(r"\s+", " ", text).strip()[:4000]})
+    # Infusion rows remain individually searchable beyond the section excerpt.
+    for match in re.finditer(r'<tr id="([^"]+)" data-infusion="([^"]+)">(.*?)</tr>', body, re.S):
+        text = re.sub(r"<[^>]+>", " ", match.group(3))
+        recs.append({"p": title, "f": fname, "a": match.group(1), "h": match.group(2) + " infusion",
+                     "t": re.sub(r"\s+", " ", text).strip()[:1500]})
     return recs
 
 
@@ -508,7 +513,7 @@ def sidebar(current, sections=()):
     the top. Sub links are same page anchors, so following one never reloads."""
     out = ['<aside class="side" id="sideNav">',
            '  <div class="side-head">',
-           '    <a class="brand-text" href="index.html">ACM Extended<small>Game reference</small></a>',
+           '    <a class="brand-text" href="index.html"><img class="brand-logo" src="img/acme-logo.png" width="112" height="112" alt="ACM Extended logo">ACM Extended<small>Game reference</small></a>',
            f'    <div class="ver">Source build {VERSION}</div>',
            '  </div>',
            '  <div class="tb-wrap">',
@@ -533,7 +538,7 @@ def sidebar(current, sections=()):
             '    <span class="nb-lab">Night mode</span>',
             '    <span class="nb-sw"><i></i></span>',
             '  </button>',
-            '</aside>', '<main class="main" id="mainContent" tabindex="-1">']
+            '</aside>', f'<main class="main page-{current}" id="mainContent" tabindex="-1">']
     return "\n".join(out)
 
 
@@ -604,7 +609,7 @@ def build():
     for slug, body in bodies.items():
         for m in re.finditer(r'(?:src|href)="img/([^"]+)"', body):
             want.add(m.group(1))
-    for chrome in ("favicon.png",):
+    for chrome in ("acme-favicon.png", "acme-logo.png"):
         want.add(chrome)
     broken = sorted(want - have)
     unused = sorted(have - want)

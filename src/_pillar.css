@@ -910,3 +910,24 @@ footer{line-height:1.6}
 .rhythm-strip-label{display:inline-block;padding:.3rem .7rem;margin-bottom:1rem;border:1px solid var(--rule-2);border-radius:.3rem;color:var(--amber);font-size:.9rem}
 @media(max-width:600px){.med-fact{grid-template-columns:1fr;gap:.3rem;padding:1rem}}
 @media print{.med-fact{break-inside:avoid}.med-fact dt,.rhythm-strip-label{color:#111}}
+
+/* Medication cards and physiology references. */
+:root{--med-surface:#142130;--med-head:#1b2c3f}
+html.night{--med-surface:#101b28;--med-head:#182638}
+.med-card-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:1.5rem;align-items:start}
+.med-card-grid .drug{margin:0;min-width:0;background:var(--med-surface);border-color:#40536b}
+.med-card-grid .drug>header{background:var(--med-head);min-height:5rem;align-content:center}
+.med-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+.med-fact{display:block;min-width:0;border-bottom:1px solid var(--rule);padding:1rem 1.15rem}
+.med-fact dt{margin-bottom:.35rem}
+.med-fact:nth-child(1),.med-fact:nth-child(2),.med-fact:nth-child(n+7){grid-column:1/-1}
+.med-fact:nth-child(3),.med-fact:nth-child(5){border-right:1px solid var(--rule)}
+.med-fact:nth-child(even){background:transparent}
+.page-medications{max-width:1600px}
+.formula{padding:1rem 1.2rem;border:1px solid var(--rule-2);border-radius:.4rem;background:var(--navy-2);font-size:1.05rem;line-height:1.8;margin:1rem 0;overflow-wrap:anywhere}
+table.t tbody th{font-size:.95rem;font-weight:650;text-align:left;vertical-align:top;padding:.85rem;color:var(--cream);line-height:1.55}
+.source-note{font-size:.875rem;color:var(--cream-dim)}
+.side .brand-logo{display:block;width:112px;height:112px;object-fit:contain;margin:0 0 .65rem}
+@media(min-width:1280px){.med-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:420px){.med-facts{grid-template-columns:minmax(0,1fr)}.med-fact{grid-column:1!important;border-right:0!important}}
+@media print{.med-card-grid{display:block}.med-card-grid .drug{margin:1rem 0;background:white;color:#111}.med-card-grid .drug>header{background:#eee}.med-fact dt,table.t tbody th{color:#111}.formula{background:white;color:#111}.med-facts{display:block}}

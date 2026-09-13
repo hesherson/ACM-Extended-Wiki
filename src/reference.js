@@ -79,3 +79,32 @@
     if (window.innerWidth < 820 && button) button.click(); else q.focus();
   });
 })();
+
+/* Normalized DO2 illustration for perfusing scenarios at default settings. */
+(function () {
+"use strict";
+function do2(blood,saline=0,plasma=0,hr=75,sat=97,ppv=false,peep=5,dilution=saline){
+ const total=Math.max(.1,blood+saline+plasma),v=Math.min(1.1,total/6);
+ let sv=Math.pow(v,1.6);
+ if(ppv){const empty=1-Math.min(1,v/1.1),pen=Math.max(0,Math.min(1,(empty-.12)/.88))*.35*(1+Math.max(0,Math.min(1,(peep-5)/10))*.5);sv*=Math.max(.25,1-pen);}
+ let rate=Math.max(.3,Math.min(1.35,1+(hr/75-1)*.4));
+ if(hr>150){const raw=1-Math.max(0,Math.min(1,(hr-150)/70))*.55;rate*=1-(1-raw)*(1-Math.min(1,v));}
+ return {sv,co:sv*rate,hb:Math.min(1,blood/Math.max(.1,blood+dilution+plasma)),do2:Math.min(1,blood/Math.max(.1,blood+dilution+plasma))*(sat/100)*sv*rate/.97};
+}
+window.ACMEWiki.calculateDO2 = function(v) {
+ if (!v || !["blood","saline","plasma","heartRate","saturation","peep"].every(k => Number.isFinite(v[k])) || v.blood < .1 || v.blood > 6.6 || v.saline < 0 || v.saline > 6 || v.plasma < 0 || v.plasma > 6 || v.heartRate < 20 || v.heartRate > 220 || v.saturation < 1 || v.saturation > 100 || v.peep < 0 || v.peep > 20 || !["none","bvm","vent"].includes(v.support)) return null;
+ return do2(v.blood,v.saline,v.plasma,v.heartRate,v.saturation,v.support!=="none",v.support==="vent"?v.peep:5);
+};
+const form=document.querySelector("[data-do2-calculator]");
+if (!form) return;
+const keys=["blood","saline","plasma","heartRate","saturation","peep"], labels={sv:"sv",co:"co",hb:"hb",delivery:"do2"};
+function update(){
+ const values={support:form.elements.namedItem("support").value};
+ let empty=false;
+ for(const key of keys){const field=form.elements.namedItem(key);if(field.value.trim()==="")empty=true;values[key]=Number(field.value);}
+ const result=empty || !form.checkValidity()?null:window.ACMEWiki.calculateDO2(values);
+ const error=form.querySelector('[data-do2-result="error"]');error.hidden=!!result;error.textContent=result?"":"Enter a valid value in each field to calculate delivery.";
+ for(const [label,key] of Object.entries(labels))form.querySelector('[data-do2-result="'+label+'"]').textContent=result?new Intl.NumberFormat(undefined,{maximumFractionDigits:1}).format(result[key]*100)+"%":"Unavailable";
+}
+form.addEventListener("input",update);form.addEventListener("change",update);form.addEventListener("submit",e=>{e.preventDefault();update();});update();
+})();

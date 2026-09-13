@@ -157,3 +157,27 @@ TERMS = {
  "analgesia": ("Analgesia", "Pain relief. Worth separating from sedation, because a drug can make someone unresponsive while leaving them fully able to feel pain."),
  "sedation": ("Sedation", "Making someone drowsy or unconscious. It does nothing for pain on its own, which is why sedatives and painkillers are often given together."),
 }
+
+# Circulation and flight physiology reference updates.
+TERMS.update({
+    "stroke-volume": [
+        "Stroke volume",
+        "The volume ejected by a ventricle with each effective heartbeat. It depends on filling, contraction strength and the load the ventricle ejects against."
+    ],
+    "svr": [
+        "Systemic vascular resistance",
+        "Resistance to blood flow through the systemic circulation. Arteriolar narrowing increases it; a maintained blood pressure can coexist with reduced cardiac output."
+    ],
+    "oxygen-delivery": [
+        "Oxygen delivery",
+        "Oxygen reaching the tissues through the circulation. It is cardiac output multiplied by arterial oxygen content, so normal saturation alone does not establish adequate delivery."
+    ],
+    "vasoconstriction": [
+        "Vasoconstriction",
+        "Narrowing of blood vessels as their smooth muscle contracts. Arteriolar constriction raises resistance; venous constriction can support venous return."
+    ],
+    "poiseuille": [
+        "Poiseuille’s law",
+        "An ideal laminar-flow relationship: flow increases with pressure difference and the fourth power of internal radius, and decreases with viscosity and length. The assumptions limit direct application to living vessels and ventilator circuits."
+    ]
+})

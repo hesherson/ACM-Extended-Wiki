@@ -1,7 +1,7 @@
 <div class="eyebrow">PILLAR <span class="tag">//</span> SYSTEMS</div>
 <h1>Ventilator</h1>
 <p class="lede">Ventway Sparrow. Turbine driven, so it needs no oxygen to ventilate. Power is what runs out.</p>
-<div class="rule"></div>
+<div class="rule"></div><section class="sec"><div class="sec-head"><h2 id="screen-brightness-amp-night-mode">Screen brightness and night mode</h2></div><p>These controls apply specifically to the <b>Ventway Sparrow</b>. On its panel, open <b>MENU → ADV. SETTINGS → BRIGHTNESS</b> and use the dial. They control the device display independently of the wiki’s own night-mode button.</p><div class="scroll" tabindex="0" role="region" aria-label="Ventway Sparrow brightness"><table class="t"><thead><tr><th scope="col">Panel level</th><th scope="col">Configured display output</th><th scope="col">Behavior</th></tr></thead><tbody><tr><th scope="row">1 / Night</th><td>5.5%</td><td>Very dim without goggles. The configured output becomes 85% under image intensifiers.</td></tr><tr><th scope="row">2</th><td>45%</td><td>Reduced brightness</td></tr><tr><th scope="row">3</th><td>72%</td><td>Startup default</td></tr><tr><th scope="row">4</th><td>100%</td><td>Full brightness</td></tr></tbody></table></div><p>These percentages describe the game’s display multiplier, not measured screen luminance. Night selection also lowers alarm volume once; you can subsequently adjust the volume separately.</p><p class="source-note"><a href="https://github.com/hesherson/ACM-Extended/blob/eabd2f2e88fba4754d81bda8543b81303a72964d/addons/acm_extended/functions/fn_initVentilatorUiPowerConfig.sqf">Current Ventway Sparrow display defaults</a></p></section>
 
 <div class="principle">
   <div class="lab">The one thing</div>
@@ -176,7 +176,7 @@
 
   <article class="icard">
     <header><span class="iname">Pneumothorax</span><span class="bdg fixed">Fixed, PEEP harms</span></header>
-    <div class="gate"><span class="gk">Before vent</span><span class="gv">Needle decompress, then drain</span></div>
+    <div class="gate"><span class="gk">Before vent</span><span class="gv">Needle decompress or Finger Thoracostomy first</span></div>
     <div class="sgrid">
       <div class="s wide"><div class="sk">Mode</div><div class="sv">SIMV VC PS<small>once the chest is decompressed</small></div></div>
       <div class="s"><div class="sk">PEEP</div><div class="sv">5<small>after drainage</small></div></div>
@@ -184,7 +184,7 @@
       <div class="s"><div class="sk">Tidal vol</div><div class="sv">6<small>mL/kg</small></div></div>
       <div class="s"><div class="sk">I:E</div><div class="sv">1:2</div></div>
     </div>
-    <p class="treat"><b>Positive pressure turns a simple pneumothorax into a tension one within minutes.</b> Decompress and drain before you ventilate.</p>
+    <p class="treat">Positive pressure can accelerate progression of an inadequately drained pneumothorax. Perform the indicated decompression and reassess drainage, ventilation and perfusion. Progression depends on the leak and available drainage; it is not a fixed countdown.</p>
     <div class="resp">
       <div class="resp-h">SpO2 response<span class="cols">PEEP against FiO2</span></div>
       <div class="rrow is-bad"><span class="lab">PEEP</span><span class="bar"><i style="width:12%"></i></span><span class="num">harmful</span></div>
@@ -401,7 +401,7 @@
   <p>This is what makes 6 mL/kg an actual treatment in blast lung rather than a slogan, and the machine shows you the number: the live screen reports mL/kg alongside the volume.</p>
 
   <h3>Positive pressure on a pneumothorax</h3>
-  <p>An undecompressed pneumothorax is driven toward tension by <b>mean</b> airway pressure, not peak. Mean is PEEP plus about a third of the driving pressure, so PEEP does more damage per cmH2O than the peak does, because it is held for the whole cycle rather than a fraction of it.</p>
+  <p>Active positive pressure increases the injury model’s air-leak contribution. The current ventilator path scales this contribution using delivered PIP, while recent BVM breaths also increase it. The eventual pressure buildup depends on the leak, pleural gas and available drainage. A connected but paused ventilator is not treated as delivering positive pressure.</p>
   <p><b>There is no threshold on this one.</b> It ramps from a mean of 5 upward, so any positive pressure grows it, and it converts to tension at state 2.5 of 3. Decompression stops it dead: a needle, a thoracostomy or a chest tube all gate it off completely.</p>
 
   <h3>Gas trapping and auto-PEEP</h3>
@@ -431,7 +431,7 @@
       <li><b>Rising peak with a steady plateau, answered by more volume.</b> The pressure is resistive. More volume through the same obstruction raises pressure further and moves no more gas.</li>
       <li><b>Volume control on a lung that is stiffening.</b> The mode holds volume constant by letting pressure climb, and pressure is the thing that injures. Change mode rather than chasing the number.</li>
       <li><b>Ignoring the bracketed figure beside PEEP.</b> That is auto-PEEP. It is added to peak pressure and it is feeding barotrauma whether or not you have looked at it.</li>
-      <li><b>A pneumothorax on positive pressure that has not been decompressed.</b> There is no safe pressure. Mean airway pressure grows it from the moment the machine starts.</li>
+      <li><b>A pneumothorax on positive pressure that has not been decompressed.</b> There is no safe pressure. Active positive pressure can worsen the leak; reassess drainage and perfusion.</li>
       <li><b>Setting a high pressure limit to stop the volume alarming.</b> The alarm was the machine telling you the lung could not take the setting.</li>
     </ul>
   </div>
