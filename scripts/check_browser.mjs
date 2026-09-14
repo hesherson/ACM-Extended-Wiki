@@ -173,7 +173,7 @@ try {
     assert.equal(await page.locator('.nav > a[href="ventilator.html"]').textContent(),"Ventilator Settings & Tips");
     assert.equal(await page.locator(".chart-inspector").count(),2);
     assert.equal(await page.locator("a .gl,button .gl,summary .gl,svg .gl").count(),0,"Glossary links nested in controls");
-    assert(await page.locator(".hemorrhage-classes td:nth-child(3)").first().evaluate(el=>getComputedStyle(el).whiteSpace==="nowrap"));
+    assert(await page.locator(".hemorrhage-classes td:nth-child(3)").first().evaluate(el=>el.scrollWidth<=el.clientWidth+1), "Baseline volume must fit its cell");
     await page.goto(pathToFileURL(resolve(root,"docs/access.html")).href);
     const concentrations=await page.locator("[data-concentration-mg]").evaluateAll(cells=>cells.map(el=>({actual:+el.dataset.concentrationMg,text:el.textContent,title:el.title})));
     assert.equal(concentrations.length,15);

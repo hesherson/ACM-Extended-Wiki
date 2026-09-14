@@ -67,7 +67,7 @@ The other system articles remain available with a review notice. Remove an artic
 - All 47 quantitative charts support pointer/touch inspection with dots and readouts: 39 medication curves, five physiology curves, access capacity, fluid conversion and the capnography explorer. The unscaled ventilator waveform has a phase cursor without invented pressure values.
 - Medication readouts show seconds, delivered reference dose and relative game effect. They do not claim measured serum concentration.
 - Route-specific peak values are listed vertically. Matching medication fields share row sizing across adjacent desktop cards.
-- The glossary provides 317 definitions, with automatic links in article text and support for common abbreviations, inflections and spelling variants.
+- The glossary provides 324 definitions, with automatic links in article text and support for common abbreviations, inflections and spelling variants.
 - Example prepared-bag concentrations round upward to two decimals with explicit units; unrounded calculations remain available for arithmetic.
 - The sidebar branding is centered; Ventilator Settings and Pulse labels are explicit.
 - The cardiology table distinguishes direct volume/resistance calculations, indirect calcium and acid-base effects, and physiology not independently simulated. This check uses ACM Extended commit `302b811ba90b4e2347b5614b8c74fb41b5442245`.
@@ -75,18 +75,18 @@ The other system articles remain available with a review notice. Remove an artic
 ## September 14 update
 
 - Shared medication-card palette across headings, panels, tables, navigation and links
-- Gold page titles, cream metric labels, spaced paragraphs and `>` disclosure markers
+- Gold page and section titles, quiet metric labels, spaced paragraphs and `>` disclosure markers
 - New obtundation and blast-overpressure references with code-backed thresholds and treatment nuances
 - Ketamine nystagmus conditions and fracture-pressure awakening added with cross-links
 - Head injury, airway, ventilator and accessibility articles rewritten for quick reference
 - Corrected pressure-limited volume delivery, CPAP backup, recovery floors and Zeus reset wording
 - Screenshot placeholders removed; prior section links preserved
-- 27 built pages, 317 glossary entries, 33 medication cards and 39 medication curves
+- 28 built pages, 324 glossary entries, 33 medication cards and 39 medication curves
 - Publishing and future-edit instructions in PUBLISH-WITH-GITHUB-DESKTOP.md
 
 The new system references use ACM Extended source 4848f63b200a45362eb576dcef469484202b6a80. Existing medication, circulation and other references keep their stated earlier snapshots; this update does not claim to audit every later change to the entire mod.
 
-Build, local-link, anchor, asset and reproducibility checks are provided in `scripts/check_wiki.py`. The five Chromium suites in `scripts/` cover the complete site and the updated visual controls; the GitHub workflow repeats them after updates.
+Build, local-link, anchor, asset and reproducibility checks are provided in `scripts/check_wiki.py`. The six Chromium suites in `scripts/` cover the complete site and the updated visual controls; the GitHub workflow repeats them after updates.
 
 ## Hosting
 
@@ -137,3 +137,29 @@ Medication illustrations now cover all 33 cards. Hyaluronidase and phentolamine 
 Ventilator Settings & Tips now contains the complete ketamine nystagmus explanation. Old incoming links remain usable. The ketamine IM induction example uses the current 4.375 mg/kg calibration, and the norepinephrine dilution includes the injected volume (4 mg in 254 mL, about 15.75 mcg/mL). Small headings, medication fields, table headers and popup titles share the gold title color.
 
 These changes were reviewed at `488a5e54efd10e5289245bcb2f7db7a40bbabcb0`; other content retains its individual source review dates. The new browser suite checks filtering, dose links, original images, heading colors, moved guidance and the static fallback.
+
+
+## Mobile tables and printable charts
+
+Every article table now receives column labels during the build. At phone widths, and inside narrow table containers, rows become vertical records with their labels directly above the values. Desktop minimum widths no longer force mobile tables to scroll. This also works without JavaScript. Graphs fit their available width and retain their touch/keyboard readouts.
+
+**Printable charts** in the sidebar contains seven landscape sheets: three medication sheets covering all 33 medication entries, one ventilator sheet, one IV/IO sheet, one sheet with all 13 rhythm examples and one TBI sheet. Medication cards, Ventilator Settings & Tips, IV access and Cardiac rhythms and Traumatic brain injury link directly to the corresponding print preview. Each print button prints only its own chart; Print all charts prints the full set. Use A4 or US Letter, or Save as PDF. Color backgrounds are optional and no remote printing service is used.
+
+| Change | Source |
+| --- | --- |
+| Mobile table column labels | `src/responsive_tables.py` |
+| Responsive table/list/graph styles | `src/mobile-layout.css` |
+| Compact medication rows | `src/print-medications.json` |
+| Other charts and print page markup | `src/print_reference.py` |
+| Print styles and buttons | `src/print-reference.css`, `src/print-reference.js` |
+
+Keep compact medication rows aligned with the full medication cards and source reviews when updating dose information. The charts distinguish stock content, game reference doses, infusion rates and fixed product actions. Dimercaprol remains explicitly unavailable. These are ACM Extended game references.
+
+Run `node scripts/check_mobile_print.mjs` with the other browser checks. It opens disclosures and checks internal table overflow at 320, 390, 768, 1024 and 1905 pixels, enlarged root text, print selection/cancellation and JavaScript-disabled fallbacks. Set `WIKI_PRINT_QA_DIR` to a temporary directory to export A4/Letter PDFs and phone screenshots for visual review.
+
+
+## TBI B119 reference update
+
+The TBI guide, connected hemorrhage and oxygen references, Zeus setup/reset explanation, debug definitions and glossary follow dev revision `98d18bb3f60dc9be8cdaf4a43419bb57483c3a3f` (14 September 2026). At review, `main` was still `5416332cf899f11f5170c9bcb9768edabb8827e5`; this documentation does not imply that B119 is already released on main. Other systems retain their article-specific source pins.
+
+Structural injury history, reversible acute burden, severity-dependent recovery pressure gates, cerebral autoregulation and systemic autonomic tone are now explained separately. The printable TBI chart summarizes the new rules. The debug reference retains the earlier supplied screenshot and distinguishes it from the current two-page layout. See `TBI-UPDATE-NOTES.md` for source details, important display differences and the outstanding in-engine staging scenarios.

@@ -58,7 +58,7 @@ async function checkChartPointer(figure, { x = 0.5, y = 0.5 } = {}) {
 }
 
 try {
-  assert.equal(htmlPages.length, 27, 'Expected the complete 27-page build');
+  assert.equal(htmlPages.length, 28, 'Expected the complete 28-page build');
   const page = await browser.newPage({ reducedMotion: 'reduce' });
   monitor(page);
   const overflow = [];
@@ -80,7 +80,7 @@ try {
       }));
       assert.deepEqual(clippedFrames, [], 'Catheter sequence ' + sequence + ' must fit its illustration box at ' + width + 'px');
     }
-    console.log('Checked all 27 pages and both catheter sequence bounds at ' + width + 'px');
+    console.log('Checked all 28 pages and both catheter sequence bounds at ' + width + 'px');
   }
   assert.deepEqual(overflow, [], 'Pages must not overflow horizontally: ' + JSON.stringify(overflow));
 

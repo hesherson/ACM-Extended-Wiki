@@ -1,0 +1,320 @@
+{
+  "scope": "ACM Extended / Arma 3 game reference",
+  "groups": [
+    {
+      "id": "cardiac",
+      "title": "Cardiac & resuscitation",
+      "rows": [
+        {
+          "id": "adenosine",
+          "name": "Adenosine",
+          "use": "Regular SVT with a pulse",
+          "route": "IV / IO",
+          "stock": "12 mg / 4 mL\n3 mg/mL",
+          "dose": "6 mg (2 mL); deliver over 5 s for the modeled rapid push",
+          "watch": "Flush when required. Not for AFib, VT or a fast sinus rate."
+        },
+        {
+          "id": "amiodarone",
+          "name": "Amiodarone",
+          "use": "VF / pulseless VT support; AFib RVR, AT or SVT",
+          "route": "IV / IO",
+          "stock": "150 mg / 3 mL\n50 mg/mL",
+          "dose": "150 mg reference; 150 mg / 10 min = 15 mg/min",
+          "watch": "Fast delivery lowers BP. Cumulative ≥2.2 g can contribute to torsades."
+        },
+        {
+          "id": "atropine",
+          "name": "Atropine",
+          "use": "Raise HR; sarin effect treatment",
+          "route": "IV / IO / IM",
+          "stock": "1 mg / 1 mL\n1 mg/mL",
+          "dose": "1 mg IV / IO; 2 mg IM reference",
+          "watch": "Sarin reversal depends on active effect. One reference dose may not reverse exposure."
+        },
+        {
+          "id": "epinephrine",
+          "name": "Epinephrine",
+          "use": "Arrest support; measured pressor support",
+          "route": "IV / IO / IM",
+          "stock": "1 mg / 1 mL\n1 mg/mL",
+          "dose": "1 mg IV / IO; 0.3 mg IM reference\nThese are NOT push dose amounts.",
+          "watch": "Push dose action uses mcg. Monitor HR/BP and leakage; excess can trigger AT/SVT."
+        },
+        {
+          "id": "epinephrine-cardiac-vial",
+          "name": "Epinephrine, cardiac vial",
+          "use": "Arrest support; dilute mixture source",
+          "route": "IV / IO",
+          "stock": "1 mg / 10 mL\n100 mcg/mL",
+          "dose": "Full vial = 1 mg. Mixing 1 mL + 9 mL saline makes 10 mcg/mL.",
+          "watch": "Do not confuse this with the 1 mg/mL vial: a tenfold concentration difference."
+        },
+        {
+          "id": "esmolol",
+          "name": "Esmolol",
+          "use": "AFib RVR control; AT / SVT; HR reduction",
+          "route": "IV / IO",
+          "stock": "100 mg / 10 mL\n10 mg/mL",
+          "dose": "0.5 mg/kg reference = 41.5 mg at 83 kg",
+          "watch": "Premix: 2.5 g / 250 mL, not a bolus. Accumulation can cause bradycardia / hypotension."
+        },
+        {
+          "id": "lidocaine",
+          "name": "Lidocaine",
+          "use": "VT with pulse; VF / pulseless VT support; local anesthesia",
+          "route": "IV / IO; IM / local",
+          "stock": "100 mg / 5 mL\n20 mg/mL",
+          "dose": "Cardiac: 1 mg/kg = 83 mg at 83 kg\nSeparate IM/local reference: 100 mg",
+          "watch": "Shock and esmolol reduce clearance. Toxicity can cause seizures, apnea and arrest."
+        },
+        {
+          "id": "magnesium-sulfate",
+          "name": "Magnesium sulfate",
+          "use": "Torsades termination and suppression",
+          "route": "IV / IO infusion",
+          "stock": "2 g / 50 mL\n40 mg/mL",
+          "dose": "2 g reference; finite premixed bag",
+          "watch": "Reassess rhythm. Excessive delivery rate lowers HR/BP; leaking fluid injures tissue."
+        },
+        {
+          "id": "norepinephrine",
+          "name": "Norepinephrine",
+          "use": "Titrated pressure support",
+          "route": "IV / IO infusion",
+          "stock": "4 mg / 4 mL\n1 mg/mL",
+          "dose": "Model start: 0.05–0.1 mcg/kg/min\nAt 83 kg: 4.15–8.3 mcg/min",
+          "watch": "4 mg is a mixture amount, NOT a patient dose. Assess volume, pressure and line integrity."
+        },
+        {
+          "id": "calcium-chloride",
+          "name": "Calcium chloride",
+          "use": "Hypocalcemia; blood product resuscitation",
+          "route": "IV / IO",
+          "stock": "1 g / 10 mL\n100 mg/mL",
+          "dose": "1 g (10 mL) reference\n273 mg elemental calcium",
+          "watch": "Vesicant. Excess calcium or fast delivery can cause bradycardia, hypotension and arrest."
+        },
+        {
+          "id": "calcium-gluconate",
+          "name": "Calcium gluconate",
+          "use": "Calcium replacement",
+          "route": "IV / IO",
+          "stock": "5 g / 50 mL\n100 mg/mL",
+          "dose": "3 g (30 mL) reference\n279 mg elemental calcium",
+          "watch": "Both salts add to the same calcium burden. Compare elemental amounts; watch the site."
+        }
+      ]
+    },
+    {
+      "id": "sedation",
+      "title": "Analgesia, sedation & paralysis",
+      "rows": [
+        {
+          "id": "fentanyl",
+          "name": "Fentanyl",
+          "use": "Analgesia; adjunct to a sedative",
+          "route": "IV / IO / IM",
+          "stock": "500 mcg / 10 mL\n50 mcg/mL",
+          "dose": "1 mcg/kg reference = 83 mcg at 83 kg",
+          "watch": "Respiratory depression. Opioids add together; pain relief is not adequate hypnosis."
+        },
+        {
+          "id": "morphine",
+          "name": "Morphine",
+          "use": "Analgesia; adjunct to a sedative",
+          "route": "IV / IO / IM",
+          "stock": "10 mg / 2 mL\n5 mg/mL",
+          "dose": "0.1 mg/kg reference = 8.3 mg at 83 kg",
+          "watch": "Reduced breathing, HR and BP. Poor perfusion reduces IM effect; allow for timing."
+        },
+        {
+          "id": "ketamine",
+          "name": "Ketamine",
+          "use": "Analgesia; dose dependent hypnosis",
+          "route": "IV / IO / IM",
+          "stock": "500 mg / 10 mL\n50 mg/mL",
+          "dose": "Analgesia: 0.2 mg/kg IV or 0.75 mg/kg IM\nInduction at full effect: ~1.75 mg/kg IV or 4.375 mg/kg IM",
+          "watch": "Default induction model, not an instant response. Nystagmus supports sedation assessment; monitor breathing/BP."
+        },
+        {
+          "id": "midazolam",
+          "name": "Midazolam",
+          "use": "Sedation; lidocaine toxicity seizure suppression",
+          "route": "IV / IO / IM",
+          "stock": "5 mg / 5 mL\n1 mg/mL",
+          "dose": "5 mg IV / IO; 10 mg IM reference",
+          "watch": "More may be needed as lidocaine burden rises. Stacking depresses breathing and BP."
+        },
+        {
+          "id": "propofol",
+          "name": "Propofol",
+          "use": "Hypnosis and maintenance sedation",
+          "route": "IV / IO",
+          "stock": "500 mg / 50 mL\n10 mg/mL",
+          "dose": "100 mg reference at 83 kg; scales with weight",
+          "watch": "No analgesia. Monitor ventilation and BP, especially with opioids or depleted reserve."
+        },
+        {
+          "id": "rocuronium",
+          "name": "Rocuronium",
+          "use": "Neuromuscular blockade",
+          "route": "IV / IO",
+          "stock": "100 mg / 10 mL\n10 mg/mL",
+          "dose": "1 mg/kg reference = 83 mg at 83 kg",
+          "watch": "Paralysis provides NO sedation or analgesia. Support ventilation; assess hypnosis before and during paralysis."
+        },
+        {
+          "id": "sugammadex",
+          "name": "Sugammadex",
+          "use": "Reverse rocuronium blockade",
+          "route": "IV / IO",
+          "stock": "500 mg / 5 mL\n100 mg/mL",
+          "dose": "Binding calibration: 16 mg/kg for up to 1.2 mg/kg available rocuronium",
+          "watch": "100 mg is a model unit, not a complete reversal dose. Smaller amounts give proportionate binding capacity."
+        },
+        {
+          "id": "esketamine",
+          "name": "Esketamine",
+          "use": "Analgesia without vascular access",
+          "route": "IN",
+          "stock": "50 mg atomizer",
+          "dose": "One atomizer = one fixed product dose",
+          "watch": "Adds to shared sedation. Nausea; combined ketamine-family exposure can depress breathing."
+        },
+        {
+          "id": "fentanyl-lozenge",
+          "name": "Fentanyl lozenge",
+          "use": "Analgesia in an awake patient",
+          "route": "BUC",
+          "stock": "Fixed product",
+          "dose": "One lozenge treatment action",
+          "watch": "Patient sitting or lying. Adds opioid burden; monitor breathing and nausea."
+        },
+        {
+          "id": "penthrox",
+          "name": "Penthrox",
+          "use": "Brief analgesia in an awake patient",
+          "route": "INH",
+          "stock": "Inhaler product",
+          "dose": "One treatment use; reassess before repeating",
+          "watch": "Repeated uses add exposure. Satisfactory pain relief does not prove ventilation is adequate."
+        },
+        {
+          "id": "paracetamol",
+          "name": "Paracetamol / acetaminophen",
+          "use": "Milder pain with a suitable oral route",
+          "route": "PO",
+          "stock": "Pack / tablet product",
+          "dose": "One available pack/tablet treatment use",
+          "watch": "Fixed game product units, not an injectable mg reference. Treat the underlying injury."
+        }
+      ]
+    },
+    {
+      "id": "adjuncts",
+      "title": "Adjuncts, osmotherapy & local rescue",
+      "rows": [
+        {
+          "id": "ammonia-inhalant",
+          "name": "Ammonia inhalant",
+          "use": "Wake-up attempt with stable vitals",
+          "route": "INH, head",
+          "stock": "Inhalant product",
+          "dose": "One treatment use",
+          "watch": "No extra wake-up roll within 10 s. Correct the cause of unconsciousness."
+        },
+        {
+          "id": "naloxone",
+          "name": "Naloxone",
+          "use": "Opioid effect / overdose reversal",
+          "route": "IN",
+          "stock": "4 mg / 0.1 mL",
+          "dose": "One nasal spray treatment action",
+          "watch": "Support breathing. Other sedatives remain active; a new opioid dose can cause renewed effects."
+        },
+        {
+          "id": "ondansetron",
+          "name": "Ondansetron",
+          "use": "Medication related nausea",
+          "route": "IV / IO / IM",
+          "stock": "4 mg / 2 mL\n2 mg/mL",
+          "dose": "4 mg (2 mL) reference",
+          "watch": "Does not remove aspiration risk, airway obstruction or drug toxicity."
+        },
+        {
+          "id": "tranexamic-acid-txa",
+          "name": "Tranexamic acid (TXA)",
+          "use": "Clot stability; external / internal bleeding control",
+          "route": "IV / IO",
+          "stock": "1 g / 10 mL\n100 mg/mL",
+          "dose": "1 g (10 mL) reference",
+          "watch": "Continue pressure, dressings, packing and volume treatment. No separate TXA toxicity cutoff is defined here."
+        },
+        {
+          "id": "ceftriaxone",
+          "name": "Ceftriaxone",
+          "use": "Antibiotic effect family",
+          "route": "IV / IO / IM",
+          "stock": "1 g / 10 mL\n100 mg/mL",
+          "dose": "1 g (10 mL) reference",
+          "watch": "Uses the ertapenem effect family in the reviewed game data."
+        },
+        {
+          "id": "ertapenem",
+          "name": "Ertapenem",
+          "use": "Antibiotic care",
+          "route": "IV / IO / IM",
+          "stock": "1 g / 3.2 mL\n312.5 mg/mL",
+          "dose": "1 g reference",
+          "watch": "No separate drug-specific adverse syndrome in the reviewed path."
+        },
+        {
+          "id": "hyaluronidase",
+          "name": "Hyaluronidase",
+          "use": "Local rescue for eligible irritant extravasation",
+          "route": "Local infiltration",
+          "stock": "150 units / 1 mL",
+          "dose": "150 units full reference; smaller amounts add within 90 s",
+          "watch": "For calcium, amiodarone, magnesium, esmolol, HTS or mannitol injury. Use the affected site."
+        },
+        {
+          "id": "phentolamine",
+          "name": "Phentolamine",
+          "use": "Local rescue for pressor extravasation",
+          "route": "Local infiltration",
+          "stock": "5 mg / 1 mL\n5 mg/mL",
+          "dose": "5 mg full reference; smaller amounts add within 90 s",
+          "watch": "For epinephrine/norepinephrine injury. Systemic syringe delivery has different effects and can lower BP."
+        },
+        {
+          "id": "hypertonic-saline-3",
+          "name": "Hypertonic saline 3%",
+          "use": "Raised ICP with modeled TBI",
+          "route": "IV / IO infusion",
+          "stock": "250 mL bag\n30 mg/mL; 7.5 g total",
+          "dose": "250 mL reference",
+          "watch": "Raises sodium; benefit limited by sodium ceiling. Bag and dedicated push effects differ."
+        },
+        {
+          "id": "mannitol",
+          "name": "Mannitol",
+          "use": "Raised ICP with modeled TBI",
+          "route": "IV / IO infusion",
+          "stock": "20%, 500 mL bag\n200 mg/mL; 100 g total",
+          "dose": "500 mL reference",
+          "watch": "Adds no sodium, but shares the sodium ceiling gate. Watch local leakage and perfusion."
+        },
+        {
+          "id": "dimercaprol",
+          "name": "Dimercaprol",
+          "use": "NOT IN GAME",
+          "route": "Unavailable",
+          "stock": "Legacy artwork only",
+          "dose": "No usable in-game dose",
+          "watch": "UNAVAILABLE. Do not select it as part of a treatment plan."
+        }
+      ]
+    }
+  ]
+}

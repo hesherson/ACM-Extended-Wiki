@@ -23,6 +23,8 @@ sys.dont_write_bytecode = True   # keep src/ free of __pycache__
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "src"))
 from glossary_terms import TERMS
 from infusion_guide import render_infusion_guide
+from responsive_tables import responsive_tables
+from print_reference import render_print_reference
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(ROOT, "src")
@@ -30,13 +32,14 @@ OUT = os.path.join(ROOT, "docs")
 
 VERSION = "1.2.0-r0"
 PUBLIC_URL = "https://hesherson.github.io/ACM-Extended-Wiki/"
-REVIEWED = {"airway", "ventilator", "accessibility", "zeus", "glossary", "ov_tbi", "ov_chest", "ov_oxygen", "ov_bleeding", "tbi", "obtunded", "blast", "index", "access", "medications", "descriptors", "fluids", "ov_access", "circulation", "settings", "menu", "ov_intro", "ov_circ", "oxygen", "flight", "bleeding", "debug"}
+REVIEWED = {"quick-reference", "airway", "ventilator", "accessibility", "zeus", "glossary", "ov_tbi", "ov_chest", "ov_oxygen", "ov_bleeding", "tbi", "obtunded", "blast", "index", "access", "medications", "descriptors", "fluids", "ov_access", "circulation", "settings", "menu", "ov_intro", "ov_circ", "oxygen", "flight", "bleeding", "debug"}
 
 # slug, filename, nav title, nav group.
 # Order here is the order in the sidebar. Groups are emitted in first-seen order.
 PAGES = [
     ("index", "index.html", "Wiki home", "Quick reference"),
     ("medications", "medications.html", "Medication cards", "Quick reference"),
+    ("quick-reference", "quick-reference.html", "Printable charts", "Quick reference"),
     ("access", "access.html", "IV access & infusions", "Quick reference"),
     ("fluids", "fluids.html", "Fluids & blood volume", "Quick reference"),
     ("descriptors", "descriptors.html", "Clinical descriptors", "Quick reference"),
@@ -583,10 +586,10 @@ def build():
     if os.path.isfile(retired):
         os.remove(retired)
     css = "\n".join(open(os.path.join(SRC, name), encoding="utf-8").read()
-                    for name in ("_pillar.css", "visual-reference.css", "slideshow.css", "capnography.css", "rhythm-waveforms.css", "chest-seal.css", "languages.css", "infusion-guide.css")
+                    for name in ("_pillar.css", "visual-reference.css", "slideshow.css", "capnography.css", "rhythm-waveforms.css", "chest-seal.css", "languages.css", "infusion-guide.css", "mobile-layout.css", "print-reference.css")
                     if os.path.isfile(os.path.join(SRC, name)))
     reference_js = "\n".join(open(os.path.join(SRC, name), encoding="utf-8").read()
-                             for name in ("reference.js", "slideshow.js", "chart-readouts.js", "suction-guide.js", "capnography.js", "rhythm-waveforms.js", "chest-seal.js", "languages.js", "infusion-guide.js")
+                             for name in ("reference.js", "slideshow.js", "chart-readouts.js", "suction-guide.js", "capnography.js", "rhythm-waveforms.js", "chest-seal.js", "languages.js", "infusion-guide.js", "print-reference.js")
                              if os.path.isfile(os.path.join(SRC, name)))
     os.makedirs(OUT, exist_ok=True)
     os.makedirs(os.path.join(OUT, "img"), exist_ok=True)
@@ -616,6 +619,8 @@ def build():
     for slug, fname, title, group in PAGES:
         if slug == "glossary":
             body = glossary_page()
+        elif slug == "quick-reference":
+            body = render_print_reference()
         else:
             cpath = os.path.join(SRC, "content", slug + ".html")
             if not os.path.exists(cpath):
@@ -634,6 +639,7 @@ def build():
         body = group_field_labels(body)
         body = add_anchors(body)
         body = add_card_anchors(body)
+        body = responsive_tables(body)
         bodies[slug] = body
         index += index_page(slug, fname, title, body)
 

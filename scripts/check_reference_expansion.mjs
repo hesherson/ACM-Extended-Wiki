@@ -9,6 +9,12 @@ const screenshotDir=process.env.WIKI_SCREENSHOT_DIR;
 const capture=(locator,name)=>screenshotDir?locator.screenshot({path:resolve(screenshotDir,name)}):Promise.resolve();
 const errors=[];page.on('pageerror',error=>errors.push(error.message));
 const visit=file=>page.goto(pathToFileURL(resolve(root,'docs',file+'.html')).href);
+const loadImages=async selector=>{
+ for(const image of await page.locator(selector).all()){
+  await image.scrollIntoViewIfNeeded();
+  await image.evaluate(async image=>{await image.decode()});
+ }
+};
 try{
  await visit('oxygen');
  const fields=page.locator('[data-do2-calculator] .ref-fields');
@@ -88,9 +94,11 @@ try{
  }
  await page.setViewportSize({width:1905,height:1050});await visit('zeus');
  assert.equal(await page.locator('.zeus-screenshot').count(),2);
+ await loadImages('.zeus-screenshot');
  assert(await page.locator('.zeus-screenshot').evaluateAll(images=>images.every(image=>image.complete&&image.naturalWidth>0)));
  await capture(page.locator('.zeus-media-grid'),'review-fridge-guide.png');
  await visit('debug');assert.equal(await page.locator('.sec').count(),15);assert(await page.locator('tbody tr').count()>=195);
+ await loadImages('img[src="img/debug/debug-menu.png"]');
  assert(await page.locator('img[src="img/debug/debug-menu.png"]').evaluate(image=>image.complete&&image.naturalWidth===1581));
  await capture(page.locator('.sec').first(),'review-debug-reference.png');
  assert.deepEqual(errors,[]);
