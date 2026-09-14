@@ -35,6 +35,9 @@ def render_infusion_guide():
         for key in row["sources"]:
             label, path = SOURCES[key]
             links.append(f'<a href="https://github.com/hesherson/ACM-Extended/blob/{data["revision"]}/{path}">{label}</a>')
+        mode_note = ''
+        if row.get('modeNote'):
+            mode_note = f'<p class="infusion-mode-note">{escape(row["modeNote"])} <a href="{escape(row["modeHref"])}">Hardcore push comparison &gt;</a></p>'
         # The explanatory fields contain intentional, locally authored inline markup.
         cards.append(f'''<details class="dd infusion-guide" id="infusion-risk-{escape(row['id'])}" data-infusion-name="{escape(row['name'])}">
 <summary><span class="dd-mark"></span><span class="infusion-heading"><span class="dd-name">{escape(row['name'])}<span class="infusion-target"><b>Game level:</b> {target}</span></span><span class="infusion-summary">{escape(row['summary'])}</span></span><span class="infusion-category">{escape(row['group'])}</span></summary>
@@ -43,5 +46,5 @@ def render_infusion_guide():
 <div class="infusion-band band-caution"><h3>Increasing exposure</h3><p>{row['caution']}</p></div>
 <div class="infusion-band band-danger"><h3>Danger and limits</h3><p>{row['danger']}</p></div>
 </div><div class="infusion-followup"><p><b>Reassess:</b> {row['watch']}</p><p><b>Allow for timing:</b> {row['peak']}</p></div>
-<p class="source-note">Source review {data['revision'][:7]}: {' · '.join(links)}.</p></div></details>''')
+{mode_note}<p class="source-note">Source review {data['revision'][:7]}: {' · '.join(links)}.</p></div></details>''')
     return '\n'.join(cards)

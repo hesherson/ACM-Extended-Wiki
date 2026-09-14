@@ -25,7 +25,10 @@ try {
       const summaries = page.locator("details.dd > summary");
       for (let i = 0; i < await summaries.count(); i++) {
         const summary = summaries.nth(i);
-        await summary.evaluate(el => el.scrollIntoView({ block: "center", behavior: "instant" }));
+        await summary.evaluate(el => {
+          el.parentElement.open = false;
+          el.scrollIntoView({ block: "center", behavior: "instant" });
+        });
         await page.evaluate(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))));
         const before = await summary.boundingBox();
         const documentBefore = await summary.evaluate(el => el.getBoundingClientRect().top + scrollY);
@@ -83,6 +86,15 @@ try {
     if (width < 820) await page.locator("#mSearch").click();
     await page.locator("#q").fill("propofol infusion");
     assert(await page.locator('#qr a[href="access.html#infusion-propofol"]').count()>0, "Infusion rows missing from search");
+    await page.locator("#q").fill("magnesium push time");
+    assert(await page.locator('#qr a[href="access.html#slow-push-magnesium"]').count()>0, "Individual push times missing from search");
+    await page.locator("#q").fill("hardcore ventilation");
+    const settingResult = page.locator('#qr a[href="settings.html#hardcore-ventilation"]');
+    assert(await settingResult.count()>0, "Individual Hardcore settings missing from search");
+    await settingResult.click();
+    await page.waitForURL("**/settings.html#hardcore-ventilation");
+    assert(await page.locator("#hardcore-ventilation").evaluate(el => el.open), "Search target setting did not expand");
+    assert.equal(await page.locator("details[data-hardcore-setting]").count(), 21);
     await page.keyboard.press("Escape");
     await page.goto(pathToFileURL(resolve(root, "docs/accessibility.html")).href);
     assert.equal(await page.locator("h2").filter({hasText:/Screen brightness/i}).count(),0);

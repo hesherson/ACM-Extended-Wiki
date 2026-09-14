@@ -56,7 +56,7 @@ def render_print_reference():
         legend = ('<p class="print-legend"><b>IV</b> intravenous · <b>IO</b> intraosseous · <b>IM</b> intramuscular · '
                   '<b>IN</b> intranasal · <b>INH</b> inhaled · <b>PO</b> oral · <b>BUC</b> buccal<br>'
                   '<b>Reference amounts are game model amounts, not safe maxima.</b> Weight examples use 83 kg. '
-                  'Reassess delivery, current effect, breathing and pressure before repeating.</p>')
+                  'Check <a href="access.html#slow-medication-pushes">Hardcore push timing</a>, breathing and pressure before repeating.</p>')
         content = legend + table(['Medication','Use','Route','Stock / concentration','Game reference / action','Key cautions'], rows, [12,15,7,14,26,26], 'medication-print-table')
         if group['id'] == 'adjuncts':
             content += ('<p class="print-note"><b>Dedicated osmotherapy pushes:</b> 23.4% HTS, 30 mL: '

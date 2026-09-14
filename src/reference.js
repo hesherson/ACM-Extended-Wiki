@@ -53,7 +53,7 @@
     if (!id) return;
     var target = document.getElementById(id);
     if (!target) return;
-    for (var parent = target.parentElement; parent; parent = parent.parentElement) {
+    for (var parent = target; parent; parent = parent.parentElement) {
       if (parent.tagName === "DETAILS") parent.open = true;
     }
     requestAnimationFrame(function () { target.scrollIntoView({ block: "start" }); });

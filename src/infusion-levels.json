@@ -8,7 +8,9 @@
     "Constant medication rate actually reaching the patient; bag label and clamp position alone do not establish delivery.",
     "Zero starting concentration, default tuning and an 83 kg reference patient. Earlier doses and co-infusions change the result.",
     "Projection time is model time. Generalized and calcium/amiodarone Euler accumulators are approximated by continuous first-order curves unless the interface simulates the runtime timestep.",
-    "Default and maximum rate controls are visualization examples and plot limits, not administration recommendations."
+    "Default and maximum rate controls are visualization examples and plot limits, not administration recommendations.",
+    "Actual infusion flow, concentration accumulation and existing dose or combination effects remain active with Hardcore Medications off. The setting changes manual bolus rate handling and adds rapid push consequences; it does not disable these infusion models.",
+    "A slow push duration applies to the selected syringe volume and concentration. More medication over the same time increases mg/min; the suggested Hardcore duration is not a no-effect or no-toxicity cutoff."
   ],
   "formulas": {
     "plateau": "admittedRateMgMin * inputFactor / effectiveClearance",
@@ -66,7 +68,11 @@
       ],
       "id": "amiodarone",
       "medication": "Amiodarone",
-      "meaning": "The 1–2.5 mg/L band is a debug reference. Fast infusion hypotension reads the eased mg/min rate, while cumulative exposure and active medication burden have separate rhythm and overdose gates."
+      "meaning": "The 1–2.5 mg/L band is a debug reference. Fast infusion hypotension reads the eased mg/min rate, while cumulative exposure and active medication burden have separate rhythm and overdose gates.",
+      "modeNote": "Hardcore Medications uses the selected manual push time for the custom rate drive. With it off, that drive is spread over at least 600 s. Physical infusion rates and cumulative overdose remain active in either mode. The 300 s syringe default is not a guarantee of staying below the rate threshold.",
+      "modeHref": "access.html#slow-push-amiodarone",
+      "hardcorePushDefaultSeconds": 300,
+      "normalBolusDriveMinimumSeconds": 600
     },
     {
       "model": "exponential-proxy",
@@ -114,7 +120,9 @@
       ],
       "id": "epinephrine",
       "medication": "Epinephrine",
-      "meaning": "The debug concentration is display-only. Heart rate and pressor effects read admitted delivery and native effect, while arrhythmia gates also depend on rhythm, pulse, rate and sustained exposure."
+      "meaning": "The debug concentration is display-only. Heart rate and pressor effects read admitted delivery and native effect, while arrhythmia gates also depend on rhythm, pulse, rate and sustained exposure.",
+      "modeNote": "The displayed rates describe an infusion in either mode. Manual epinephrine uses a separate bolus support path, so its syringe push cannot be read directly from this concentration plot.",
+      "modeHref": "access.html#slow-medication-pushes"
     },
     {
       "model": "exponential-proxy",
@@ -143,7 +151,11 @@
       ],
       "id": "norepinephrine",
       "medication": "Norepinephrine",
-      "meaning": "The debug concentration is display-only. Reassess pressure and perfusion when titrating; the configured starting band is 0.05–0.1 mcg/kg/min, or 4.15–8.3 mcg/min at 83 kg."
+      "meaning": "The debug concentration is display-only. Reassess pressure and perfusion when titrating; the configured starting band is 0.05–0.1 mcg/kg/min, or 4.15–8.3 mcg/min at 83 kg.",
+      "modeNote": "Hardcore Medications uses the selected manual push time. With it off, the custom bolus drive is spread over at least 60 s. Physical infusion delivery and its perfusion gates remain active in either mode.",
+      "modeHref": "access.html#slow-push-norepinephrine",
+      "hardcorePushDefaultSeconds": 60,
+      "normalBolusDriveMinimumSeconds": 60
     },
     {
       "model": "one-compartment",
@@ -222,7 +234,11 @@
           "condition": "The esmolol concentration proxy is above 0.1 mcg/mL."
         }
       ],
-      "legacyHalfLifeNote": "The old 330 s configuration value is not read by the current concentration accumulator. Current washout is calculated from clearance and 0.7 L/kg distribution."
+      "legacyHalfLifeNote": "The old 330 s configuration value is not read by the current concentration accumulator. Current washout is calculated from clearance and 0.7 L/kg distribution.",
+      "modeNote": "The serum accumulator and its seizure or cardiac toxicity remain active in either mode. Hardcore Medications uses the selected manual push time; with it off, the custom bolus input is spread over at least 120 s. Infusions retain their actual delivery rate.",
+      "modeHref": "access.html#slow-push-lidocaine",
+      "hardcorePushDefaultSeconds": 60,
+      "normalBolusDriveMinimumSeconds": 120
     },
     {
       "model": "exponential-proxy",
@@ -251,7 +267,10 @@
       ],
       "id": "ketamine",
       "medication": "Ketamine",
-      "meaning": "The debug concentration does not determine hypnosis. Sedation reads active native ketamine effect normalized to an induction reference, plus the effects of other hypnotics and opioid adjuncts."
+      "meaning": "The debug concentration does not determine hypnosis. Sedation reads active native ketamine effect normalized to an induction reference, plus the effects of other hypnotics and opioid adjuncts.",
+      "modeNote": "Hardcore Medications adds the rapid manual push consequence; dose-dependent sedation, shock sensitivity and combined drug effects remain with it off. The 30 s syringe default is separate from the native 5 s effect peak and this display-only infusion proxy.",
+      "modeHref": "access.html#slow-push-ketamine",
+      "hardcorePushDefaultSeconds": 30
     },
     {
       "model": "exponential-proxy",
@@ -309,7 +328,10 @@
       ],
       "id": "fentanyl",
       "medication": "Fentanyl",
-      "meaning": "The debug concentration does not set the analgesia or respiratory-depression threshold. Active native opioid exposure, other opioids and sedatives determine those effects."
+      "meaning": "The debug concentration does not set the analgesia or respiratory-depression threshold. Active native opioid exposure, other opioids and sedatives determine those effects.",
+      "modeNote": "Hardcore Medications adds a short-lived rapid manual push penalty to breathing and vascular resistance. It excludes true infusion delivery from this added penalty. Native opioid depression, interactions and overdose remain in either mode; the 30 s syringe default is not a dose limit.",
+      "modeHref": "access.html#slow-push-fentanyl",
+      "hardcorePushDefaultSeconds": 30
     },
     {
       "model": "exponential-proxy",
@@ -338,7 +360,10 @@
       ],
       "id": "morphine",
       "medication": "Morphine",
-      "meaning": "The debug concentration is display-only. Analgesia, respiratory depression and the combined opioid overdose evaluator read active native medication exposure."
+      "meaning": "The debug concentration is display-only. Analgesia, respiratory depression and the combined opioid overdose evaluator read active native medication exposure.",
+      "modeNote": "Hardcore Medications adds a short-lived rapid manual push penalty to breathing and vascular resistance. It excludes true infusion delivery from this added penalty. Native opioid depression, interactions and overdose remain in either mode; the 60 s syringe default is not a dose limit.",
+      "modeHref": "access.html#slow-push-morphine",
+      "hardcorePushDefaultSeconds": 60
     },
     {
       "model": "exponential-proxy",
@@ -367,7 +392,10 @@
       ],
       "id": "midazolam",
       "medication": "Midazolam",
-      "meaning": "The debug concentration does not prove adequate sedation. Hypnosis reads active IV and IM native effects; propofol and opioid adjuncts can increase the combined response."
+      "meaning": "The debug concentration does not prove adequate sedation. Hypnosis reads active IV and IM native effects; propofol and opioid adjuncts can increase the combined response.",
+      "modeNote": "Hardcore Medications adds a short-lived rapid manual push penalty to breathing and vascular resistance. It excludes true infusion delivery from this added penalty. Sedation and drug interactions remain with it off; the 60 s syringe default does not replace the slower native effect peak.",
+      "modeHref": "access.html#slow-push-midazolam",
+      "hardcorePushDefaultSeconds": 60
     },
     {
       "model": "exponential-proxy",
@@ -463,7 +491,11 @@
       "id": "calcium-chloride",
       "medication": "CalciumChloride",
       "sharedAccumulator": "elemental-calcium",
-      "meaning": "This is elemental calcium excess above baseline, not measured total serum calcium or the ionized-calcium replacement state. Both calcium salts contribute to the same accumulator. The worse of the fast-rate and accumulation penalties controls toxicity."
+      "meaning": "This is elemental calcium excess above baseline, not measured total serum calcium or the ionized-calcium replacement state. Both calcium salts contribute to the same accumulator. The worse of the fast-rate and accumulation penalties controls toxicity.",
+      "modeNote": "The shared excess-calcium accumulator and physical infusion rate penalty remain active in either mode. Hardcore Medications uses the selected manual push time; with it off, the custom bolus drive is spread over at least 300 s. Replacement credit remains dose-dependent.",
+      "modeHref": "access.html#slow-push-calcium-chloride",
+      "hardcorePushDefaultSeconds": 300,
+      "normalBolusDriveMinimumSeconds": 300
     },
     {
       "model": "exponential-proxy",
@@ -530,7 +562,11 @@
       "id": "calcium-gluconate",
       "medication": "CalciumGluconate",
       "sharedAccumulator": "elemental-calcium",
-      "meaning": "This is elemental calcium excess above baseline, not measured total serum calcium or the ionized-calcium replacement state. Both calcium salts contribute to the same accumulator. The worse of the fast-rate and accumulation penalties controls toxicity."
+      "meaning": "This is elemental calcium excess above baseline, not measured total serum calcium or the ionized-calcium replacement state. Both calcium salts contribute to the same accumulator. The worse of the fast-rate and accumulation penalties controls toxicity.",
+      "modeNote": "The shared excess-calcium accumulator and physical infusion rate penalty remain active in either mode. Hardcore Medications uses the selected manual push time; with it off, the custom bolus drive is spread over at least 180 s. Its 120 s syringe default is not a guarantee of staying below the rate threshold.",
+      "modeHref": "access.html#slow-push-calcium-gluconate",
+      "hardcorePushDefaultSeconds": 120,
+      "normalBolusDriveMinimumSeconds": 180
     },
     {
       "model": "exponential-proxy",
@@ -594,7 +630,10 @@
         "unit": "induction equivalent",
         "value": 1,
         "meaning": "One full propofol native effect contributes one induction equivalent before combined-drug modifiers."
-      }
+      },
+      "modeNote": "Hardcore Medications adds a short-lived rapid manual push penalty to breathing and vascular resistance. It excludes true infusion delivery from this added penalty. Native hypnosis, pressure effects and drug interactions remain with it off; the 30 s syringe default is not a dose limit.",
+      "modeHref": "access.html#slow-push-propofol",
+      "hardcorePushDefaultSeconds": 30
     },
     {
       "model": "one-compartment",
@@ -636,7 +675,11 @@
       ],
       "id": "esmolol",
       "medication": "Esmolol",
-      "meaning": "The 0.5–2 mcg/mL band is a configured debug reference; concentration above 2 drives additional bradycardia and pressure loss, reaching full depth at 5. Native rhythm control remains separate. Prior admitted doses change the starting level."
+      "meaning": "The 0.5–2 mcg/mL band is a configured debug reference; concentration above 2 drives additional bradycardia and pressure loss, reaching full depth at 5. Native rhythm control remains separate. Prior admitted doses change the starting level.",
+      "modeNote": "The serum accumulator, native rate control and overdose effects remain active in either mode. Hardcore Medications uses the selected manual push time; with it off, the custom bolus input is spread over at least 60 s. Infusions retain their actual delivery rate.",
+      "modeHref": "access.html#slow-push-esmolol",
+      "hardcorePushDefaultSeconds": 60,
+      "normalBolusDriveMinimumSeconds": 60
     },
     {
       "model": "exponential-proxy",
@@ -686,7 +729,11 @@
       "rateHazardEasing": {
         "onsetSec": 15,
         "offsetSec": 35
-      }
+      },
+      "modeNote": "The fast infusion penalty remains active in either mode. Hardcore Medications uses the selected manual push time; with it off, the custom bolus drive is spread over at least 300 s. Dose-dependent rhythm treatment and native medication timing remain separate.",
+      "modeHref": "access.html#slow-push-magnesium",
+      "hardcorePushDefaultSeconds": 300,
+      "normalBolusDriveMinimumSeconds": 300
     },
     {
       "model": "none",
@@ -776,5 +823,15 @@
         "requiresTbiState": true
       }
     }
-  ]
+  ],
+  "rateReviewRevision": "bc90fc7661fa6612cef5f4382f3b181fd5868f11",
+  "rateReviewSources": [
+    "addons/acm_extended/functions/fn_medicationDriveAdd.sqf",
+    "addons/acm_extended/functions/fn_medicationDriveTick.sqf",
+    "addons/acm_extended/functions/fn_circHandle.sqf",
+    "addons/acm_extended/functions/fn_hardcoreMedicationRateEffect.sqf",
+    "addons/acm_extended/functions/fn_medicationSuggestedPushSec.sqf",
+    "addons/acm_extended/functions/fn_sedationPhysiology.sqf"
+  ],
+  "modeNote": "Actual infusion flow, concentration accumulation and existing dose or combination effects remain active with Hardcore Medications off. The setting changes manual bolus rate handling and adds rapid push consequences; it does not disable these infusion models."
 }

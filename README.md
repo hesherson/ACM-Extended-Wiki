@@ -177,3 +177,14 @@ The mixture workbench demonstrates five preparations using the original layered 
 The sources for this update are pinned to ACM Extended dev `98d18bb3f60dc9be8cdaf4a43419bb57483c3a3f`; this is a game reference, not a claim that a debug reference band guarantees a safe dose. `src/mixture_guide.py` contains the preparation descriptions, source links and recipes. `src/mixture-guide.js` and `src/mixture-guide.css` provide interaction and layout. Original syringe provenance is recorded in `MOD-ASSET-SOURCES.md`.
 
 `src/route_lists.py` and `src/route-lists.css` stack IV and IO separately in medication route facts, vertical peak lists, timing rows and printable medication Route columns. Shared qualifications are preserved. Run `node scripts/check_infusion_workbench.mjs` with the existing checks. It verifies model reference values, units, stop behavior, measured quantities, shared flow, all 18 selections, manual steps, no-JavaScript content and reflow at narrow widths with enlarged text.
+
+
+## Version 1.2.1 and Hardcore medication pushes
+
+The shared site version is 1.2.1. The settings reference separates 21 Hardcore switches, with defaults, setting scope and source-reviewed on/off comparisons. It distinguishes active changes from inherited controls that have limited or no additional effect in the current Extended runtime. These additions follow ACM Extended dev `bc90fc7661fa6612cef5f4382f3b181fd5868f11`. Other article sections retain their stated review pins.
+
+`src/hardcore_medications.py` supplies the 14 suggested IV/IO push times, a linked note on each affected medication card and the full slow-push guide in IV access. The guide covers current target volume, 1–300 second selection, compound defaults, incremental Stop Push, 0.01 mL retention, continuous flow with menus closed, the corner syringe, restart behavior, distance/vehicle constraints and flush consolidation. `src/hardcore-reference.css` uses the existing dark/gold hierarchy and responsive cards.
+
+The current code keeps actual infusion-rate effects and concentration accumulation active with Hardcore Medications off. The switch changes manual bolus timing, enables persistent incremental IV/IO pushing and adds rapid-push loads. Normal-mode custom bolus windows are separate from the visible timer and the listed Hardcore defaults. The infusion JSON records this newer mode review without changing the validated concentration equations or older baseline review. IM retains its original administration path.
+
+Defaults are not no-risk limits: they apply to the current target volume, so medication mass and concentration still matter. For example, 150 mg amiodarone over its 300-second default delivers 30 mg/min, above the unchanged 25 mg/min fast-rate threshold. The website documents this source behavior; it does not change the mod runtime.

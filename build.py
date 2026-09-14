@@ -25,6 +25,7 @@ from glossary_terms import TERMS
 from infusion_guide import render_infusion_guide
 from infusion_explorer import render_infusion_explorer
 from mixture_guide import render_mixture_guide
+from hardcore_medications import render_slow_push_guide, add_push_card_notes
 from responsive_tables import responsive_tables
 from route_lists import stack_route_lists
 from print_reference import render_print_reference
@@ -33,7 +34,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(ROOT, "src")
 OUT = os.path.join(ROOT, "docs")
 
-VERSION = "1.2.0-r0"
+VERSION = "1.2.1"
 PUBLIC_URL = "https://hesherson.github.io/ACM-Extended-Wiki/"
 REVIEWED = {"quick-reference", "airway", "ventilator", "accessibility", "zeus", "glossary", "ov_tbi", "ov_chest", "ov_oxygen", "ov_bleeding", "tbi", "obtunded", "blast", "index", "access", "medications", "descriptors", "fluids", "ov_access", "circulation", "settings", "menu", "ov_intro", "ov_circ", "oxygen", "flight", "bleeding", "debug"}
 
@@ -510,6 +511,23 @@ def index_page(slug, fname, title, body):
         text = re.sub(r"<[^>]+>", " ", match.group(3))
         recs.append({"p": title, "f": fname, "a": match.group(1), "h": match.group(2) + " infusion",
                      "t": re.sub(r"\s+", " ", text).strip()[:1500]})
+    # Keep individual settings and push times discoverable beyond the section excerpt.
+    for match in re.finditer(r'<details\b(?=[^>]* id="([^"]+)")(?=[^>]* data-hardcore-setting=)[^>]*>(.*?)</details>', body, re.S):
+        heading = re.search(r'<span class="dd-name">(.*?)</span>', match.group(2), re.S)
+        if not heading:
+            continue
+        text = re.sub(r"<[^>]+>", " ", match.group(2))
+        recs.append({"p": title, "f": fname, "a": match.group(1),
+                     "h": re.sub(r"<[^>]+>", "", heading.group(1)),
+                     "t": re.sub(r"\s+", " ", text).strip()[:1800]})
+    for match in re.finditer(r'<tr\b(?=[^>]* id="(slow-push-[^"]+)")(?=[^>]* data-push-default=)[^>]*>(.*?)</tr>', body, re.S):
+        heading = re.search(r'<th\b[^>]*>.*?<a\b[^>]*>(.*?)</a>', match.group(2), re.S)
+        if not heading:
+            continue
+        text = re.sub(r"<[^>]+>", " ", match.group(2))
+        recs.append({"p": title, "f": fname, "a": match.group(1),
+                     "h": re.sub(r"<[^>]+>", "", heading.group(1)) + " push time",
+                     "t": re.sub(r"\s+", " ", text).strip()[:1500]})
     return recs
 
 
@@ -589,7 +607,7 @@ def build():
     if os.path.isfile(retired):
         os.remove(retired)
     css = "\n".join(open(os.path.join(SRC, name), encoding="utf-8").read()
-                    for name in ("_pillar.css", "visual-reference.css", "slideshow.css", "capnography.css", "rhythm-waveforms.css", "chest-seal.css", "languages.css", "infusion-guide.css", "infusion-explorer.css", "mixture-guide.css", "route-lists.css", "mobile-layout.css", "print-reference.css")
+                    for name in ("_pillar.css", "visual-reference.css", "slideshow.css", "capnography.css", "rhythm-waveforms.css", "chest-seal.css", "languages.css", "infusion-guide.css", "infusion-explorer.css", "mixture-guide.css", "hardcore-reference.css", "route-lists.css", "mobile-layout.css", "print-reference.css")
                     if os.path.isfile(os.path.join(SRC, name)))
     reference_js = "\n".join(open(os.path.join(SRC, name), encoding="utf-8").read()
                              for name in ("reference.js", "slideshow.js", "chart-readouts.js", "suction-guide.js", "capnography.js", "rhythm-waveforms.js", "chest-seal.js", "languages.js", "infusion-guide.js", "infusion-explorer.js", "mixture-guide.js", "print-reference.js")
@@ -634,11 +652,14 @@ def build():
                 body = body.replace("<!-- INFUSION_RANGES -->", render_infusion_guide())
                 body = body.replace("<!-- INFUSION_EXPLORER -->", render_infusion_explorer())
                 body = body.replace("<!-- MEDICATION_MIXTURES -->", render_mixture_guide())
+                body = body.replace("<!-- SLOW_PUSH_GUIDE -->", render_slow_push_guide())
         if slug not in REVIEWED:
             body = ('<div class="article-status">This article is retained from the previous guide '
                     'and awaits review against the current fork. See the '
                     '<a href="index.html#article-revision">article revision notes</a>.</div>') + body
         body = body.replace("PILLAR", "ACM EXTENDED")
+        if slug == "medications":
+            body = add_push_card_notes(body)
         body = stack_route_lists(body)
         body, miss = apply_terms(body)
         badterms += [(slug, m) for m in miss]

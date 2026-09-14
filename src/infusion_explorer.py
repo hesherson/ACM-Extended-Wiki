@@ -23,6 +23,7 @@ def render_infusion_explorer():
     payload = json.dumps(data, ensure_ascii=False).replace('<', '\\u003c')
     return f'''<div class="infusion-explorer" id="infusion-explorer" data-infusion-explorer>
 <div class="explorer-heading"><div><h3>Explore delivery and concentration</h3><p>Choose a medication, change its actual delivered rate and inspect how its game value accumulates or clears.</p></div><a href="#medication-mixtures" class="explorer-link">Prepare a mixture &gt;</a></div>
+<p class="infusion-mode-note">{escape(data["modeNote"])} <a href="#slow-medication-pushes">Manual push guidance &gt;</a></p>
 <div class="explorer-controls" data-explorer-controls hidden>
 <label class="explorer-drug"><span>Medication</span><select data-level-drug>{options}</select></label>
 <label data-model-control><span>Delivered rate <span data-rate-unit>(mg/min)</span></span><input data-level-rate type="number" min="0" step="any" value="15" inputmode="decimal"></label>
@@ -48,6 +49,6 @@ def render_infusion_explorer():
 </div>
 <noscript><p>Enable JavaScript for the concentration explorer. Every medication's reference band, timing and cautions remain available in the expandable guide below.</p></noscript>
 <details class="explorer-assumptions"><summary>What these numbers can tell you</summary><div><p><strong>There is no universal ideal serum level.</strong> Most bands here are configured debug references. Sedation, pressor response and overdose may read different variables. Lidocaine, esmolol and calcium have explicit concentration or excess thresholds; those boundaries are not a guarantee of safety below them.</p><p>The curve starts at zero, holds actual admitted delivery constant and uses the default configuration. It estimates the source's accumulation in one second steps, including calcium and amiodarone input easing. A prior bolus, changing perfusion, lost IV fluid, addon settings or another drug can change the live result. Calcium is an excess accumulator shared by both salts, not a laboratory calcium measurement. Magnesium's debug band does not align with its raw proxy scale at native treatment rates.</p><p><strong>IV and IO:</strong> the same amount admitted to circulation feeds this estimate. Check the site's actual delivery; a leaking IV can drain a bag without admitting that entire dose.</p></div></details>
-<p class="source-note">Concentration and mixture review: <a href="https://github.com/{data['repository']}/tree/{data['revision']}">ACM Extended dev {data['revision'][:7]}</a>. Individual source links accompany each medication below.</p>
+<p class="source-note">Concentration and mixture review: <a href="https://github.com/{data['repository']}/tree/{data['revision']}">ACM Extended dev {data['revision'][:7]}</a>. Manual push comparison: <a href="https://github.com/{data['repository']}/blob/{data['rateReviewRevision']}/addons/acm_extended/functions/fn_medicationDriveAdd.sqf">{data['rateReviewRevision'][:7]}</a>. Individual source links accompany each medication below.</p>
 <script type="application/json" id="infusion-level-data">{payload}</script>
 </div>'''

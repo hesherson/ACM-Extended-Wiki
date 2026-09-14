@@ -146,6 +146,7 @@ def render_mixture_guide():
     return f'''<section class="sec mixture-guide" id="medication-mixtures" data-mixture-guide>
 <div class="sec-head"><h2>Medication mixtures and preparation</h2></div>
 <p>Choose a recipe to walk through the in-game controls and watch the syringe fill. The examples use the mod's stock concentrations and preparation rules. Each component keeps its own dose and effects after it reaches the patient.</p>
+<p class="infusion-mode-note">With <a href="settings.html#hardcore-medications">Hardcore Medications</a> on, compound syringes use the longest component push time. Ketofol defaults to <b>30 seconds for the current target volume</b>. Read <a href="#slow-medication-pushes">how to set the push rate, stop a partial syringe and continue with menus closed</a>.</p>
 <div class="mixture-picker" hidden><label for="mixture-recipe-picker">Preparation example</label><select id="mixture-recipe-picker" data-mixture-picker>{options}</select></div>
 {''.join(_recipe(r) for r in RECIPES)}
 <div class="mixture-interactions"><h3>What the combinations actually do</h3>
