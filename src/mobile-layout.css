@@ -62,3 +62,6 @@
  .main table.t .table-value{display:block;overflow-wrap:anywhere;white-space:normal}
  .main table.t .gl,.main table.t .nowrap{white-space:normal}
 }
+
+/* Long terminology must also fit narrow phones with enlarged text. */
+@media(max-width:760px){.main{overflow-wrap:anywhere}}

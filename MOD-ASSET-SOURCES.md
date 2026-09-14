@@ -166,3 +166,24 @@ Revision: `488a5e54efd10e5289245bcb2f7db7a40bbabcb0`. Eleven additional original
 Infusion ranges are authored in `src/infusion-ranges.json` and rendered into static HTML by `src/infusion_guide.py`. The renderer links the exact source for each medication. Key audits include initialized drug physiology values, the circulation loop, native medication configuration, active family toxicity, conditional instability, drug interactions, sedation components and osmotherapy. Amiodarone’s initialized fast-rate onset is 25 mg/min (not its 20 mg/min fallback); magnesium’s is 800 mg/min (not its 300 mg/min fallback). The generalized debug PK bands are display-only.
 
 Derived steady rates use the implemented clearance: esmolol 3.5 L/min and lidocaine 0.40 L/min, with lidocaine shock ×0.6 and esmolol ×0.7 modifiers. Calcium salt rates divide the shared elemental thresholds by 0.273 for chloride or 0.093 for gluconate. These are model calculations, not clinical dosing limits. References and danger notes explicitly distinguish rate, active effect and accumulation.
+
+## Syringe images for preparation examples
+
+Revision: `98d18bb3f60dc9be8cdaf4a43419bb57483c3a3f`. The supplied ACM archive contains the same eight syringe PAA assets as this revision of `hesherson/ACM-Extended`; each local file was checked against its Git blob SHA before conversion. `paa2png.py` decodes the original DXT5 mipmap. The PNGs retain their original size, transparent canvas and partial barrel transparency without cropping, recoloring or replacement artwork.
+
+All PNGs are in `src/img/syringes/`. Component images are 1024 × 1024 RGBA; assembled inventory images are 256 × 256 RGBA. Their combined size is approximately 113 KiB.
+
+| Website PNG | Original repository path | Verified Git blob SHA |
+| --- | --- | --- |
+| `syringe_10_backbit_ca.png` | `addons/circulation/ui/syringe/syringe_10_backbit_ca.paa` | `e44bfe0706cabdcd2ac2378cc09b33d55e25d528` |
+| `syringe_10_barrel_ca.png` | `addons/circulation/ui/syringe/syringe_10_barrel_ca.paa` | `493d1feb959687c63dd345ac09888e94745ad90b` |
+| `syringe_10_plunger_ca.png` | `addons/circulation/ui/syringe/syringe_10_plunger_ca.paa` | `836b45eff6a3f53939c916e7689d4575ff4891fc` |
+| `syringe_1_backbit_ca.png` | `addons/circulation/ui/syringe/syringe_1_backbit_ca.paa` | `3c005857298ad65a8bff69ebdc4a7e1efb5e55d0` |
+| `syringe_1_barrel_ca.png` | `addons/circulation/ui/syringe/syringe_1_barrel_ca.paa` | `dbf9d30d6f5778217446e17ba90f40b20d2cd212` |
+| `syringe_1_plunger_ca.png` | `addons/circulation/ui/syringe/syringe_1_plunger_ca.paa` | `c9245a7a752d2f322d91e380791343acc069b52f` |
+| `syringe_10_ca.png` | `addons/circulation/ui/syringe_10_ca.paa` | `5e95f0a7dd5b133de43079ed45ea680c48abdc18` |
+| `syringe_1_ca.png` | `addons/circulation/ui/syringe_1_ca.paa` | `8ea08b16fba2f0a1209855039add64d6b2af590d` |
+
+Layer composition keeps the backbit fixed behind the plunger and the barrel fixed in front. Full 10 mL plunger travel is 256 pixels on the original 1024-pixel canvas, calculated from the native 10.5-unit travel divided by the 42-unit image height. The 1 mL travel is approximately 248.69 pixels, following the carousel's 10.2/10.5 scale. The plunger moves downward from the zero-volume position as the syringe fills. A viewport must allow room below the original square so the fully withdrawn thumb rest is visible.
+
+Geometry was checked against the same revision's `SyringeDraw_Dialog.hpp`, `SyringeDraw_defines.hpp` and `fn_skCarouselRender.sqf`. The images show original game equipment; any website dose markers or fill colors are explanatory overlays. All eight decoded PNGs were inspected visually.

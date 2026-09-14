@@ -885,7 +885,7 @@ footer{line-height:1.6}
 }
 @media(prefers-reduced-motion:reduce){
  html{scroll-behavior:auto}
- *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+ *,*::before,*::after{animation-duration:.01ms!important;transition-duration:0s!important}
 }
 @media print{
  body{color:#111;background:white}

@@ -1,0 +1,780 @@
+{
+  "schemaVersion": 1,
+  "revision": "98d18bb3f60dc9be8cdaf4a43419bb57483c3a3f",
+  "repository": "hesherson/ACM-Extended",
+  "referenceWeightKg": 83,
+  "notice": "Game model references only. These are concentration proxies or effect references, not measured clinical serum targets. A display band does not establish a safe dose. Read actual response, intended total amount and separate rate or combination hazards.",
+  "projectionAssumptions": [
+    "Constant medication rate actually reaching the patient; bag label and clamp position alone do not establish delivery.",
+    "Zero starting concentration, default tuning and an 83 kg reference patient. Earlier doses and co-infusions change the result.",
+    "Projection time is model time. Generalized and calcium/amiodarone Euler accumulators are approximated by continuous first-order curves unless the interface simulates the runtime timestep.",
+    "Default and maximum rate controls are visualization examples and plot limits, not administration recommendations."
+  ],
+  "formulas": {
+    "plateau": "admittedRateMgMin * inputFactor / effectiveClearance",
+    "exponentialProxy": "k = 0.693 / halfLifeSec; level(t) = plateau + (initialLevel - plateau) * exp(-k * t)",
+    "oneCompartment": "Vd = max(weightKg, 30) * volumeLPerKg; k = effectiveClearance / (60 * Vd); level(t) = plateau + (initialLevel - plateau) * exp(-k * t)",
+    "clearanceModifiers": "For lidocaine, effectiveClearance = clearance * (shock ? 0.6 : 1) * (esmololProxy > 0.1 ? 0.7 : 1). Modifier product is bounded below at 0.05 in the runtime.",
+    "easedInput": "Calcium and amiodarone first ease the admitted rate with 15 s onset and 35 s offset. Their accumulators then approach the plateau of that changing input.",
+    "displayUnits": "mcg/mL is numerically equal to mg/L. Calcium inputFactor converts salt mass into elemental calcium. Magnesium preserves the configured game label without introducing a conversion absent from the runtime."
+  },
+  "rows": [
+    {
+      "model": "exponential-proxy",
+      "kind": "display-proxy",
+      "unit": "mg/L",
+      "bandLow": 1,
+      "bandHigh": 2.5,
+      "therapeuticDisplayLabel": "Configured debug reference only",
+      "clearance": 6,
+      "clearanceUnit": "(mg/min) per proxy unit",
+      "halfLifeSec": 420,
+      "volumeLPerKg": null,
+      "inputFactor": 1,
+      "initialLevel": 0,
+      "chartMax": 6,
+      "defaultRateMgMin": 15,
+      "rateMaxMgMin": 120,
+      "rateUnit": "mg/min",
+      "inputEasing": {
+        "onsetSec": 15,
+        "offsetSec": 35
+      },
+      "thresholds": [],
+      "rateThresholds": [
+        {
+          "value": 25,
+          "unit": "mg/min",
+          "label": "Fast delivery hypotension begins",
+          "purpose": "toxicity",
+          "comparison": ">",
+          "basis": "eased admitted amiodarone rate"
+        },
+        {
+          "value": 90,
+          "unit": "mg/min",
+          "label": "Fast delivery penalty reaches full depth",
+          "purpose": "toxicity",
+          "comparison": ">=",
+          "basis": "eased admitted amiodarone rate"
+        }
+      ],
+      "sourcePaths": [
+        "addons/acm_extended/functions/fn_initDrugPhysiologyConfig.sqf",
+        "addons/acm_extended/functions/fn_circHandle.sqf",
+        "addons/acm_extended/functions/fn_debugMenuCore.sqf"
+      ],
+      "id": "amiodarone",
+      "medication": "Amiodarone",
+      "meaning": "The 1–2.5 mg/L band is a debug reference. Fast infusion hypotension reads the eased mg/min rate, while cumulative exposure and active medication burden have separate rhythm and overdose gates."
+    },
+    {
+      "model": "exponential-proxy",
+      "kind": "display-proxy",
+      "unit": "mcg/mL",
+      "bandLow": 0.02,
+      "bandHigh": 0.2,
+      "therapeuticDisplayLabel": "Configured debug reference only",
+      "clearance": 0.3,
+      "clearanceUnit": "(mg/min) per proxy unit",
+      "halfLifeSec": 120,
+      "volumeLPerKg": null,
+      "inputFactor": 1,
+      "initialLevel": 0,
+      "chartMax": 0.4,
+      "defaultRateMgMin": 0.008,
+      "rateMaxMgMin": 0.06,
+      "rateUnit": "mcg/min",
+      "inputEasing": null,
+      "thresholds": [],
+      "rateThresholds": [
+        {
+          "value": 0.0005,
+          "unit": "mg/min",
+          "label": "Added heart rate drive begins",
+          "purpose": "effect",
+          "comparison": ">",
+          "basis": "eased epinephrine delivery",
+          "sourcePath": "addons/acm_extended/functions/fn_initDrugPhysiologyConfig.sqf"
+        },
+        {
+          "value": 0.015,
+          "unit": "mg/min",
+          "label": "Added heart rate drive reaches full depth",
+          "purpose": "effect",
+          "comparison": ">=",
+          "basis": "eased epinephrine delivery",
+          "sourcePath": "addons/acm_extended/functions/fn_initDrugPhysiologyConfig.sqf"
+        }
+      ],
+      "sourcePaths": [
+        "addons/acm_extended/functions/fn_initDrugPhysiologyConfig.sqf",
+        "addons/acm_extended/functions/fn_circHandle.sqf",
+        "addons/acm_extended/functions/fn_debugMenuCore.sqf"
+      ],
+      "id": "epinephrine",
+      "medication": "Epinephrine",
+      "meaning": "The debug concentration is display-only. Heart rate and pressor effects read admitted delivery and native effect, while arrhythmia gates also depend on rhythm, pulse, rate and sustained exposure."
+    },
+    {
+      "model": "exponential-proxy",
+      "kind": "display-proxy",
+      "unit": "mcg/mL",
+      "bandLow": 0.01,
+      "bandHigh": 0.1,
+      "therapeuticDisplayLabel": "Configured debug reference only",
+      "clearance": 0.25,
+      "clearanceUnit": "(mg/min) per proxy unit",
+      "halfLifeSec": 90,
+      "volumeLPerKg": null,
+      "inputFactor": 1,
+      "initialLevel": 0,
+      "chartMax": 0.2,
+      "defaultRateMgMin": 0.006,
+      "rateMaxMgMin": 0.05,
+      "rateUnit": "mcg/min",
+      "inputEasing": null,
+      "thresholds": [],
+      "rateThresholds": [],
+      "sourcePaths": [
+        "addons/acm_extended/functions/fn_initDrugPhysiologyConfig.sqf",
+        "addons/acm_extended/functions/fn_circHandle.sqf",
+        "addons/acm_extended/functions/fn_debugMenuCore.sqf"
+      ],
+      "id": "norepinephrine",
+      "medication": "Norepinephrine",
+      "meaning": "The debug concentration is display-only. Reassess pressure and perfusion when titrating; the configured starting band is 0.05–0.1 mcg/kg/min, or 4.15–8.3 mcg/min at 83 kg."
+    },
+    {
+      "model": "one-compartment",
+      "kind": "concentration-toxicity",
+      "unit": "mcg/mL",
+      "bandLow": null,
+      "bandHigh": 5,
+      "therapeuticDisplayLabel": "Debug caution begins at 5 mcg/mL",
+      "clearance": 0.4,
+      "clearanceUnit": "L/min",
+      "halfLifeSec": null,
+      "volumeLPerKg": 0.7,
+      "inputFactor": 1,
+      "initialLevel": 0,
+      "chartMax": 30,
+      "defaultRateMgMin": 2,
+      "rateMaxMgMin": 12,
+      "rateUnit": "mg/min",
+      "inputEasing": null,
+      "thresholds": [
+        {
+          "value": 5,
+          "label": "Early CNS label",
+          "purpose": "display-caution",
+          "comparison": ">="
+        },
+        {
+          "value": 10,
+          "label": "Seizure recurrence boundary",
+          "purpose": "recovery",
+          "comparison": ">=",
+          "detail": "The lidocaine seizure cause remains present at or above 10; it clears below 10 unless another cause persists."
+        },
+        {
+          "value": 12,
+          "label": "Seizure trigger",
+          "purpose": "toxicity",
+          "comparison": ">=",
+          "detail": "Triggering also depends on the seizure controller and suppression."
+        },
+        {
+          "value": 15,
+          "label": "Cardiac toxicity begins",
+          "purpose": "toxicity",
+          "comparison": ">="
+        },
+        {
+          "value": 25,
+          "label": "Arrest threshold",
+          "purpose": "toxicity",
+          "comparison": ">="
+        }
+      ],
+      "rateThresholds": [],
+      "sourcePaths": [
+        "addons/acm_extended/functions/fn_initDrugPhysiologyConfig.sqf",
+        "addons/acm_extended/functions/fn_circHandle.sqf",
+        "addons/acm_extended/functions/fn_debugMenuCore.sqf",
+        "addons/acm_extended/functions/fn_lidoToxTick.sqf"
+      ],
+      "id": "lidocaine",
+      "medication": "Lidocaine",
+      "bandUpperExclusive": true,
+      "meaning": "There is no configured lower serum target. The debug panel changes its label to early CNS at 5 mcg/mL, but the seizure trigger begins at 12. Native antiarrhythmic effect is tracked separately. Shock and esmolol slow clearance and raise the eventual plateau.",
+      "clearanceModifiers": [
+        {
+          "id": "shock",
+          "label": "Active shock",
+          "factor": 0.6,
+          "condition": "The custom shock state is active."
+        },
+        {
+          "id": "esmolol",
+          "label": "Esmolol on board",
+          "factor": 0.7,
+          "condition": "The esmolol concentration proxy is above 0.1 mcg/mL."
+        }
+      ],
+      "legacyHalfLifeNote": "The old 330 s configuration value is not read by the current concentration accumulator. Current washout is calculated from clearance and 0.7 L/kg distribution."
+    },
+    {
+      "model": "exponential-proxy",
+      "kind": "display-proxy",
+      "unit": "mcg/mL",
+      "bandLow": 0.5,
+      "bandHigh": 3,
+      "therapeuticDisplayLabel": "Configured debug reference only",
+      "clearance": 1.2,
+      "clearanceUnit": "(mg/min) per proxy unit",
+      "halfLifeSec": 180,
+      "volumeLPerKg": null,
+      "inputFactor": 1,
+      "initialLevel": 0,
+      "chartMax": 6,
+      "defaultRateMgMin": 1.2,
+      "rateMaxMgMin": 12,
+      "rateUnit": "mg/min",
+      "inputEasing": null,
+      "thresholds": [],
+      "rateThresholds": [],
+      "sourcePaths": [
+        "addons/acm_extended/functions/fn_initDrugPhysiologyConfig.sqf",
+        "addons/acm_extended/functions/fn_circHandle.sqf",
+        "addons/acm_extended/functions/fn_debugMenuCore.sqf"
+      ],
+      "id": "ketamine",
+      "medication": "Ketamine",
+      "meaning": "The debug concentration does not determine hypnosis. Sedation reads active native ketamine effect normalized to an induction reference, plus the effects of other hypnotics and opioid adjuncts."
+    },
+    {
+      "model": "exponential-proxy",
+      "kind": "display-proxy",
+      "unit": "mcg/mL",
+      "bandLow": 5,
+      "bandHigh": 15,
+      "therapeuticDisplayLabel": "Configured debug reference only",
+      "clearance": 0.2,
+      "clearanceUnit": "(mg/min) per proxy unit",
+      "halfLifeSec": 360,
+      "volumeLPerKg": null,
+      "inputFactor": 1,
+      "initialLevel": 0,
+      "chartMax": 30,
+      "defaultRateMgMin": 2,
+      "rateMaxMgMin": 10,
+      "rateUnit": "mg/min",
+      "inputEasing": null,
+      "thresholds": [],
+      "rateThresholds": [],
+      "sourcePaths": [
+        "addons/acm_extended/functions/fn_initDrugPhysiologyConfig.sqf",
+        "addons/acm_extended/functions/fn_circHandle.sqf",
+        "addons/acm_extended/functions/fn_debugMenuCore.sqf"
+      ],
+      "id": "txa",
+      "medication": "TXA",
+      "meaning": "This reference band is display-only. TXA is a finite treatment in the guide; its proxy is not a target to maintain with an indefinite infusion."
+    },
+    {
+      "model": "exponential-proxy",
+      "kind": "display-proxy",
+      "unit": "mcg/mL",
+      "bandLow": 0.001,
+      "bandHigh": 0.003,
+      "therapeuticDisplayLabel": "Configured debug reference only",
+      "clearance": 0.8,
+      "clearanceUnit": "(mg/min) per proxy unit",
+      "halfLifeSec": 200,
+      "volumeLPerKg": null,
+      "inputFactor": 1,
+      "initialLevel": 0,
+      "chartMax": 0.006,
+      "defaultRateMgMin": 0.0016,
+      "rateMaxMgMin": 0.01,
+      "rateUnit": "mcg/min",
+      "inputEasing": null,
+      "thresholds": [],
+      "rateThresholds": [],
+      "sourcePaths": [
+        "addons/acm_extended/functions/fn_initDrugPhysiologyConfig.sqf",
+        "addons/acm_extended/functions/fn_circHandle.sqf",
+        "addons/acm_extended/functions/fn_debugMenuCore.sqf"
+      ],
+      "id": "fentanyl",
+      "medication": "Fentanyl",
+      "meaning": "The debug concentration does not set the analgesia or respiratory-depression threshold. Active native opioid exposure, other opioids and sedatives determine those effects."
+    },
+    {
+      "model": "exponential-proxy",
+      "kind": "display-proxy",
+      "unit": "mcg/mL",
+      "bandLow": 0.01,
+      "bandHigh": 0.08,
+      "therapeuticDisplayLabel": "Configured debug reference only",
+      "clearance": 1.5,
+      "clearanceUnit": "(mg/min) per proxy unit",
+      "halfLifeSec": 300,
+      "volumeLPerKg": null,
+      "inputFactor": 1,
+      "initialLevel": 0,
+      "chartMax": 0.16,
+      "defaultRateMgMin": 0.06,
+      "rateMaxMgMin": 0.3,
+      "rateUnit": "mg/min",
+      "inputEasing": null,
+      "thresholds": [],
+      "rateThresholds": [],
+      "sourcePaths": [
+        "addons/acm_extended/functions/fn_initDrugPhysiologyConfig.sqf",
+        "addons/acm_extended/functions/fn_circHandle.sqf",
+        "addons/acm_extended/functions/fn_debugMenuCore.sqf"
+      ],
+      "id": "morphine",
+      "medication": "Morphine",
+      "meaning": "The debug concentration is display-only. Analgesia, respiratory depression and the combined opioid overdose evaluator read active native medication exposure."
+    },
+    {
+      "model": "exponential-proxy",
+      "kind": "display-proxy",
+      "unit": "mcg/mL",
+      "bandLow": 0.05,
+      "bandHigh": 0.25,
+      "therapeuticDisplayLabel": "Configured debug reference only",
+      "clearance": 0.5,
+      "clearanceUnit": "(mg/min) per proxy unit",
+      "halfLifeSec": 600,
+      "volumeLPerKg": null,
+      "inputFactor": 1,
+      "initialLevel": 0,
+      "chartMax": 0.5,
+      "defaultRateMgMin": 0.05,
+      "rateMaxMgMin": 0.4,
+      "rateUnit": "mg/min",
+      "inputEasing": null,
+      "thresholds": [],
+      "rateThresholds": [],
+      "sourcePaths": [
+        "addons/acm_extended/functions/fn_initDrugPhysiologyConfig.sqf",
+        "addons/acm_extended/functions/fn_circHandle.sqf",
+        "addons/acm_extended/functions/fn_debugMenuCore.sqf"
+      ],
+      "id": "midazolam",
+      "medication": "Midazolam",
+      "meaning": "The debug concentration does not prove adequate sedation. Hypnosis reads active IV and IM native effects; propofol and opioid adjuncts can increase the combined response."
+    },
+    {
+      "model": "exponential-proxy",
+      "kind": "display-proxy",
+      "unit": "mcg/mL",
+      "bandLow": 0.02,
+      "bandHigh": 0.15,
+      "therapeuticDisplayLabel": "Configured debug reference only",
+      "clearance": 0.6,
+      "clearanceUnit": "(mg/min) per proxy unit",
+      "halfLifeSec": 240,
+      "volumeLPerKg": null,
+      "inputFactor": 1,
+      "initialLevel": 0,
+      "chartMax": 0.3,
+      "defaultRateMgMin": 0.04,
+      "rateMaxMgMin": 0.24,
+      "rateUnit": "mg/min",
+      "inputEasing": null,
+      "thresholds": [],
+      "rateThresholds": [],
+      "sourcePaths": [
+        "addons/acm_extended/functions/fn_initDrugPhysiologyConfig.sqf",
+        "addons/acm_extended/functions/fn_circHandle.sqf",
+        "addons/acm_extended/functions/fn_debugMenuCore.sqf"
+      ],
+      "id": "ondansetron",
+      "medication": "Ondansetron",
+      "meaning": "This reference band is display-only, with no serum-based toxicity gate. Track the intended finite amount and pulse; there is no configured ideal continuous-treatment schedule."
+    },
+    {
+      "model": "exponential-proxy",
+      "kind": "calcium-excess",
+      "unit": "mg/dL excess",
+      "bandLow": null,
+      "bandHigh": 1,
+      "therapeuticDisplayLabel": "Excess-calcium toxicity boundary, not a replacement target",
+      "clearance": 60,
+      "clearanceUnit": "(mg/min) per proxy unit",
+      "halfLifeSec": 120,
+      "volumeLPerKg": null,
+      "inputFactor": 0.273,
+      "initialLevel": 0,
+      "chartMax": 5,
+      "defaultRateMgMin": 100,
+      "rateMaxMgMin": 1200,
+      "rateUnit": "mg/min",
+      "inputEasing": {
+        "onsetSec": 15,
+        "offsetSec": 35
+      },
+      "thresholds": [
+        {
+          "value": 1,
+          "label": "Excess-calcium toxicity begins",
+          "purpose": "toxicity",
+          "comparison": ">"
+        },
+        {
+          "value": 4,
+          "label": "Full arrest-capable toxicity depth",
+          "purpose": "toxicity",
+          "comparison": ">="
+        }
+      ],
+      "rateThresholds": [
+        {
+          "value": 366.30036630036625,
+          "unit": "mg/min",
+          "label": "Fast delivery penalty begins",
+          "purpose": "toxicity",
+          "comparison": ">",
+          "basis": "eased salt rate equivalent",
+          "elementalValue": 100,
+          "elementalUnit": "mg/min"
+        },
+        {
+          "value": 1025.6410256410256,
+          "unit": "mg/min",
+          "label": "Fast delivery penalty reaches full depth",
+          "purpose": "toxicity",
+          "comparison": ">=",
+          "basis": "eased salt rate equivalent",
+          "elementalValue": 280,
+          "elementalUnit": "mg/min"
+        }
+      ],
+      "sourcePaths": [
+        "addons/acm_extended/functions/fn_initDrugPhysiologyConfig.sqf",
+        "addons/acm_extended/functions/fn_circHandle.sqf",
+        "addons/acm_extended/functions/fn_debugMenuCore.sqf"
+      ],
+      "id": "calcium-chloride",
+      "medication": "CalciumChloride",
+      "sharedAccumulator": "elemental-calcium",
+      "meaning": "This is elemental calcium excess above baseline, not measured total serum calcium or the ionized-calcium replacement state. Both calcium salts contribute to the same accumulator. The worse of the fast-rate and accumulation penalties controls toxicity."
+    },
+    {
+      "model": "exponential-proxy",
+      "kind": "calcium-excess",
+      "unit": "mg/dL excess",
+      "bandLow": null,
+      "bandHigh": 1,
+      "therapeuticDisplayLabel": "Excess-calcium toxicity boundary, not a replacement target",
+      "clearance": 60,
+      "clearanceUnit": "(mg/min) per proxy unit",
+      "halfLifeSec": 120,
+      "volumeLPerKg": null,
+      "inputFactor": 0.093,
+      "initialLevel": 0,
+      "chartMax": 5,
+      "defaultRateMgMin": 300,
+      "rateMaxMgMin": 3500,
+      "rateUnit": "mg/min",
+      "inputEasing": {
+        "onsetSec": 15,
+        "offsetSec": 35
+      },
+      "thresholds": [
+        {
+          "value": 1,
+          "label": "Excess-calcium toxicity begins",
+          "purpose": "toxicity",
+          "comparison": ">"
+        },
+        {
+          "value": 4,
+          "label": "Full arrest-capable toxicity depth",
+          "purpose": "toxicity",
+          "comparison": ">="
+        }
+      ],
+      "rateThresholds": [
+        {
+          "value": 1075.268817204301,
+          "unit": "mg/min",
+          "label": "Fast delivery penalty begins",
+          "purpose": "toxicity",
+          "comparison": ">",
+          "basis": "eased salt rate equivalent",
+          "elementalValue": 100,
+          "elementalUnit": "mg/min"
+        },
+        {
+          "value": 3010.7526881720432,
+          "unit": "mg/min",
+          "label": "Fast delivery penalty reaches full depth",
+          "purpose": "toxicity",
+          "comparison": ">=",
+          "basis": "eased salt rate equivalent",
+          "elementalValue": 280,
+          "elementalUnit": "mg/min"
+        }
+      ],
+      "sourcePaths": [
+        "addons/acm_extended/functions/fn_initDrugPhysiologyConfig.sqf",
+        "addons/acm_extended/functions/fn_circHandle.sqf",
+        "addons/acm_extended/functions/fn_debugMenuCore.sqf"
+      ],
+      "id": "calcium-gluconate",
+      "medication": "CalciumGluconate",
+      "sharedAccumulator": "elemental-calcium",
+      "meaning": "This is elemental calcium excess above baseline, not measured total serum calcium or the ionized-calcium replacement state. Both calcium salts contribute to the same accumulator. The worse of the fast-rate and accumulation penalties controls toxicity."
+    },
+    {
+      "model": "exponential-proxy",
+      "kind": "display-proxy",
+      "unit": "mcg/mL",
+      "bandLow": 20,
+      "bandHigh": 150,
+      "therapeuticDisplayLabel": "Configured debug reference only",
+      "clearance": 0.15,
+      "clearanceUnit": "(mg/min) per proxy unit",
+      "halfLifeSec": 480,
+      "volumeLPerKg": null,
+      "inputFactor": 1,
+      "initialLevel": 0,
+      "chartMax": 300,
+      "defaultRateMgMin": 10,
+      "rateMaxMgMin": 50,
+      "rateUnit": "mg/min",
+      "inputEasing": null,
+      "thresholds": [],
+      "rateThresholds": [],
+      "sourcePaths": [
+        "addons/acm_extended/functions/fn_initDrugPhysiologyConfig.sqf",
+        "addons/acm_extended/functions/fn_circHandle.sqf",
+        "addons/acm_extended/functions/fn_debugMenuCore.sqf"
+      ],
+      "id": "ceftriaxone",
+      "medication": "Ceftriaxone",
+      "meaning": "This reference band is display-only and does not define a serum overdose boundary. Follow the intended finite antibiotic amount and the underlying treatment plan."
+    },
+    {
+      "model": "none",
+      "kind": "native-effect",
+      "unit": null,
+      "bandLow": null,
+      "bandHigh": null,
+      "therapeuticDisplayLabel": "No serum target configured",
+      "clearance": null,
+      "clearanceUnit": "(mg/min) per proxy unit",
+      "halfLifeSec": null,
+      "volumeLPerKg": null,
+      "inputFactor": 1,
+      "initialLevel": 0,
+      "chartMax": null,
+      "defaultRateMgMin": null,
+      "rateMaxMgMin": null,
+      "rateUnit": "mg/min",
+      "inputEasing": null,
+      "thresholds": [],
+      "rateThresholds": [],
+      "sourcePaths": [
+        "addons/acm_extended/functions/fn_initDrugPhysiologyConfig.sqf",
+        "addons/acm_extended/functions/fn_propofolOnBoard.sqf",
+        "addons/acm_extended/functions/fn_sedationComponents.sqf",
+        "addons/acm_extended/functions/fn_sedationPhysiology.sqf"
+      ],
+      "id": "propofol",
+      "medication": "Propofol",
+      "meaning": "Propofol has no entry in the generalized serum table. Its active native medication effect supplies induction equivalents to the combined sedation model. Use sedation, ventilation and pressure response, including the contributions of other drugs.",
+      "nativeReference": {
+        "unit": "induction equivalent",
+        "value": 1,
+        "meaning": "One full propofol native effect contributes one induction equivalent before combined-drug modifiers."
+      }
+    },
+    {
+      "model": "one-compartment",
+      "kind": "concentration-toxicity",
+      "unit": "mcg/mL",
+      "bandLow": 0.5,
+      "bandHigh": 2,
+      "therapeuticDisplayLabel": "Configured reference; toxicity above 2 mcg/mL",
+      "clearance": 3.5,
+      "clearanceUnit": "L/min",
+      "halfLifeSec": null,
+      "volumeLPerKg": 0.5,
+      "inputFactor": 1,
+      "initialLevel": 0,
+      "chartMax": 6,
+      "defaultRateMgMin": 3.5,
+      "rateMaxMgMin": 25,
+      "rateUnit": "mg/min",
+      "inputEasing": null,
+      "thresholds": [
+        {
+          "value": 2,
+          "label": "Heavy block and hypotension begin",
+          "purpose": "toxicity",
+          "comparison": ">"
+        },
+        {
+          "value": 5,
+          "label": "Full modeled overdose depth",
+          "purpose": "toxicity",
+          "comparison": ">="
+        }
+      ],
+      "rateThresholds": [],
+      "sourcePaths": [
+        "addons/acm_extended/functions/fn_initDrugPhysiologyConfig.sqf",
+        "addons/acm_extended/functions/fn_circHandle.sqf",
+        "addons/acm_extended/functions/fn_debugMenuCore.sqf"
+      ],
+      "id": "esmolol",
+      "medication": "Esmolol",
+      "meaning": "The 0.5–2 mcg/mL band is a configured debug reference; concentration above 2 drives additional bradycardia and pressure loss, reaching full depth at 5. Native rhythm control remains separate. Prior admitted doses change the starting level."
+    },
+    {
+      "model": "exponential-proxy",
+      "kind": "display-proxy",
+      "unit": "mg/dL (game proxy)",
+      "bandLow": 2,
+      "bandHigh": 4,
+      "therapeuticDisplayLabel": "Configured debug reference only",
+      "clearance": 0.8,
+      "clearanceUnit": "(mg/min) per proxy unit",
+      "halfLifeSec": 1800,
+      "volumeLPerKg": null,
+      "inputFactor": 1,
+      "initialLevel": 0,
+      "chartMax": 600,
+      "defaultRateMgMin": 200,
+      "rateMaxMgMin": 3000,
+      "rateUnit": "mg/min",
+      "inputEasing": null,
+      "thresholds": [],
+      "rateThresholds": [
+        {
+          "value": 800,
+          "unit": "mg/min",
+          "label": "Fast delivery penalty begins",
+          "purpose": "toxicity",
+          "comparison": ">",
+          "basis": "eased admitted magnesium rate"
+        },
+        {
+          "value": 2500,
+          "unit": "mg/min",
+          "label": "Fast delivery penalty reaches full depth",
+          "purpose": "toxicity",
+          "comparison": ">=",
+          "basis": "eased admitted magnesium rate"
+        }
+      ],
+      "sourcePaths": [
+        "addons/acm_extended/functions/fn_initDrugPhysiologyConfig.sqf",
+        "addons/acm_extended/functions/fn_circHandle.sqf",
+        "addons/acm_extended/functions/fn_debugMenuCore.sqf"
+      ],
+      "id": "magnesium",
+      "medication": "Magnesium",
+      "meaning": "The debug label is mg/dL, but the runtime applies admitted mg/min divided by 0.8 with no additional unit conversion. The 2–4 display band does not determine therapeutic effect or toxicity. The native finite-dose example is 200–400 mg/min; fast-rate penalties begin above 800 mg/min.",
+      "rateHazardEasing": {
+        "onsetSec": 15,
+        "offsetSec": 35
+      }
+    },
+    {
+      "model": "none",
+      "kind": "osmotherapy",
+      "unit": "mEq/L sodium proxy",
+      "bandLow": null,
+      "bandHigh": null,
+      "therapeuticDisplayLabel": "Sodium ceiling; no drug serum target configured",
+      "clearance": null,
+      "clearanceUnit": "(mg/min) per proxy unit",
+      "halfLifeSec": null,
+      "volumeLPerKg": null,
+      "inputFactor": 1,
+      "initialLevel": 0,
+      "chartMax": null,
+      "defaultRateMgMin": null,
+      "rateMaxMgMin": null,
+      "rateUnit": "mg/min",
+      "inputEasing": null,
+      "thresholds": [
+        {
+          "value": 160,
+          "label": "Sodium ceiling blocks further osmotherapy benefit",
+          "purpose": "loss-of-benefit",
+          "comparison": ">="
+        }
+      ],
+      "rateThresholds": [],
+      "sourcePaths": [
+        "addons/acm_extended/functions/fn_initDrugPhysiologyConfig.sqf",
+        "addons/acm_extended/functions/fn_tbiApplyOsmotherapy.sqf"
+      ],
+      "id": "hts3",
+      "medication": "HTS3",
+      "meaning": "HTS follows admitted volume and the TBI sodium proxy. The default 160 mEq/L sodium ceiling stops further osmotherapy benefit; it is a loss-of-benefit boundary, not an ideal sodium target.",
+      "osmotherapy": {
+        "referenceVolumeMl": 250,
+        "icpDropPerReferenceMmHg": 8,
+        "sodiumRisePerReference": 3,
+        "sodiumBaseline": 140,
+        "sodiumCeiling": 160,
+        "icpFloorMmHg": 10,
+        "requiresTbiState": true
+      }
+    },
+    {
+      "model": "none",
+      "kind": "osmotherapy",
+      "unit": "mEq/L sodium proxy",
+      "bandLow": null,
+      "bandHigh": null,
+      "therapeuticDisplayLabel": "Sodium ceiling; no drug serum target configured",
+      "clearance": null,
+      "clearanceUnit": "(mg/min) per proxy unit",
+      "halfLifeSec": null,
+      "volumeLPerKg": null,
+      "inputFactor": 1,
+      "initialLevel": 0,
+      "chartMax": null,
+      "defaultRateMgMin": null,
+      "rateMaxMgMin": null,
+      "rateUnit": "mg/min",
+      "inputEasing": null,
+      "thresholds": [
+        {
+          "value": 160,
+          "label": "Sodium ceiling blocks further osmotherapy benefit",
+          "purpose": "loss-of-benefit",
+          "comparison": ">="
+        }
+      ],
+      "rateThresholds": [],
+      "sourcePaths": [
+        "addons/acm_extended/functions/fn_initDrugPhysiologyConfig.sqf",
+        "addons/acm_extended/functions/fn_tbiApplyOsmotherapy.sqf"
+      ],
+      "id": "mannitol",
+      "medication": "Mannitol",
+      "meaning": "Mannitol has no modeled drug serum target in this path and its configured sodium rise is zero. An already reached sodium ceiling still blocks osmotherapy. Follow admitted volume, perfusion and ICP.",
+      "osmotherapy": {
+        "referenceVolumeMl": 500,
+        "icpDropPerReferenceMmHg": 8,
+        "sodiumRisePerReference": 0,
+        "sodiumBaseline": 140,
+        "sodiumCeiling": 160,
+        "icpFloorMmHg": 10,
+        "requiresTbiState": true
+      }
+    }
+  ]
+}

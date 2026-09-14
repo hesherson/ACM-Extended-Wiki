@@ -138,9 +138,9 @@ def render_print_reference():
            'Prior herniation can impose a lasting acute severity floor.</p>')
     tbi += table(['Structural grade (S)','Direct hypotension floor','Recovery MAP minimum','Recovery CPP minimum'], [
         ['Mild · S ≤ 0.35','60 mmHg','65 mmHg','No added minimum'],
-        ['Moderate · 0.35 < S ≤ 0.60','60 → 65 mmHg','65 mmHg','No added minimum'],
-        ['Severe · 0.60 < S ≤ 0.80','65 → 75 mmHg','65 → 75 mmHg','55 mmHg'],
-        ['Critical · 0.80 < S ≤ 1.00','75 → 85 mmHg','75 → 85 mmHg','60 mmHg'],
+        ['Moderate · 0.35 < S ≤ 0.60','60–65 mmHg','65 mmHg','No added minimum'],
+        ['Severe · 0.60 < S ≤ 0.80','65–75 mmHg','65–75 mmHg','55 mmHg'],
+        ['Critical · 0.80 < S ≤ 1.00','75–85 mmHg','75–85 mmHg','60 mmHg'],
     ], [29,23,25,23])
     tbi += ('<p class="print-note"><b>Read the ranges:</b> thresholds rise continuously with structural severity inside each band. '
             'Recovery MAP minimum = the greater of <b>65</b> and the hypotension floor. Below the recovery gate, low CPP can still add injury. '

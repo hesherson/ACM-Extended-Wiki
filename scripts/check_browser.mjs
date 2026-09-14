@@ -151,10 +151,11 @@ try {
     assert(!(await graph.locator(".chart-cursor").isVisible()));
     await svg.evaluate(el=>{const p=el.createSVGPoint();p.x=223.5;p.y=100;const screen=p.matrixTransform(el.getScreenCTM());el.dispatchEvent(new PointerEvent("pointerdown",{pointerType:"touch",clientX:screen.x,clientY:screen.y,bubbles:true}));});
     assert(Math.abs(Number(await time.inputValue())-3.75)<.001);
-    const peakLists=page.locator("#d-atropine .route-peaks li");
-    assert.equal(await peakLists.count(),2);
-    assert((await peakLists.nth(0).textContent()).includes("IV / IO"));
-    assert((await peakLists.nth(1).textContent()).includes("IM"));
+    const peakFact=page.locator("#d-atropine .med-fact").filter({has:page.locator("dt",{hasText:/^Peak effect$/})});
+    const peakLists=peakFact.locator(".route-peaks li");
+    assert.equal(await peakLists.count(),3);
+    assert.deepEqual(await peakLists.locator("strong").allTextContents(),["IV","IO","IM"]);
+    assert.deepEqual(await peakLists.locator(":scope > span").allTextContents(),["5 s","5 s","30 s"]);
     if(width>=1280){
       const aligned=await page.locator(".med-card-grid>.drug").evaluateAll(cards=>[cards[0],cards[1]].map(card=>Array.from(card.querySelectorAll(".med-fact")).map(el=>({y:el.getBoundingClientRect().y,h:el.getBoundingClientRect().height}))));
       for(let i=0;i<9;i++){assert(Math.abs(aligned[0][i].y-aligned[1][i].y)<1);assert(Math.abs(aligned[0][i].h-aligned[1][i].h)<1);}

@@ -25,6 +25,8 @@ jobs:
           node --check src/rhythm-waveforms.js
           node --check src/chest-seal.js
           node --check src/infusion-guide.js
+          node --check src/infusion-explorer.js
+          node --check src/mixture-guide.js
           node --check src/print-reference.js
 
       - name: Install browser checks
@@ -38,4 +40,5 @@ jobs:
           node scripts/check_reference_expansion.mjs
           node scripts/check_chest_rhythms.mjs
           node scripts/check_infusion_guide.mjs
+          node scripts/check_infusion_workbench.mjs
           node scripts/check_mobile_print.mjs

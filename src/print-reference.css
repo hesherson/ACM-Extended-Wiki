@@ -69,6 +69,7 @@
  .print-sheet table.t tbody{display:table-row-group}
  .print-sheet table.t tr{display:table-row;break-inside:avoid}
  .print-sheet table.t th,.print-sheet table.t td{display:table-cell;min-width:0!important;width:auto!important;border:1px solid #aaa;padding:1mm 1.5mm;font:8.5pt/1.25 Arial,Helvetica,sans-serif;vertical-align:top;overflow-wrap:normal;white-space:normal!important;background:white!important}
+ .print-sheet table.t.medication-print-table th,.print-sheet table.t.medication-print-table td{padding:.5mm 1.5mm}
  .print-sheet table.t thead th{font-weight:700;background:#eee!important}
  .print-sheet table.t tbody td:first-child{font-weight:700;background:#f4f1e8!important}
  .print-sheet .table-value{display:block}

@@ -23,7 +23,10 @@ sys.dont_write_bytecode = True   # keep src/ free of __pycache__
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "src"))
 from glossary_terms import TERMS
 from infusion_guide import render_infusion_guide
+from infusion_explorer import render_infusion_explorer
+from mixture_guide import render_mixture_guide
 from responsive_tables import responsive_tables
+from route_lists import stack_route_lists
 from print_reference import render_print_reference
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -586,10 +589,10 @@ def build():
     if os.path.isfile(retired):
         os.remove(retired)
     css = "\n".join(open(os.path.join(SRC, name), encoding="utf-8").read()
-                    for name in ("_pillar.css", "visual-reference.css", "slideshow.css", "capnography.css", "rhythm-waveforms.css", "chest-seal.css", "languages.css", "infusion-guide.css", "mobile-layout.css", "print-reference.css")
+                    for name in ("_pillar.css", "visual-reference.css", "slideshow.css", "capnography.css", "rhythm-waveforms.css", "chest-seal.css", "languages.css", "infusion-guide.css", "infusion-explorer.css", "mixture-guide.css", "route-lists.css", "mobile-layout.css", "print-reference.css")
                     if os.path.isfile(os.path.join(SRC, name)))
     reference_js = "\n".join(open(os.path.join(SRC, name), encoding="utf-8").read()
-                             for name in ("reference.js", "slideshow.js", "chart-readouts.js", "suction-guide.js", "capnography.js", "rhythm-waveforms.js", "chest-seal.js", "languages.js", "infusion-guide.js", "print-reference.js")
+                             for name in ("reference.js", "slideshow.js", "chart-readouts.js", "suction-guide.js", "capnography.js", "rhythm-waveforms.js", "chest-seal.js", "languages.js", "infusion-guide.js", "infusion-explorer.js", "mixture-guide.js", "print-reference.js")
                              if os.path.isfile(os.path.join(SRC, name)))
     os.makedirs(OUT, exist_ok=True)
     os.makedirs(os.path.join(OUT, "img"), exist_ok=True)
@@ -629,11 +632,14 @@ def build():
             body = open(cpath, encoding="utf-8").read()
             if "<!-- INFUSION_RANGES -->" in body:
                 body = body.replace("<!-- INFUSION_RANGES -->", render_infusion_guide())
+                body = body.replace("<!-- INFUSION_EXPLORER -->", render_infusion_explorer())
+                body = body.replace("<!-- MEDICATION_MIXTURES -->", render_mixture_guide())
         if slug not in REVIEWED:
             body = ('<div class="article-status">This article is retained from the previous guide '
                     'and awaits review against the current fork. See the '
                     '<a href="index.html#article-revision">article revision notes</a>.</div>') + body
         body = body.replace("PILLAR", "ACM EXTENDED")
+        body = stack_route_lists(body)
         body, miss = apply_terms(body)
         badterms += [(slug, m) for m in miss]
         body = group_field_labels(body)

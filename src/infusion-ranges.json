@@ -1,5 +1,5 @@
 {
-  "revision": "488a5e54efd10e5289245bcb2f7db7a40bbabcb0",
+  "revision": "98d18bb3f60dc9be8cdaf4a43419bb57483c3a3f",
   "rows": [
     {
       "id": "amiodarone",
@@ -57,10 +57,10 @@
       "group": "Rhythm",
       "summary": "Toxicity proxy: seizure 12, cardiac 15, arrest 25 mcg/mL",
       "reference": "<b>83 mg at 83 kg</b> is one native IV effect reference, equivalent to 1 mg/kg. The preparation recipe uses 100 mg. A partial reference is a smaller current antiarrhythmic effect, not proof of a safe infusion rate.",
-      "caution": "<b>Below 12 mcg/mL:</b> below the separate seizure trigger, with less margin as the proxy rises. The model’s default steady level is rate ÷ clearance. Shock and esmolol reduce clearance, so an unchanged rate can accumulate further.",
+      "caution": "<b>At 5 mcg/mL:</b> the debug label changes to early CNS. This is a display caution; the separate seizure trigger begins at <b>12 mcg/mL</b>. The eventual steady level is admitted mg/min divided by clearance. Shock and an esmolol proxy above 0.1 mcg/mL reduce clearance, so an unchanged rate can accumulate further.",
       "danger": "<b>12 mcg/mL:</b> seizure trigger unless suppressed; <b>15 mcg/mL:</b> cardiac toxicity begins; <b>25 mcg/mL:</b> bradyasystolic arrest threshold. With normal 0.40 L/min clearance, the corresponding steady rates are 4.8, 6 and 10 mg/min. With both shock and esmolol, they fall to about 2.02, 2.52 and 4.2 mg/min. These are eventual plateaus, not instant rate triggers or recommended doses.",
       "watch": "Watch rhythm, pressure, breathing and seizure activity. Prior boluses change the starting level. Controlling a seizure does not remove lidocaine or prevent cardiac toxicity.",
-      "peak": "5 s native peak; the independent accumulation proxy follows distribution and clearance.",
+      "peak": "5 s native peak. The separate concentration proxy uses 0.7 L/kg distribution and 0.40 L/min normal clearance: about a 101 min half-life at 83 kg. The older 330 s setting does not drive this accumulator.",
       "sources": [
         "drug",
         "circ",
@@ -247,7 +247,7 @@
       "caution": "<b>Above 7 to 17.5 mg/min</b>, a constant infusion can eventually settle in the <b>2–5 mcg/mL</b> toxicity band. A previous bolus changes the starting level. Native rate control and this accumulation model are separate.",
       "danger": "<b>Above 2 mcg/mL:</b> increasing bradycardia and hypotension. <b>5 mcg/mL or higher:</b> full modeled overdose depth. A steady 17.5 mg/min reaches that plateau, but not immediately. The full 2.5 g bag is inventory content, not an administration target.",
       "watch": "Follow pulse, pressure and rhythm. Amiodarone adds nodal and pressure depression; esmolol also reduces lidocaine clearance.",
-      "peak": "20 s native peak. Accumulation follows distribution and clearance, rather than an immediate rate cutoff.",
+      "peak": "20 s native peak. The concentration proxy uses 0.5 L/kg distribution and 3.5 L/min clearance: about an 8.2 min half-life at 83 kg. Boluses and infusions both contribute; lowering the rate does not immediately reset the level.",
       "sources": [
         "drug",
         "circ",
@@ -261,7 +261,7 @@
       "summary": "2 g over 5–10 min example; rate hazard above 800 mg/min",
       "reference": "The native reference is <b>2 g</b>. The source’s example range is <b>200–400 mg/min</b>, equivalent to a 2 g dose over 10–5 min. At 40 mg/mL, this is <b>300–600 mL/h</b> for a finite bag.",
       "caution": "<b>Above 800 to 2,500 mg/min:</b> the fast infusion penalty rises, suppressing heart rate and reducing resistance. Below 800 mg/min only means this particular fast-rate penalty has not started.",
-      "danger": "<b>2,500 mg/min or more:</b> full fast-rate penalty after smoothing. Excessively fast delivery can worsen bradycardia and pressure. The generic 2–4 mg/dL debug band is display-only; it is not the trigger for these effects.",
+      "danger": "<b>2,500 mg/min or more:</b> full fast-rate penalty after smoothing. Excessively fast delivery can worsen bradycardia and pressure. The generic 2–4 mg/dL debug band is display-only. Its numerical scale does not track the native finite-dose example, and it does not trigger these effects. Use delivered amount, native effect and the separate fast-rate penalty when interpreting the response.",
       "watch": "For torsades, enough native effect must develop before a termination attempt. Continue arrest care and correct causes; a bag being attached is not proof that a therapeutic amount reached the patient.",
       "peak": "90 s native peak; fast-rate penalty builds over about 15 s.",
       "sources": [

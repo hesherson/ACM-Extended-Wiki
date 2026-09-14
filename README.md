@@ -160,6 +160,20 @@ Run `node scripts/check_mobile_print.mjs` with the other browser checks. It open
 
 ## TBI B119 reference update
 
+Writing style: use `>` or `<` for directional markers and occasional `->` for event sequences. Use en dashes for numeric ranges, such as `65–75`. Do not use Unicode arrows or em dashes in articles, charts, controls or supporting notes. In HTML text, encode angle brackets as `&gt;` and `&lt;` where needed.
+
 The TBI guide, connected hemorrhage and oxygen references, Zeus setup/reset explanation, debug definitions and glossary follow dev revision `98d18bb3f60dc9be8cdaf4a43419bb57483c3a3f` (14 September 2026). At review, `main` was still `5416332cf899f11f5170c9bcb9768edabb8827e5`; this documentation does not imply that B119 is already released on main. Other systems retain their article-specific source pins.
 
 Structural injury history, reversible acute burden, severity-dependent recovery pressure gates, cerebral autoregulation and systemic autonomic tone are now explained separately. The printable TBI chart summarizes the new rules. The debug reference retains the earlier supplied screenshot and distinguishes it from the current two-page layout. See `TBI-UPDATE-NOTES.md` for source details, important display differences and the outstanding in-engine staging scenarios.
+
+## Interactive infusion and mixture reference
+
+The infusion explorer covers all 18 entries. It separates configured debug bands from the concentration and rate thresholds that actually drive hazards. Change actual admitted delivery, inspect the curve with a pointer, touch or keyboard, stop delivery to examine washout, and change the patient weight for lidocaine or esmolol. Lidocaine also exposes its coded clearance modifiers. Every disclosure shows its game concentration reference before opening. Propofol and osmotherapy retain their native effect explanations instead of an invented serum target.
+
+`src/infusion-levels.json` holds the reviewed units, bands, source paths and accumulation models. `src/infusion_explorer.py`, `src/infusion-explorer.js` and `src/infusion-explorer.css` render the explorer. The estimate starts at zero and uses constant admitted delivery and one second integration steps. Calcium and amiodarone include their 15-second rise and 35-second fall input smoothing. Calcium's shared excess accumulator and magnesium's display-scale mismatch are identified explicitly. Keep this data aligned with `src/infusion-ranges.json` when game code changes.
+
+The mixture workbench demonstrates five preparations using the original layered syringe images: Ketofol, cardiac-vial diluted epinephrine, norepinephrine and epinephrine bags, and a shared pressor bag. Its manual steps remain readable without JavaScript. Syringe volume controls show component amounts; bag flow controls show each component's rate. Preparation totals include added medication solution volume. Ketofol uses 5 mL ketamine 50 mg/mL plus 5 mL propofol 10 mg/mL, which is a 5:1 mass ratio. A shared bag has one clamp for both components. The guide also explains coded sedation interactions and why compromised perfusion can change the response.
+
+The sources for this update are pinned to ACM Extended dev `98d18bb3f60dc9be8cdaf4a43419bb57483c3a3f`; this is a game reference, not a claim that a debug reference band guarantees a safe dose. `src/mixture_guide.py` contains the preparation descriptions, source links and recipes. `src/mixture-guide.js` and `src/mixture-guide.css` provide interaction and layout. Original syringe provenance is recorded in `MOD-ASSET-SOURCES.md`.
+
+`src/route_lists.py` and `src/route-lists.css` stack IV and IO separately in medication route facts, vertical peak lists, timing rows and printable medication Route columns. Shared qualifications are preserved. Run `node scripts/check_infusion_workbench.mjs` with the existing checks. It verifies model reference values, units, stop behavior, measured quantities, shared flow, all 18 selections, manual steps, no-JavaScript content and reflow at narrow widths with enlarged text.
