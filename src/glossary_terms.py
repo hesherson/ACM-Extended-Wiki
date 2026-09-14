@@ -1,16 +1,5 @@
 #!/usr/bin/env python3
-"""
-GLOSSARY. Every advanced term used anywhere in the guide, defined for someone with no medical background.
-
-Rules for writing these:
-  - Assume the reader knows nothing. No term may be defined using another undefined term.
-  - Two or three short sentences. If it needs more, it is a page, not a glossary entry.
-  - Say what it IS, then why it matters to a medic. Skip etymology and history.
-  - Plain words over correct-but-opaque ones. "Squeeze" beats "contractility" in the first sentence.
-
-Used two ways: build.py turns {{term}} in content into a clickable popup, and glossary.html is generated
-from this same dict so the two can never disagree.
-"""
+"\nGLOSSARY. Every advanced term used anywhere in the guide, defined for someone with no medical background.\n\nRules for writing these:\n  - Assume the reader knows nothing. No term may be defined using another undefined term.\n  - Two or three short sentences. If it needs more, it is a page, not a glossary entry.\n  - Say what it IS, then why it matters to a medic. Skip etymology and history.\n  - Plain words over correct but opaque ones. \"Squeeze\" beats \"contractility\" in the first sentence.\n\nUsed two ways: build.py turns {{term}} in content into a clickable popup, and glossary.html is generated\nfrom this same dict so the two can never disagree.\n"
 
 TERMS = {
  # ---- Circulation ----
@@ -18,7 +7,7 @@ TERMS = {
  "preload": ("Preload", "How full the heart is when it starts to squeeze. A heart with nothing in it has nothing to pump, so bleeding drops output even if the heart itself is fine."),
  "stroke-volume": ("Stroke volume", "How much blood the heart pushes out with one beat. Multiply it by heart rate and you get cardiac output, the total flow around the body."),
  "cardiac-output": ("Cardiac output", "The total amount of blood moved per minute. It is heart rate times how much each beat pushes out, and almost everything in shock comes back to it."),
- "frank-starling": ("Frank-Starling", "The rule that a fuller heart squeezes harder, up to a point. It matters because losing volume costs you output faster than you would expect, rather than in a straight line."),
+ "frank-starling": ("Frank Starling", "The rule that a fuller heart squeezes harder, up to a point. It matters because losing volume costs you output faster than you would expect, rather than in a straight line."),
  "vasoconstriction": ("Vasoconstriction", "Blood vessels tightening up, which narrows the pipes and raises pressure. Drugs that do this buy you pressure without adding any actual blood."),
  "pressor": ("Pressor", "A drug that raises blood pressure, usually by tightening blood vessels. It moves the number without fixing why the number was low."),
  "tachyphylaxis": ("Tachyphylaxis", "When a drug works less well each time you give it, over minutes to hours. The dose has not changed, the body has stopped responding to it as strongly."),
@@ -61,10 +50,10 @@ TERMS = {
  "haemoglobin": ("Haemoglobin", "The protein in red blood cells that carries oxygen. Lose blood and you lose carriers, so you can be fully saturated and still delivering almost nothing."),
  "oxygen-delivery": ("Oxygen delivery", "How much oxygen actually reaches the tissues per minute. It combines how many carriers there are, how loaded they are, and how fast blood is moving."),
  "hypoxia": ("Hypoxia", "Not enough oxygen reaching tissue. Organs start failing, and the brain is the first to complain and the first to be permanently damaged."),
- "dissociation-curve": ("Dissociation curve", "The S-shaped relationship between oxygen pressure and how loaded the blood is. Its shape means a healthy person can lose a lot of pressure safely and a sick one cannot."),
+ "dissociation-curve": ("Dissociation curve", "The S shaped relationship between oxygen pressure and how loaded the blood is. Its shape means a healthy person can lose a lot of pressure safely and a sick one cannot."),
  "acidosis": ("Acidosis", "Blood becoming too acidic, from poor circulation or from carbon dioxide building up. It stops blood clotting and stops pressor drugs working."),
  "colloid": ("Colloid", "A fluid with large molecules that stay inside blood vessels rather than leaking out. It holds volume better than salt water does."),
- "crystalloid": ("Crystalloid", "Plain salt-based fluid such as saline. It fills the tank temporarily but carries no oxygen and leaks out of the circulation over time."),
+ "crystalloid": ("Crystalloid", "Plain salt based fluid such as saline. It fills the tank temporarily but carries no oxygen and leaks out of the circulation over time."),
 
  # ---- Head injury ----
  "icp": ("ICP", "Intracranial pressure. Pressure inside the skull. The skull cannot expand, so any swelling raises it and squeezes the brain."),
@@ -81,7 +70,7 @@ TERMS = {
  "antiarrhythmic": ("Antiarrhythmic", "A drug that corrects an abnormal heart rhythm, usually by changing how electrical signals move through heart muscle."),
  "neuromuscular-blocker": ("Neuromuscular blocker", "A drug that paralyses muscles. It does nothing for pain or awareness, so a casualty given one without sedation is awake and unable to move or tell you."),
  "rsi": ("RSI", "Rapid sequence intubation. Giving a sedative and a paralytic together to place a breathing tube quickly and safely."),
- "sympathomimetic": ("Sympathomimetic", "A drug that mimics the fight-or-flight response. Raises heart rate, blood pressure and alertness."),
+ "sympathomimetic": ("Sympathomimetic", "A drug that mimics the fight or flight response. Raises heart rate, blood pressure and alertness."),
  "half-life": ("Half-life", "The time it takes for half the drug to leave the body. Short means it wears off fast and needs repeating, long means a mistake stays with you."),
  "therapeutic-window": ("Therapeutic window", "The gap between enough drug to work and enough to poison. A narrow window means small dosing errors matter."),
  "clearance": ("Clearance", "How fast the body removes a drug. Poor circulation and other drugs can slow it, which makes a normal dose build up to a dangerous level."),
@@ -123,10 +112,10 @@ TERMS = {
  "ectopy": ("Ectopy", "Extra heartbeats fired from the wrong place. A few are harmless, and a run of them can turn into a lethal rhythm."),
  "afterdepolarisation": ("Afterdepolarisation", "A stray electrical twitch happening while the heart cell is still resetting. It is the trigger that starts torsades."),
  "plasmin": ("Plasmin", "The enzyme that dissolves clots. Useful for clearing old clot, and unhelpful when it dismantles the clot holding a wound shut."),
- "plasminogen": ("Plasminogen", "The inactive form of the clot-dissolving enzyme, sitting in blood waiting to be switched on. Blocking that switch protects clot you have already made."),
+ "plasminogen": ("Plasminogen", "The inactive form of the clot dissolving enzyme, sitting in blood waiting to be switched on. Blocking that switch protects clot you have already made."),
  "osmotic": ("Osmotic gradient", "Water moving toward whatever is more concentrated. Put concentrated fluid in the blood and water is pulled out of swollen tissue into it."),
  "diuresis": ("Diuresis", "Making someone produce a lot of urine. It removes water from the whole body, which is unhelpful if they are already short of volume."),
- "cardioselective": ("Cardioselective", "A drug that acts mainly on the heart and mostly leaves the lungs alone. It matters because non-selective versions can close the airways of an asthmatic."),
+ "cardioselective": ("Cardioselective", "A drug that acts mainly on the heart and mostly leaves the lungs alone. It matters because non selective versions can close the airways of an asthmatic."),
  "ht3": ("5 HT3 receptor", "A serotonin switch in the brain and gut that triggers vomiting. Blocking it is how most antiemetics work."),
  "emesis": ("Emesis", "Vomiting. In a casualty with a poor airway it is far more dangerous than it sounds, because what comes up can go down into the lungs."),
  "beta-lactam": ("Beta lactam", "The largest family of antibiotics, including penicillins and cephalosporins. They kill bacteria by preventing them building a cell wall."),
@@ -135,10 +124,10 @@ TERMS = {
  "hypernatraemia": ("Hypernatraemia", "Too much sodium in the blood. A risk when giving concentrated salt solutions, and correcting it too fast causes its own harm."),
  "myelinolysis": ("Central pontine myelinolysis", "Brain damage caused by correcting a sodium problem too quickly. It is the reason concentrated salt is given carefully rather than fast."),
  "myocardial-depression": ("Myocardial depression", "The heart squeezing more weakly than it should. Some drugs cause it directly, and it is worst in a casualty who has nothing in reserve."),
- "catecholamine": ("Catecholamine", "The family of fight-or-flight chemicals including adrenaline. They raise heart rate, squeeze blood vessels and raise blood pressure."),
+ "catecholamine": ("Catecholamine", "The family of fight or flight chemicals including adrenaline. They raise heart rate, squeeze blood vessels and raise blood pressure."),
  "chelate": ("Chelate", "To chemically grab and hold onto something so the body cannot use it. Citrate in stored blood chelates calcium, which is why transfusion costs you calcium."),
- "precipitate": ("Precipitate", "Two compatible-looking fluids reacting in the line and forming solid particles. It blocks the line and can send solid material into the casualty."),
- "anaphylaxis": ("Anaphylaxis", "A severe, whole-body allergic reaction. Blood vessels dump their pressure and the airway swells shut, and it kills within minutes without adrenaline."),
+ "precipitate": ("Precipitate", "Two compatible looking fluids reacting in the line and forming solid particles. It blocks the line and can send solid material into the casualty."),
+ "anaphylaxis": ("Anaphylaxis", "A severe, whole body allergic reaction. Blood vessels dump their pressure and the airway swells shut, and it kills within minutes without adrenaline."),
  "bradycardia": ("Bradycardia", "A heart rate that is too slow. In a shocked casualty it usually means the body has run out of ability to compensate."),
  "tachycardia": ("Tachycardia", "A heart rate that is too fast. Often the first sign of blood loss, because the body speeds up to make up for smaller beats."),
  "atropine": ("Atropine", "A drug that speeds up a heart that is beating too slowly, by removing the brake the nervous system keeps on it."),
@@ -147,7 +136,7 @@ TERMS = {
  "hyperkalaemia": ("Hyperkalaemia", "Too much potassium in the blood, which stops the heart conducting properly. Crush injuries and burns release it from damaged muscle."),
  "hypocalcaemia": ("Hypocalcaemia", "Too little usable calcium. Blood stops clotting properly and the heart squeezes more weakly, both at once."),
  "amide": ("Amide anaesthetic", "One of the two chemical families of local anaesthetic, which includes lidocaine. Allergy to one family does not mean allergy to the other."),
- "sympathetic-outflow": ("Sympathetic outflow", "The fight-or-flight nerve signal that raises heart rate and blood pressure. Ketamine leans on it, which is why it usually supports pressure rather than dropping it."),
+ "sympathetic-outflow": ("Sympathetic outflow", "The fight or flight nerve signal that raises heart rate and blood pressure. Ketamine leans on it, which is why it usually supports pressure rather than dropping it."),
  "serum-level": ("Serum level", "How much of a drug is actually in the blood right now, as opposed to how much you gave. It is what decides whether a drug is working or poisoning."),
  "plateau-level": ("Plateau", "The steady level a drug settles at when what you are giving matches what the body is removing. Raise the rate or slow the clearance and the plateau climbs."),
  "titrate": ("Titrate", "Giving a drug in small steps and watching the effect, rather than giving a set dose and hoping. You stop when you get what you wanted."),
@@ -178,7 +167,7 @@ TERMS.update({
     ],
     "poiseuille": [
         "Poiseuille’s law",
-        "An ideal laminar-flow relationship: flow increases with pressure difference and the fourth power of internal radius, and decreases with viscosity and length. The assumptions limit direct application to living vessels and ventilator circuits."
+        "An ideal laminar flow relationship: flow increases with pressure difference and the fourth power of internal radius, and decreases with viscosity and length. The assumptions limit direct application to living vessels and ventilator circuits."
     ]
 })
 
@@ -215,7 +204,7 @@ TERMS.update({
     ],
     "amiodarone": [
         "Amiodarone",
-        "A medication used by the mod for selected abnormal heart rhythms. Its card lists the supported rhythms and dose-related effects."
+        "A medication used by the mod for selected abnormal heart rhythms. Its card lists the supported rhythms and dose related effects."
     ],
     "anisocoria": [
         "Anisocoria",
@@ -243,7 +232,7 @@ TERMS.update({
     ],
     "asystole": [
         "Asystole",
-        "No effective electrical activity from the heart. The monitor shows a near-flat trace and there is no pulse."
+        "No effective electrical activity from the heart. The monitor shows a near flat trace and there is no pulse."
     ],
     "atelectasis": [
         "Atelectasis",
@@ -303,15 +292,15 @@ TERMS.update({
     ],
     "bvm": [
         "BVM",
-        "Bag valve mask: a hand-squeezed bag used to provide breaths. In the game, active bagging is a continuing provider action."
+        "Bag valve mask: a hand squeezed bag used to provide breaths. In the game, active bagging is a continuing provider action."
     ],
     "calcium-chloride": [
         "Calcium chloride",
-        "A calcium-containing medication. The mod uses delivered calcium to correct modeled calcium deficit and tracks excess exposure."
+        "A calcium containing medication. The mod uses delivered calcium to correct modeled calcium deficit and tracks excess exposure."
     ],
     "calcium-gluconate": [
         "Calcium gluconate",
-        "A calcium-containing medication with less elemental calcium per gram than calcium chloride. The mod accounts for this difference."
+        "A calcium containing medication with less elemental calcium per gram than calcium chloride. The mod accounts for this difference."
     ],
     "capillary-refill": [
         "Capillary refill",
@@ -375,7 +364,7 @@ TERMS.update({
     ],
     "defibrillation": [
         "Defibrillation",
-        "An electrical shock used to stop a shockable cardiac-arrest rhythm."
+        "An electrical shock used to stop a shockable cardiac arrest rhythm."
     ],
     "diaphoretic": [
         "Diaphoretic",
@@ -387,11 +376,11 @@ TERMS.update({
     ],
     "diastolic": [
         "Diastolic pressure",
-        "The lower number in a blood-pressure reading, measured between heartbeats."
+        "The lower number in a blood pressure reading, measured between heartbeats."
     ],
     "dimercaprol": [
         "Dimercaprol",
-        "A medication used for the mod's lewisite chemical-exposure treatment."
+        "A medication used for the mod's lewisite chemical exposure treatment."
     ],
     "distributive-shock": [
         "Distributive shock",
@@ -415,19 +404,19 @@ TERMS.update({
     ],
     "epinephrine": [
         "Epinephrine",
-        "A medication with heart-rate and pressure effects. The mod has separate reference amounts and delivery rules for standard and measured push doses."
+        "A medication with heart rate and pressure effects. The mod has separate reference amounts and delivery rules for standard and measured push doses."
     ],
     "ertapenem": [
         "Ertapenem",
-        "An antibiotic medication with route-specific timing in the game."
+        "An antibiotic medication with route specific timing in the game."
     ],
     "esketamine": [
         "Esketamine",
-        "A ketamine-related medication supplied as a nasal product in the game."
+        "A ketamine related medication supplied as a nasal product in the game."
     ],
     "esmolol": [
         "Esmolol",
-        "A medication that slows heart rate. The mod also models reduced pressure and dose-related toxicity."
+        "A medication that slows heart rate. The mod also models reduced pressure and dose related toxicity."
     ],
     "fentanyl": [
         "Fentanyl",
@@ -467,7 +456,7 @@ TERMS.update({
     ],
     "hyaluronidase": [
         "Hyaluronidase",
-        "A local treatment for selected medication-leak injuries in the mod. It is applied around the affected tissue."
+        "A local treatment for selected medication leak injuries in the mod. It is applied around the affected tissue."
     ],
     "hypercapnia": [
         "Hypercapnia",
@@ -483,7 +472,7 @@ TERMS.update({
     ],
     "hypertonic-saline": [
         "Hypertonic saline",
-        "A salt solution more concentrated than ordinary saline. The mod uses 3% saline for its brain-pressure treatment system."
+        "A salt solution more concentrated than ordinary saline. The mod uses 3% saline for its brain pressure treatment system."
     ],
     "hyperventilation": [
         "Hyperventilation",
@@ -491,7 +480,7 @@ TERMS.update({
     ],
     "hypnosis": [
         "Hypnosis",
-        "Medication-induced reduction in awareness or consciousness. It does not by itself describe pain relief or muscle paralysis."
+        "Medication induced reduction in awareness or consciousness. It does not by itself describe pain relief or muscle paralysis."
     ],
     "hypocapnia": [
         "Hypocapnia",
@@ -563,7 +552,7 @@ TERMS.update({
     ],
     "laryngoscopy": [
         "Laryngoscopy",
-        "Using a scope to see the opening of the windpipe during breathing-tube placement."
+        "Using a scope to see the opening of the windpipe during breathing tube placement."
     ],
     "laryngospasm": [
         "Laryngospasm",
@@ -591,7 +580,7 @@ TERMS.update({
     ],
     "mannitol": [
         "Mannitol",
-        "A medication used to draw water out of swollen tissue. In the game its brain-pressure effect depends on the delivery action and amount."
+        "A medication used to draw water out of swollen tissue. In the game its brain pressure effect depends on the delivery action and amount."
     ],
     "metabolic": [
         "Metabolic",
@@ -602,8 +591,8 @@ TERMS.update({
         "A medication used for sedation and selected seizure treatments in the mod. It can reduce breathing and blood pressure."
     ],
     "minute-ventilation": [
-        "Minute ventilation",
-        "The volume of air moved in one minute: breath size multiplied by breathing rate."
+        "Minute ventilation (MV)",
+        "The volume of air moved in one minute, usually expressed in L/min: breath volume multiplied by breathing rate. In this wiki, MV adequacy is a game support ratio rather than a volume in L/min."
     ],
     "miosis": [
         "Miosis",
@@ -611,7 +600,7 @@ TERMS.update({
     ],
     "morphine": [
         "Morphine",
-        "An opioid pain medication. The mod also models reduced breathing and other dose-related effects."
+        "An opioid pain medication. The mod also models reduced breathing and other dose related effects."
     ],
     "mottled": [
         "Mottled",
@@ -699,7 +688,7 @@ TERMS.update({
     ],
     "penthrox": [
         "Penthrox",
-        "An inhaled pain-relief product supplied through a treatment action in the game."
+        "An inhaled pain relief product supplied through a treatment action in the game."
     ],
     "peripheral-resistance": [
         "Peripheral resistance",
@@ -715,7 +704,7 @@ TERMS.update({
     ],
     "phentolamine": [
         "Phentolamine",
-        "A local treatment for selected vasopressor-leak injuries in the mod."
+        "A local treatment for selected vasopressor leak injuries in the mod."
     ],
     "platelet": [
         "Platelet",
@@ -799,11 +788,11 @@ TERMS.update({
     ],
     "sepsis": [
         "Sepsis",
-        "A harmful body-wide response to infection that can impair organ function."
+        "A harmful body wide response to infection that can impair organ function."
     ],
     "serum-level": [
         "Serum level",
-        "The concentration of a substance in the liquid portion of blood. The wiki's medication graphs show a relative game-effect envelope, not a measured blood concentration."
+        "The concentration of a substance in the liquid portion of blood. The wiki's medication graphs show a relative game effect envelope, not a measured blood concentration."
     ],
     "sinus-rhythm": [
         "Sinus rhythm",
@@ -811,7 +800,7 @@ TERMS.update({
     ],
     "stroke-volume": [
         "Stroke volume",
-        "The amount of blood pushed out by a lower heart chamber with each effective beat. The game uses simplified filling-based estimates in its pressure and oxygen-delivery calculations."
+        "The amount of blood pushed out by a lower heart chamber with each effective beat. The game uses simplified filling based estimates in its pressure and oxygen delivery calculations."
     ],
     "sugammadex": [
         "Sugammadex",
@@ -839,7 +828,7 @@ TERMS.update({
     ],
     "systolic": [
         "Systolic pressure",
-        "The upper number in a blood-pressure reading, measured during the pumping part of the heartbeat."
+        "The upper number in a blood pressure reading, measured during the pumping part of the heartbeat."
     ],
     "t-wave": [
         "T wave",
@@ -863,7 +852,7 @@ TERMS.update({
     ],
     "tfc": [
         "TFC",
-        "Tactical field care: casualty treatment during the tactical phase after immediate fire-related danger is addressed."
+        "Tactical field care: casualty treatment during the tactical phase after immediate fire related danger is addressed."
     ],
     "thoracostomy": [
         "Thoracostomy",
@@ -883,7 +872,7 @@ TERMS.update({
     ],
     "turbulent": [
         "Turbulent flow",
-        "Flow with irregular mixing and swirls. It does not follow the simple laminar-flow relationship."
+        "Flow with irregular mixing and swirls. It does not follow the simple laminar flow relationship."
     ],
     "unilateral": [
         "Unilateral",
@@ -899,7 +888,7 @@ TERMS.update({
     ],
     "vf": [
         "Ventricular fibrillation (VF)",
-        "Chaotic electrical activity in the lower heart chambers that prevents effective pumping. This is a shockable cardiac-arrest rhythm in the game."
+        "Chaotic electrical activity in the lower heart chambers that prevents effective pumping. This is a shockable cardiac arrest rhythm in the game."
     ],
     "viscosity": [
         "Viscosity",
@@ -911,7 +900,7 @@ TERMS.update({
     ],
     "acidosis": [
         "Acidosis",
-        "An increase in body acidity, which can develop with poor circulation or carbon dioxide retention. In the mod, worsening acidosis increases bleeding and reduces pressure-support effects."
+        "An increase in body acidity, which can develop with poor circulation or carbon dioxide retention. In the mod, worsening acidosis increases bleeding and reduces pressure support effects."
     ],
     "adenosine": [
         "Adenosine",
@@ -962,8 +951,8 @@ TERMS.update({
         "Carbon dioxide measured at the end of an exhaled breath. It is influenced by breathing, circulation and measurement conditions."
     ],
     "frank-starling": [
-        "Frank-Starling",
-        "The relationship between heart filling and the force of contraction, within limits. The mod uses a simplified volume-based relationship to estimate stroke volume."
+        "Frank Starling",
+        "The relationship between heart filling and the force of contraction, within limits. The mod uses a simplified volume based relationship to estimate stroke volume."
     ],
     "herniation": [
         "Herniation",
@@ -995,7 +984,7 @@ TERMS.update({
     ],
     "myocardial-depression": [
         "Myocardial depression",
-        "Reduced strength of heart-muscle contraction."
+        "Reduced strength of heart muscle contraction."
     ],
     "nmda": [
         "NMDA antagonist",
@@ -1023,7 +1012,7 @@ TERMS.update({
     ],
     "sedation": [
         "Sedation",
-        "Medication-induced reduction in alertness, ranging from drowsiness to unconsciousness. Pain relief and paralysis are separate effects."
+        "Medication induced reduction in alertness, ranging from drowsiness to unconsciousness. Pain relief and paralysis are separate effects."
     ],
     "spo2": [
         "SpO2",
@@ -1031,7 +1020,7 @@ TERMS.update({
     ],
     "sympathetic-outflow": [
         "Sympathetic outflow",
-        "Nerve signals that help the body respond to stress, including changes in heart rate and blood-vessel tone."
+        "Nerve signals that help the body respond to stress, including changes in heart rate and blood vessel tone."
     ],
     "tachyphylaxis": [
         "Tachyphylaxis",
@@ -1051,14 +1040,14 @@ TERMS.update({
     ]
 })
 
-TERMS.update({'nystagmus': ['Nystagmus', 'Rapid involuntary eye movements. In ACM Extended, pupil assessment can add this finding during ketamine-dominant deep sedation under specific conditions.'], 'overpressure': ['Overpressure', 'Pressure above the surrounding air pressure during a blast. The mod estimates it from charge, distance and nearby geometry.'], 'impulse': ['Blast impulse', 'Pressure accumulated over the brief duration of a blast wave. The mod records an estimate; its main injury gates use effective peak pressure.'], 'tympanic': ['Tympanic injury', 'Injury involving the eardrum. The mod records this at a configured blast-pressure threshold.'], 'anisocoria': ['Anisocoria', 'Pupils of unequal size. In the mod, an asymmetric brain-injury pupil state can produce this finding.'], 'refractory': ['Refractory', 'Resistant to improvement, or temporarily less responsive to a new trigger, depending on context.'], 'dyssynchrony': ['Dyssynchrony', 'A mismatch between the patient’s breathing effort and the breaths delivered by the ventilator.'], 'compliance': ['Compliance', 'How easily a lung expands. Lower compliance means less volume moves for the same pressure.'], 'perrl': ['PERRL', 'Pupils equal, round and reactive to light.'], 'obtundation': ['Obtundation', 'Reduced alertness while still awake. The game can apply visual, hearing and speech effects while the player retains movement.']})
+TERMS.update({'nystagmus': ['Nystagmus', "Rapid involuntary eye movements. In ACM Extended, pupil assessment can add this finding during ketamine dominant deep sedation under specific conditions."], 'overpressure': ['Overpressure', 'Pressure above the surrounding air pressure during a blast. The mod estimates it from charge, distance and nearby geometry.'], 'impulse': ['Blast impulse', 'Pressure accumulated over the brief duration of a blast wave. The mod records an estimate; its main injury gates use effective peak pressure.'], 'tympanic': ['Tympanic injury', "Injury involving the eardrum. The mod records this at a configured blast pressure threshold."], 'anisocoria': ['Anisocoria', "Pupils of unequal size. In the mod, an asymmetric brain injury pupil state can produce this finding."], 'refractory': ['Refractory', 'Resistant to improvement, or temporarily less responsive to a new trigger, depending on context.'], 'dyssynchrony': ['Dyssynchrony', 'A mismatch between the patient’s breathing effort and the breaths delivered by the ventilator.'], 'compliance': ['Compliance', 'How easily a lung expands. Lower compliance means less volume moves for the same pressure.'], 'perrl': ['PERRL', 'Pupils equal, round and reactive to light.'], 'obtundation': ['Obtundation', 'Reduced alertness while still awake. The game can apply visual, hearing and speech effects while the player retains movement.']})
 
 # Visual reference terms added with the waveform and volume guides.
 TERMS.update({
     "vti": ("Inspired tidal volume (VTi)", "The volume of gas delivered into the airway during one breath. On the ventilator, compare it with the expired volume, VTe, to see whether delivered gas is returning."),
     "vte": ("Expired tidal volume (VTe)", "The volume of gas measured coming back out during one breath. A leak can make this lower than VTi even when the ventilator's set volume looks adequate."),
     "capnography": ("Capnography", "A continuous graph of carbon dioxide in breathing gas over time. Its height, baseline and shape help you assess exhalation, airflow and the measurement connection."),
-    "capnogram": ("Capnogram", "The waveform drawn by a capnograph. It rises as carbon-dioxide-rich gas is exhaled and normally falls toward zero during inspiration."),
+    "capnogram": ("Capnogram", "The waveform drawn by a capnograph. It rises as carbon dioxide rich gas is exhaled and normally falls toward zero during inspiration."),
     "curare-cleft": ("Curare cleft", "A notch in the exhaled carbon dioxide plateau. In ACM Extended, the cleft shape is linked to spontaneous effort while the ventilator is connected; read it with the patient's breathing and support settings."),
-    "breachers-syndrome": ("Breacher’s syndrome", "A term used for symptoms reported after repeated low-level blast exposure, including headache, poor concentration, dizziness and sleep disturbance. It is not a single diagnostic test or a separate named disease state in the mod.")
+    "breachers-syndrome": ("Breacher’s syndrome", "A term used for symptoms reported after repeated low level blast exposure, including headache, poor concentration, dizziness and sleep disturbance. It is not a single diagnostic test or a separate named disease state in the mod.")
 })

@@ -1,0 +1,27 @@
+/* Source monitor green: HR_COLOR {0,1,0,1}. */
+.rhythm-monitor{--ecg-green:#00ff00;background:#07100c;border-color:#2b3c34;margin:1.2rem 0 1.5rem}
+.rhythm-monitor .rhythm-monitor-head{display:flex;align-items:baseline;justify-content:space-between;gap:.6rem 1.4rem;flex-wrap:wrap;padding:.75rem 1rem .5rem;border-bottom:1px solid #21352a;color:var(--cream)}
+.rhythm-monitor .rhythm-monitor-head strong{font-size:.93rem;color:var(--cream)}
+.rhythm-monitor .rhythm-rate{font-family:var(--mono,monospace);font-size:.85rem;color:#9bc9a1}
+.rhythm-monitor .rhythm-ecg{display:block;width:100%;min-width:0;height:190px;max-height:none;touch-action:pan-y;background:#030905}
+.rhythm-monitor .rhythm-grid{fill:none;stroke:#16311e;stroke-width:.6}
+.rhythm-monitor .rhythm-grid-major{stroke:#234a2e;stroke-width:.8}
+.rhythm-monitor .rhythm-zero{stroke:#335941;stroke-width:.8;stroke-dasharray:3 5}
+.rhythm-monitor .rhythm-trace{fill:none;stroke:var(--ecg-green);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+
+.rhythm-monitor .rhythm-axis{display:flex;justify-content:space-between;gap:.2rem;padding:.1rem 2.4% .65rem;background:#030905;color:#8eac99;font: .76rem var(--mono,monospace);line-height:1.4}
+.rhythm-monitor .rhythm-cursor{pointer-events:none}
+.rhythm-monitor .rhythm-dot{fill:var(--ecg-green);stroke:#030905;stroke-width:2;vector-effect:non-scaling-stroke}
+.rhythm-monitor .rhythm-guide{stroke:#8bb499;stroke-width:1;stroke-dasharray:3 4}
+.rhythm-monitor .rhythm-bubble rect{fill:#101c17;stroke:#587d65;stroke-width:1}
+.rhythm-monitor .rhythm-bubble text{fill:#f2e8d2;font-size:15px;font-family:var(--mono,monospace)}
+.rhythm-monitor .rhythm-inspector{margin:.7rem .8rem;padding:.55rem .75rem;background:#0c1712;border-color:#2a4232;display:flex;gap:.4rem 1.5rem;flex-wrap:wrap;align-items:center}
+.rhythm-monitor .rhythm-inspector[hidden]{display:none}
+.rhythm-monitor .rhythm-inspector label{margin:0;flex:0 1 auto}
+.rhythm-monitor .rhythm-inspector input{width:6rem}
+.rhythm-monitor .chart-readout{display:flex;gap:.3rem 1.3rem;flex-wrap:wrap;color:var(--cream);font-variant-numeric:tabular-nums}
+.rhythm-monitor figcaption{padding:.5rem 1rem .8rem;border:0;color:#b8c9c0;font-family:inherit;font-size:.83rem;letter-spacing:normal;line-height:1.6}
+@media(max-width:600px){.rhythm-monitor .rhythm-ecg{height:170px}.rhythm-monitor .rhythm-monitor-head{padding:.65rem .7rem}.rhythm-monitor .rhythm-inspector{margin:.6rem}.rhythm-monitor .rhythm-bubble{display:none}.rhythm-monitor .chart-readout{font-size:.81rem;gap:.15rem .7rem}.rhythm-monitor figcaption{padding:.4rem .7rem .7rem}}
+@media(min-width:1800px){.rhythm-monitor .rhythm-ecg{height:210px}}
+@media print{.rhythm-monitor{break-inside:avoid;background:#fff}.rhythm-monitor .rhythm-ecg{background:#fff}.rhythm-monitor .rhythm-trace{stroke:#087422}.rhythm-monitor .rhythm-axis{background:#fff;color:#333}.rhythm-monitor .rhythm-grid{stroke:#ced8d1}.rhythm-monitor .rhythm-grid-major{stroke:#aec2b4}.rhythm-monitor .rhythm-monitor-head,.rhythm-monitor .rhythm-rate,.rhythm-monitor figcaption{color:#222}.rhythm-monitor .rhythm-inspector,.rhythm-monitor .rhythm-axis{display:flex;justify-content:space-between;gap:.2rem;padding:.1rem 2.4% .65rem;background:#030905;color:#8eac99;font: .76rem var(--mono,monospace);line-height:1.4}
+.rhythm-monitor .rhythm-cursor{display:none!important}}

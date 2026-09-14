@@ -582,10 +582,10 @@ def build():
     if os.path.isfile(retired):
         os.remove(retired)
     css = "\n".join(open(os.path.join(SRC, name), encoding="utf-8").read()
-                    for name in ("_pillar.css", "visual-reference.css", "slideshow.css", "capnography.css", "languages.css")
+                    for name in ("_pillar.css", "visual-reference.css", "slideshow.css", "capnography.css", "rhythm-waveforms.css", "chest-seal.css", "languages.css")
                     if os.path.isfile(os.path.join(SRC, name)))
     reference_js = "\n".join(open(os.path.join(SRC, name), encoding="utf-8").read()
-                             for name in ("reference.js", "slideshow.js", "chart-readouts.js", "suction-guide.js", "capnography.js", "languages.js")
+                             for name in ("reference.js", "slideshow.js", "chart-readouts.js", "suction-guide.js", "capnography.js", "rhythm-waveforms.js", "chest-seal.js", "languages.js")
                              if os.path.isfile(os.path.join(SRC, name)))
     os.makedirs(OUT, exist_ok=True)
     os.makedirs(os.path.join(OUT, "img"), exist_ok=True)

@@ -239,7 +239,7 @@ form.addEventListener("input",update);form.addEventListener("change",update);for
     "agonal":"agonal","jaundiced":"jaundice","pinpoint":"miosis","mottling":"mottled",
     "arterial oxygen content":"oxygen-delivery","ionized calcium":"ionised-calcium",
     "coronary perfusion pressure":"coronary-perfusion","cerebral perfusion pressure":"cpp","intracranial pressure":"icp",
-    "mean arterial pressure":"map","tidal volumes":"tidal-volume","VTi":"vti","VTe":"vte","RR":"respiratory-rate",
+    "mean arterial pressure":"map","tidal volumes":"tidal-volume","VTi":"vti","VTe":"vte","MV":"minute-ventilation","RR":"respiratory-rate",
     "positive pressure ventilation":"ppv","positive-pressure ventilation":"ppv","bag valve mask":"bvm","bagging":"bvm",
     "end-tidal carbon dioxide":"etco2","intubate":"intubation","intubated":"intubation","auscultate":"auscultation","auscultating":"auscultation",
     "tachyarrhythmias":"tachyarrhythmia","arrhythmias":"arrhythmia","anticoagulation":"anticoagulation",

@@ -101,3 +101,43 @@ The following original user-supplied screenshots are copied unchanged:
 The Zeus, debug, capnography, pulse-oximeter and repeat-blast additions were checked at `21f86948b8a03507146297742ea84983987d5be1`. Each article links the relevant source files. Capnography uses the four normalized game morphology functions, with explicitly selected example time/CO₂ values rather than a prediction of a patient's measured result. The supplied debug screenshot records v1.2.1; older article reviews retain their individual source revisions.
 
 The IV display now combines advancing frames 01–06 and threading frames 07–11 into two continuous scenes. Six total scenes use seven-second intervals and a shared visual progress clock. The suction schematic now sweeps from bottom to top with four horizontal turns. The unchanged game artwork is combined with original website animation code.
+
+## Chest seal burping and pneumothorax recovery
+
+Gameplay and artwork reviewed against `hesherson/ACM-Extended` main commit `dd50edf34497588d473ffe3c70797f2eaa52f6f8` (14 September 2026).
+
+The ten original burping textures are decoded from PAA DXT5 and exported as transparent PNG at 1024 × 1024 for the website (original mip: 2048 × 2048). No replacement artwork is generated. The flat seal reuses `src/img/trauma/chest-seal.png` from the original ACM chest seal inventory texture.
+
+| Website PNG | Original PAA | Verified Git blob SHA |
+| --- | --- | --- |
+| `src/img/chest-seal/chest_seal_burp_left_frame_01_ca.png` | `addons/acm_extended/ui/chest_seal/burp_left/chest_seal_burp_left_frame_01_ca.paa` | `400e23931534f756a8c766b2239152e3cdaa2f8e` |
+| `src/img/chest-seal/chest_seal_burp_left_frame_02_ca.png` | `addons/acm_extended/ui/chest_seal/burp_left/chest_seal_burp_left_frame_02_ca.paa` | `b8da50322fb26917f64df80171cc5dbaa87502d8` |
+| `src/img/chest-seal/chest_seal_burp_left_frame_03_ca.png` | `addons/acm_extended/ui/chest_seal/burp_left/chest_seal_burp_left_frame_03_ca.paa` | `d291766b03e16a1bf117999a698d14ef78728497` |
+| `src/img/chest-seal/chest_seal_burp_left_frame_04_ca.png` | `addons/acm_extended/ui/chest_seal/burp_left/chest_seal_burp_left_frame_04_ca.paa` | `5045b183e499e96537d7d37965db7e07facc7511` |
+| `src/img/chest-seal/chest_seal_burp_left_frame_05_ca.png` | `addons/acm_extended/ui/chest_seal/burp_left/chest_seal_burp_left_frame_05_ca.paa` | `88000c84c6e76446ff3017c495f89eb59d2d1a17` |
+| `src/img/chest-seal/chest_seal_burp_right_frame_01_ca.png` | `addons/acm_extended/ui/chest_seal/burp_right/chest_seal_burp_right_frame_01_ca.paa` | `56b897fe823be1d91a79ba01fb2d90540aa37ceb` |
+| `src/img/chest-seal/chest_seal_burp_right_frame_02_ca.png` | `addons/acm_extended/ui/chest_seal/burp_right/chest_seal_burp_right_frame_02_ca.paa` | `675706d91bda64764363fb3ed183913b347b52de` |
+| `src/img/chest-seal/chest_seal_burp_right_frame_03_ca.png` | `addons/acm_extended/ui/chest_seal/burp_right/chest_seal_burp_right_frame_03_ca.paa` | `1497d218aa816f5d3dbabdf71c4bcfc21b211a13` |
+| `src/img/chest-seal/chest_seal_burp_right_frame_04_ca.png` | `addons/acm_extended/ui/chest_seal/burp_right/chest_seal_burp_right_frame_04_ca.paa` | `c0b2562ef8dbd20dd45211ac7a06c7f77877b277` |
+| `src/img/chest-seal/chest_seal_burp_right_frame_05_ca.png` | `addons/acm_extended/ui/chest_seal/burp_right/chest_seal_burp_right_frame_05_ca.paa` | `3596e7ea900a466f453d467b962d71b55840ece2` |
+
+The animation blends consecutive original frames and uses smoothstep easing for lift and reseating. It is a wiki viewing aid: the game uses one mouse wheel notch per frame and holds the selected frame until more input. Full lift at frame 5 is required to trigger the burp. Both original corner sequences are selectable.
+
+Reference files: `fn_chestSealScroll.sqf`, `fn_chestSealRender.sqf`, `fn_chestSealTick.sqf`, `fn_chestSealOcclusionTick.sqf`, `fn_ptxContext.sqf`, `fn_ptxStep.sqf`, `fn_ptxTreat.sqf`, `fn_ptxPublish.sqf`, `fn_ptxInjury.sqf`, `XEH_preInit.sqf`, `fn_ventDriveTick.sqf`, `fn_ventOxygenation.sqf`, `fnc_updateLungState.sqf`, `fnc_fullHealLocal.sqf` and `fn_registerClinicalLifecycleRuntime.sqf`.
+
+The documentation distinguishes leak settling from drainage, pressure relief and residual collapse. Current source preserves a residual floor after burping, needle decompression and an open finger tract; tube treatment clears this floor. Full heal is separate. A dry treated wound has no mandatory seal clog timer. The 600-second setting is a normalized leak settling scale and the 60-second stability interval does not cure PTX.
+
+Background citation for the reason to vent and reassess a sealed chest injury: [Butler et al., CoTCCC chest seal rationale](https://pubmed.ncbi.nlm.nih.gov/24048995/). The on-page instructions and timing describe the game.
+
+Verification: Node syntax and browser checks for lifting/lowering pause-resume without phase flips, range seek and resume, both corners, loaded assets, reduced motion and no component overflow at 390, 1905 and 5120 pixels.
+
+## Cardiac monitor examples
+
+All 13 rhythm strips use native and custom waveform formulas checked against `hesherson/ACM-Extended` commit `dd50edf34497588d473ffe3c70797f2eaa52f6f8`:
+
+- `addons/circulation/functions/fnc_displayAEDMonitor_generateEKG.sqf`: native shapes and display noise
+- `addons/acm_extended/functions/fn_genRhythmEKG.sqf`: active custom sampler
+- `addons/circulation/functions/fnc_handleAED.sqf`: beat timing and AFib variability
+- `addons/circulation/Defibrillator_defines.hpp`: `HR_COLOR {0,1,0,1}`, reproduced as `#00ff00`
+
+Each static SVG contains 201 samples at 30 ms, extending the monitor window to six seconds. AFib uses fixed example intervals within the game scheduler bounds. Torsades shows its established appearance after the entry transition. Motion, CPR and electrode-contact artifacts are omitted for clarity. Vertical deflection is relative and positive upward, not a calibrated mV measurement. Inspection interpolates between displayed samples. Perfusing and pulseless VT share the ventricular morphology; pulse status is explained separately in each block.

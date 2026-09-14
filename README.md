@@ -13,6 +13,8 @@ Static reference site for ACM Extended. The existing Python builder produces sel
 - `src/suction-guide.js`: repeating suction sweep and motion controls
 - `src/capnography.js` and `src/capnography.css`: interactive waveform examples
 - `src/languages.js` and `src/languages.css`: language picker and English spelling preferences
+- `src/rhythm-waveforms.js` and `src/rhythm-waveforms.css`: monitor traces and inspection
+- `src/chest-seal.js` and `src/chest-seal.css`: chest seal burping demonstration
 - `src/audio/`: original mod sound previews
 - `src/glossary_terms.py`: glossary definitions
 - `src/reference-data.json`: source snapshot used for the reference refresh
@@ -81,7 +83,7 @@ The other system articles remain available with a review notice. Remove an artic
 
 The new system references use ACM Extended source 4848f63b200a45362eb576dcef469484202b6a80. Existing medication, circulation and other references keep their stated earlier snapshots; this update does not claim to audit every later change to the entire mod.
 
-Build, local-link, anchor, asset and reproducibility checks are provided in `scripts/check_wiki.py`. The three Chromium suites in `scripts/` cover the complete site and the updated visual controls; the GitHub workflow repeats them after updates.
+Build, local-link, anchor, asset and reproducibility checks are provided in `scripts/check_wiki.py`. The four Chromium suites in `scripts/` cover the complete site and the updated visual controls; the GitHub workflow repeats them after updates.
 
 ## Hosting
 
@@ -114,3 +116,11 @@ The sidebar offers US English, UK English, German, French, Spanish and Russian. 
 `PUBLIC_URL` in `build.py` is the conventional GitHub Pages URL for this repository. Update it if the site moves to a custom domain. Local file and localhost previews retain the English modes and explain that live translation becomes available on the published site. Code and key labels retain their original text. [Google’s website translation instructions](https://support.google.com/translate/answer/2534559?hl=en&co=GENIE.Platform%3DDesktop).
 
 The Airway & Breathing article now includes selectable capnography patterns with time/CO₂ inspection. The oxygen article distinguishes underlying oxygen state from player pulse-oximeter readings, and the blast article explains Breacher’s syndrome with separate game-model limits. The Zeus article documents available modules and fridge settings; the new Debug menu article explains the supplied screenshot field by field. Source links identify the reviewed implementation and medical background.
+
+## Chest seal and rhythm update
+
+Airway & Breathing includes an eased chest seal demonstration using both original corner sequences, with pause, replay and manual inspection. It explains the full-lift mouse wheel action, why a blocked outlet matters, and how leak healing, drainage, pressure relief and residual collapse differ in the mod.
+
+All 13 cardiac rhythm blocks include bright green, six-second monitor examples with pointer, touch and keyboard inspection. The traces use the mod’s native/custom waveform formulas; vertical values are relative monitor deflection, not calibrated millivolts. They remain visible without JavaScript. MV now opens the minute-ventilation definition, including the distinction between L/min and the game’s MV adequacy ratio. Unnecessary hyphens have been removed from article prose while preserving links and code identifiers.
+
+The chest seal mechanics, pneumothorax recovery and ECG generation were checked against commit `dd50edf34497588d473ffe3c70797f2eaa52f6f8`. Other references retain their stated review revisions. `scripts/check_chest_rhythms.mjs` checks these additions, and the existing suites cover the retained site controls.

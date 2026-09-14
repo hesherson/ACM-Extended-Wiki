@@ -16,8 +16,12 @@ DXT5 = 0xFF05
 def _lzo1x_decompress(src, out_len):
     """PAA mipmaps above 128px are LZO1X packed. Uses python-lzo rather than a hand rolled decoder,
     because getting LZO1X exactly right by hand produces images that look decoded but are silently blank."""
-    import lzo
-    return lzo.decompress(src, False, out_len)
+    try:
+        import lzo
+        return lzo.decompress(src, False, out_len)
+    except ImportError:
+        import lzokay
+        return lzokay.decompress(src, out_len)
 
 
 def decode_dxt5(data, w, h):

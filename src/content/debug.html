@@ -1,40 +1,40 @@
 <div class="eyebrow">ACM EXTENDED <span class="tag">/</span> MISSION TOOLS</div>
 <h1>Debug menu reference</h1><p class="lede">Read every field in the ACME debug overlay, distinguish live patient values from diagnostic defaults, and identify which system needs checking.</p><div class="rule"></div>
-<div class="principle"><div class="lab">Start with the patient and the units</div><p>The overlay exposes game state for testing and troubleshooting. It includes patient measurements, internal model scores, system switches and machine-wide counters. A green value is a display classification; it does not establish that the patient is stable.</p></div>
-<p>Enable <b>Addon Options &gt; ACM Extended: Debug &gt; Overlay &gt; Debug menu</b>. This is a client-side option. The same group contains the text-scale setting and visibility switches for optional sections.</p>
+<div class="principle"><div class="lab">Start with the patient and the units</div><p>The overlay exposes game state for testing and troubleshooting. It includes patient measurements, internal model scores, system switches and machine wide counters. A green value is a display classification; it does not establish that the patient is stable.</p></div>
+<p>Enable <b>Addon Options &gt; ACM Extended: Debug &gt; Overlay &gt; Debug menu</b>. This is a client side option. The same group contains the text scale setting and visibility switches for optional sections.</p>
 <div class="quick-grid"><article class="quick-card"><h3>Check the target</h3><p>The name at the top identifies the patient being inspected. A treatment can change that target.</p></article><article class="quick-card"><h3>Read the whole label</h3><p><b>Eff</b> under Vitals is volume. <b>Eff</b> under Pressors is support. <b>CPP</b> under Acidosis is a deficit fraction, not a pressure.</p></article><article class="quick-card"><h3>Recognize defaults</h3><p><b>n/a</b> means unavailable. <b>no TBI state</b> means no TBI state record. Many numeric fields fall back to zero when their state has not been populated.</p></article></div>
-<figure class="reference-chart"><a href="img/debug/debug-menu.png" target="_blank" rel="noopener"><img src="img/debug/debug-menu.png" alt="User supplied ACME DEBUG v1.2.1 screenshot showing Vitals at left, Systems in the middle and ACM States at right" width="1581" height="1420" loading="lazy" style="display:block;width:100%;max-width:1581px;height:auto;margin-inline:auto"></a><figcaption>The supplied v1.2.1 screenshot. Open the image for the full-size view. Narrow game displays show a compact ACM state summary instead of the third column.</figcaption></figure>
+<figure class="reference-chart"><a href="img/debug/debug-menu.png" target="_blank" rel="noopener"><img src="img/debug/debug-menu.png" alt="User supplied ACME DEBUG v1.2.1 screenshot showing Vitals at left, Systems in the middle and ACM States at right" width="1581" height="1420" loading="lazy" style="display:block;width:100%;max-width:1581px;height:auto;margin-inline:auto"></a><figcaption>The supplied v1.2.1 screenshot. Open the image for the full size view. Narrow game displays show a compact ACM state summary instead of the third column.</figcaption></figure>
 <section class="sec"><div class="sec-head"><span class="sec-num">01</span><h2>Header and tracking</h2></div><p>Confirm which patient and which machine you are reading before interpreting a treatment result. Tracking counts apply to the local runtime lists, not just the selected patient.</p>
 <div class="scroll" tabindex="0" role="region" aria-label="Debug header and tracking fields"><table class="t"><thead><tr><th scope="col">Display field</th><th scope="col">Unit / format</th><th scope="col">Meaning and interpretation</th></tr></thead><tbody>
 <tr><th scope="row">ACME DEBUG v1.2.1</th><td>Version</td><td>Version read from the loaded ACM Extended configuration, with a runtime fallback. Include this in a bug report; the screenshot records v1.2.1.</td></tr>
 <tr><th scope="row">M. Harlow</th><td>Patient name</td><td>The selected debug target in the example. An explicit debug target takes precedence, followed by the last treatment target; automatic fallback searches tracked patients and then the player.</td></tr>
 <tr><th scope="row">auto / treating</th><td>Target mode</td><td><b>treating</b> appears when the chosen patient is the last treatment target. <b>auto</b> covers the other selection paths; it does not mean an automated treatment is running.</td></tr>
 <tr><th scope="row">dbg on</th><td>Overlay status</td><td>The debug display passed its enable gate. This does not turn every optional simulation system on.</td></tr>
-<tr><th scope="row">force false</th><td>Boolean</td><td>Whether the emergency force-overlay flag is set. <b>false</b> is normal when the regular debug option enabled the display.</td></tr>
+<tr><th scope="row">force false</th><td>Boolean</td><td>Whether the emergency force overlay flag is set. <b>false</b> is normal when the regular debug option enabled the display.</td></tr>
 <tr><th scope="row">tick 174.8</th><td>Engine seconds</td><td>Engine diagnostic clock at rendering time. It is not injury duration, network latency or patient age.</td></tr>
 <tr><th scope="row">trk i0</th><td>Count</td><td>Patients in the infusion tracking list on this machine.</td></tr>
 <tr><th scope="row">trk t0</th><td>Count</td><td>Patients in the TBI tracking list on this machine.</td></tr>
 <tr><th scope="row">trk c0</th><td>Count</td><td>Patients in the Extended circulation tracking list on this machine.</td></tr>
-<tr><th scope="row">trk bp0</th><td>Count</td><td>Patients in the automatic blood-pressure tracking list on this machine.</td></tr>
-<tr><th scope="row">target follows active treatment</th><td>Reminder</td><td>Recheck the patient name after switching patients. This footer describes the normal treatment-target behavior.</td></tr>
+<tr><th scope="row">trk bp0</th><td>Count</td><td>Patients in the automatic blood pressure tracking list on this machine.</td></tr>
+<tr><th scope="row">target follows active treatment</th><td>Reminder</td><td>Recheck the patient name after switching patients. This footer describes the normal treatment target behavior.</td></tr>
 </tbody></table></div>
 </section>
 <section class="sec"><div class="sec-head"><span class="sec-num">02</span><h2>Vitals and fluid compartments</h2></div><p>These are stored patient values and calculated diagnostics. The debug SpO₂ reads the underlying oxygen variable directly, so it can differ from what a peripheral pulse oximeter can reliably show in game.</p>
 <div class="scroll" tabindex="0" role="region" aria-label="Vitals and volume fields"><table class="t"><thead><tr><th scope="col">Display field</th><th scope="col">Unit / format</th><th scope="col">Meaning and interpretation</th></tr></thead><tbody>
 <tr><th scope="row">State</th><td>alive / dead</td><td>Engine life state. An alive patient can still be unconscious, critically ill or in cardiac arrest.</td></tr>
 <tr><th scope="row">HR</th><td>Beats/min</td><td>Rounded stored heart rate. This is distinct from the rhythm code and from the target heart rate.</td></tr>
-<tr><th scope="row">BP</th><td>Systolic / diastolic, mmHg</td><td>Blood-pressure getter result, displayed as systolic over diastolic.</td></tr>
+<tr><th scope="row">BP</th><td>Systolic / diastolic, mmHg</td><td>Blood pressure getter result, displayed as systolic over diastolic.</td></tr>
 <tr><th scope="row">MAP</th><td>mmHg</td><td>Mean arterial pressure, calculated as (systolic + 2 × diastolic) ÷ 3 when a systolic result is available; otherwise the stored MAP is used.</td></tr>
 <tr><th scope="row">RR</th><td>Breaths/min</td><td>Stored respiration rate. A rate alone does not establish that enough air reaches the lungs.</td></tr>
-<tr><th scope="row">SpO2</th><td>%</td><td>Rounded internal <code>ace_medical_spo2</code> value. This is not a guarantee of a valid pulse-ox probe signal, adequate blood volume or adequate oxygen delivery.</td></tr>
-<tr><th scope="row">Circ</th><td>L</td><td>Immediately circulating volume returned through ACE, with an Extended circulating-volume fallback. It includes retained fluid; it is not just the Blood compartment.</td></tr>
-<tr><th scope="row">Eff</th><td>L</td><td>ACM weighted effective volume: Blood + 0.3 × Plasma − Overload, limited between zero and the normal-volume reference. Crystalloid has no direct term in this particular calculation.</td></tr>
+<tr><th scope="row">SpO2</th><td>%</td><td>Rounded internal <code>ace_medical_spo2</code> value. This is not a guarantee of a valid pulse ox probe signal, adequate blood volume or adequate oxygen delivery.</td></tr>
+<tr><th scope="row">Circ</th><td>L</td><td>Immediately circulating volume returned through ACE, with an Extended circulating volume fallback. It includes retained fluid; it is not just the Blood compartment.</td></tr>
+<tr><th scope="row">Eff</th><td>L</td><td>ACM weighted effective volume: Blood + 0.3 × Plasma − Overload, limited between zero and the normal volume reference. Crystalloid has no direct term in this particular calculation.</td></tr>
 <tr><th scope="row">Blood</th><td>L</td><td>Retained blood compartment. Transfusion and gradual conversion from other compartments can change it.</td></tr>
 <tr><th scope="row">Plasma</th><td>L</td><td>Retained plasma compartment. It can contribute to circulating volume before its gradual conversion into the blood compartment.</td></tr>
 <tr><th scope="row">Cryst</th><td>L</td><td>Retained saline/crystalloid compartment, including compatible carriers classified into that compartment.</td></tr>
 <tr><th scope="row">Over</th><td>L</td><td>Recorded overload compartment. This is separate from the volume administered from a bag.</td></tr>
-<tr><th scope="row">Def</th><td>L</td><td>Circulating-volume deficit: max(normal reference − Circ, 0). It is not normal reference − Blood.</td></tr>
-<tr><th scope="row">Pct</th><td>%</td><td>Circ ÷ normal-volume reference × 100, rounded. The usual reference is 6 L.</td></tr>
+<tr><th scope="row">Def</th><td>L</td><td>Circulating volume deficit: max(normal reference − Circ, 0). It is not normal reference − Blood.</td></tr>
+<tr><th scope="row">Pct</th><td>%</td><td>Circ ÷ normal volume reference × 100, rounded. The usual reference is 6 L.</td></tr>
 </tbody></table></div>
 <div class="metric-strip"><div class="metric"><span>Screenshot Circ</span><strong>6.00 L</strong></div><div class="metric"><span>Screenshot Blood</span><strong>6.00 L</strong></div><div class="metric"><span>Screenshot deficit</span><strong>0.00 L</strong></div><div class="metric"><span>Screenshot reference</span><strong>100%</strong></div></div><p>Here all retained volume is in Blood, so Circ and Eff match. They can separate after resuscitation. See <a href="fluids.html">Fluids &amp; blood volume</a> and <a href="oxygen.html">Oxygen delivery</a> for those distinctions.</p>
 </section>
@@ -47,11 +47,11 @@
 <tr><th scope="row">cush</th><td>Boolean</td><td>The modeled Cushing response is active at the current ICP threshold.</td></tr>
 <tr><th scope="row">hern</th><td>Boolean</td><td>The modeled herniation process is currently active. Interpret with stage and gate.</td></tr>
 <tr><th scope="row">stage</th><td>Model stage</td><td>0 is no progressed stage; 1, 2 and 3 are progressively more severe herniation stages. The value can be fractional during recovery.</td></tr>
-<tr><th scope="row">gate</th><td>Boolean</td><td>The required sustained high-ICP exposure has reached the herniation gate. It is a progression condition, not an airway gate.</td></tr>
-<tr><th scope="row">remain</th><td>Seconds</td><td>Time still required to fill that high-ICP gate at its current accumulated exposure. This is not the remaining lifetime or the stage-change countdown.</td></tr>
+<tr><th scope="row">gate</th><td>Boolean</td><td>The required sustained high ICP exposure has reached the herniation gate. It is a progression condition, not an airway gate.</td></tr>
+<tr><th scope="row">remain</th><td>Seconds</td><td>Time still required to fill that high ICP gate at its current accumulated exposure. This is not the remaining lifetime or the stage change countdown.</td></tr>
 <tr><th scope="row">Na</th><td>mEq/L, modeled</td><td>Rounded sodium concentration in the TBI state, used by osmotherapy limits. The overlay omits the unit. It is not the administered HTS volume.</td></tr>
-<tr><th scope="row">act</th><td>Boolean</td><td>The selected patient has the bag-medication tracking flag. <b>false</b> means that flag is off; it does not mean all previously delivered medications have stopped working.</td></tr>
-<tr><th scope="row">meds</th><td>Entry count</td><td>Number of medication components in the bag-medication tracking array. This is neither the number of all drugs on board nor necessarily the number of physical bags.</td></tr>
+<tr><th scope="row">act</th><td>Boolean</td><td>The selected patient has the bag medication tracking flag. <b>false</b> means that flag is off; it does not mean all previously delivered medications have stopped working.</td></tr>
+<tr><th scope="row">meds</th><td>Entry count</td><td>Number of medication components in the bag medication tracking array. This is neither the number of all drugs on board nor necessarily the number of physical bags.</td></tr>
 <tr><th scope="row">Raw infusion rows</th><td>Up to 5 arrays</td><td>When present, these are internal tracker records containing bag/site identity, medication, remaining drug, volume and flow bookkeeping. The total count can exceed the five displayed rows. Use the medication and transfusion interfaces for readable dosing information.</td></tr>
 </tbody></table></div>
 </section>
@@ -60,34 +60,34 @@
 <tr><th scope="row">SYSTEMS: TBI</th><td>Boolean</td><td>Extended TBI system enabled for the mission. In the screenshot it is true even though the selected patient has no TBI state.</td></tr>
 <tr><th scope="row">SYSTEMS: Circ</th><td>Boolean</td><td>Extended circulation model enabled.</td></tr>
 <tr><th scope="row">SYSTEMS: Rhythm</th><td>Boolean</td><td>Extended rhythm system enabled.</td></tr>
-<tr><th scope="row">Shock</th><td>0–1 severity mirror</td><td>Diagnostic shock-severity variable. It is intended to describe the Extended shock process, not the amount of blood lost. A zero/default mirror does not exclude hypovolemic shock.</td></tr>
-<tr><th scope="row">MAP del / MAP delta</th><td>mmHg-equivalent estimate</td><td>Net modeled support minus shock and calcium-related pressure penalties. The narrow renderer truncates the label to MAP del. This is a diagnostic estimate; the current model carries effects through heart rate and vascular resistance rather than adding this value to BP a second time.</td></tr>
-<tr><th scope="row">HR pin</th><td>Beats/min or 0</td><td>Rhythm-controlled heart-rate pin. Zero means no positive pin is shown, not no heartbeat.</td></tr>
+<tr><th scope="row">Shock</th><td>0–1 severity mirror</td><td>Diagnostic shock severity variable. It is intended to describe the Extended shock process, not the amount of blood lost. A zero/default mirror does not exclude hypovolemic shock.</td></tr>
+<tr><th scope="row">MAP del / MAP delta</th><td>mmHg equivalent estimate</td><td>Net modeled support minus shock and calcium related pressure penalties. The narrow renderer truncates the label to MAP del. This is a diagnostic estimate; the current model carries effects through heart rate and vascular resistance rather than adding this value to BP a second time.</td></tr>
+<tr><th scope="row">HR pin</th><td>Beats/min or 0</td><td>Rhythm controlled heart rate pin. Zero means no positive pin is shown, not no heartbeat.</td></tr>
 <tr><th scope="row">SVR</th><td>Engine resistance units</td><td>Stored peripheral vascular resistance. The nominal scale is around 100; these are game units, not a measured clinical SVR in dyn·s/cm⁵.</td></tr>
 <tr><th scope="row">VC</th><td>Game tone value</td><td>ACM vasoconstriction state, also shown as Vaso in ACM States. Negative values can occur at baseline or with a dilating influence; read the resulting BP and perfusion alongside it.</td></tr>
-<tr><th scope="row">Ca</th><td>Legacy diagnostic credit</td><td>Reads the calcium-credit mirror, defaulting to zero. It is not the serum calcium level or the current ionized-calcium fraction used by the circulation model.</td></tr>
-<tr><th scope="row">Citrate</th><td>Legacy diagnostic load</td><td>Reads the citrate-load mirror, defaulting to zero. The current calcium model also uses transfused-blood volume and calcium replacement, so a zero here alone cannot rule out a transfusion-related calcium deficit.</td></tr>
+<tr><th scope="row">Ca</th><td>Legacy diagnostic credit</td><td>Reads the calcium credit mirror, defaulting to zero. It is not the serum calcium level or the current ionized calcium fraction used by the circulation model.</td></tr>
+<tr><th scope="row">Citrate</th><td>Legacy diagnostic load</td><td>Reads the citrate load mirror, defaulting to zero. The current calcium model also uses transfused blood volume and calcium replacement, so a zero here alone cannot rule out a transfusion related calcium deficit.</td></tr>
 </tbody></table></div>
 </section>
-<section class="sec"><div class="sec-head"><span class="sec-num">05</span><h2>Pressor response</h2></div><p>Raw, Eff and Lost show the model’s estimated pressure-support response. Compare support with the actual BP trend. Acidosis and cold can reduce the response even while medication is reaching the patient.</p>
+<section class="sec"><div class="sec-head"><span class="sec-num">05</span><h2>Pressor response</h2></div><p>Raw, Eff and Lost show the model’s estimated pressure support response. Compare support with the actual BP trend. Acidosis and cold can reduce the response even while medication is reaching the patient.</p>
 <div class="scroll" tabindex="0" role="region" aria-label="Pressor fields"><table class="t"><thead><tr><th scope="col">Display field</th><th scope="col">Unit / format</th><th scope="col">Meaning and interpretation</th></tr></thead><tbody>
-<tr><th scope="row">Raw</th><td>mmHg-equivalent support</td><td>Combined modeled infusion, bolus and surge support before the acidosis and cold reductions. Earlier delivery, volume and calcium gates may already have affected this number.</td></tr>
-<tr><th scope="row">Eff</th><td>mmHg-equivalent support</td><td>Support remaining after the acidosis and cold reductions. This is not a fluid volume.</td></tr>
-<tr><th scope="row">Lost</th><td>mmHg-equivalent support</td><td>max(Raw − Eff, 0). It measures modeled loss of response, not leaked drug mass.</td></tr>
-<tr><th scope="row">Acid %</th><td>% reduction</td><td>Acidosis-related support reduction. It is not blood pH, the total acidosis score or the percentage of the dose lost.</td></tr>
-<tr><th scope="row">Cold %</th><td>% reduction</td><td>Hypothermia-related support reduction. Acid and Cold multiply their remaining fractions; simply adding their percentages overstates the combined loss.</td></tr>
-<tr><th scope="row">Inf</th><td>Diagnostic support mirror</td><td>The public infusion-support mirror read by this overlay. The current detailed support is stored in the circulation state; a default zero in this mirror is not proof that no infusion is active.</td></tr>
-<tr><th scope="row">PDE</th><td>Diagnostic support mirror</td><td>Push-dose epinephrine support mirror. PDE here means push-dose epinephrine, not a phosphodiesterase medication. The current bolus-support calculation is tracked separately in circulation state.</td></tr>
-<tr><th scope="row">Distal</th><td>Legacy surge mirror</td><td>Former distal-site pressor-spike diagnostic. The current circulation calculation explicitly sets the location-only spike to zero. A distal IV does not itself turn norepinephrine into epinephrine; local leakage and vesicant injury remain separate concerns.</td></tr>
+<tr><th scope="row">Raw</th><td>mmHg equivalent support</td><td>Combined modeled infusion, bolus and surge support before the acidosis and cold reductions. Earlier delivery, volume and calcium gates may already have affected this number.</td></tr>
+<tr><th scope="row">Eff</th><td>mmHg equivalent support</td><td>Support remaining after the acidosis and cold reductions. This is not a fluid volume.</td></tr>
+<tr><th scope="row">Lost</th><td>mmHg equivalent support</td><td>max(Raw − Eff, 0). It measures modeled loss of response, not leaked drug mass.</td></tr>
+<tr><th scope="row">Acid %</th><td>% reduction</td><td>Acidosis related support reduction. It is not blood pH, the total acidosis score or the percentage of the dose lost.</td></tr>
+<tr><th scope="row">Cold %</th><td>% reduction</td><td>Hypothermia related support reduction. Acid and Cold multiply their remaining fractions; simply adding their percentages overstates the combined loss.</td></tr>
+<tr><th scope="row">Inf</th><td>Diagnostic support mirror</td><td>The public infusion support mirror read by this overlay. The current detailed support is stored in the circulation state; a default zero in this mirror is not proof that no infusion is active.</td></tr>
+<tr><th scope="row">PDE</th><td>Diagnostic support mirror</td><td>Push dose epinephrine support mirror. PDE here means push dose epinephrine, not a phosphodiesterase medication. The current bolus support calculation is tracked separately in circulation state.</td></tr>
+<tr><th scope="row">Distal</th><td>Legacy surge mirror</td><td>Former distal site pressor spike diagnostic. The current circulation calculation explicitly sets the location only spike to zero. A distal IV does not itself turn norepinephrine into epinephrine; local leakage and vesicant injury remain separate concerns.</td></tr>
 </tbody></table></div>
 <div class="principle"><div class="lab">Reading the calculation</div><p><b>Effective support = Raw × (1 − Acid fraction) × (1 − Cold fraction).</b> For example, Raw 20 with Acid 25% and Cold 20% gives 20 × 0.75 × 0.80 = <b>12</b>, with <b>8</b> lost. These are diagnostic support units, not a dosing recommendation.</p></div>
 </section>
 <section class="sec"><div class="sec-head"><span class="sec-num">06</span><h2>Acidosis and carbon dioxide</h2></div><p>The acidosis scores are internal 0–1 burdens, not pH values. The rows explain whether poor perfusion, inadequate ventilation, saline exposure or low CPP is feeding that burden.</p>
 <div class="scroll" tabindex="0" role="region" aria-label="Acidosis burden and driver fields"><table class="t"><thead><tr><th scope="col">Display field</th><th scope="col">Unit / format</th><th scope="col">Meaning and interpretation</th></tr></thead><tbody>
 <tr><th scope="row">Total</th><td>0–1 score</td><td>Combined metabolic and respiratory acidosis, capped at 1. Used by response and coagulation effects.</td></tr>
-<tr><th scope="row">Metab</th><td>0–1 score</td><td>Metabolic acidosis burden, including the saline-related floor in the current model.</td></tr>
+<tr><th scope="row">Metab</th><td>0–1 score</td><td>Metabolic acidosis burden, including the saline related floor in the current model.</td></tr>
 <tr><th scope="row">Resp</th><td>0–1 score</td><td>Respiratory acidosis burden responding to retained arterial CO₂.</td></tr>
-<tr><th scope="row">Shock</th><td>0–1 driver</td><td>Current poor-perfusion fraction driving metabolic acidosis. This is different from the shock-severity mirror under Perfusion.</td></tr>
+<tr><th scope="row">Shock</th><td>0–1 driver</td><td>Current poor perfusion fraction driving metabolic acidosis. This is different from the shock severity mirror under Perfusion.</td></tr>
 <tr><th scope="row">Vent</th><td>0–1 deficit</td><td>Modeled ventilation deficit. A value of zero means no deficit in this calculation, not that the ventilator is off.</td></tr>
 <tr><th scope="row">CPP</th><td>0–1 driver</td><td>Contribution from inadequate cerebral perfusion to the acidosis model. This is not the mmHg CPP shown under TBI / ICP.</td></tr>
 <tr><th scope="row">ShkMin</th><td>Minutes</td><td>Accumulated time in inadequate perfusion used by the onset model. It helps explain why a newly low pressure may precede a large metabolic burden.</td></tr>
@@ -100,10 +100,10 @@
 <tr><th scope="row">BVM</th><td>yes / no</td><td>Whether the acidosis model detects active manual ventilation. <b>no</b> is expected for an independently breathing patient; the red text alone does not mean treatment is required.</td></tr>
 <tr><th scope="row">CO2 +</th><td>mmHg/s</td><td>Current modeled rate of PaCO₂ accumulation from inadequate ventilation.</td></tr>
 <tr><th scope="row">CO2 −</th><td>mmHg/s</td><td>Current modeled PaCO₂-clearance rate. It is limited by the model’s normal PaCO₂ floor, so a positive rate does not guarantee the stored value is falling below normal.</td></tr>
-<tr><th scope="row">hCl</th><td>0–1 score</td><td>Hyperchloremic acidosis burden from the tracked normal-saline exposure. It is not hydrogen chloride concentration or a measured serum chloride.</td></tr>
-<tr><th scope="row">NS</th><td>mL</td><td>Tracked normal-saline exposure used by that model. This is not total bag volume or the amount currently in the crystalloid compartment.</td></tr>
-<tr><th scope="row">ColdG</th><td>Multiplier</td><td>Cold-related multiplier on metabolic acidosis accumulation. ×1 is baseline; higher values accelerate accumulation.</td></tr>
-<tr><th scope="row">Recover</th><td>Multiplier</td><td>Cold-related multiplier on metabolic acidosis recovery. ×1 is baseline; lower values slow recovery.</td></tr>
+<tr><th scope="row">hCl</th><td>0–1 score</td><td>Hyperchloremic acidosis burden from the tracked normal saline exposure. It is not hydrogen chloride concentration or a measured serum chloride.</td></tr>
+<tr><th scope="row">NS</th><td>mL</td><td>Tracked normal saline exposure used by that model. This is not total bag volume or the amount currently in the crystalloid compartment.</td></tr>
+<tr><th scope="row">ColdG</th><td>Multiplier</td><td>Cold related multiplier on metabolic acidosis accumulation. ×1 is baseline; higher values accelerate accumulation.</td></tr>
+<tr><th scope="row">Recover</th><td>Multiplier</td><td>Cold related multiplier on metabolic acidosis recovery. ×1 is baseline; lower values slow recovery.</td></tr>
 </tbody></table></div>
 <div class="principle"><div class="lab">The screenshot’s zero AcidMAP</div><p>The same screenshot shows BP 124/82 and MAP 96, while AcidMAP is 0 and the circulation tracker is empty. AcidMAP has a zero fallback when its state has not been populated. Read the displayed patient BP first; this isolated zero does not establish absent perfusion.</p></div>
 </section>
@@ -111,19 +111,19 @@
 <div class="scroll" tabindex="0" role="region" aria-label="Coagulation fields"><table class="t"><thead><tr><th scope="col">Display field</th><th scope="col">Unit / format</th><th scope="col">Meaning and interpretation</th></tr></thead><tbody>
 <tr><th scope="row">Total</th><td>Multiplier</td><td>Combined calcium × cold × acidosis multiplier used by the bleeding model. ×1.00 is baseline.</td></tr>
 <tr><th scope="row">Acid</th><td>Multiplier</td><td>Acidosis contribution to the coagulation penalty.</td></tr>
-<tr><th scope="row">Ca</th><td>Multiplier</td><td>Calcium-deficit contribution to the coagulation penalty. This is distinct from Perfusion Ca and ACM States Calcium.</td></tr>
+<tr><th scope="row">Ca</th><td>Multiplier</td><td>Calcium deficit contribution to the coagulation penalty. This is distinct from Perfusion Ca and ACM States Calcium.</td></tr>
 <tr><th scope="row">Cold</th><td>Multiplier</td><td>Hypothermia contribution to the coagulation penalty.</td></tr>
-<tr><th scope="row">NS tick</th><td>Source label, conditional</td><td>Last normal-saline tracking source, shown only after one is recorded.</td></tr>
+<tr><th scope="row">NS tick</th><td>Source label, conditional</td><td>Last normal saline tracking source, shown only after one is recorded.</td></tr>
 <tr><th scope="row">At</th><td>Mission seconds, conditional</td><td>Timestamp associated with that last saline tracking event.</td></tr>
 </tbody></table></div>
 </section>
 <section class="sec"><div class="sec-head"><span class="sec-num">08</span><h2>Rhythm and AED</h2></div><p>Rhythm codes identify the electrical pattern or its internal representation. A code is not a heart rate, and electrical activity alone does not establish a pulse.</p>
 <div class="scroll" tabindex="0" role="region" aria-label="Rhythm and AED fields"><table class="t"><thead><tr><th scope="col">Display field</th><th scope="col">Unit / format</th><th scope="col">Meaning and interpretation</th></tr></thead><tbody>
 <tr><th scope="row">Active</th><td>Extended rhythm code</td><td>Selected Extended custom rhythm. Zero means no custom override is shown; inspect Native as well.</td></tr>
-<tr><th scope="row">Native</th><td>ACM rhythm code</td><td>Native ACM cardiac-rhythm state. A custom rhythm may use a native proxy for the underlying game state machine.</td></tr>
-<tr><th scope="row">Visual</th><td>Display rhythm code</td><td>AED visual-rhythm cache. It can differ from the underlying rhythm during artifact or display handling; a default zero does not prove a monitor is attached.</td></tr>
-<tr><th scope="row">Beat</th><td>on / off</td><td>Legacy beat-clock feature flag. <b>off</b> does not mean the patient has no heartbeat.</td></tr>
-<tr><th scope="row">QRS</th><td>on / off</td><td>Legacy QRS/beep-lock feature flag. <b>off</b> does not mean there are no QRS complexes.</td></tr>
+<tr><th scope="row">Native</th><td>ACM rhythm code</td><td>Native ACM cardiac rhythm state. A custom rhythm may use a native proxy for the underlying game state machine.</td></tr>
+<tr><th scope="row">Visual</th><td>Display rhythm code</td><td>AED visual rhythm cache. It can differ from the underlying rhythm during artifact or display handling; a default zero does not prove a monitor is attached.</td></tr>
+<tr><th scope="row">Beat</th><td>on / off</td><td>Legacy beat clock feature flag. <b>off</b> does not mean the patient has no heartbeat.</td></tr>
+<tr><th scope="row">QRS</th><td>on / off</td><td>Legacy QRS/beep lock feature flag. <b>off</b> does not mean there are no QRS complexes.</td></tr>
 <tr><th scope="row">Period</th><td>Seconds</td><td>Stored AED beat period. A zero/default means no positive period is stored here, not necessarily asystole.</td></tr>
 </tbody></table></div>
 <h3>Code lookup</h3>
@@ -131,32 +131,32 @@
 <tr><th scope="row">−5 / −1</th><td>Native codes</td><td>−5: unavailable rhythm representation. −1: CPR artifact representation.</td></tr>
 <tr><th scope="row">0</th><td>Native code</td><td>Sinus representation. Rate and perfusion still need separate assessment.</td></tr>
 <tr><th scope="row">1 / 2</th><td>Native codes</td><td>1: asystole. 2: ventricular fibrillation.</td></tr>
-<tr><th scope="row">3 / 4 / 5</th><td>Native codes</td><td>3: ACM PVT, the pulseless ventricular-tachycardia representation. 4: ventricular tachycardia. 5: pulseless electrical activity.</td></tr>
+<tr><th scope="row">3 / 4 / 5</th><td>Native codes</td><td>3: ACM PVT, the pulseless ventricular tachycardia representation. 4: ventricular tachycardia. 5: pulseless electrical activity.</td></tr>
 <tr><th scope="row">100 / 101</th><td>Extended codes</td><td>100: atrial fibrillation with rapid ventricular response. 101: atrial tachycardia.</td></tr>
 <tr><th scope="row">102</th><td>Extended code</td><td>Torsades de pointes. Uses native PVT code 3 as its underlying proxy.</td></tr>
-<tr><th scope="row">103 / 104</th><td>Extended codes</td><td>103: controlled-rate atrial fibrillation. 104: supraventricular tachycardia.</td></tr>
+<tr><th scope="row">103 / 104</th><td>Extended codes</td><td>103: controlled rate atrial fibrillation. 104: supraventricular tachycardia.</td></tr>
 </tbody></table></div>
 </section>
 <section class="sec"><div class="sec-head"><span class="sec-num">09</span><h2>Automatic blood pressure</h2></div><p>The automatic BP block describes the selected patient’s cuff task and the machine’s tracking list. A scheduled reading can still depend on a usable monitor and cuff.</p>
 <div class="scroll" tabindex="0" role="region" aria-label="Automatic blood-pressure fields"><table class="t"><thead><tr><th scope="col">Display field</th><th scope="col">Unit / format</th><th scope="col">Meaning and interpretation</th></tr></thead><tbody>
 <tr><th scope="row">Active</th><td>yes / no</td><td>Automatic BP cycling is enabled for this patient.</td></tr>
 <tr><th scope="row">Cuff</th><td>busy / ready</td><td>Whether the pressure cuff is currently occupied with a reading. Ready describes its busy flag; it is not confirmation that all placement requirements are met.</td></tr>
-<tr><th scope="row">Next</th><td>Seconds / due</td><td>Countdown to the stored next-read time. <b>due</b> is also shown when no positive time exists; with Active no it does not mean an unattended overdue measurement.</td></tr>
+<tr><th scope="row">Next</th><td>Seconds / due</td><td>Countdown to the stored next read time. <b>due</b> is also shown when no positive time exists; with Active no it does not mean an unattended overdue measurement.</td></tr>
 <tr><th scope="row">Int</th><td>Seconds</td><td>Configured interval between automatic BP cycles. The screenshot shows 120 s.</td></tr>
-<tr><th scope="row">Tracked</th><td>Count</td><td>Patients in the automatic-BP tracking list on this machine, repeating the header bp count.</td></tr>
+<tr><th scope="row">Tracked</th><td>Count</td><td>Patients in the automatic BP tracking list on this machine, repeating the header bp count.</td></tr>
 </tbody></table></div>
 </section>
-<section class="sec"><div class="sec-head"><span class="sec-num">10</span><h2>Network diagnostics</h2></div><p>These fields describe the machine rendering the overlay and the chest-treatment synchronization layer. They are useful when a treatment appears locally but is not accepted by the patient’s simulation owner.</p>
+<section class="sec"><div class="sec-head"><span class="sec-num">10</span><h2>Network diagnostics</h2></div><p>These fields describe the machine rendering the overlay and the chest treatment synchronization layer. They are useful when a treatment appears locally but is not accepted by the patient’s simulation owner.</p>
 <div class="scroll" tabindex="0" role="region" aria-label="Network fields"><table class="t"><thead><tr><th scope="col">Display field</th><th scope="col">Unit / format</th><th scope="col">Meaning and interpretation</th></tr></thead><tbody>
 <tr><th scope="row">Role</th><td>host / client / dedi</td><td>This machine’s role. <b>host</b> is a server that is not dedicated; it can also appear in singleplayer. <b>dedi</b> is a dedicated server.</td></tr>
 <tr><th scope="row">MP</th><td>yes / no</td><td>Whether the mission is multiplayer. Read it beside Role; the screenshot’s host and MP no are compatible.</td></tr>
 <tr><th scope="row">Owner</th><td>Machine ID</td><td>Engine owner identifier for the selected patient. It is not a Steam ID or player count.</td></tr>
-<tr><th scope="row">Local</th><td>yes / no</td><td>Whether this patient is local to this machine. Local yes means its owner-side simulation is here. Local no can be entirely normal in multiplayer.</td></tr>
+<tr><th scope="row">Local</th><td>yes / no</td><td>Whether this patient is local to this machine. Local yes means its owner side simulation is here. Local no can be entirely normal in multiplayer.</td></tr>
 <tr><th scope="row">Chest</th><td>on / off</td><td>Chest networking layer initialized on this machine. On does not prove another machine received a request.</td></tr>
-<tr><th scope="row">OwnLyr</th><td>on / off</td><td>Patient-owner routing layer initialized here. Again, initialization is not a round-trip delivery test.</td></tr>
-<tr><th scope="row">Pend</th><td>Count</td><td>Outstanding chest-seal edit requests on this machine. This is machine-wide chest bookkeeping, not every treatment or only the displayed patient. A count that persists without clearing suggests unacknowledged requests.</td></tr>
+<tr><th scope="row">OwnLyr</th><td>on / off</td><td>Patient owner routing layer initialized here. Again, initialization is not a round trip delivery test.</td></tr>
+<tr><th scope="row">Pend</th><td>Count</td><td>Outstanding chest seal edit requests on this machine. This is machine wide chest bookkeeping, not every treatment or only the displayed patient. A count that persists without clearing suggests unacknowledged requests.</td></tr>
 <tr><th scope="row">Sess</th><td>Count / n/a</td><td>Chest edit sessions on the server. Clients show <b>n/a</b> because the server owns the session map; this is not the number of people on the server.</td></tr>
-<tr><th scope="row">Viewers</th><td>Count</td><td>Remote recipients in the local live-gesture presence list, excluding the local viewer. Zero is normal when nobody else is receiving that stream.</td></tr>
+<tr><th scope="row">Viewers</th><td>Count</td><td>Remote recipients in the local live gesture presence list, excluding the local viewer. Zero is normal when nobody else is receiving that stream.</td></tr>
 <tr><th scope="row">Rate</th><td>Seconds</td><td>Configured gesture send interval. 0.07 s is approximately 14 sends per second. It is not measured ping, packet loss or bandwidth; a larger interval sends less often.</td></tr>
 <tr><th scope="row">net rev</th><td>Revision string</td><td>Networking build marker. In the screenshot it is NA2-live-collaboration-source-candidate. Include the full text when reporting synchronization issues.</td></tr>
 </tbody></table></div>
@@ -164,76 +164,76 @@
 <section class="sec"><div class="sec-head"><span class="sec-num">11</span><h2>ACM States: core and airway</h2></div><p>The right column exposes underlying flags and item slots. Position flags are treatment states rather than a complete description of the unit’s visible animation.</p>
 <div class="scroll" tabindex="0" role="region" aria-label="Core state fields"><table class="t"><thead><tr><th scope="col">Display field</th><th scope="col">Unit / format</th><th scope="col">Meaning and interpretation</th></tr></thead><tbody>
 <tr><th scope="row">Uncon</th><td>yes / no</td><td>ACE unconscious state.</td></tr>
-<tr><th scope="row">Arrest</th><td>yes / no</td><td>ACE cardiac-arrest state. This is separate from alive/dead and from the displayed electrical rhythm.</td></tr>
-<tr><th scope="row">Critica / Critical</th><td>yes / no</td><td>ACM critical-vitals state. The seven-character label column clips Critical to Critica in the screenshot.</td></tr>
+<tr><th scope="row">Arrest</th><td>yes / no</td><td>ACE cardiac arrest state. This is separate from alive/dead and from the displayed electrical rhythm.</td></tr>
+<tr><th scope="row">Critica / Critical</th><td>yes / no</td><td>ACM critical vitals state. The seven character label column clips Critical to Critica in the screenshot.</td></tr>
 <tr><th scope="row">KO</th><td>yes / no</td><td>ACM knockout state. It is a separate flag from ACE unconsciousness.</td></tr>
-<tr><th scope="row">Lying</th><td>yes / no</td><td>ACM lying-position state.</td></tr>
-<tr><th scope="row">Sitting</th><td>yes / no</td><td>ACM sitting-position state.</td></tr>
-<tr><th scope="row">TgtHR</th><td>Beats/min</td><td>Target toward which the heart-rate system is being driven. It need not match the current HR while other influences or easing are active.</td></tr>
+<tr><th scope="row">Lying</th><td>yes / no</td><td>ACM lying position state.</td></tr>
+<tr><th scope="row">Sitting</th><td>yes / no</td><td>ACM sitting position state.</td></tr>
+<tr><th scope="row">TgtHR</th><td>Beats/min</td><td>Target toward which the heart rate system is being driven. It need not match the current HR while other influences or easing are active.</td></tr>
 <tr><th scope="row">TgtRR</th><td>Breaths/min</td><td>Target respiration rate, distinct from the current RR.</td></tr>
 </tbody></table></div>
 <div class="scroll" tabindex="0" role="region" aria-label="Airway state fields"><table class="t"><thead><tr><th scope="col">Display field</th><th scope="col">Unit / format</th><th scope="col">Meaning and interpretation</th></tr></thead><tbody>
-<tr><th scope="row">Reflex</th><td>yes / no</td><td>Airway-reflex flag. A protective reflex being present is separate from the amount of obstruction.</td></tr>
-<tr><th scope="row">Collaps / Collapse</th><td>0–3 state</td><td>Airway-collapse severity: 0 none, 1 mild, 2 moderate, 3 severe. The label can be clipped. Adjuncts and position can change effective patency without making every raw state disappear.</td></tr>
+<tr><th scope="row">Reflex</th><td>yes / no</td><td>Airway reflex flag. A protective reflex being present is separate from the amount of obstruction.</td></tr>
+<tr><th scope="row">Collaps / Collapse</th><td>0–3 state</td><td>Airway collapse severity: 0 none, 1 mild, 2 moderate, 3 severe. The label can be clipped. Adjuncts and position can change effective patency without making every raw state disappear.</td></tr>
 <tr><th scope="row">Vomit</th><td>Obstruction state</td><td>Vomit obstruction burden. Zero means no recorded vomit obstruction; positive values are not milliliters.</td></tr>
 <tr><th scope="row">Blood</th><td>Obstruction state</td><td>Blood obstruction burden in the airway. This is unrelated to the Blood volume in Vitals.</td></tr>
 <tr><th scope="row">OPA</th><td>Item label / none</td><td>Oral airway slot. The label is abbreviated OPA, but the stored item can be OPA or SGA. None means the slot is empty.</td></tr>
 <tr><th scope="row">NPA</th><td>Item label / none</td><td>Nasal airway slot.</td></tr>
-<tr><th scope="row">Recover</th><td>yes / no</td><td>Recovery-position state. This is not the acidosis recovery multiplier.</td></tr>
-<tr><th scope="row">Tilt</th><td>yes / no</td><td>Head-tilt airway-position state.</td></tr>
-<tr><th scope="row">SurgAW</th><td>yes / no</td><td>Surgical-airway state. It is not the endotracheal-tube flag.</td></tr>
-<tr><th scope="row">Cuff</th><td>yes / no</td><td>Surgical-airway cuff-inflation flag. It does not report ETT cuff status or a BP cuff.</td></tr>
+<tr><th scope="row">Recover</th><td>yes / no</td><td>Recovery position state. This is not the acidosis recovery multiplier.</td></tr>
+<tr><th scope="row">Tilt</th><td>yes / no</td><td>Head tilt airway position state.</td></tr>
+<tr><th scope="row">SurgAW</th><td>yes / no</td><td>Surgical airway state. It is not the endotracheal tube flag.</td></tr>
+<tr><th scope="row">Cuff</th><td>yes / no</td><td>Surgical airway cuff inflation flag. It does not report ETT cuff status or a BP cuff.</td></tr>
 </tbody></table></div>
 </section>
 <section class="sec"><div class="sec-head"><span class="sec-num">12</span><h2>ACM States: breathing and chest</h2></div><p>Read injury state, fluid quantity and treatment flags together. A procedure flag alone does not describe residual pleural injury or actual ventilation.</p>
 <div class="scroll" tabindex="0" role="region" aria-label="Breathing and chest state fields"><table class="t"><thead><tr><th scope="col">Display field</th><th scope="col">Unit / format</th><th scope="col">Meaning and interpretation</th></tr></thead><tbody>
 <tr><th scope="row">PTX</th><td>Native projected state, 0–4</td><td>Pneumothorax state projected from the current pleural model. Zero is no projected pneumothorax. The underlying model can contain more detail than this capped display value.</td></tr>
-<tr><th scope="row">Tension</th><td>yes / no</td><td>Tension-pneumothorax flag. Interpret alongside PTX and the patient’s pressure and breathing.</td></tr>
+<tr><th scope="row">Tension</th><td>yes / no</td><td>Tension pneumothorax flag. Interpret alongside PTX and the patient’s pressure and breathing.</td></tr>
 <tr><th scope="row">Hemo</th><td>Severity state</td><td>Hemothorax state. This is a severity indicator; the actual pleural blood volume appears in Fluid.</td></tr>
 <tr><th scope="row">Fluid</th><td>L</td><td>Blood accumulated in the hemothorax model, not circulating fluid volume.</td></tr>
-<tr><th scope="row">ChestIn / ChestInj</th><td>yes / no</td><td>Chest-injury flag. Its label is clipped in the screenshot.</td></tr>
-<tr><th scope="row">Seal</th><td>yes / no</td><td>Native chest-seal flag. It is not a count or a complete per-wound map of the chest-seal minigame.</td></tr>
-<tr><th scope="row">Thora</th><td>Procedure state</td><td>−1 is the renderer’s unset fallback; 0 is closed, 1 is an open thoracostomy and 2 is a chest tube placed. State 3 is the legacy tube-reseal/failure state. Current tube placement no longer creates delayed failure solely from posture.</td></tr>
-<tr><th scope="row">Lungs</th><td>Two sound-state codes</td><td>State per stethoscope side: 0 normal, 1 shallow, 2 dull, 3 crackles. The current listening code reads index 0 for its right-side control and index 1 for its left-side control. Live edema logic can add crackles when a stored side still reads 0.</td></tr>
-<tr><th scope="row">BVM</th><td>yes / no</td><td>Stored BVM-use flag. Compare with the acidosis model’s BVM detection and actual breaths.</td></tr>
+<tr><th scope="row">ChestIn / ChestInj</th><td>yes / no</td><td>Chest injury flag. Its label is clipped in the screenshot.</td></tr>
+<tr><th scope="row">Seal</th><td>yes / no</td><td>Native chest seal flag. It is not a count or a complete per wound map of the chest seal minigame.</td></tr>
+<tr><th scope="row">Thora</th><td>Procedure state</td><td>−1 is the renderer’s unset fallback; 0 is closed, 1 is an open thoracostomy and 2 is a chest tube placed. State 3 is the legacy tube reseal/failure state. Current tube placement no longer creates delayed failure solely from posture.</td></tr>
+<tr><th scope="row">Lungs</th><td>Two sound state codes</td><td>State per stethoscope side: 0 normal, 1 shallow, 2 dull, 3 crackles. The current listening code reads index 0 for its right side control and index 1 for its left side control. Live edema logic can add crackles when a stored side still reads 0.</td></tr>
+<tr><th scope="row">BVM</th><td>yes / no</td><td>Stored BVM use flag. Compare with the acidosis model’s BVM detection and actual breaths.</td></tr>
 <tr><th scope="row">BVM O2</th><td>yes / no</td><td>Whether oxygen is connected to the BVM. It does not describe oxygen supplied by every other device.</td></tr>
 </tbody></table></div>
 </section>
-<section class="sec"><div class="sec-head"><span class="sec-num">13</span><h2>ACM States: circulation, clotting and disability</h2></div><p>Some right-column values repeat the left column. Others are native game bookkeeping that should not be read as laboratory measurements.</p>
+<section class="sec"><div class="sec-head"><span class="sec-num">13</span><h2>ACM States: circulation, clotting and disability</h2></div><p>Some right column values repeat the left column. Others are native game bookkeeping that should not be read as laboratory measurements.</p>
 <div class="scroll" tabindex="0" role="region" aria-label="Circulation state fields"><table class="t"><thead><tr><th scope="col">Display field</th><th scope="col">Unit / format</th><th scope="col">Meaning and interpretation</th></tr></thead><tbody>
-<tr><th scope="row">Circ</th><td>L</td><td>Same circulating-volume value as Vitals Circ.</td></tr>
-<tr><th scope="row">EffVol</th><td>L</td><td>Same weighted effective-volume value as Vitals Eff.</td></tr>
+<tr><th scope="row">Circ</th><td>L</td><td>Same circulating volume value as Vitals Circ.</td></tr>
+<tr><th scope="row">EffVol</th><td>L</td><td>Same weighted effective volume value as Vitals Eff.</td></tr>
 <tr><th scope="row">Vaso</th><td>Game tone value</td><td>Same vasoconstriction state as Perfusion VC, with two decimal places here.</td></tr>
-<tr><th scope="row">Platele / Platelet</th><td>Game count</td><td>Native platelet-count resource, usually initialized to 3. It is not a platelet laboratory concentration. The label is clipped in the screenshot.</td></tr>
-<tr><th scope="row">Calcium</th><td>Game count</td><td>Native calcium-count resource. It differs from the calcium-credit mirror, modeled serum calcium and the coagulation multiplier.</td></tr>
+<tr><th scope="row">Platele / Platelet</th><td>Game count</td><td>Native platelet count resource, usually initialized to 3. It is not a platelet laboratory concentration. The label is clipped in the screenshot.</td></tr>
+<tr><th scope="row">Calcium</th><td>Game count</td><td>Native calcium count resource. It differs from the calcium credit mirror, modeled serum calcium and the coagulation multiplier.</td></tr>
 <tr><th scope="row">Rhythm</th><td>Native rhythm code</td><td>Same native rhythm state described under Rhythm / AED.</td></tr>
-<tr><th scope="row">RevArr</th><td>yes / no</td><td>Native reversible-cardiac-arrest state flag. It describes a state-machine condition, not a guarantee of ROSC.</td></tr>
-<tr><th scope="row">Resist</th><td>yes / no</td><td>Cardiac-arrest shock-resistance flag. This means resistance to defibrillation in the game, not systemic vascular resistance.</td></tr>
+<tr><th scope="row">RevArr</th><td>yes / no</td><td>Native reversible cardiac arrest state flag. It describes a state machine condition, not a guarantee of ROSC.</td></tr>
+<tr><th scope="row">Resist</th><td>yes / no</td><td>Cardiac arrest shock resistance flag. This means resistance to defibrillation in the game, not systemic vascular resistance.</td></tr>
 <tr><th scope="row">CPR</th><td>yes / no</td><td>The raw <code>isPerformingCPR</code> flag on the selected object. It reports that stored role flag; confirm who is provider and who is patient before reading it as compressions received.</td></tr>
-<tr><th scope="row">CircOK</th><td>yes / no</td><td>ACM circulation-state flag. This is not a complete stability score.</td></tr>
+<tr><th scope="row">CircOK</th><td>yes / no</td><td>ACM circulation state flag. This is not a complete stability score.</td></tr>
 </tbody></table></div>
 <div class="scroll" tabindex="0" role="region" aria-label="Clotting and disability state fields"><table class="t"><thead><tr><th scope="col">Display field</th><th scope="col">Unit / format</th><th scope="col">Meaning and interpretation</th></tr></thead><tbody>
-<tr><th scope="row">Coag</th><td>yes / no</td><td>Native external-wound coagulation handler active. No does not mean the patient is unable to clot.</td></tr>
-<tr><th scope="row">IBCoag</th><td>yes / no</td><td>Native internal-bleeding coagulation handler active. No does not by itself diagnose coagulopathy.</td></tr>
-<tr><th scope="row">Fract</th><td>Six-entry state array</td><td>Fracture states by body part: 0 none, 1 mild, 2 severe, 3 complex. The order is head, torso, left arm, right arm, left leg, right leg.</td></tr>
-<tr><th scope="row">Splint</th><td>Six-entry native array</td><td>The ACE splint array, in the same body-part order. A zero/default means that native slot is clear. This overlay does not show every Extended splint-status variable.</td></tr>
-<tr><th scope="row">TQ</th><td>Six-entry clock-label array</td><td>Tourniquet application time labels in the same order. Recorded entries use the in-game HH:MM clock; zero is the empty default. These are not elapsed minutes, tourniquet counts or necrosis scores.</td></tr>
+<tr><th scope="row">Coag</th><td>yes / no</td><td>Native external wound coagulation handler active. No does not mean the patient is unable to clot.</td></tr>
+<tr><th scope="row">IBCoag</th><td>yes / no</td><td>Native internal bleeding coagulation handler active. No does not by itself diagnose coagulopathy.</td></tr>
+<tr><th scope="row">Fract</th><td>Six entry state array</td><td>Fracture states by body part: 0 none, 1 mild, 2 severe, 3 complex. The order is head, torso, left arm, right arm, left leg, right leg.</td></tr>
+<tr><th scope="row">Splint</th><td>Six entry native array</td><td>The ACE splint array, in the same body part order. A zero/default means that native slot is clear. This overlay does not show every Extended splint status variable.</td></tr>
+<tr><th scope="row">TQ</th><td>Six entry clock label array</td><td>Tourniquet application time labels in the same order. Recorded entries use the in game HH:MM clock; zero is the empty default. These are not elapsed minutes, tourniquet counts or necrosis scores.</td></tr>
 </tbody></table></div>
 <div class="metric-strip"><div class="metric"><span>Array index 0 / 1</span><strong>Head / torso</strong></div><div class="metric"><span>Array index 2 / 3</span><strong>Left / right arm</strong></div><div class="metric"><span>Array index 4 / 5</span><strong>Left / right leg</strong></div></div>
 </section>
 <section class="sec"><div class="sec-head"><span class="sec-num">14</span><h2>Additional blocks that appear during treatment</h2></div><p>The healthy screenshot does not show these sections. Their conditional appearance helps distinguish an accepted medication, developing effect and active support.</p>
 <details class="dd"><summary><span class="dd-mark"></span><span class="dd-name">RSI, sedation and paralysis</span></summary><div class="dd-body">
 <div class="scroll" tabindex="0" role="region" aria-label="Conditional RSI fields"><table class="t"><thead><tr><th scope="col">Display field</th><th scope="col">Unit / format</th><th scope="col">Meaning and interpretation</th></tr></thead><tbody>
-<tr><th scope="row">SEDATED</th><td>Status text</td><td>Reports the sedation latch or whether the combined induction-normalized load has reached 1.0. It can show below induction or induction threshold before the latch changes.</td></tr>
+<tr><th scope="row">SEDATED</th><td>Status text</td><td>Reports the sedation latch or whether the combined induction normalized load has reached 1.0. It can show below induction or induction threshold before the latch changes.</td></tr>
 <tr><th scope="row">Ketamine</th><td>Induction multiple / pending</td><td>Ketamine’s normalized hypnotic contribution. Accepted, onset pending means a raw admitted medication record exists before its effective curve rises.</td></tr>
 <tr><th scope="row">Propofol</th><td>Normalized load</td><td>Propofol hypnotic contribution to the shared sedation calculation.</td></tr>
 <tr><th scope="row">Sed total</th><td>Normalized load</td><td>Combined hypnotic result with configured synergy and opioid adjuncts. A value of 1 is the configured induction threshold.</td></tr>
 <tr><th scope="row">Fentanyl</th><td>Attenuation % / adjunct multiplier</td><td>Effective fentanyl attenuation and its contribution to the hypnotic calculation. The percentage is not a serum concentration.</td></tr>
-<tr><th scope="row">SUGAMMADEX</th><td>mg/kg, onset %, rev</td><td>Modeled body-weight dose, onset progress and effective rocuronium reversal. Rev is an effect value, not a volume.</td></tr>
-<tr><th scope="row">MIDAZ</th><td>Onset %</td><td>Midazolam sedation-onset progress. Delivery and full sedation effect are separate events.</td></tr>
-<tr><th scope="row">PARALYZED</th><td>Status text</td><td>Rocuronium block state, with onset, accepted-pending and sub-dose states. YES – AWAKE identifies awake paralysis; YES (apnea, ventilate) identifies active block with support required.</td></tr>
-<tr><th scope="row">AWARENESS</th><td>Event / seconds</td><td>Latched awareness event and accumulated aware time. Later sedation does not clear the already-recorded event.</td></tr>
-<tr><th scope="row">VENT</th><td>Status / rate × setting / MV %</td><td>Off, intubated but not connected, or driving. The compact driving line shows configured rate and volume setting plus minute-ventilation adequacy. Check measured VTi/VTe in the detailed ventilator block.</td></tr>
+<tr><th scope="row">SUGAMMADEX</th><td>mg/kg, onset %, rev</td><td>Modeled body weight dose, onset progress and effective rocuronium reversal. Rev is an effect value, not a volume.</td></tr>
+<tr><th scope="row">MIDAZ</th><td>Onset %</td><td>Midazolam sedation onset progress. Delivery and full sedation effect are separate events.</td></tr>
+<tr><th scope="row">PARALYZED</th><td>Status text</td><td>Rocuronium block state, with onset, accepted pending and sub dose states. YES – AWAKE identifies awake paralysis; YES (apnea, ventilate) identifies active block with support required.</td></tr>
+<tr><th scope="row">AWARENESS</th><td>Event / seconds</td><td>Latched awareness event and accumulated aware time. Later sedation does not clear the already recorded event.</td></tr>
+<tr><th scope="row">VENT</th><td>Status / rate × setting / MV %</td><td>Off, intubated but not connected, or driving. The compact driving line shows configured rate and volume setting plus minute ventilation adequacy. Check measured VTi/VTe in the detailed ventilator block.</td></tr>
 </tbody></table></div>
 </div></details>
 <details class="dd"><summary><span class="dd-mark"></span><span class="dd-name">Medication concentrations and delivery rates</span></summary><div class="dd-body">
@@ -241,32 +241,32 @@
 <tr><th scope="row">LIDOCAINE: Serum / Band</th><td>mcg/mL / category</td><td>Modeled accumulated lidocaine concentration and highest reached toxicity band. The label describes the model’s band, not a real laboratory result.</td></tr>
 <tr><th scope="row">Seizure</th><td>none / active / postictal</td><td>Lidocaine seizure phase.</td></tr>
 <tr><th scope="row">Benzo</th><td>Effective / required</td><td>Effective benzodiazepine load compared with the modeled requirement, which can rise with lidocaine toxicity.</td></tr>
-<tr><th scope="row">ESMOLOL: Drip / Serum / Band</th><td>mg/min / mcg/mL / category</td><td>Delivered-rate drive, modeled concentration and effect band.</td></tr>
+<tr><th scope="row">ESMOLOL: Drip / Serum / Band</th><td>mg/min / mcg/mL / category</td><td>Delivered rate drive, modeled concentration and effect band.</td></tr>
 <tr><th scope="row">ESMOLOL: Overdose / Effects</th><td>% / text</td><td>Modeled toxic blockade fraction and the associated bradycardia/hypotension description.</td></tr>
 <tr><th scope="row">INFUSION RATE: Amio / Mag</th><td>mg/min</td><td>Admitted amiodarone and magnesium delivery rates when large enough to display.</td></tr>
-<tr><th scope="row">Fast push</th><td>% penalty</td><td>Highest fast-delivery penalty for those displayed drugs. It is not the fraction of a syringe already pushed.</td></tr>
+<tr><th scope="row">Fast push</th><td>% penalty</td><td>Highest fast delivery penalty for those displayed drugs. It is not the fraction of a syringe already pushed.</td></tr>
 <tr><th scope="row">CALCIUM heading</th><td>Salt label</td><td>CaCl₂, gluconate, both, or washing out. The last state means the modeled effect remains after an active salt infusion is no longer identified.</td></tr>
 <tr><th scope="row">CALCIUM: Serum</th><td>Current / upper reference, mg/dL</td><td>Modeled supplemental calcium serum level and configured high reference. It is not the patient’s full measured serum calcium.</td></tr>
-<tr><th scope="row">CALCIUM: Rate</th><td>Salt mg/min, elemental mg/min</td><td>Salt delivery rate with its elemental-calcium rate in parentheses. The two salts contain different elemental fractions.</td></tr>
+<tr><th scope="row">CALCIUM: Rate</th><td>Salt mg/min, elemental mg/min</td><td>Salt delivery rate with its elemental calcium rate in parentheses. The two salts contain different elemental fractions.</td></tr>
 <tr><th scope="row">CALCIUM: Band / Overdose</th><td>Effect category / %</td><td>Modeled overdose severity and current consequence band.</td></tr>
 <tr><th scope="row">AMIODARONE: Serum / Rate / Band</th><td>mg/L / mg/min / category</td><td>Modeled concentration, admitted delivery rate and effect band.</td></tr>
 <tr><th scope="row">Cumulative</th><td>Current / ceiling, mg</td><td>Cumulative amiodarone compared with its configured QT/torsades ceiling. This is separate from the current concentration.</td></tr>
-<tr><th scope="row">Fast infusion</th><td>% penalty</td><td>Amiodarone’s current fast-infusion penalty.</td></tr>
-<tr><th scope="row">SERUM LEVELS</th><td>Drug-specific units</td><td>Other supported pharmacokinetic models appear by drug name with their configured unit. Read the unit on each row; these values are not interchangeable with normalized medication-effect loads.</td></tr>
+<tr><th scope="row">Fast infusion</th><td>% penalty</td><td>Amiodarone’s current fast infusion penalty.</td></tr>
+<tr><th scope="row">SERUM LEVELS</th><td>Drug specific units</td><td>Other supported pharmacokinetic models appear by drug name with their configured unit. Read the unit on each row; these values are not interchangeable with normalized medication effect loads.</td></tr>
 </tbody></table></div>
 </div></details>
 <details class="dd"><summary><span class="dd-mark"></span><span class="dd-name">Ventilator, blast lung and CBRN</span></summary><div class="dd-body">
 <div class="scroll" tabindex="0" role="region" aria-label="Conditional device and injury fields"><table class="t"><thead><tr><th scope="col">Display field</th><th scope="col">Unit / format</th><th scope="col">Meaning and interpretation</th></tr></thead><tbody>
-<tr><th scope="row">BLAST LUNG: Sev</th><td>0–1 score</td><td>Modeled blast-lung injury severity.</td></tr>
-<tr><th scope="row">BLAST LUNG: Vent</th><td>ok / NO</td><td>This display check requires a driving ventilator, minute-ventilation adequacy above 0.6 and FiO₂ at least 50%. It is a specific display condition, not a complete ventilation assessment.</td></tr>
+<tr><th scope="row">BLAST LUNG: Sev</th><td>0–1 score</td><td>Modeled blast lung injury severity.</td></tr>
+<tr><th scope="row">BLAST LUNG: Vent</th><td>ok / NO</td><td>This display check requires a driving ventilator, minute ventilation adequacy above 0.6 and FiO₂ at least 50%. It is a specific display condition, not a complete ventilation assessment.</td></tr>
 <tr><th scope="row">VENTILATOR heading</th><td>Mode label</td><td>Current ventilator mode while the ventilator is driving the patient.</td></tr>
-<tr><th scope="row">PIP</th><td>cmH₂O</td><td>Modeled peak inspiratory pressure, colored by its pressure-state classification.</td></tr>
-<tr><th scope="row">Comp</th><td>Relative compliance</td><td>Lung-compliance factor, with 1 near the model’s baseline. This is not an absolute mL/cmH₂O measurement.</td></tr>
+<tr><th scope="row">PIP</th><td>cmH₂O</td><td>Modeled peak inspiratory pressure, colored by its pressure state classification.</td></tr>
+<tr><th scope="row">Comp</th><td>Relative compliance</td><td>Lung compliance factor, with 1 near the model’s baseline. This is not an absolute mL/cmH₂O measurement.</td></tr>
 <tr><th scope="row">VTi / VTe</th><td>mL</td><td>Inspired and expired tidal volumes. Compare them with the setting and actual delivered ventilation.</td></tr>
-<tr><th scope="row">VILI</th><td>Injury score</td><td>Accumulated modeled ventilator-related lung-injury burden.</td></tr>
+<tr><th scope="row">VILI</th><td>Injury score</td><td>Accumulated modeled ventilator related lung injury burden.</td></tr>
 <tr><th scope="row">Baro</th><td>Event count</td><td>Recorded barotrauma events.</td></tr>
-<tr><th scope="row">CBRN: Exposed / Contam</th><td>yes / no</td><td>Chemical-exposure and contamination state flags. This block appears when relevant flags or injury values are present.</td></tr>
-<tr><th scope="row">CBRN: Airway / Lung</th><td>Game injury scales</td><td>Airway-inflammation and lung-tissue-damage values. They are not doses or percentages unless a particular system explicitly defines them that way.</td></tr>
+<tr><th scope="row">CBRN: Exposed / Contam</th><td>yes / no</td><td>Chemical exposure and contamination state flags. This block appears when relevant flags or injury values are present.</td></tr>
+<tr><th scope="row">CBRN: Airway / Lung</th><td>Game injury scales</td><td>Airway inflammation and lung tissue damage values. They are not doses or percentages unless a particular system explicitly defines them that way.</td></tr>
 </tbody></table></div>
 </div></details>
 </section>
@@ -283,14 +283,14 @@
 <details class="dd"><summary><span class="dd-mark"></span><span class="dd-name">Sources and revision</span></summary><div class="dd-body"><p>Every screenshot label was checked against the ACM Extended renderer at revision <code>21f8694</code>, retrieved 14 September 2026. Conditional blocks are documented from the same revision. The image is the supplied v1.2.1 screenshot, unchanged.</p><ul>
 <li><a href="https://github.com/hesherson/ACM-Extended/blob/21f86948b8a03507146297742ea84983987d5be1/addons/acm_extended/functions/fn_debugMenuCore.sqf">Debug renderer, all labels, fallback values and target selection</a></li>
 <li><a href="https://github.com/hesherson/ACM-Extended/blob/21f86948b8a03507146297742ea84983987d5be1/addons/acm_extended/functions/fn_circHandle.sqf">Circulation calculations, support, acidosis and CO₂</a></li>
-<li><a href="https://github.com/hesherson/ACM-Extended/blob/21f86948b8a03507146297742ea84983987d5be1/addons/main/script_macros.hpp">Native volume formula, rhythm codes and body-part indexes</a></li>
+<li><a href="https://github.com/hesherson/ACM-Extended/blob/21f86948b8a03507146297742ea84983987d5be1/addons/main/script_macros.hpp">Native volume formula, rhythm codes and body part indexes</a></li>
 <li><a href="https://github.com/hesherson/ACM-Extended/blob/21f86948b8a03507146297742ea84983987d5be1/addons/acm_extended/functions/fn_tbiHandle.sqf">TBI state, sustained exposure gate and herniation stages</a></li>
-<li><a href="https://github.com/hesherson/ACM-Extended/blob/21f86948b8a03507146297742ea84983987d5be1/addons/airway/functions/fnc_getAirwayState.sqf">Current airway-patency calculation</a></li>
-<li><a href="https://github.com/hesherson/ACM-Extended/blob/21f86948b8a03507146297742ea84983987d5be1/addons/breathing/functions/fnc_useStethoscope.sqf">Stethoscope side controls and sound-state mapping</a></li>
+<li><a href="https://github.com/hesherson/ACM-Extended/blob/21f86948b8a03507146297742ea84983987d5be1/addons/airway/functions/fnc_getAirwayState.sqf">Current airway patency calculation</a></li>
+<li><a href="https://github.com/hesherson/ACM-Extended/blob/21f86948b8a03507146297742ea84983987d5be1/addons/breathing/functions/fnc_useStethoscope.sqf">Stethoscope side controls and sound state mapping</a></li>
 <li><a href="https://github.com/hesherson/ACM-Extended/blob/21f86948b8a03507146297742ea84983987d5be1/addons/acm_extended/functions/fn_ptxPublish.sqf">Pneumothorax projection into native state</a></li>
-<li><a href="https://github.com/hesherson/ACM-Extended/blob/21f86948b8a03507146297742ea84983987d5be1/addons/disability/functions/fnc_setTourniquetTime.sqf">Tourniquet clock-label storage</a></li>
-<li><a href="https://github.com/hesherson/ACM-Extended/blob/21f86948b8a03507146297742ea84983987d5be1/addons/breathing/functions/fnc_Thoracostomy_insertChestTubeLocal.sqf">Current chest-tube placement behavior</a></li>
+<li><a href="https://github.com/hesherson/ACM-Extended/blob/21f86948b8a03507146297742ea84983987d5be1/addons/disability/functions/fnc_setTourniquetTime.sqf">Tourniquet clock label storage</a></li>
+<li><a href="https://github.com/hesherson/ACM-Extended/blob/21f86948b8a03507146297742ea84983987d5be1/addons/breathing/functions/fnc_Thoracostomy_insertChestTubeLocal.sqf">Current chest tube placement behavior</a></li>
 <li><a href="https://github.com/hesherson/ACM-Extended/blob/21f86948b8a03507146297742ea84983987d5be1/addons/acm_extended/functions/fn_infusionRegisterCore.sqf">Infusion component registration</a></li>
-<li><a href="https://github.com/hesherson/ACM-Extended/blob/21f86948b8a03507146297742ea84983987d5be1/addons/acm_extended/XEH_preInit.sqf">Debug options and sodium-unit definition</a></li>
+<li><a href="https://github.com/hesherson/ACM-Extended/blob/21f86948b8a03507146297742ea84983987d5be1/addons/acm_extended/XEH_preInit.sqf">Debug options and sodium unit definition</a></li>
 <li><a href="https://github.com/hesherson/ACM-Extended/blob/21f86948b8a03507146297742ea84983987d5be1/addons/acm_extended/functions/fn_initRhythmHemodynamicsConfig.sqf">Custom rhythm proxy rules</a></li>
 </ul></div></details>

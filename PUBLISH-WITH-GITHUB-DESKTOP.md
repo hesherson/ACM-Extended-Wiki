@@ -7,8 +7,8 @@ The ZIP includes the rebuilt site in `docs`, the editable source and the build s
 3. Choose **Repository > Show in Explorer**.
 4. Extract this ZIP somewhere else. Copy the contents of its `ACM-Extended-Wiki` folder into the repository folder. Replace matching files. `build.py`, `src` and `docs` belong directly inside the repository, not inside a second nested folder.
 5. Delete `docs/ov_traps.html` if that retired page remains from an older build. The source copy is no longer part of the published site.
-6. Open `docs/index.html` in a browser. Check the fading IV guide, ventilator setting cards, graph dots, suction audio and a narrow window.
-7. Return to GitHub Desktop. Review **Changes**, enter `Expand wiki waveforms, languages and instructor guides`, click **Commit to main**, then **Push origin**.
+6. Open `docs/index.html` in a browser. Check the chest seal animation in Airway & Breathing, green cardiac rhythm traces, MV hover definition, fading IV guide and a narrow window.
+7. Return to GitHub Desktop. Review **Changes**, enter `Add chest seal guidance and cardiac rhythm traces`, click **Commit to main**, then **Push origin**.
 8. On GitHub, check the **Actions** tab for the wiki checks and Pages deployment. Wait for deployment to finish before refreshing the live site.
 
 The repository's documented publishing source is **Settings > Pages > Deploy from a branch > main > /docs**. Keep that source. Uploading the ZIP file itself does not update the website; publish its extracted contents.
@@ -26,6 +26,8 @@ The repository's documented publishing source is **Settings > Pages > Deploy fro
 | Sound previews | `src/audio` |
 | Capnography explorer | `src/capnography.js` and `src/capnography.css` |
 | Language picker | `src/languages.js` and `src/languages.css` |
+| ECG examples | `src/rhythm-waveforms.js` and `src/rhythm-waveforms.css` |
+| Chest seal demonstration | `src/chest-seal.js` and `src/chest-seal.css` |
 | Navigation or new pages | `build.py` and the matching content file |
 | Images | `src/img` |
 
@@ -41,7 +43,7 @@ From the repository folder, after copying the update:
 git status
 git diff --check
 git add build.py paa2png.py src docs scripts .github README.md BUILD-WIKI.cmd MOD-ASSET-SOURCES.md PUBLISH-WITH-GITHUB-DESKTOP.md
-git commit -m "Expand wiki waveforms, languages and instructor guides"
+git commit -m "Add chest seal guidance and cardiac rhythm traces"
 git push origin main
 ```
 
@@ -54,7 +56,7 @@ py -3 scripts\check_wiki.py
 
 # Verification of this handoff
 
-The build, JavaScript syntax, local links, anchors and reproducibility checks passed. Chromium checked all 27 pages at 390, 1905 and 5120 pixels, including quiet glossary terms, vial placement, automatic/manual slideshow controls, reduced-motion and JavaScript-disabled fallbacks, ventilator cards, graph readouts and loadable suction audio. The added checks also cover calculator label alignment, VTi/VTe definitions, the capnography controls, upward suction motion, the debug reference and language controls. Live-translation links are checked for the selected language and current page; Google provides the external translation. The GitHub workflow repeats the browser checks on future updates.
+The build, JavaScript syntax, local links, anchors and reproducibility checks passed. Chromium checked all 27 pages at 390, 1905 and 5120 pixels, including quiet glossary terms, vial placement, automatic/manual slideshow controls, reduced-motion and JavaScript-disabled fallbacks, ventilator cards, graph readouts and loadable suction audio. The added checks also cover calculator label alignment, VTi/VTe definitions, the capnography controls, upward suction motion, the debug reference and language controls. Live-translation links are checked for the selected language and current page; Google provides the external translation. The new checks cover both chest seal corners, full and partial lifts, easing and pause/resume, reduced motion, all 13 ECG traces and their readouts, JavaScript-disabled ECG display and the MV hover definition. The GitHub workflow repeats the browser checks on future updates.
 
 Official guidance: [GitHub Desktop commits and pushing](https://docs.github.com/en/desktop/making-changes-in-a-branch/committing-and-reviewing-changes-to-your-project-in-github-desktop), [GitHub Pages publishing source](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
 
