@@ -1,5 +1,10 @@
 /* Scene timing and catheter motion share the slideshow's single clock. */
 .iv-slideshow { position: relative; }
+.iv-slideshow kbd, .iv-input-key kbd, .iv-controls kbd { display: inline-block; max-width: 100%; }
+.slideshow-controls button { min-width: 0; max-width: 100%; white-space: normal; }
+@media (max-width: 819px) {
+  .slideshow-controls [data-slide-all] { white-space: normal; flex: 1 0 100%; }
+}
 .frame-stack .motion-frame { transition: opacity .1s linear; }
 .slideshow-progress {
   display: none;
