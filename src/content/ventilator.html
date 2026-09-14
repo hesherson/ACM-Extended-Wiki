@@ -1,459 +1,289 @@
-<div class="eyebrow">PILLAR <span class="tag">//</span> SYSTEMS</div>
-<h1>Ventilator Settings</h1>
-<p class="lede">Ventway Sparrow. Turbine driven, so it needs no oxygen to ventilate. Power is what runs out.</p>
-<div class="rule"></div><section class="sec"><div class="sec-head"><h2 id="screen-brightness-amp-night-mode">Screen brightness and night mode</h2></div><p>These controls apply specifically to the <b>Ventway Sparrow</b>. On its panel, open <b>MENU → ADV. SETTINGS → BRIGHTNESS</b> and use the dial. They control the device display independently of the wiki’s own night-mode button.</p><div class="scroll" tabindex="0" role="region" aria-label="Ventway Sparrow brightness"><table class="t"><thead><tr><th scope="col">Panel level</th><th scope="col">Configured display output</th><th scope="col">Behavior</th></tr></thead><tbody><tr><th scope="row">1 / Night</th><td>5.5%</td><td>Very dim without goggles. The configured output becomes 85% under image intensifiers.</td></tr><tr><th scope="row">2</th><td>45%</td><td>Reduced brightness</td></tr><tr><th scope="row">3</th><td>72%</td><td>Startup default</td></tr><tr><th scope="row">4</th><td>100%</td><td>Full brightness</td></tr></tbody></table></div><p>These percentages describe the game’s display multiplier, not measured screen luminance. Night selection also lowers alarm volume once; you can subsequently adjust the volume separately.</p><p class="source-note"><a href="https://github.com/hesherson/ACM-Extended/blob/eabd2f2e88fba4754d81bda8543b81303a72964d/addons/acm_extended/functions/fn_initVentilatorUiPowerConfig.sqf">Current Ventway Sparrow display defaults</a></p></section>
-
-<div class="principle">
-  <div class="lab">The one thing</div>
-  <p><b>Every mode guarantees one thing and lets the other float.</b> The danger is always in the one that floats.</p>
+<div class="eyebrow">ACM EXTENDED <span class="tag">/</span> SYSTEMS</div><h1>Ventilator Settings</h1><p class="lede">Ventway Sparrow controls, delivered-breath checks, oxygenation, pressure limits and power management in ACM Extended.</p><div class="rule"></div>
+<section class="sec"><div class="sec-head icon-heading"><img alt="" class="clinical-icon" height="48" src="img/trauma/bvm.png" width="48"/><h2>Start and reassess</h2></div><ol class="steps"><li>Assess the airway, chest, breathing and circulation. Connect the patient and confirm effective ventilation.</li><li>Select the mode and patient weight. Check rate, volume or pressure target, FiO2, PEEP and the pressure limit.</li><li>Confirm delivered VTe, minute ventilation, respiratory rate, airway pressure and SpO2 after breaths have begun.</li><li>Reassess after every setting change, airway intervention, movement or alarm.</li></ol><div aria-label="Check the breath that reached the patient" class="metric-strip">
+<div class="metric"><small>Volume</small><strong>VTe</strong><span>Compare delivered volume with the target</span></div>
+<div class="metric"><small>Ventilation</small><strong>MV + EtCO2</strong><span>Check air movement and the CO2 trend</span></div>
+<div class="metric"><small>Pressure</small><strong>PIP + PEEP</strong><span>Watch pressure limits and trapped gas</span></div>
+<div class="metric"><small>Patient</small><strong>SpO2 + perfusion</strong><span>Check oxygenation and circulation together</span></div>
 </div>
-
-<section class="sec">
-  <div class="sec-head"><span class="sec-num">01</span><h2>Ventilation Modes: SIMV, CPAP &amp; IMV</h2></div>
-
-  <details class="dd">
-    <summary><span class="dd-mark"></span><span class="dd-name">SIMV VC PS</span><span class="dd-tag">Volume guaranteed</span></summary>
-    <div class="dd-body">
-      <p>You set the volume. The machine delivers exactly that every mandatory breath, at whatever pressure it takes. Synchronised means it waits a fraction for the patient's own effort; pressure support tops up breaths they take in between.</p>
-      <p>You know precisely what minute ventilation they are getting, which is what you want when you are also controlling CO2 in a head injury.</p>
-      <p>Volume is guaranteed so <b>pressure is not</b>. If the lung stiffens, the machine forces the set volume in at whatever pressure that now needs. Peak pressure is the number that moves when the patient changes.</p>
-    </div>
-  </details>
-
-  <details class="dd">
-    <summary><span class="dd-mark"></span><span class="dd-name">SIMV PC</span><span class="dd-tag">Pressure guaranteed</span></summary>
-    <div class="dd-body">
-      <p>You set the pressure. The machine goes to it and holds it, and whatever volume that moves is whatever it moves.</p>
-      <p>This is the mode for a lung you do not trust: blast, aspiration, contusion. Pressure is capped by definition so you cannot barotraumatise them by accident.</p>
-      <p>Pressure is safe and <b>volume is not guaranteed</b>. If the lung stiffens further, the same pressure moves less air and they quietly hypoventilate. Watch delivered {{tidal-volume|tidal volume}} and {{etco2|EtCO2}}.</p>
-    </div>
-  </details>
-
-  <details class="dd">
-    <summary><span class="dd-mark"></span><span class="dd-name">CPAP PS HF</span><span class="dd-tag">Needs a drive</span></summary>
-    <div class="dd-body">
-      <p>No set rate and no guaranteed breath. Constant positive pressure splints the airway open and each breath the patient starts gets a boost.</p>
-      <p>Right for a casualty who is breathing but tiring, or who has an oxygenation problem rather than a ventilation one.</p>
-      <p>Requires a <b>reliable respiratory drive</b>. On a heavily sedated, opiated or head-injured casualty the machine will sit there supporting breaths they are not taking.</p>
-    </div>
-  </details>
-
-  <details class="dd">
-    <summary><span class="dd-mark"></span><span class="dd-name">IMV VC (CPR)</span><span class="dd-tag">Sync off</span></summary>
-    <div class="dd-body">
-      <p>Fixed mandatory breaths, trigger off. It will not synchronise with anything.</p>
-      <p>Compressions produce pressure changes that look exactly like a patient trying to breathe, so a synchronised mode reads every compression as an effort and stacks breath on breath. Intrathoracic pressure climbs, venous return falls, and the machine makes your compressions worse while trying to help.</p>
-      <p>Change it back after ROSC.</p>
-    </div>
-  </details>
-</section>
-
-<section class="sec">
-  <div class="sec-head"><span class="sec-num">02</span><h2>Battery Endurance &amp; Power</h2></div>
-  <p>The Sparrow draws ambient air, so it ventilates indefinitely as far as gas goes. Oxygen is optional enrichment up to 95%. The clock that matters is electrical.</p>
-  <p>Drain is not flat. The turbine works harder against high {{peep|PEEP}}, a fast rate and stiff lungs, so <b>the settings that keep a bad casualty alive are the ones that eat the battery</b>.</p>
-  <div class="scroll">
-  <table class="t">
-    <thead><tr><th>Settings</th><th>Load</th><th>Runtime</th></tr></thead>
-    <tbody>
-      <tr><td>PEEP 5, RR 12, PIP 20</td><td class="mono">1.02x</td><td class="mono">54 min</td></tr>
-      <tr><td>PEEP 10, RR 18, PIP 30</td><td class="mono">1.39x</td><td class="mono">40 min</td></tr>
-      <tr><td>PEEP 15, RR 24, PIP 40</td><td class="mono">1.82x</td><td class="mono">30 min</td></tr>
-      <tr><td>PEEP 20, RR 35, PIP 50</td><td class="mono">2.46x</td><td class="mono">22 min</td></tr>
-    </tbody>
-  </table>
-  </div>
-  <p>Vehicle power with the engine running stops the drain and recharges over 90 minutes. <b>LOW BATTERY</b> at 25%, <b>BATTERY CRITICAL</b> at 10%, and at zero the vent stops and hands the casualty back to be bagged. It never dies without warning twice first.</p>
-  <div class="card">
-    <header><span class="name">Weight</span><span class="badge warn">Carry decision</span></header>
-    <div class="grid">
-      <div class="cell"><div class="k">Ventilator</div><div class="v">40</div></div>
-      <div class="cell"><div class="k">Spare battery</div><div class="v">28</div></div>
-      <div class="cell"><div class="k">Swap time</div><div class="v">6 s</div></div>
-      <div class="cell"><div class="k">Swap offered</div><div class="v">below 90%</div></div>
-    </div>
-  </div>
-</section>
-
-<section class="sec">
-  <div class="sec-head"><span class="sec-num">03</span><h2>Panel Layout &amp; Menu Tree</h2></div>
-  <p>Menu structure follows the real device.</p>
-  <div class="card"><div class="body">
-    <p class="mono" style="font-family:'Space Mono',monospace;font-size:13px;line-height:1.9">
-      MENU<br>
-      &nbsp;&nbsp;ADV. SETTINGS<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;BRIGHTNESS<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;ALARM VOLUME<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;TECH MODE
-    </p>
-  </div></div>
-  <p>Brightness and alarm volume are dial edited in place. <b>NIGHT</b> is the Robust setting: the screen drops to a faint glow that is unreadable to the naked eye and lifts back to normal under image intensifiers. Selecting it also drops the alarm volume once, which you can then turn back up and it stays.</p>
-  <figure>
-  <img src="img/ventway_sparrow_robust_ca.png" alt="Ventway Sparrow Robust">
-  <figcaption>Ventway Sparrow Robust. Dial left, screen centre, patient circuit right</figcaption>
-</figure>
-<div class="iconkey">
-  <div class="ik"><img class="ico" src="img/ventway_sparrow_robust_icon_ca.png" alt=""><span class="ikn">Inventory</span><span class="ikd">How the unit reads in your kit. 22kg empty, 40kg with a battery</span></div>
-  <div class="ik"><img class="ico" src="img/sparrow_startup_icon_ca.png" alt=""><span class="ikn">Boot</span><span class="ikd">Shown while it starts. Replays if the unit is moved or reloaded</span></div>
+<p>Simple Ventilator Mode keeps the selected rate with automatic supporting settings. It still models airway and lung problems, perfusion, power and circuit failures. Advanced values remain stored when simple mode is enabled.</p>
+<details class="dd"><summary><span class="dd-mark"></span><span class="dd-name">Default settings at a glance</span><span class="dd-tag">Game defaults</span></summary><div class="dd-body">
+<p>These are the current fallback settings when a stored advanced value is absent. They are separate from the injury examples below. The ventilator uses its selected weight for mL/kg calculations.</p>
+<div class="sgrid">
+<div class="s wide"><div class="sk">Advanced mode</div><div class="sv">SIMV VC PS</div></div>
+<div class="s"><div class="sk">Rate</div><div class="sv">12<small>breaths/min</small></div></div>
+<div class="s"><div class="sk">VTi</div><div class="sv">500<small>mL</small></div></div>
+<div class="s"><div class="sk">FiO2</div><div class="sv">21<small>%</small></div></div>
+<div class="s"><div class="sk">PEEP</div><div class="sv">5<small>cmH2O</small></div></div>
+<div class="s"><div class="sk">I:E</div><div class="sv">1:2</div></div>
+<div class="s"><div class="sk">Pressure support</div><div class="sv">10<small>cmH2O</small></div></div>
+<div class="s"><div class="sk">Pressure limit</div><div class="sv">40<small>cmH2O</small></div></div>
+<div class="s"><div class="sk">Weight</div><div class="sv">70<small>kg</small></div></div>
 </div>
-
-<h3>Screen icons</h3>
-<p>The four along the bottom of the LIVE screen are the strip. The four that appear as chevrons are navigation, and only the ones that apply to the screen you are on are shown.</p>
-<div class="iconkey">
-  <div class="ik"><img class="ico inv" src="img/alarm_ca.png" alt=""><span class="ikn">Alarm</span><span class="ikd">Opens the alarm window. Carries the active count</span></div>
-  <div class="ik"><img class="ico inv" src="img/alarm_silenced_ca.png" alt=""><span class="ikn">Silenced</span><span class="ikd">Audible muted, the alarm itself is still active</span></div>
-  <div class="ik"><img class="ico inv" src="img/graphs_ca.png" alt=""><span class="ikn">Graphs</span><span class="ikd">Pressure and flow traces</span></div>
-  <div class="ik"><img class="ico inv" src="img/manual_breath_ca.png" alt=""><span class="ikn">Breath</span><span class="ikd">One breath at the current settings</span></div>
-  <div class="ik"><img class="ico inv" src="img/main_menu_ca.png" alt=""><span class="ikn">Menu</span><span class="ikd">Stop vent, new patient, adv. settings</span></div>
-  <div class="ik"><img class="ico inv" src="img/confirm_ca.png" alt=""><span class="ikn">Confirm</span><span class="ikd">Commits the value under the dial</span></div>
-  <div class="ik"><img class="ico inv" src="img/cancel_ca.png" alt=""><span class="ikn">Cancel</span><span class="ikd">Drops the edit and leaves the value alone</span></div>
-  <div class="ik"><img class="ico inv" src="img/back_ca.png" alt=""><span class="ikn">Back</span><span class="ikd">Previous screen in the setup sequence</span></div>
-  <div class="ik"><img class="ico inv" src="img/home_ca.png" alt=""><span class="ikn">Home</span><span class="ikd">Straight back to LIVE</span></div>
-  <div class="ik"><img class="ico inv" src="img/next_screen_ca.png" alt=""><span class="ikn">Next</span><span class="ikd">Advances once the current screen is satisfied</span></div>
-</div>
-
-<h3>Battery</h3>
-<p>The battery sits in the top bar on every screen. It runs about 55 minutes on a full charge, less if you are asking for high {{peep|PEEP}}, a fast rate or high pressure, and about 22 minutes at the top of everything. Vehicle power stops the drain and refills it over roughly 90 minutes.</p>
-<div class="iconkey">
-  <div class="ik"><img class="ico" src="img/vent_battery_default.png" alt=""><span class="ikn">On battery</span><span class="ikd">Draining. Fill shows what is left</span></div>
-  <div class="ik"><img class="ico" src="img/vent_battery_plugged.png" alt=""><span class="ikn">Plugged</span><span class="ikd">On vehicle power, drain stopped</span></div>
-  <div class="ik"><img class="ico" src="img/vent_battery_charging.png" alt=""><span class="ikn">Charging</span><span class="ikd">Refilling. Full from empty in about 90 min</span></div>
-</div>
-<p><b>LOW BATTERY</b> raises at 25% and <b>BATTERY CRITICAL</b> at 10%, both through the normal alarm list. At zero the machine stops and the casualty is yours to bag. A spare swaps in about six seconds and will not fit above 90% charge.</p>
-<figure class="placeholder">Live panel screenshot goes here</figure>
-</section>
-
-
+<p>The advanced default pressure limit of 40 cmH2O is above the default 35 cmH2O injury threshold. A breath can stay within that limit and still accumulate pressure injury.</p>
+<p><b>Simple mode:</b> selected rate, VTi 500 mL, FiO2 95%, PEEP 5, I:E 1:2 and pressure limit 35 cmH2O. During arrest, its automatic VTi becomes 420 mL and PEEP becomes 0. Advanced CPR mode has its own defaults in the card below.</p>
+</div></details></section>
+<section class="sec"><div class="sec-head"><span aria-hidden="true" class="legacy-anchor" id="ventilation-modes-simv-cpap-amp-imv"></span><h2>Ventilation modes</h2></div><div aria-label="Mode reference" class="scroll" role="region" tabindex="0"><table class="t"><thead><tr><th scope="col">Mode</th><th scope="col">What is set</th><th scope="col">What to monitor</th></tr></thead><tbody><tr><th scope="row">SIMV VC PS</th><td>Mandatory rate and tidal-volume target, plus support for eligible spontaneous breaths</td><td>Airway pressure and delivered volume. The pressure limit can reduce delivery below the target</td></tr><tr><th scope="row">SIMV PC</th><td>Mandatory rate and inspiratory-pressure target, with pressure support for eligible spontaneous breaths</td><td>Delivered volume and minute ventilation as compliance changes</td></tr><tr><th scope="row">CPAP PS HF</th><td>Spontaneous breathing with pressure support and PEEP</td><td>Respiratory effort and effective ventilation. The current model provides backup mandatory breaths if the patient cannot trigger</td></tr><tr><th scope="row">IMV VC (CPR)</th><td>Dedicated unsynchronized CPR ventilation</td><td>Effective breaths during compressions; reassess mode and respiratory effort after ROSC</td></tr></tbody></table></div><p>The CPR setting prevents compression-related triggering from being treated as normal patient effort. Other modes can accumulate a CPR ventilation penalty during compressions. A connected ventilator still requires active assessment of the patient.</p></section>
+<section class="sec"><div class="sec-head"><h2>Controls and measurements</h2></div><p><b>VTi goes in; VTe comes back.</b> Compare both when checking a breath. In the game, leak reduces expired volume relative to inspired volume, and delivered minute ventilation uses the expired volumes. Check the <a href="airway.html#capnography-explorer">capnography patterns</a> alongside these readings.</p><div aria-label="Control or reading reference" class="scroll" role="region" tabindex="0"><table class="t"><thead><tr><th scope="col">Control or reading</th><th scope="col">How to use it</th></tr></thead><tbody><tr><th scope="row">VTi target, delivered VTi and VTe</th><td>VTi refers to inspired tidal volume. The setting is the inspiratory target; delivered VTi is the volume actually sent into the circuit, while VTe is the expired volume returning from the patient. Pressure limits can reduce inspired delivery, and a leak can reduce VTe further</td></tr><tr><th scope="row">Minute volume</th><td>Use delivered ventilation to assess support. The display needs time to settle after connection</td></tr><tr><th scope="row">PInsp</th><td>In the game’s pressure-control formula, delivered volume depends on PInsp minus PEEP and effective compliance</td></tr><tr><th scope="row">P. SUPPORT</th><td>Adds support to eligible spontaneous breaths</td></tr><tr><th scope="row">FiO2</th><td>Enriches inspired gas. It cannot fully overcome the ceiling from residual shunt</td></tr><tr><th scope="row">PEEP</th><td>Can recruit edema- or blast-related shunt, but can reduce perfusion and worsen pressure-related problems</td></tr><tr><th scope="row">I:E and rate</th><td>Together determine expiratory time. More time for expiration helps clear gas trapping</td></tr><tr><th scope="row">Pressure limit</th><td>Caps delivered pressure and can reduce volume below the set target</td></tr><tr><th scope="row">Trigger sensitivity</th><td>Determines whether spontaneous effort triggers supported breaths</td></tr></tbody></table></div></section>
 <section class="sec">
-  <div class="sec-head"><span class="sec-num">04</span><h2>Starting Settings By Injury Pattern</h2></div>
-  <p>Starting points. The badge tells you whether {{peep|PEEP}} is the lever that helps or the lever that harms.</p>
-
-  <article class="icard">
-    <header><span class="iname">Healthy lung</span><span class="bdg none">No shunt</span></header>
-    <div class="sgrid">
-      <div class="s wide"><div class="sk">Mode</div><div class="sv">SIMV VC PS</div></div>
-      <div class="s"><div class="sk">PEEP</div><div class="sv">5</div></div>
-      <div class="s"><div class="sk">FiO2</div><div class="sv">21 to 40%</div></div>
-      <div class="s"><div class="sk">Tidal vol</div><div class="sv">6 to 8<small>mL/kg</small></div></div>
-      <div class="s"><div class="sk">I:E</div><div class="sv">1:2</div></div>
-    </div>
-    <p class="treat">Nothing to fix. <b>Oxygen does nothing for a good lung.</b> 21% and 100% both read the same.</p>
-  </article>
-
-  <article class="icard">
-    <header><span class="iname">Pulmonary edema</span><span class="bdg recruit">Recruitable, PEEP works</span></header>
-    <div class="sgrid">
-      <div class="s wide"><div class="sk">Mode</div><div class="sv">SIMV VC PS</div></div>
-      <div class="s key"><div class="sk">PEEP</div><div class="sv">10 to 15</div></div>
-      <div class="s"><div class="sk">FiO2</div><div class="sv">40 to 60%</div></div>
-      <div class="s"><div class="sk">Tidal vol</div><div class="sv">6 to 8<small>mL/kg</small></div></div>
-      <div class="s"><div class="sk">I:E</div><div class="sv">1:2 to 1:1.5</div></div>
-    </div>
-    <p class="treat"><b>PEEP is what treats this.</b> It holds flooded alveoli open so they can take part again. Oxygen chases the {{shunt}} and loses.</p>
-    <div class="resp">
-      <div class="resp-h">SpO2 response<span class="cols">PEEP against FiO2</span></div>
-      <div class="rrow is-good"><span class="lab">PEEP</span><span class="bar"><i style="width:86%"></i></span><span class="num">strong</span></div>
-      <div class="rrow is-bad"><span class="lab">FiO2</span><span class="bar"><i style="width:22%"></i></span><span class="num">poor</span></div>
-    </div>
-  </article>
-
-  <article class="icard">
-    <header><span class="iname">Blast lung and ARDS</span><span class="bdg recruit">Recruitable, PEEP works</span></header>
-    <div class="sgrid">
-      <div class="s wide"><div class="sk">Mode</div><div class="sv">SIMV PC</div></div>
-      <div class="s key"><div class="sk">PEEP</div><div class="sv">5 to 8</div></div>
-      <div class="s"><div class="sk">FiO2</div><div class="sv">60 to 95%</div></div>
-      <div class="s"><div class="sk">Tidal vol</div><div class="sv">5 to 6<small>mL/kg</small></div></div>
-      <div class="s"><div class="sk">I:E</div><div class="sv">1:1.5</div></div>
-    </div>
-    <p class="treat">Pressure control, always. The lung is already torn and volume control will finish the job. Accept a higher CO2 rather than chasing numbers.</p>
-    <div class="resp">
-      <div class="resp-h">SpO2 response<span class="cols">PEEP against FiO2</span></div>
-      <div class="rrow is-good"><span class="lab">PEEP</span><span class="bar"><i style="width:72%"></i></span><span class="num">good</span></div>
-      <div class="rrow is-mid"><span class="lab">FiO2</span><span class="bar"><i style="width:44%"></i></span><span class="num">partial</span></div>
-    </div>
-  </article>
-
-  <article class="icard">
-    <header><span class="iname">Pneumothorax</span><span class="bdg fixed">Fixed, PEEP harms</span></header>
-    <div class="gate"><span class="gk">Before vent</span><span class="gv">Needle decompress or Finger Thoracostomy first</span></div>
-    <div class="sgrid">
-      <div class="s wide"><div class="sk">Mode</div><div class="sv">SIMV VC PS<small>once the chest is decompressed</small></div></div>
-      <div class="s"><div class="sk">PEEP</div><div class="sv">5<small>after drainage</small></div></div>
-      <div class="s"><div class="sk">FiO2</div><div class="sv">as needed</div></div>
-      <div class="s"><div class="sk">Tidal vol</div><div class="sv">6<small>mL/kg</small></div></div>
-      <div class="s"><div class="sk">I:E</div><div class="sv">1:2</div></div>
-    </div>
-    <p class="treat">Positive pressure can accelerate progression of an inadequately drained pneumothorax. Perform the indicated decompression and reassess drainage, ventilation and perfusion. Progression depends on the leak and available drainage; it is not a fixed countdown.</p>
-    <div class="resp">
-      <div class="resp-h">SpO2 response<span class="cols">PEEP against FiO2</span></div>
-      <div class="rrow is-bad"><span class="lab">PEEP</span><span class="bar"><i style="width:12%"></i></span><span class="num">harmful</span></div>
-      <div class="rrow is-mid"><span class="lab">FiO2</span><span class="bar"><i style="width:38%"></i></span><span class="num">partial</span></div>
-    </div>
-  </article>
-
-  <article class="icard">
-    <header><span class="iname">Hemothorax</span><span class="bdg fixed">Fixed, PEEP harms</span></header>
-    <div class="gate"><span class="gk">Before vent</span><span class="gv">Drain the chest</span></div>
-    <div class="sgrid">
-      <div class="s wide"><div class="sk">Mode</div><div class="sv">SIMV VC PS<small>once the chest is drained</small></div></div>
-      <div class="s"><div class="sk">PEEP</div><div class="sv">5<small>after drainage</small></div></div>
-      <div class="s"><div class="sk">FiO2</div><div class="sv">high early</div></div>
-      <div class="s"><div class="sk">Tidal vol</div><div class="sv">6<small>mL/kg</small></div></div>
-      <div class="s"><div class="sk">I:E</div><div class="sv">1:2</div></div>
-    </div>
-    <p class="treat">PEEP does not lift blood off a lung. Drainage does, and the blood you drain is blood they can have back.</p>
-  </article>
+<div class="sec-head icon-heading"><span aria-hidden="true" class="legacy-anchor" id="starting-settings-by-injury-pattern"></span><img alt="" class="clinical-icon" height="48" src="img/trauma/stethoscope.png" width="48"/><h2>Choosing support for the injury</h2></div>
+<p>Choose the card that matches the lung problem, then check what the ventilator actually delivers. These are <b>example starting points for the game</b>, except the CPR card’s configured defaults. Reassess oxygenation, ventilation, pressure and perfusion after each change.</p>
+<div class="quick-grid vent-scenarios">
+<article class="icard">
+<header><span class="iname">Healthy lung needing support</span><span class="bdg none">Starting point</span></header>
+<div class="sgrid">
+<div class="s wide"><div class="sk">Mode</div><div class="sv">SIMV VC PS</div></div>
+<div class="s"><div class="sk">PEEP</div><div class="sv">5<small>cmH2O</small></div></div>
+<div class="s"><div class="sk">FiO2</div><div class="sv">21–40<small>%</small></div></div>
+<div class="s"><div class="sk">VTi target</div><div class="sv">6–8<small>mL/kg</small></div></div>
+<div class="s"><div class="sk">I:E</div><div class="sv">1:2</div></div>
+</div>
+<p class="treat"><b>Why:</b> mandatory breaths support reduced drive. A lung with little shunt needs less recruitment; extra FiO2 does not correct inadequate air movement or blood loss.</p>
+<p class="treat"><b>Watch:</b> delivered VTe, minute ventilation and patient effort. A pressure limit can prevent the full VTi target from being delivered.</p>
+</article>
+<article class="icard">
+<header><span class="iname">Pulmonary edema</span><span class="bdg recruit">Recruitable shunt</span></header>
+<div class="sgrid">
+<div class="s wide"><div class="sk">Mode when mandatory support is needed</div><div class="sv">SIMV VC PS</div></div>
+<div class="s key"><div class="sk">PEEP</div><div class="sv">10–15<small>cmH2O</small></div></div>
+<div class="s"><div class="sk">FiO2</div><div class="sv">40–60<small>%</small></div></div>
+<div class="s"><div class="sk">VTi target</div><div class="sv">6–8<small>mL/kg</small></div></div>
+<div class="s"><div class="sk">I:E</div><div class="sv">1:2–1:1.5</div></div>
+</div>
+<p class="treat"><b>Why:</b> PEEP reduces the edema-related shunt by recruiting lung units. FiO2 enriches gas reaching the remaining working lung. CPAP support is another option when using the supported spontaneous-breathing path.</p>
+<p class="treat"><b>Watch:</b> SpO2 benefit against falling perfusion, higher PIP and reduced VTe. Treat the underlying fluid problem; PEEP does not remove the excess volume.</p>
+</article>
+<article class="icard">
+<header><span class="iname">Blast lung / ARDS</span><span class="bdg recruit">Recruitable shunt</span></header>
+<div class="sgrid">
+<div class="s wide"><div class="sk">Pressure-targeted starting mode</div><div class="sv">SIMV PC</div></div>
+<div class="s key"><div class="sk">PEEP</div><div class="sv">5–8<small>cmH2O</small></div></div>
+<div class="s"><div class="sk">FiO2</div><div class="sv">60–95<small>%</small></div></div>
+<div class="s"><div class="sk">Delivered VTe</div><div class="sv">5–6<small>mL/kg reference</small></div></div>
+<div class="s"><div class="sk">I:E</div><div class="sv">1:1.5</div></div>
+</div>
+<p class="treat"><b>Why:</b> pressure targeting makes the pressure setting explicit while the injured lung’s compliance changes. Set PInsp by the resulting delivered volume; a mode label alone does not provide enough ventilation.</p>
+<p class="treat"><b>Watch:</b> VTe, minute ventilation, PIP and SpO2. Healing depends on effective support, FiO2 and pressure. Pressure control is a starting choice, not an exclusive healing requirement.</p>
+</article>
+<article class="icard">
+<header><span class="iname">Pneumothorax</span><span class="bdg fixed">Fixed shunt</span></header>
+<div class="gate"><span class="gk">Chest first</span><span class="gv">Assess and perform the indicated decompression</span></div>
+<div class="sgrid">
+<div class="s wide"><div class="sk">Example after effective drainage</div><div class="sv">SIMV VC PS</div></div>
+<div class="s"><div class="sk">PEEP</div><div class="sv">5<small>cmH2O reference</small></div></div>
+<div class="s"><div class="sk">FiO2</div><div class="sv">As needed<small>follow SpO2</small></div></div>
+<div class="s"><div class="sk">VTi target</div><div class="sv">6<small>mL/kg</small></div></div>
+<div class="s"><div class="sk">I:E</div><div class="sv">1:2</div></div>
+</div>
+<p class="treat"><b>Why:</b> pleural air compresses the lung. PEEP cannot clear that fixed shunt, and positive pressure can increase the air leak.</p>
+<p class="treat"><b>Watch:</b> drainage, recurrent chest findings, pressure and perfusion. These example numbers do not make an undrained leak safe. See <a href="airway.html#chest-seals-and-thoracostomy">chest procedures</a>.</p>
+</article>
+<article class="icard">
+<header><span class="iname">Hemothorax</span><span class="bdg fixed">Fixed shunt</span></header>
+<div class="gate"><span class="gk">Two problems</span><span class="gv">Pleural blood and lost circulating volume</span></div>
+<div class="sgrid">
+<div class="s wide"><div class="sk">Example with indicated drainage and support</div><div class="sv">SIMV VC PS</div></div>
+<div class="s"><div class="sk">PEEP</div><div class="sv">5<small>cmH2O reference</small></div></div>
+<div class="s"><div class="sk">FiO2</div><div class="sv">As needed<small>follow SpO2</small></div></div>
+<div class="s"><div class="sk">VTi target</div><div class="sv">6<small>mL/kg</small></div></div>
+<div class="s"><div class="sk">I:E</div><div class="sv">1:2</div></div>
+</div>
+<p class="treat"><b>Why:</b> PEEP does not drain pleural blood. The casualty also needs assessment of blood loss and oxygen delivery.</p>
+<p class="treat"><b>Watch:</b> chest findings, SpO2, delivered volume and perfusion. Drainage and <a href="fluids.html">blood-volume replacement</a> solve different parts of the problem.</p>
+</article>
+<article class="icard">
+<header><span class="iname">Active CPR</span><span class="bdg warn">Configured defaults</span></header>
+<div class="sgrid">
+<div class="s wide"><div class="sk">Advanced CPR mode</div><div class="sv">IMV VC (CPR)</div></div>
+<div class="s"><div class="sk">Rate</div><div class="sv">10<small>breaths/min</small></div></div>
+<div class="s"><div class="sk">VTi</div><div class="sv">6<small>mL/kg, bounded to 300–500 mL</small></div></div>
+<div class="s"><div class="sk">PEEP</div><div class="sv">0<small>cmH2O</small></div></div>
+<div class="s"><div class="sk">Triggering</div><div class="sv">Off<small>unsynchronized breaths</small></div></div>
+</div>
+<p class="treat"><b>Why:</b> the dedicated mode avoids interpreting compressions as spontaneous breathing. Default rate and mL/kg can change with mission settings.</p>
+<p class="treat"><b>Watch:</b> effective breaths during compressions. After ROSC, reassess the mode, effort and delivered ventilation.</p>
+</article>
+</div>
+<p><b>Rate is a separate control.</b> The injury cards do not supply a fixed rate prescription. Use the delivered minute ventilation, EtCO2 trend and patient state to reassess it.</p>
+<div aria-label="Current ventilator support gate for blast-lung healing" class="metric-strip">
+<div class="metric"><small>MV adequacy</small><strong>&gt; 0.6</strong><span>Game support ratio, not L/min</span></div>
+<div class="metric"><small>FiO2</small><strong>≥ 50%</strong><span>For the active ventilator healing branch</span></div>
+<div class="metric"><small>Pressure state</small><strong>Below danger</strong><span>Effective pressure still matters in PC</span></div>
+</div>
+<p>These three support checks work together. See <a href="blast.html#delayed-blast-lung">the complete blast-lung treatment ladder</a>.</p>
+<details class="dd"><summary><span class="dd-mark"></span><span class="dd-name">Compare the injury patterns</span></summary><div class="dd-body"><div aria-label="Pattern reference" class="scroll" role="region" tabindex="0"><table class="t"><thead><tr><th scope="col">Pattern</th><th scope="col">Starting reference</th><th scope="col">Reassess</th></tr></thead><tbody><tr><th scope="row">Healthy lung requiring support</th><td>PEEP 5; VTi 6–8 mL/kg; FiO2 21–40%; I:E 1:2</td><td>Oxygen requirement, drive and delivered ventilation</td></tr><tr><th scope="row">Pulmonary edema</th><td>PEEP 10–15; VTi 6–8 mL/kg; FiO2 40–60%</td><td>Recruitment benefit against reduced perfusion and increasing pressure</td></tr><tr><th scope="row">Blast lung / ARDS</th><td>Pressure-control reference; PEEP 5–8; delivered VTe about 5–6 mL/kg; FiO2 60–95%</td><td>Actual volume, minute ventilation and pressure. The healing gate is based on effective support, not a mode label</td></tr><tr><th scope="row">Pneumothorax</th><td>Assess and treat indicated pleural drainage; use controlled pressure and reassess</td><td>Persistent air leak and loss of drainage can worsen under positive pressure</td></tr><tr><th scope="row">Hemothorax</th><td>Assess drainage and lost circulating volume; support breathing as needed</td><td>PEEP does not remove pleural blood; blood-volume replacement is a separate task</td></tr></tbody></table></div></div></details>
 </section>
-
-
-<section class="sec">
-  <div class="sec-head"><span class="sec-num">05</span><h2>Reading The Pressure Waveform</h2></div>
-  <p>One breath, drawn as airway pressure against time. Every number the machine reports is somewhere on this curve, and the two that matter most are separated by the part of it people skip.</p>
-
-  <figure class="wave">
-    <svg class="wavefig" viewBox="0 0 800 512" xmlns="http://www.w3.org/2000/svg" role="img"
-         aria-label="Ventilator pressure over time, showing peak and plateau pressure, the resistive and elastic components, and the four phases of the respiratory cycle">
-      <defs>
-        <marker id="wfA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-          <path d="M0 0 L10 5 L0 10 z" fill="var(--amber)"/>
-        </marker>
-        <marker id="wfC" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-          <path d="M0 0 L10 5 L0 10 z" fill="var(--cream-dim)"/>
-        </marker>
-      </defs>
-    
-      <!-- ===== AXES ===== -->
-      <line x1="96" y1="48" x2="96" y2="306" stroke="var(--cream-dim)" stroke-width="1.5"/>
-      <line x1="96" y1="306" x2="664" y2="306" stroke="var(--cream-dim)" stroke-width="1.5"/>
-      <text x="674" y="302" class="ax">Time</text>
-      <text x="674" y="318" class="axs">(sec)</text>
-      <text x="30" y="177" class="ax" text-anchor="middle" transform="rotate(-90 30 177)">Paw (cmH2O)</text>
-    
-      <!-- ===== LEADER ELBOWS. One path each, so the corner is a real join and the dash pattern carries round it
+<section class="sec"><div class="sec-head"><h2>Oxygenation and shunt</h2></div><p>Edema and blast lung create recruitable shunt. PEEP and inspiratory recruitment reduce that component. Pneumothorax and hemothorax create a fixed component that PEEP does not clear.</p><p>PEEP recruitment scales across 4–15 cmH2O. Above 16 cmH2O, an overdistension term grows toward its maximum at 24 cmH2O. FiO2 improves oxygenation toward the remaining shunt ceiling; it does not erase the shunt itself. At altitude, reduced ambient pressure also affects the calculation.</p><div class="quick-grid">
+<article class="quick-card"><h3>Recruitable component</h3><p><b>Edema and blast lung:</b> PEEP and inspiratory recruitment reduce the part of the shunt the game can reopen.</p></article>
+<article class="quick-card"><h3>Fixed component</h3><p><b>Pleural air and blood:</b> assess decompression or drainage. Turning up PEEP does not remove these causes.</p></article>
+<article class="quick-card"><h3>Residual oxygen ceiling</h3><p><b>FiO2:</b> raises oxygenation toward the remaining shunt ceiling. A saturation plateau can mean the cause still needs treatment.</p></article>
+</div>
+<p>Use <a href="oxygen.html">oxygen delivery</a> and <a href="flight.html">flight physiology</a> alongside the saturation reading.</p></section>
+<section class="sec"><div class="sec-head"><h2>Lung mechanics and pressure</h2></div><p>Base compliance ranges from 1.0 down to 0.20 after the following injury contributions. A separate compliance multiplier, including one-lung ventilation, can reduce effective compliance to 0.10.</p><div aria-label="Ventilator reference" class="scroll" role="region" tabindex="0"><table class="t">
+<thead><tr><th>Insult</th><th>Compliance cost</th><th>At</th></tr></thead>
+<tbody>
+<tr><td>Blast lung</td><td class="mono">up to 0.62</td><td>full severity</td></tr>
+<tr><td>Fluid overload</td><td class="mono">up to 0.45</td><td>1.6 L over</td></tr>
+<tr><td>Ventilator-induced injury</td><td class="mono">up to 0.30</td><td>accumulated</td></tr>
+<tr><td>{{pneumothorax}}</td><td class="mono">up to 0.25</td><td>state 3</td></tr>
+<tr><td>{{hemothorax}}</td><td class="mono">up to 0.20</td><td>1500 mL</td></tr>
+</tbody>
+</table></div><p>A lower compliance means more pressure is needed to move the same target volume. The following estimate applies before auto-PEEP and pressure limiting.</p>
+<div class="formula">
+<strong>Volume-targeted pressure estimate</strong>
+<p>PIP = 8 + [12 × (set VTi ÷ 500) ÷ effective compliance]</p>
+<div class="metric-strip">
+<div class="metric"><small>Set VTi</small><strong>500 mL</strong><span>Volume target in this example</span></div>
+<div class="metric"><small>Compliance</small><strong>0.50</strong><span>Half the healthy-lung reference</span></div>
+<div class="metric"><small>Base PIP</small><strong>32 cmH2O</strong><span>8 + (12 × 1 ÷ 0.50)</span></div>
+</div>
+<p>A lower pressure limit can reduce the delivered volume. This is the requested pressure estimate, not a guaranteed delivered breath.</p>
+</div><div aria-label="Ventilator reference" class="scroll" role="region" tabindex="0"><table class="t">
+<thead><tr><th>Set VTi</th><th>Comp 1.00</th><th>Comp 0.70</th><th>Comp 0.50</th><th>Comp 0.35</th><th>Comp 0.20</th></tr></thead>
+<tbody>
+<tr><td class="mono">400 mL</td><td class="mono">18</td><td class="mono">22</td><td class="mono">27</td><td class="mono">35</td><td class="mono">56</td></tr>
+<tr><td class="mono">500 mL</td><td class="mono">20</td><td class="mono">25</td><td class="mono">32</td><td class="mono">42</td><td class="mono">68</td></tr>
+<tr><td class="mono">600 mL</td><td class="mono">22</td><td class="mono">29</td><td class="mono">37</td><td class="mono">49</td><td class="mono">80</td></tr>
+<tr><td class="mono">700 mL</td><td class="mono">25</td><td class="mono">32</td><td class="mono">42</td><td class="mono">56</td><td class="mono">92</td></tr>
+</tbody>
+</table></div><p>In pressure control, the same pressure difference moves less gas as compliance falls. Raising PEEP while holding PInsp fixed also narrows that difference.</p>
+<div class="formula">
+<strong>Pressure-control volume estimate</strong>
+<p>VTi = 500 × [(PInsp − PEEP) ÷ 15] × effective compliance</p>
+<div class="metric-strip">
+<div class="metric"><small>PInsp minus PEEP</small><strong>20 − 5 = 15</strong><span>cmH2O driving-pressure difference</span></div>
+<div class="metric"><small>Compliance</small><strong>0.50</strong><span>Same lung as the example above</span></div>
+<div class="metric"><small>Base VTi estimate</small><strong>250 mL</strong><span>500 × (15 ÷ 15) × 0.50</span></div>
+</div>
+<p>This is the base mandatory-volume estimate. The complete delivery model applies bounds, circuit and airway effects. Confirm the displayed VTe.</p>
+</div></section>
+<section class="sec"><div class="sec-head"><span aria-hidden="true" class="legacy-anchor" id="reading-the-pressure-waveform"></span><h2>Waveform reference</h2></div><p>The diagram below illustrates pressure and flow phases. Interpret it alongside the delivered measurements. A higher pressure requirement at unchanged target volume can reflect reduced compliance; changing mode or the pressure limit also changes the trace.</p><figure class="wave">
+<svg aria-label="Ventilator pressure over time, showing peak and plateau pressure, the resistive and elastic components, and the four phases of the respiratory cycle" class="wavefig" role="img" viewbox="0 0 800 512" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<marker id="wfA" markerheight="7" markerwidth="7" orient="auto-start-reverse" refx="9" refy="5" viewbox="0 0 10 10">
+<path d="M0 0 L10 5 L0 10 z" fill="var(--amber)"></path>
+</marker>
+<marker id="wfC" markerheight="7" markerwidth="7" orient="auto-start-reverse" refx="9" refy="5" viewbox="0 0 10 10">
+<path d="M0 0 L10 5 L0 10 z" fill="var(--cream-dim)"></path>
+</marker>
+</defs>
+<!-- ===== AXES ===== -->
+<line stroke="var(--cream-dim)" stroke-width="1.5" x1="96" x2="96" y1="48" y2="306"></line>
+<line stroke="var(--cream-dim)" stroke-width="1.5" x1="96" x2="664" y1="306" y2="306"></line>
+<text class="ax" x="674" y="302">Time</text>
+<text class="axs" x="674" y="318">(sec)</text>
+<text class="ax" text-anchor="middle" transform="rotate(-90 30 177)" x="30" y="177">Paw (cmH2O)</text>
+<!-- ===== LEADER ELBOWS. One path each, so the corner is a real join and the dash pattern carries round it
                rather than two lines that only cross. Each runs from a point ON THE TRACE. ===== -->
-      <path class="lead" d="M 246 316 L 246 62 L 470 62"/>
-      <path class="lead" d="M 400 316 L 400 124 L 470 124"/>
-      <path class="lead" d="M 534 316 L 534 286"/>
-      <path class="lead" d="M 600 316 L 600 286"/>
-      <path class="lead" d="M 96 288 L 618 288"/>
-    
-      <!-- ===== THE TRACE ===== -->
-      <path d="M 96.0 288.0 L 99.41 285.98 L 102.82 283.52 L 106.23 280.65 L 109.64 277.39 L 113.05 273.75 L 116.45 269.76 L 119.86 265.44 L 123.27 260.82 L 126.68 255.9 L 130.09 250.71 L 133.5 245.27 L 136.91 239.61 L 140.32 233.74 L 143.73 227.68 L 147.14 221.46 L 150.55 215.09 L 153.95 208.6 L 157.36 202.0 L 160.77 195.32 L 164.18 188.58 L 167.59 181.8 L 171.0 175.0 L 174.41 168.2 L 177.82 161.42 L 181.23 154.68 L 184.64 148.0 L 188.05 141.4 L 191.45 134.91 L 194.86 128.54 L 198.27 122.32 L 201.68 116.26 L 205.09 110.39 L 208.5 104.73 L 211.91 99.29 L 215.32 94.1 L 218.73 89.18 L 222.14 84.56 L 225.55 80.24 L 228.95 76.25 L 232.36 72.61 L 235.77 69.35 L 239.18 66.48 L 242.59 64.02 L 246.0 62.0 L 249.0 68.7 L 252.0 75.01 L 255.0 80.94 L 258.0 86.49 L 261.0 91.66 L 264.0 96.44 L 267.0 100.85 L 270.0 104.86 L 273.0 108.5 L 276.0 111.75 L 279.0 114.62 L 282.0 117.11 L 285.0 119.22 L 288.0 120.94 L 291.0 122.28 L 294.0 123.23 L 297.0 123.81 L 300.0 124.0 L 307.14 124.36 L 314.29 124.71 L 321.43 125.07 L 328.57 125.43 L 335.71 125.79 L 342.86 126.14 L 350.0 126.5 L 357.14 126.86 L 364.29 127.21 L 371.43 127.57 L 378.57 127.93 L 385.71 128.29 L 392.86 128.64 L 400.0 129.0 L 402.91 140.33 L 405.83 150.85 L 408.74 160.62 L 411.65 169.7 L 414.57 178.13 L 417.48 185.95 L 420.39 193.22 L 423.3 199.98 L 426.22 206.25 L 429.13 212.07 L 432.04 217.48 L 434.96 222.51 L 437.87 227.17 L 440.78 231.51 L 443.7 235.53 L 446.61 239.27 L 449.52 242.74 L 452.43 245.97 L 455.35 248.96 L 458.26 251.74 L 461.17 254.33 L 464.09 256.73 L 467.0 258.95 L 469.91 261.02 L 472.83 262.94 L 475.74 264.73 L 478.65 266.39 L 481.57 267.93 L 484.48 269.36 L 487.39 270.69 L 490.3 271.92 L 493.22 273.07 L 496.13 274.13 L 499.04 275.12 L 501.96 276.04 L 504.87 276.89 L 507.78 277.68 L 510.7 278.41 L 513.61 279.1 L 516.52 279.73 L 519.43 280.32 L 522.35 280.87 L 525.26 281.38 L 528.17 281.85 L 531.09 282.29 L 534.0 282.69 L 600 288.0 L 603.0 281.93 L 606.0 273.1 L 609.0 261.88 L 612.0 248.69 L 615.0 233.91 L 618.0 217.95 L 621.0 201.19 L 624.0 184.04 L 627.0 166.89 L 630.0 150.13 L 633.0 134.17 L 636.0 119.39 L 639.0 106.2 L 642.0 94.98 L 645.0 86.15 L 648.0 80.08" fill="none" stroke="var(--amber)" stroke-width="2.6"
-            stroke-linejoin="round" stroke-linecap="round"/>
-    
-      <text x="478" y="62"  class="lbl" dy="4">Peak pressure</text>
-      <text x="478" y="124" class="lbl" dy="4">Plateau pressure</text>
-    
-      <!-- ===== THE TWO COMPONENTS, as brackets with elbowed arms.
+<path class="lead" d="M 246 316 L 246 62 L 470 62"></path>
+<path class="lead" d="M 400 316 L 400 124 L 470 124"></path>
+<path class="lead" d="M 534 316 L 534 286"></path>
+<path class="lead" d="M 600 316 L 600 286"></path>
+<path class="lead" d="M 96 288 L 618 288"></path>
+<!-- ===== THE TRACE ===== -->
+<path d="M 96.0 288.0 L 99.41 285.98 L 102.82 283.52 L 106.23 280.65 L 109.64 277.39 L 113.05 273.75 L 116.45 269.76 L 119.86 265.44 L 123.27 260.82 L 126.68 255.9 L 130.09 250.71 L 133.5 245.27 L 136.91 239.61 L 140.32 233.74 L 143.73 227.68 L 147.14 221.46 L 150.55 215.09 L 153.95 208.6 L 157.36 202.0 L 160.77 195.32 L 164.18 188.58 L 167.59 181.8 L 171.0 175.0 L 174.41 168.2 L 177.82 161.42 L 181.23 154.68 L 184.64 148.0 L 188.05 141.4 L 191.45 134.91 L 194.86 128.54 L 198.27 122.32 L 201.68 116.26 L 205.09 110.39 L 208.5 104.73 L 211.91 99.29 L 215.32 94.1 L 218.73 89.18 L 222.14 84.56 L 225.55 80.24 L 228.95 76.25 L 232.36 72.61 L 235.77 69.35 L 239.18 66.48 L 242.59 64.02 L 246.0 62.0 L 249.0 68.7 L 252.0 75.01 L 255.0 80.94 L 258.0 86.49 L 261.0 91.66 L 264.0 96.44 L 267.0 100.85 L 270.0 104.86 L 273.0 108.5 L 276.0 111.75 L 279.0 114.62 L 282.0 117.11 L 285.0 119.22 L 288.0 120.94 L 291.0 122.28 L 294.0 123.23 L 297.0 123.81 L 300.0 124.0 L 307.14 124.36 L 314.29 124.71 L 321.43 125.07 L 328.57 125.43 L 335.71 125.79 L 342.86 126.14 L 350.0 126.5 L 357.14 126.86 L 364.29 127.21 L 371.43 127.57 L 378.57 127.93 L 385.71 128.29 L 392.86 128.64 L 400.0 129.0 L 402.91 140.33 L 405.83 150.85 L 408.74 160.62 L 411.65 169.7 L 414.57 178.13 L 417.48 185.95 L 420.39 193.22 L 423.3 199.98 L 426.22 206.25 L 429.13 212.07 L 432.04 217.48 L 434.96 222.51 L 437.87 227.17 L 440.78 231.51 L 443.7 235.53 L 446.61 239.27 L 449.52 242.74 L 452.43 245.97 L 455.35 248.96 L 458.26 251.74 L 461.17 254.33 L 464.09 256.73 L 467.0 258.95 L 469.91 261.02 L 472.83 262.94 L 475.74 264.73 L 478.65 266.39 L 481.57 267.93 L 484.48 269.36 L 487.39 270.69 L 490.3 271.92 L 493.22 273.07 L 496.13 274.13 L 499.04 275.12 L 501.96 276.04 L 504.87 276.89 L 507.78 277.68 L 510.7 278.41 L 513.61 279.1 L 516.52 279.73 L 519.43 280.32 L 522.35 280.87 L 525.26 281.38 L 528.17 281.85 L 531.09 282.29 L 534.0 282.69 L 600 288.0 L 603.0 281.93 L 606.0 273.1 L 609.0 261.88 L 612.0 248.69 L 615.0 233.91 L 618.0 217.95 L 621.0 201.19 L 624.0 184.04 L 627.0 166.89 L 630.0 150.13 L 633.0 134.17 L 636.0 119.39 L 639.0 106.2 L 642.0 94.98 L 645.0 86.15 L 648.0 80.08" fill="none" stroke="var(--amber)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"></path>
+<text class="lbl" dy="4" x="478" y="62">Peak pressure</text>
+<text class="lbl" dy="4" x="478" y="124">Plateau pressure</text>
+<!-- ===== THE TWO COMPONENTS, as brackets with elbowed arms.
                Peak minus plateau is the RESISTIVE pressure: it dissipates the moment flow stops.
                Plateau minus PEEP is the ELASTIC pressure, the driving pressure actually distending the lung.
                Each arm bends out of the spine and points at the exact level it refers to. ===== -->
-      <path class="brk" d="M 626 62  L 700 62  L 700 124" marker-start="url(#wfC)"/>
-      <path class="brk" d="M 626 124 L 700 124"           marker-start="url(#wfC)"/>
-      <text x="708" y="86"  class="lbl2">Resistive</text>
-      <text x="708" y="102" class="lbl2">pressure</text>
-    
-      <path class="brk" d="M 626 132 L 700 132 L 700 288" marker-start="url(#wfC)"/>
-      <path class="brk" d="M 626 288 L 700 288"           marker-start="url(#wfC)"/>
-      <text x="708" y="202" class="lbl2">Elastic</text>
-      <text x="708" y="218" class="lbl2">pressure</text>
-    
-      <!-- ===== PHASE BANDS ===== -->
-      <g class="ph">
-        <path d="M 96 332 L 246 332"  marker-start="url(#wfA)" marker-end="url(#wfA)"/>
-        <path d="M 246 332 L 400 332" marker-start="url(#wfA)" marker-end="url(#wfA)"/>
-        <path d="M 400 332 L 534 332" marker-start="url(#wfA)" marker-end="url(#wfA)"/>
-        <path d="M 534 332 L 600 332" marker-start="url(#wfA)" marker-end="url(#wfA)"/>
-      </g>
-      <text x="171" y="352" class="phl" text-anchor="middle">Inspiratory</text>
-      <text x="171" y="368" class="phl" text-anchor="middle">flow time</text>
-      <text x="323" y="352" class="phl" text-anchor="middle">Inspiratory</text>
-      <text x="323" y="368" class="phl" text-anchor="middle">pause</text>
-      <text x="467" y="352" class="phl" text-anchor="middle">Expiratory</text>
-      <text x="467" y="368" class="phl" text-anchor="middle">flow time</text>
-      <text x="567" y="352" class="phl" text-anchor="middle">Expiratory</text>
-      <text x="567" y="368" class="phl" text-anchor="middle">pause</text>
-    
-      <!-- ===== GROUPED TIMES. Elbowed risers at each end so the bracket is tied to the boundary above it. ===== -->
-      <g class="ph2">
-        <path d="M 96 388 L 96 400 L 400 400 L 400 388"  marker-start="url(#wfC)" marker-end="url(#wfC)"/>
-        <path d="M 400 400 L 600 400 L 600 388"          marker-end="url(#wfC)"/>
-      </g>
-      <text x="248" y="420" class="phl2" text-anchor="middle">Inspiratory time</text>
-      <text x="500" y="420" class="phl2" text-anchor="middle">Expiratory time</text>
-    
-      <g class="ph2">
-        <path d="M 96 440 L 96 452 L 600 452 L 600 440" marker-start="url(#wfC)" marker-end="url(#wfC)"/>
-      </g>
-      <text x="348" y="472" class="phl2" text-anchor="middle">Total cycle time (ventilatory period)</text>
-    </svg>
-    <figcaption>Airway pressure through one ventilatory period</figcaption>
-  </figure>
-
-  <h3>This shape only means anything under constant flow</h3>
-  <p>Everything below assumes a volume-targeted breath with a square flow waveform and an inspiratory pause. That is what separates the curve into readable parts. Under variable flow, in a pressure-targeted mode, the pressure trace is close to uninformative: the machine holds pressure at what you set, so the shape tells you about the machine rather than the lung. Without a pause you never see a plateau at all, and the two most useful numbers on the curve collapse into one.</p>
-
-  <h3>Peak, plateau, and the gap between them</h3>
-  <p><b>Peak pressure</b> is the highest pressure in the circuit, reached while gas is still moving. It is the sum of two things: the pressure spent pushing gas through the tube and airways, and the pressure spent distending the lung.</p>
-  <p><b>Plateau pressure</b> is what is left once flow stops during the pause. With no flow there is no resistive work, so what remains is the pressure actually stretching the alveoli. <b>Plateau is the number that barotraumatises a lung, not peak.</b></p>
-  <div class="scroll">
-  <table class="t">
-    <thead><tr><th>Quantity</th><th>Is</th><th>Tells you about</th></tr></thead>
-    <tbody>
-      <tr><td>Peak</td><td class="mono">resistive + plateau</td><td>Everything at once. On its own it cannot say which</td></tr>
-      <tr><td>Peak minus plateau</td><td class="mono">resistive pressure</td><td>The tube and the airways</td></tr>
-      <tr><td>Plateau minus PEEP</td><td class="mono">elastic, driving pressure</td><td>The lung itself</td></tr>
-    </tbody>
-  </table>
-  </div>
-  <p>Real thresholds worth carrying: a peak-to-plateau gap over <b>5 cmH2O</b> means the extra pressure is resistive, and a gap over <b>10 cmH2O</b> points at a kinked or secretion-plugged tube, an intraluminal mass, or bronchospasm. A peak above roughly 25 cmH2O is itself reason enough to stop and measure a plateau.</p>
-  <p>Two smaller things the trace will tell you if you look. A <b>negative dip at the very start</b> of the rise means the casualty triggered that breath; no dip means the machine did. And the plateau is never perfectly flat, it <b>drifts downward</b> through the pause, because lung tissue stress-relaxes, lung units with different time constants keep exchanging gas between themselves, a little gas is absorbed, and no circuit is truly leak-free.</p>
-  <div class="scroll">
-  <table class="t">
-    <thead><tr><th>What moved</th><th>Reading</th><th>What it means</th></tr></thead>
-    <tbody>
-      <tr><td>Peak rises, plateau steady</td><td class="mono">resistive</td><td>Something in the tube or airway: secretions, a kink, bronchospasm, a bitten tube</td></tr>
-      <tr><td>Peak and plateau both rise</td><td class="mono">elastic</td><td>The lung itself is stiffer: edema, contusion, {{ards|ARDS}}, a pneumothorax, or a chest that cannot expand</td></tr>
-      <tr><td>Gap widening over time</td><td class="mono">resistance</td><td>Worsening obstruction. Suction and look at the tube before you touch the settings</td></tr>
-    </tbody>
-  </table>
-  </div>
-  <p>The two brackets on the figure are that same split read straight off the trace. <b>Resistive pressure</b> is the step from peak down to plateau. <b>Elastic pressure</b> is plateau down to baseline, which is the driving pressure and the one that matters for lung injury.</p>
-
-  <h3>The four phases</h3>
-  <p>Inspiratory time is flow plus pause. Expiratory time is flow plus pause. Together they are the ventilatory period, and the ratio between them is what you set as {{ie-ratio|I:E}}.</p>
-  <p>Expiration is <b>passive</b>, which is why that limb is a curve and not a ramp: the lung empties against its own recoil through the resistance of the circuit, fast at first and slower as the pressure gradient falls. Shorten expiratory time past what that curve needs and the next breath starts before the last one finished leaving. The trace never returns to baseline, and the pressure it never returned to is trapped in the chest.</p>
-
-  
-<section class="sec">
-  <div class="sec-head"><span class="sec-num">06</span><h2>Barotrauma, VILI &amp; Gas Trapping</h2></div>
-  <p>The machine will do what you set it to. If that means forcing a set volume into a lung that cannot take it, the pressure goes wherever it has to go and the lung pays for it. These are the numbers behind that, and they are the reason mode choice is a clinical decision rather than a preference.</p>
-
-  <div class="principle">
-    <div class="lab">The one thing</div>
-    <p><b>Volume control guarantees volume and lets pressure run.</b> Pressure is what injures lungs, so on a stiffening lung the setting that keeps ventilation constant is the setting that does the damage.</p>
-  </div>
-
-  <h3>Where peak pressure comes from</h3>
-  <p>In a volume-targeted breath the machine computes peak pressure from the volume you set and how stiff the lung is. Compliance runs 1.00 for a healthy lung down to a floor of 0.20.</p>
-  <div class="scroll">
-  <table class="t">
-    <thead><tr><th>Set VT</th><th>Comp 1.00</th><th>Comp 0.70</th><th>Comp 0.50</th><th>Comp 0.35</th><th>Comp 0.20</th></tr></thead>
-    <tbody>
-      <tr><td class="mono">400 mL</td><td class="mono">18</td><td class="mono">22</td><td class="mono">27</td><td class="mono">35</td><td class="mono">56</td></tr>
-      <tr><td class="mono">500 mL</td><td class="mono">20</td><td class="mono">25</td><td class="mono">32</td><td class="mono">42</td><td class="mono">68</td></tr>
-      <tr><td class="mono">600 mL</td><td class="mono">22</td><td class="mono">29</td><td class="mono">37</td><td class="mono">49</td><td class="mono">80</td></tr>
-      <tr><td class="mono">700 mL</td><td class="mono">25</td><td class="mono">32</td><td class="mono">42</td><td class="mono">56</td><td class="mono">92</td></tr>
-    </tbody>
-  </table>
-  </div>
-  <p>Peak pressure in cmH2O. The gauge turns amber at <b>30</b> and barotrauma begins accruing above <b>35</b>. Read the 500 mL row across: the same setting that is comfortable on a healthy lung is injuring a blast lung.</p>
-  <p>Pressure control caps this by definition. In PC the pressure is what you set and the volume is whatever that pressure moves, which is the trade the mode exists to make.</p>
-
-  <h3>What stiffens a lung</h3>
-  <div class="scroll">
-  <table class="t">
-    <thead><tr><th>Insult</th><th>Compliance cost</th><th>At</th></tr></thead>
-    <tbody>
-      <tr><td>Blast lung</td><td class="mono">up to 0.62</td><td>full severity</td></tr>
-      <tr><td>Fluid overload</td><td class="mono">up to 0.45</td><td>1.6 L over</td></tr>
-      <tr><td>Ventilator-induced injury</td><td class="mono">up to 0.30</td><td>accumulated</td></tr>
-      <tr><td>{{pneumothorax}}</td><td class="mono">up to 0.25</td><td>state 3</td></tr>
-      <tr><td>{{hemothorax}}</td><td class="mono">up to 0.20</td><td>1500 mL</td></tr>
-    </tbody>
-  </table>
-  </div>
-  <p>They stack, and the floor is 0.20. A blast lung with a litre of crystalloid in it is already most of the way there before the ventilator has done anything.</p>
-
-  <h3>The barotrauma dose</h3>
-  <p>Time above the ceiling accumulates, it does not simply alarm. The dose accrues faster the further over you are, and when it reaches a full unit the machine has injured them.</p>
-  <div class="scroll">
-  <table class="t">
-    <thead><tr><th>Sustained PIP</th><th>Dose rate</th><th>Time to an injury event</th></tr></thead>
-    <tbody>
-      <tr><td class="mono">36</td><td class="mono">0.0054 /s</td><td class="mono">3.1 min</td></tr>
-      <tr><td class="mono">40</td><td class="mono">0.0078 /s</td><td class="mono">2.1 min</td></tr>
-      <tr><td class="mono">45</td><td class="mono">0.0108 /s</td><td class="mono">1.5 min</td></tr>
-      <tr><td class="mono">50</td><td class="mono">0.0138 /s</td><td class="mono">1.2 min</td></tr>
-      <tr><td class="mono">55 and above</td><td class="mono">0.0168 /s</td><td class="mono">1.0 min</td></tr>
-    </tbody>
-  </table>
-  </div>
-  <p>Below 35 the dose decays at 0.004 per second, so backing the pressure off does buy the accumulation back. <b>The injury it has already caused does not decay.</b></p>
-
-  <h3>What one injury event does</h3>
-  <div class="scroll">
-  <table class="t">
-    <thead><tr><th>Effect</th><th>Amount</th><th>Consequence</th></tr></thead>
-    <tbody>
-      <tr><td>Lung injury</td><td class="mono">+0.20</td><td>Stiffens the lung, which raises PIP, which accrues dose faster</td></tr>
-      <tr><td>Pneumothorax roll</td><td class="mono">55%</td><td>A new one on a chest with no prior injury. <b>100% if one already exists</b></td></tr>
-      <tr><td>Pain</td><td class="mono">+0.25</td><td>Barotrauma hurts</td></tr>
-    </tbody>
-  </table>
-  </div>
-  <p>The first row is the trap. Each event stiffens the lung, a stiffer lung needs more pressure for the same volume, and more pressure accrues the next dose faster. Left alone in volume control it accelerates.</p>
-  <p>The pneumothorax it creates is not a cosmetic flag. The addon marks the chest injured and then hands off to ACM's own pneumothorax handler, so it deteriorates and converts to tension exactly like one caused by a fragment.</p>
-
-  <h3>Stretch, not just pressure</h3>
-  <p>Volume injures independently of pressure. Above <b>8 mL/kg</b> in a lung already stiffer than 0.80, injury accrues on top of everything above, scaling to full effect by 12 mL/kg. At 70 kg that is 560 mL, which is inside the range people set without thinking.</p>
-  <p>This is what makes 6 mL/kg an actual treatment in blast lung rather than a slogan, and the machine shows you the number: the live screen reports mL/kg alongside the volume.</p>
-
-  <h3>Positive pressure on a pneumothorax</h3>
-  <p>Active positive pressure increases the injury model’s air-leak contribution. The current ventilator path scales this contribution using delivered PIP, while recent BVM breaths also increase it. The eventual pressure buildup depends on the leak, pleural gas and available drainage. A connected but paused ventilator is not treated as delivering positive pressure.</p>
-  <p>Needle decompression, an open completed finger thoracostomy and a functioning chest tube provide different drainage capacities. They relieve pressure without automatically healing the underlying leak. Continued reassessment matters if an outlet becomes obstructed, a tract is closed or positive pressure increases.</p>
-
-  <h3>Gas trapping and auto-PEEP</h3>
-  <p>The lung needs time to empty, and how much time depends on compliance. If expiratory time is shorter than that, the next breath starts before the last one has finished leaving and the leftover pressure stacks.</p>
-  <div class="scroll">
-  <table class="t">
-    <thead><tr><th>Term</th><th>Value</th><th>Meaning</th></tr></thead>
-    <tbody>
-      <tr><td>Emptying time</td><td class="mono">1.8 s x compliance</td><td>A stiff lung empties FASTER, so trapping is a soft-lung problem</td></tr>
-      <tr><td>Accrual</td><td class="mono">0.9 cmH2O/s</td><td>At full deficit, scaled by how far short expiration falls</td></tr>
-      <tr><td>Clearance</td><td class="mono">1.2 cmH2O/s</td><td>Once expiratory time is adequate again</td></tr>
-      <tr><td>Alarm</td><td class="mono">4 cmH2O</td><td>GAS TRAPPING, a HIGH priority alarm</td></tr>
-      <tr><td>Ceiling</td><td class="mono">20 cmH2O</td><td></td></tr>
-    </tbody>
-  </table>
-  </div>
-  <p>Auto-PEEP is added to peak pressure, so trapping feeds the barotrauma model directly. It is also shown on the live screen in brackets beside the PEEP you set, which is the only way to tell dialled PEEP from actual end-expiratory pressure.</p>
-  <p>Clearance is faster than accrual, so lengthening expiratory time recovers quicker than it built. Raise the I:E, drop the rate, or both.</p>
-
-  <h3>The pressure limit is a valve, not a warning</h3>
-  <p>The limit on ALERTS is enforced. The machine will not push past it, so in a volume-targeted breath a lung needing more pressure than the limit allows simply does not receive the full volume, and the delivered VTe drops below the set VT.</p>
-  <p>That is the entire point of it, and the trade runs both ways. Set it low and you will not barotraumatise them, but you may not ventilate them either. Set it high and the machine will injure the lung on your behalf without ever refusing.</p>
-
-  <div class="flags">
-    <h3>Red Flags</h3>
-    <ul>
-      <li><b>Rising peak with a steady plateau, answered by more volume.</b> The pressure is resistive. More volume through the same obstruction raises pressure further and moves no more gas.</li>
-      <li><b>Volume control on a lung that is stiffening.</b> The mode holds volume constant by letting pressure climb, and pressure is the thing that injures. Change mode rather than chasing the number.</li>
-      <li><b>Ignoring the bracketed figure beside PEEP.</b> That is auto-PEEP. It is added to peak pressure and it is feeding barotrauma whether or not you have looked at it.</li>
-      <li><b>A pneumothorax on positive pressure that has not been decompressed.</b> There is no safe pressure. Active positive pressure can worsen the leak; reassess drainage and perfusion.</li>
-      <li><b>Setting a high pressure limit to stop the volume alarming.</b> The alarm was the machine telling you the lung could not take the setting.</li>
-    </ul>
-  </div>
-</section>
-
-<div class="flags">
-    <h3>Red Flags</h3>
-    <ul>
-      <li><b>Watching peak and ignoring plateau.</b> Peak includes resistance you may not be able to change. Plateau is the number that tells you what the alveoli are taking.</li>
-      <li><b>An expiratory limb that does not reach baseline.</b> The breath is being interrupted. Lengthen expiratory time before anything else.</li>
-      <li><b>Treating a rising peak by turning the volume up.</b> If the cause is resistive, more volume through the same obstruction raises pressure further and moves no more gas.</li>
-    </ul>
-  </div>
-</section>
-
-<div class="flags">
-  <h3>Red Flags</h3>
-  <ul>
-    <li><b>Ventilating a casualty who is empty.</b> Positive pressure opposes venous return. At low volume it can cost a fifth of their stroke volume. Fill them before you tube them.</li>
-    <li><b>Rising peak pressure in volume control.</b> The lung is stiffening and the machine is forcing through it. Change mode rather than turning up the volume.</li>
-    <li><b>Falling delivered Vt in pressure control.</b> The same stiffening lung showing itself the other way round, and nothing alarms for it on its own.</li>
-    <li><b>CPAP on someone without a drive.</b> The machine supports breaths they are not taking.</li>
-    <li><b>Leaving CPR mode on after ROSC.</b> They now have their own effort and the vent is ignoring it.</li>
-  </ul>
+<path class="brk" d="M 626 62  L 700 62  L 700 124" marker-start="url(#wfC)"></path>
+<path class="brk" d="M 626 124 L 700 124" marker-start="url(#wfC)"></path>
+<text class="lbl2" x="708" y="86">Resistive</text>
+<text class="lbl2" x="708" y="102">pressure</text>
+<path class="brk" d="M 626 132 L 700 132 L 700 288" marker-start="url(#wfC)"></path>
+<path class="brk" d="M 626 288 L 700 288" marker-start="url(#wfC)"></path>
+<text class="lbl2" x="708" y="202">Elastic</text>
+<text class="lbl2" x="708" y="218">pressure</text>
+<!-- ===== PHASE BANDS ===== -->
+<g class="ph">
+<path d="M 96 332 L 246 332" marker-end="url(#wfA)" marker-start="url(#wfA)"></path>
+<path d="M 246 332 L 400 332" marker-end="url(#wfA)" marker-start="url(#wfA)"></path>
+<path d="M 400 332 L 534 332" marker-end="url(#wfA)" marker-start="url(#wfA)"></path>
+<path d="M 534 332 L 600 332" marker-end="url(#wfA)" marker-start="url(#wfA)"></path>
+</g>
+<text class="phl" text-anchor="middle" x="171" y="352">Inspiratory</text>
+<text class="phl" text-anchor="middle" x="171" y="368">flow time</text>
+<text class="phl" text-anchor="middle" x="323" y="352">Inspiratory</text>
+<text class="phl" text-anchor="middle" x="323" y="368">pause</text>
+<text class="phl" text-anchor="middle" x="467" y="352">Expiratory</text>
+<text class="phl" text-anchor="middle" x="467" y="368">flow time</text>
+<text class="phl" text-anchor="middle" x="567" y="352">Expiratory</text>
+<text class="phl" text-anchor="middle" x="567" y="368">pause</text>
+<!-- ===== GROUPED TIMES. Elbowed risers at each end so the bracket is tied to the boundary above it. ===== -->
+<g class="ph2">
+<path d="M 96 388 L 96 400 L 400 400 L 400 388" marker-end="url(#wfC)" marker-start="url(#wfC)"></path>
+<path d="M 400 400 L 600 400 L 600 388" marker-end="url(#wfC)"></path>
+</g>
+<text class="phl2" text-anchor="middle" x="248" y="420">Inspiratory time</text>
+<text class="phl2" text-anchor="middle" x="500" y="420">Expiratory time</text>
+<g class="ph2">
+<path d="M 96 440 L 96 452 L 600 452 L 600 440" marker-end="url(#wfC)" marker-start="url(#wfC)"></path>
+</g>
+<text class="phl2" text-anchor="middle" x="348" y="472">Total cycle time (ventilatory period)</text>
+</svg>
+<figcaption>Airway pressure through one ventilatory period</figcaption>
+</figure><p>For the <b>EMMA capnograph</b>, see <a href="airway.html#capnography">the implemented waveform conditions</a>. Its CO2 waveform is a different measurement from the ventilator’s pressure trace.</p></section>
+<section class="sec"><div class="sec-head"><span aria-hidden="true" class="legacy-anchor" id="barotrauma-vili-amp-gas-trapping"></span><h2>Barotrauma and volume-related injury</h2></div><p>The pressure gauge enters caution at 30 cmH2O. Sustained PIP above the default 35 cmH2O danger threshold accumulates a barotrauma dose.</p>
+<div aria-label="Pressure reference thresholds" class="metric-strip">
+<div class="metric"><small>Gauge caution</small><strong>30 cmH2O</strong><span>Review pressure and delivered ventilation</span></div>
+<div class="metric"><small>Dose accumulation</small><strong>&gt; 35 cmH2O</strong><span>Default injury threshold</span></div>
+<div class="metric"><small>Below danger</small><strong>0.004 /s</strong><span>Accumulated dose clears; existing injury does not automatically reverse</span></div>
 </div>
+<p>The following times assume a constant pressure and no prior accumulated dose.</p><div aria-label="Ventilator reference" class="scroll" role="region" tabindex="0"><table class="t">
+<thead><tr><th>Sustained PIP</th><th>Dose rate</th><th>Time to an injury event</th></tr></thead>
+<tbody>
+<tr><td class="mono">36</td><td class="mono">0.0054 /s</td><td class="mono">3.1 min</td></tr>
+<tr><td class="mono">40</td><td class="mono">0.0078 /s</td><td class="mono">2.1 min</td></tr>
+<tr><td class="mono">45</td><td class="mono">0.0108 /s</td><td class="mono">1.5 min</td></tr>
+<tr><td class="mono">50</td><td class="mono">0.0138 /s</td><td class="mono">1.2 min</td></tr>
+<tr><td class="mono">55 and above</td><td class="mono">0.0168 /s</td><td class="mono">1.0 min</td></tr>
+</tbody>
+</table></div><p>Below the danger threshold, dose decays at 0.004 per second. Reducing pressure stops further accumulation; it does not automatically reverse existing injury.</p><div aria-label="Ventilator reference" class="scroll" role="region" tabindex="0"><table class="t">
+<thead><tr><th>Effect</th><th>Amount</th><th>Consequence</th></tr></thead>
+<tbody>
+<tr><td>Lung injury</td><td class="mono">+0.20</td><td>Stiffens the lung, which raises PIP, which accrues dose faster</td></tr>
+<tr><td>Pneumothorax roll</td><td class="mono">55%</td><td>A new one on a chest with no prior injury. <b>100% if one already exists</b></td></tr>
+<tr><td>Pain</td><td class="mono">+0.25</td><td>Barotrauma hurts</td></tr>
+</tbody>
+</table></div><p>High delivered volume can add stretch injury independently of the pressure-dose branch. The calculation begins above 8 mL/kg when effective compliance is below 0.80 and scales with volume and compliance deficit. Reassess volume, pressure, obstruction and drainage together.</p></section>
+<section class="sec"><div class="sec-head"><h2>Gas trapping</h2></div><p>The game compares expiratory time with an emptying-time estimate of 1.8 seconds × effective compliance. Insufficient expiration accumulates auto-PEEP at up to 0.9 cmH2O per second. Adequate expiration clears it at 1.2 cmH2O per second.</p><p>The default auto-PEEP ceiling is 20 cmH2O and the GAS TRAPPING alarm threshold is 4 cmH2O. Auto-PEEP adds to pressure and can affect pressure limiting. Increase the expiratory share of I:E, lower rate when appropriate, and recheck delivered ventilation.</p></section>
+<section class="sec"><div class="sec-head"><span aria-hidden="true" class="legacy-anchor" id="battery-endurance-amp-power"></span><h2>Battery and vehicle power</h2></div><p>The turbine uses ambient air to ventilate; supplemental oxygen enriches the gas mixture. When battery drain is enabled, electrical charge limits operation.</p><div aria-label="Ventilator reference" class="scroll" role="region" tabindex="0"><table class="t">
+<thead><tr><th>Settings</th><th>Load</th><th>Runtime</th></tr></thead>
+<tbody>
+<tr><td>PEEP 5, RR 12, PIP 20</td><td class="mono">1.02x</td><td class="mono">54 min</td></tr>
+<tr><td>PEEP 10, RR 18, PIP 30</td><td class="mono">1.39x</td><td class="mono">40 min</td></tr>
+<tr><td>PEEP 15, RR 24, PIP 40</td><td class="mono">1.82x</td><td class="mono">30 min</td></tr>
+<tr><td>PEEP 20, RR 35, PIP 50</td><td class="mono">2.46x</td><td class="mono">22 min</td></tr>
+</tbody>
+</table></div><div aria-label="Battery warning thresholds" class="metric-strip">
+<div class="metric"><small>Low battery</small><strong>25%</strong><span>Plan power or battery exchange</span></div>
+<div class="metric"><small>Critical battery</small><strong>10%</strong><span>Prepare an immediate support backup</span></div>
+<div class="metric"><small>Empty battery</small><strong>0%</strong><span>Ventilation stops</span></div>
+<div class="metric"><small>Battery exchange</small><strong>6 seconds</strong><span>Offered below 90% charge</span></div>
+</div><p>Default nominal battery capacity is 55 minutes. A vehicle with its engine running supplies power and recharges an empty battery over approximately 90 minutes. LOW BATTERY appears at 25% and BATTERY CRITICAL at 10%. At zero, ventilation stops and manual support is required. Battery exchange takes about 6 seconds and is offered below 90% charge.</p><figure>
+<img alt="Ventway Sparrow Robust" src="img/ventway_sparrow_robust_ca.png"/>
+<figcaption>Ventway Sparrow Robust. Dial left, screen centre, patient circuit right</figcaption>
+</figure></section>
+<section class="sec"><div class="sec-head"><h2 id="screen-brightness-amp-night-mode">Screen brightness and night mode</h2></div><p>On the panel, open <b>MENU &gt; ADV. SETTINGS &gt; BRIGHTNESS</b> and use the dial. This changes the device display independently of the wiki’s night control.</p><div aria-label="Ventilator reference" class="scroll" role="region" tabindex="0"><table class="t"><thead><tr><th scope="col">Panel level</th><th scope="col">Configured display output</th><th scope="col">Behavior</th></tr></thead><tbody><tr><th scope="row">1 / Night</th><td>5.5%</td><td>Very dim without goggles. The configured output becomes 85% under image intensifiers.</td></tr><tr><th scope="row">2</th><td>45%</td><td>Reduced brightness</td></tr><tr><th scope="row">3</th><td>72%</td><td>Startup default</td></tr><tr><th scope="row">4</th><td>100%</td><td>Full brightness</td></tr></tbody></table></div><p>These percentages are game display multipliers. Selecting night brightness also lowers alarm volume once; the volume can then be adjusted separately.</p></section>
+<section class="sec"><div class="sec-head"><span aria-hidden="true" class="legacy-anchor" id="panel-layout-amp-menu-tree"></span><h2>Panel icons</h2></div><div class="iconkey">
+<div class="ik"><img alt="" class="ico" src="img/ventway_sparrow_robust_icon_ca.png"/><span class="ikn">Inventory</span><span class="ikd">How the unit reads in your kit. 22kg empty, 40kg with a battery</span></div>
+<div class="ik"><img alt="" class="ico" src="img/sparrow_startup_icon_ca.png"/><span class="ikn">Boot</span><span class="ikd">Shown while it starts. Replays if the unit is moved or reloaded</span></div>
+</div><div class="iconkey">
+<div class="ik"><img alt="" class="ico inv" src="img/alarm_ca.png"/><span class="ikn">Alarm</span><span class="ikd">Opens the alarm window. Carries the active count</span></div>
+<div class="ik"><img alt="" class="ico inv" src="img/alarm_silenced_ca.png"/><span class="ikn">Silenced</span><span class="ikd">Audible muted, the alarm itself is still active</span></div>
+<div class="ik"><img alt="" class="ico inv" src="img/graphs_ca.png"/><span class="ikn">Graphs</span><span class="ikd">Pressure and flow traces</span></div>
+<div class="ik"><img alt="" class="ico inv" src="img/manual_breath_ca.png"/><span class="ikn">Breath</span><span class="ikd">One breath at the current settings</span></div>
+<div class="ik"><img alt="" class="ico inv" src="img/main_menu_ca.png"/><span class="ikn">Menu</span><span class="ikd">Stop vent, new patient, adv. settings</span></div>
+<div class="ik"><img alt="" class="ico inv" src="img/confirm_ca.png"/><span class="ikn">Confirm</span><span class="ikd">Commits the value under the dial</span></div>
+<div class="ik"><img alt="" class="ico inv" src="img/cancel_ca.png"/><span class="ikn">Cancel</span><span class="ikd">Drops the edit and leaves the value alone</span></div>
+<div class="ik"><img alt="" class="ico inv" src="img/back_ca.png"/><span class="ikn">Back</span><span class="ikd">Previous screen in the setup sequence</span></div>
+<div class="ik"><img alt="" class="ico inv" src="img/home_ca.png"/><span class="ikn">Home</span><span class="ikd">Straight back to LIVE</span></div>
+<div class="ik"><img alt="" class="ico inv" src="img/next_screen_ca.png"/><span class="ikn">Next</span><span class="ikd">Advances once the current screen is satisfied</span></div>
+</div><div class="iconkey">
+<div class="ik"><img alt="" class="ico" src="img/vent_battery_default.png"/><span class="ikn">On battery</span><span class="ikd">Draining. Fill shows what is left</span></div>
+<div class="ik"><img alt="" class="ico" src="img/vent_battery_plugged.png"/><span class="ikn">Plugged</span><span class="ikd">On vehicle power, drain stopped</span></div>
+<div class="ik"><img alt="" class="ico" src="img/vent_battery_charging.png"/><span class="ikn">Charging</span><span class="ikd">Refilling. Full from empty in about 90 min</span></div>
+</div></section>
+<p class="source-note">Game mechanics checked against ACM Extended source 4848f63. The injury cards are guide starting points; explicitly labeled defaults can change with mission settings. <a href="https://github.com/hesherson/ACM-Extended/blob/4848f63b200a45362eb576dcef469484202b6a80/addons/acm_extended/functions/fn_ventDriveTick.sqf">Delivery and injury</a> · <a href="https://github.com/hesherson/ACM-Extended/blob/4848f63b200a45362eb576dcef469484202b6a80/addons/acm_extended/functions/fn_ventEffectiveSettings.sqf">Mode settings</a> · <a href="https://github.com/hesherson/ACM-Extended/blob/4848f63b200a45362eb576dcef469484202b6a80/addons/acm_extended/functions/fn_ventOxygenation.sqf">Shunt and oxygen</a> · <a href="https://github.com/hesherson/ACM-Extended/blob/4848f63b200a45362eb576dcef469484202b6a80/addons/acm_extended/functions/fn_ventBatteryTick.sqf">Power</a> · <a href="https://github.com/hesherson/ACM-Extended/blob/4848f63b200a45362eb576dcef469484202b6a80/addons/acm_extended/functions/fn_initVentilatorUiPowerConfig.sqf">Display configuration</a></p>
+<p class="source-note">Inspired/expired volume terminology checked at ACM Extended 21f8694: <a href="https://github.com/hesherson/ACM-Extended/blob/21f86948b8a03507146297742ea84983987d5be1/addons/acm_extended/functions/fn_ventDriveTick.sqf">VTi, VTe, leak and delivered minute ventilation</a>. Earlier game-mechanics references retain their stated revisions.</p>

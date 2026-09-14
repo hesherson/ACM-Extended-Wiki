@@ -28,7 +28,8 @@ SRC = os.path.join(ROOT, "src")
 OUT = os.path.join(ROOT, "docs")
 
 VERSION = "1.2.0-r0"
-REVIEWED = {"index", "access", "medications", "descriptors", "fluids", "ov_access", "circulation", "settings", "menu", "ov_intro", "ov_circ", "oxygen", "flight", "bleeding"}
+PUBLIC_URL = "https://hesherson.github.io/ACM-Extended-Wiki/"
+REVIEWED = {"airway", "ventilator", "accessibility", "zeus", "glossary", "ov_tbi", "ov_chest", "ov_oxygen", "ov_bleeding", "tbi", "obtunded", "blast", "index", "access", "medications", "descriptors", "fluids", "ov_access", "circulation", "settings", "menu", "ov_intro", "ov_circ", "oxygen", "flight", "bleeding", "debug"}
 
 # slug, filename, nav title, nav group.
 # Order here is the order in the sidebar. Groups are emitted in first-seen order.
@@ -40,16 +41,19 @@ PAGES = [
     ("descriptors", "descriptors.html", "Clinical descriptors", "Quick reference"),
     ("glossary", "glossary.html", "Glossary", "Quick reference"),
     ("ventilator", "ventilator.html", "Ventilator Settings", "Systems"),
-    ("airway", "airway.html", "Airway & Chest", "Systems"),
+    ("airway", "airway.html", "Airway & Breathing", "Systems"),
     ("oxygen", "oxygen.html", "Oxygen Delivery (DO2)", "Systems"),
     ("bleeding", "bleeding.html", "Haemorrhage & Shock", "Systems"),
     ("circulation", "circulation.html", "Cardiac rhythms", "Systems"),
     ("tbi", "tbi.html", "Traumatic Brain Injury", "Systems"),
+    ("obtunded", "obtunded.html", "Obtunded states", "Systems"),
+    ("blast", "blast.html", "Blast overpressure", "Systems"),
     ("flight", "flight.html", "Flight Physiology", "Systems"),
     ("menu", "menu.html", "Medical Menu", "Interface"),
     ("accessibility", "accessibility.html", "Accessibility", "Interface"),
     ("settings", "settings.html", "Settings reference", "Reference"),
     ("zeus", "zeus.html", "Zeus modules", "Reference"),
+    ("debug", "debug.html", "Debug menu", "Reference"),
     ("ov_intro", "ov_intro.html", "How systems connect", "Further reference"),
     ("ov_bleeding", "ov_bleeding.html", "Bleeding & resuscitation", "Further reference"),
     ("ov_oxygen", "ov_oxygen.html", "Oxygen readings", "Further reference"),
@@ -60,12 +64,13 @@ PAGES = [
 ]
 
 HEAD = """<!DOCTYPE html>
-<html lang="en">
+<html lang="en-US">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
 <title>{title}</title>
+<link rel="canonical" href="{canonical}">
 <link rel="icon" type="image/png" href="img/acme-favicon.png">
 <style>
 {css}
@@ -114,14 +119,18 @@ var IDX={index};
 (function(){{
   var pop=document.getElementById('glpop');
   var t=pop.querySelector('.glpop-t'), d=pop.querySelector('.glpop-d');
+  var closeT=null;
   function open(slug){{
+    if(closeT){{ clearTimeout(closeT); closeT=null; }}
     var e=TERMS[slug]; if(!e) return;
     t.textContent=e[0]; d.textContent=e[1];
-    pop.hidden=false; requestAnimationFrame(function(){{pop.classList.add('on');}});
+    pop.hidden=false; void pop.offsetHeight; requestAnimationFrame(function(){{pop.classList.add('on');}});
   }}
   function close(){{
     pop.classList.remove('on');
-    setTimeout(function(){{pop.hidden=true;}},180);
+    if(closeT) clearTimeout(closeT);
+    clearArm();
+    closeT=setTimeout(function(){{pop.hidden=true;closeT=null;}},120);
   }}
 
   // HOVER TO OPEN after a deliberate pause, so passing the cursor over a term does not fire it.
@@ -192,7 +201,7 @@ var IDX={index};
     var tick=false;
     function spy(){{
       var y=window.scrollY, best=0;
-      for(var i=0;i<heads.length;i++){{ if(heads[i] && heads[i].offsetTop<=y+120) best=i; }}
+      for(var i=0;i<heads.length;i++){{ if(heads[i] && heads[i].getBoundingClientRect().top<=120) best=i; }}
       links.forEach(function(a,i){{ a.classList.toggle('on', i===best); }});
       if(cur.textContent!==links[best].textContent) cur.textContent=links[best].textContent;
       var doc=document.documentElement.scrollHeight-window.innerHeight;
@@ -231,6 +240,7 @@ var IDX={index};
     document.addEventListener('keydown',function(ev){{
       if(ev.key==='Escape' && !list.hidden) sbShut();
     }});
+    window.addEventListener('resize',spy);
     spy();
   }}
 
@@ -243,13 +253,14 @@ var IDX={index};
     var sTick=false;
     function sspy(){{
       var y=window.scrollY, best=0;
-      for(var i=0;i<sHeads.length;i++){{ if(sHeads[i] && sHeads[i].offsetTop<=y+120) best=i; }}
+      for(var i=0;i<sHeads.length;i++){{ if(sHeads[i] && sHeads[i].getBoundingClientRect().top<=120) best=i; }}
       sLinks.forEach(function(a,i){{ a.classList.toggle('on', i===best); }});
       sTick=false;
     }}
     window.addEventListener('scroll',function(){{
       if(!sTick){{ sTick=true; requestAnimationFrame(sspy); }}
     }},{{passive:true}});
+    window.addEventListener('resize',sspy);
     sspy();
   }}
 
@@ -407,6 +418,16 @@ def add_anchors(body):
     return re.sub(r"<h2>(.*?)</h2>", sub, body)
 
 
+def group_field_labels(body):
+    """Keep a caption in one layout row even when glossary terms are inserted."""
+    def group(m):
+        caption = m.group(2)
+        if not caption.strip() or 'ref-label-text' in caption:
+            return m.group(0)
+        return m.group(1) + '<span class="ref-label-text">' + caption + '</span>'
+    return re.sub(r'(<label\b[^>]*>)((?:(?!</label>).)*?)(?=<(?:input|select|textarea)\b)', group, body, flags=re.S)
+
+
 def add_card_anchors(body):
     """Give drug cards and injury cards ids too. On a page like medications the h2 sections are only
     scaffolding and the real navigation targets are the 19 cards, so the rail needs to reach them."""
@@ -478,7 +499,7 @@ def index_page(slug, fname, title, body):
         recs.append({"p": title, "f": fname, "a": match.group(1), "h": match.group(2),
                      "t": re.sub(r"\s+", " ", text).strip()[:4000]})
     # Infusion rows remain individually searchable beyond the section excerpt.
-    for match in re.finditer(r'<tr id="([^"]+)" data-infusion="([^"]+)">(.*?)</tr>', body, re.S):
+    for match in re.finditer(r'<tr\b(?=[^>]* id="([^"]+)")(?=[^>]* data-infusion="([^"]+)")[^>]*>(.*?)</tr>', body, re.S):
         text = re.sub(r"<[^>]+>", " ", match.group(3))
         recs.append({"p": title, "f": fname, "a": match.group(1), "h": match.group(2) + " infusion",
                      "t": re.sub(r"\s+", " ", text).strip()[:1500]})
@@ -517,9 +538,23 @@ def sidebar(current, sections=()):
            f'    <div class="ver">Source build {VERSION}</div>',
            '  </div>',
            '  <div class="tb-wrap">',
-           '    <input id="q" class="tb-q" type="search" placeholder="Search the wiki /" aria-label="Search the wiki" autocomplete="off" spellcheck="false">',
+           '    <input id="q" class="tb-q" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off" spellcheck="false">',
            '    <div id="qr" class="tb-res" hidden></div>',
            '  </div>',
+           '  <form class="language-picker notranslate" data-language-picker translate="no">',
+           '    <label for="wiki-language">Language</label>',
+           '    <select id="wiki-language" name="language" aria-describedby="language-note">',
+           '      <option value="en-US" lang="en-US">English (US)</option>',
+           '      <option value="en-GB" lang="en-GB">English (UK)</option>',
+           '      <option value="de" lang="de">Deutsch</option>',
+           '      <option value="fr" lang="fr">Français</option>',
+           '      <option value="es" lang="es">Español</option>',
+           '      <option value="ru" lang="ru">Русский</option>',
+           '    </select>',
+           '    <button type="submit" data-language-apply>Apply language</button>',
+           '    <p id="language-note" data-language-note role="status">Choose a language, then apply.</p>',
+           '    <noscript>Enable JavaScript to use language options.</noscript>',
+           '  </form>',
            '  <nav class="nav">']
     seen = []
     for slug, fname, title, group in PAGES:
@@ -543,8 +578,15 @@ def sidebar(current, sections=()):
 
 
 def build():
-    css = open(os.path.join(SRC, "_pillar.css"), encoding="utf-8").read()
-    reference_js = open(os.path.join(SRC, "reference.js"), encoding="utf-8").read()
+    retired = os.path.join(OUT, "ov_traps.html")
+    if os.path.isfile(retired):
+        os.remove(retired)
+    css = "\n".join(open(os.path.join(SRC, name), encoding="utf-8").read()
+                    for name in ("_pillar.css", "visual-reference.css", "slideshow.css", "capnography.css", "languages.css")
+                    if os.path.isfile(os.path.join(SRC, name)))
+    reference_js = "\n".join(open(os.path.join(SRC, name), encoding="utf-8").read()
+                             for name in ("reference.js", "slideshow.js", "chart-readouts.js", "suction-guide.js", "capnography.js", "languages.js")
+                             if os.path.isfile(os.path.join(SRC, name)))
     os.makedirs(OUT, exist_ok=True)
     os.makedirs(os.path.join(OUT, "img"), exist_ok=True)
 
@@ -555,11 +597,17 @@ def build():
     src_img = os.path.join(SRC, "img")
     copied = 0
     if os.path.isdir(src_img):
-        for fn in sorted(os.listdir(src_img)):
-            s = os.path.join(src_img, fn)
-            if os.path.isfile(s):
-                shutil.copy2(s, os.path.join(OUT, "img", fn))
+        for directory, _, filenames in os.walk(src_img):
+            for fn in sorted(filenames):
+                s = os.path.join(directory, fn)
+                relative = os.path.relpath(s, src_img)
+                target = os.path.join(OUT, "img", relative)
+                os.makedirs(os.path.dirname(target), exist_ok=True)
+                shutil.copy2(s, target)
                 copied += 1
+    audio_src = os.path.join(SRC, "audio")
+    if os.path.isdir(audio_src):
+        shutil.copytree(audio_src, os.path.join(OUT, "audio"), dirs_exist_ok=True)
     built = datetime.date.today().isoformat()
 
     # PASS 1: read and transform every body, and build the search index from the result.
@@ -580,6 +628,7 @@ def build():
         body = body.replace("PILLAR", "ACM EXTENDED")
         body, miss = apply_terms(body)
         badterms += [(slug, m) for m in miss]
+        body = group_field_labels(body)
         body = add_anchors(body)
         body = add_card_anchors(body)
         bodies[slug] = body
@@ -592,7 +641,7 @@ def build():
     for slug, fname, title, group in PAGES:
         if slug not in bodies:
             continue
-        page = (HEAD.format(title=f"ACM Extended Wiki | {title}", css=css)
+        page = (HEAD.format(title=f"ACM Extended Wiki | {title}", css=css, canonical=PUBLIC_URL + fname)
                 + sidebar(slug, page_sections(bodies[slug])) + "\n" + toc(bodies[slug]) + "\n" + bodies[slug]
                 + FOOT.format(version=VERSION, built=built, terms=terms_json, index=idx_json, reference_js=reference_js))
         open(os.path.join(OUT, fname), "w", encoding="utf-8").write(page)
@@ -604,7 +653,8 @@ def build():
 
     # Every img/ reference must resolve, and every image should be used. A broken reference used to
     # ship as a silent 404 that only showed up on someone else's screen.
-    have = set(os.listdir(src_img)) if os.path.isdir(src_img) else set()
+    have = {os.path.relpath(os.path.join(d, f), src_img).replace(os.sep, "/")
+            for d, _, files in os.walk(src_img) for f in files}
     want = set()
     for slug, body in bodies.items():
         for m in re.finditer(r'(?:src|href)="img/([^"]+)"', body):

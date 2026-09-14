@@ -1,0 +1,33 @@
+/* Shared wiki palette, with a calibrated teaching trace and short reading cards. */
+.capno-explorer{margin-block:1.5rem;border:1px solid var(--rule-2);border-radius:.6rem;background:var(--med-surface);padding:clamp(1rem,2vw,1.6rem)}
+.capno-controls{display:grid;grid-template-columns:minmax(15rem,1.2fr) repeat(3,minmax(10rem,1fr));gap:1rem;align-items:end}
+.capno-controls[hidden],.capno-inspector[hidden],.capno-pattern-note[hidden]{display:none!important}
+.capno-controls label,.capno-inspector label{display:block;min-width:0;color:var(--cream);font-size:.9rem;font-weight:600}
+.capno-controls label>span:not([data-capno-severity-label]){font-weight:400;color:var(--cream-dim)}
+.capno-controls input,.capno-controls select,.capno-inspector input{box-sizing:border-box;display:block;min-height:44px;width:100%;margin-top:.5rem;padding:.65rem .75rem;border:1px solid var(--rule-2);border-radius:.35rem;background:var(--navy);color:var(--cream);font:inherit}
+.capno-controls input[type="range"]{padding:0;accent-color:var(--amber);cursor:pointer}
+.capno-controls output{float:right;font-variant-numeric:tabular-nums;color:var(--amber)}
+.capno-controls input:disabled{opacity:.45;cursor:default}
+.capno-controls input:focus-visible,.capno-controls select:focus-visible,.capno-inspector input:focus-visible,.capno-play:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+.capno-help{margin-block:1rem!important;color:var(--cream-dim);font-size:.9rem}
+.capno-chart.reference-chart{padding:0;margin:0;border:0;background:none}
+.capno-chart svg{display:block;width:100%;min-width:0;height:auto;max-height:480px;border:1px solid var(--rule);border-radius:.35rem;background:var(--navy);color:var(--body-ink);font-family:inherit;touch-action:pan-y}
+.capno-chart .chart-cursor{pointer-events:none}
+.capno-line{stroke:var(--amber)}
+.capno-inspector{display:grid;grid-template-columns:minmax(9rem,12rem) auto minmax(0,1fr);gap:1rem;align-items:end;border:0;padding:1rem 0;margin:0}
+.capno-inspector .chart-readout{align-self:center;display:flex;flex-wrap:wrap;column-gap:1.2rem;row-gap:.35rem;font-size:.95rem;color:var(--cream-dim);font-variant-numeric:tabular-nums}
+.capno-inspector .chart-readout strong{color:var(--cream)}
+.capno-play{min-height:44px;padding:.65rem 1.1rem;border:1px solid var(--rule-2);border-radius:.35rem;background:var(--med-head);color:var(--cream);font:inherit;white-space:nowrap;cursor:pointer}
+.capno-play:hover,.capno-play[aria-pressed="true"]{border-color:var(--amber);color:var(--amber)}
+.capno-chart figcaption{margin:.3rem 0 1.3rem;padding:0;color:var(--cream-dim);font-size:.875rem;line-height:1.55;text-transform:none;letter-spacing:normal}
+.capno-pattern-note{padding:1.2rem 0 0;border-top:1px solid var(--rule-2)}
+.capno-pattern-note+.capno-pattern-note{margin-top:1.2rem}
+.capno-pattern-note h3{margin:0 0 1rem;color:var(--amber)}
+.capno-notes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.4rem}
+.capno-notes>div{padding-left:1rem;border-left:2px solid var(--rule-2);min-width:0}
+.capno-notes h4{margin:0 0 .6rem;font-size:.85rem;color:var(--cream);letter-spacing:.035em}
+.capno-notes p{margin:0;font-size:.95rem;line-height:1.6}
+@media(min-width:2200px){.capno-chart svg{max-height:560px}.capno-inspector{grid-template-columns:12rem auto minmax(0,1fr)}}
+@media(max-width:1100px){.capno-controls{grid-template-columns:repeat(2,minmax(0,1fr))}.capno-notes{grid-template-columns:1fr;gap:1rem}}
+@media(max-width:540px){.capno-controls{grid-template-columns:1fr}.capno-inspector{grid-template-columns:minmax(0,1fr) auto}.capno-inspector .chart-readout{grid-column:1 / -1}.capno-controls label{font-size:.95rem}.capno-axis{font-size:27px}.capno-chart svg{min-height:170px}.capno-chart [data-capno-bubble]{display:none}}
+@media print{.capno-explorer{border:0;padding:0;background:white}.capno-controls,.capno-inspector,.capno-help,.capno-chart .chart-cursor{display:none!important}.capno-pattern-note[hidden]{display:block!important}.capno-pattern-note{break-inside:avoid}.capno-patterns,.capno-notes{display:block}.capno-notes>div{margin-bottom:1rem}.capno-chart svg{background:white;color:#222}.capno-line{stroke:#624000}.capno-chart figcaption,.capno-pattern-note h3,.capno-pattern-note h4,.capno-pattern-note p{color:#111}}

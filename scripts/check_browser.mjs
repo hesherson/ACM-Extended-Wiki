@@ -6,7 +6,7 @@ import { chromium } from "playwright";
 
 const root = resolve(import.meta.dirname, "..");
 const files = (await readdir(resolve(root, "docs"))).filter(f => f.endsWith(".html"));
-const browser = await chromium.launch();
+const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_EXECUTABLE_PATH || undefined });
 let disclosures = 0;
 try {
   for (const width of [1440, 390]) {
@@ -88,7 +88,7 @@ try {
     assert.equal(await page.locator("h2").filter({hasText:/Screen brightness/i}).count(),0);
     await page.goto(pathToFileURL(resolve(root, "docs/ventilator.html")).href);
     assert.equal(await page.locator("#screen-brightness-amp-night-mode").count(),1);
-    assert(await page.getByText("Needle decompress or Finger Thoracostomy first",{exact:true}).count()>0);
+    assert((await page.locator(".main").textContent()).includes("Pneumothorax and hemothorax create a fixed component that PEEP does not clear."));
     await page.goto(pathToFileURL(resolve(root, "docs/oxygen.html")).href);
     const model = await page.evaluate(() => {
       const base={blood:6,saline:0,plasma:0,heartRate:75,saturation:97,peep:5,support:"none"};

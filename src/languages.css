@@ -1,0 +1,9 @@
+/* Sidebar language preferences and grouped calculator captions. */
+.language-picker{display:grid;gap:.5rem;margin:1rem 0 1.4rem;padding:.85rem;border:1px solid var(--rule);border-radius:.35rem;background:var(--med-surface)}
+.language-picker>label{font-size:.8rem;color:var(--amber)}
+.language-picker select,.language-picker button{display:block;width:100%;min-width:0;min-height:40px;padding:.45rem .6rem;border:1px solid var(--rule-2);border-radius:.25rem;background:var(--navy);color:var(--cream);font:inherit;font-size:.85rem}
+.language-picker button{cursor:pointer;background:var(--med-head)}
+.language-picker button:disabled{opacity:.55;cursor:default}
+.language-picker p{font-size:.75rem;line-height:1.45;margin:0;color:var(--cream-dim)}
+.language-picker :focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+@media print{.language-picker{display:none}}

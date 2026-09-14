@@ -1050,3 +1050,15 @@ TERMS.update({
         "The amount of blood pumped over time. It depends on heart rate and the amount ejected with each effective beat."
     ]
 })
+
+TERMS.update({'nystagmus': ['Nystagmus', 'Rapid involuntary eye movements. In ACM Extended, pupil assessment can add this finding during ketamine-dominant deep sedation under specific conditions.'], 'overpressure': ['Overpressure', 'Pressure above the surrounding air pressure during a blast. The mod estimates it from charge, distance and nearby geometry.'], 'impulse': ['Blast impulse', 'Pressure accumulated over the brief duration of a blast wave. The mod records an estimate; its main injury gates use effective peak pressure.'], 'tympanic': ['Tympanic injury', 'Injury involving the eardrum. The mod records this at a configured blast-pressure threshold.'], 'anisocoria': ['Anisocoria', 'Pupils of unequal size. In the mod, an asymmetric brain-injury pupil state can produce this finding.'], 'refractory': ['Refractory', 'Resistant to improvement, or temporarily less responsive to a new trigger, depending on context.'], 'dyssynchrony': ['Dyssynchrony', 'A mismatch between the patient’s breathing effort and the breaths delivered by the ventilator.'], 'compliance': ['Compliance', 'How easily a lung expands. Lower compliance means less volume moves for the same pressure.'], 'perrl': ['PERRL', 'Pupils equal, round and reactive to light.'], 'obtundation': ['Obtundation', 'Reduced alertness while still awake. The game can apply visual, hearing and speech effects while the player retains movement.']})
+
+# Visual reference terms added with the waveform and volume guides.
+TERMS.update({
+    "vti": ("Inspired tidal volume (VTi)", "The volume of gas delivered into the airway during one breath. On the ventilator, compare it with the expired volume, VTe, to see whether delivered gas is returning."),
+    "vte": ("Expired tidal volume (VTe)", "The volume of gas measured coming back out during one breath. A leak can make this lower than VTi even when the ventilator's set volume looks adequate."),
+    "capnography": ("Capnography", "A continuous graph of carbon dioxide in breathing gas over time. Its height, baseline and shape help you assess exhalation, airflow and the measurement connection."),
+    "capnogram": ("Capnogram", "The waveform drawn by a capnograph. It rises as carbon-dioxide-rich gas is exhaled and normally falls toward zero during inspiration."),
+    "curare-cleft": ("Curare cleft", "A notch in the exhaled carbon dioxide plateau. In ACM Extended, the cleft shape is linked to spontaneous effort while the ventilator is connected; read it with the patient's breathing and support settings."),
+    "breachers-syndrome": ("Breacher’s syndrome", "A term used for symptoms reported after repeated low-level blast exposure, including headache, poor concentration, dizziness and sleep disturbance. It is not a single diagnostic test or a separate named disease state in the mod.")
+})

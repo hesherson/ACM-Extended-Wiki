@@ -239,7 +239,7 @@ form.addEventListener("input",update);form.addEventListener("change",update);for
     "agonal":"agonal","jaundiced":"jaundice","pinpoint":"miosis","mottling":"mottled",
     "arterial oxygen content":"oxygen-delivery","ionized calcium":"ionised-calcium",
     "coronary perfusion pressure":"coronary-perfusion","cerebral perfusion pressure":"cpp","intracranial pressure":"icp",
-    "mean arterial pressure":"map","tidal volumes":"tidal-volume","Vt":"tidal-volume","RR":"respiratory-rate",
+    "mean arterial pressure":"map","tidal volumes":"tidal-volume","VTi":"vti","VTe":"vte","RR":"respiratory-rate",
     "positive pressure ventilation":"ppv","positive-pressure ventilation":"ppv","bag valve mask":"bvm","bagging":"bvm",
     "end-tidal carbon dioxide":"etco2","intubate":"intubation","intubated":"intubation","auscultate":"auscultation","auscultating":"auscultation",
     "tachyarrhythmias":"tachyarrhythmia","arrhythmias":"arrhythmia","anticoagulation":"anticoagulation",
@@ -255,6 +255,7 @@ form.addEventListener("input",update);form.addEventListener("change",update);for
     "Semi-Fowler’s":"semi-fowlers","Semi-Fowler's":"semi-fowlers","Fowler’s":"fowlers","Fowler's":"fowlers",
     "Boyle’s law":"boyles-law","Boyle's law":"boyles-law","Dalton’s law":"daltons-law","Henry’s law":"henrys-law",
     "Frank–Starling":"frank-starling","Poiseuille":"poiseuille","Poiseuille's law":"poiseuille",
+    "Breacher's syndrome":"breachers-syndrome","Breacher’s syndrome":"breachers-syndrome",
     "laminar":"laminar","turbulent":"turbulent","barometric":"barometric","Newtonian":"newtonian"
   };
   const entries=new Map();

@@ -960,3 +960,117 @@ table.hemorrhage-classes th:nth-child(3),table.hemorrhage-classes td:nth-child(3
 .chart-interactive{cursor:crosshair;touch-action:pan-y}
 .gl[role="button"]{display:inline;font:inherit;text-transform:inherit;letter-spacing:inherit;padding:0;white-space:normal}
 @media print{.chart-inspector,.chart-cursor{display:none!important}.med-card-grid>.drug,.med-card-grid .med-facts{display:block}.med-fact{min-height:0}.gl{border:0;background:none;color:inherit}}
+
+/* Shared palette: charcoal, navy, gold, blue and cream. */
+@media screen {
+ :root{--navy:#090e13;--navy-2:#111b26;--med-surface:#111d29;--med-head:#162637;--surface-key:var(--med-head);--cream:#f2e8d2;--body-ink:#c6d6e2;--cream-dim:#a9becf;--amber:#f1bd59;--amber-dim:#d6ad62;--amber-rgb:241,189,89;--accent:#39bde9;--link-ink:#8dcdff;--rule-2:#344c60;--rule:rgba(118,169,205,.22)}
+ html.night{--navy:#05080c;--navy-2:#0b141d;--med-surface:#0d1721;--med-head:#122131;--surface-key:var(--med-head)}
+ h1,h2,h3,.card .name,.drug .dn,.dd-name,.side .brand-text,.sb-cur,.guide-link strong{color:var(--amber)}
+ h4,.pk .v,.sgrid .sv,.sgrid .s.key .sv,.icard .treat b,.danger-zone .dz b{color:var(--cream)}
+ .side,.mbar{background:var(--navy-2)}
+ .card,.principle,details.dd,.ref-calculator,.guide-link,.formula,.glpop-in,.tb-panel,.secbar,.sgrid,.icard{background:var(--med-surface)}
+ .card>header,.drug>header,table.t thead th,.chart-inspector,.sb-list,.grid .cell,.sgrid .s.key,.med-card-grid .drug>header{background:var(--med-head)}
+ .reference-chart,figure.wave{background:var(--navy)}
+ .article-status{background:var(--med-surface);color:var(--cream-dim);border-color:var(--rule-2)}
+ .main a[href]:not(.gl){color:var(--link-ink);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em}
+ .main a[href]:not(.gl):hover{color:var(--cream);background:var(--med-head)}
+ .main .med-index a{padding:.65rem .8rem;border:1px solid var(--rule-2);border-radius:.4rem;background:var(--med-surface)}
+ .main .guide-link{color:var(--body-ink)}
+ .nav a.on,.nav .subnav a.on{color:var(--amber);background:var(--med-head);border-left-color:var(--amber)}
+ .gl[role="button"],button.gl{color:var(--cream);background:rgba(var(--amber-rgb),.08);border:1px solid rgba(var(--amber-rgb),.36);border-radius:3px;padding:0 .3em;margin:0 .08em;line-height:1.4;box-decoration-break:clone;-webkit-box-decoration-break:clone;cursor:help}
+ .gl[role="button"]:hover,.gl[role="button"]:focus-visible,button.gl:hover,button.gl:focus-visible{background:rgba(var(--amber-rgb),.18);border-color:var(--amber);color:var(--cream);outline:2px solid rgba(var(--amber-rgb),.35);outline-offset:2px}
+ .sec-num,.eyebrow,.sb-lab,.principle .lab{color:var(--accent)}
+ .principle{border-left-color:var(--accent)}
+ table.t thead th,.med-fact dt,.glpop-t{color:var(--cream)}
+ .rule{background:var(--accent);opacity:.55}
+}
+.main p+p{margin-top:1rem}
+.sec>p,.dd-body>p{margin-bottom:1rem;max-width:90ch}
+.sec>ul,.sec>ol{margin-block:1rem 1.4rem}
+.sec li+li,.dd-body li+li{margin-top:.6rem}
+.sec .scroll{margin-block:1.2rem 1.6rem}
+.med-index{gap:.75rem}
+.sec-head{margin-bottom:1.25rem}
+.dd-body{padding:1.2rem 1.4rem}
+.dd-mark{display:inline-block;width:1rem;transition:transform .15s ease}
+details.dd[open] .dd-mark::before,details.dd:not([open]) .dd-mark::before{content:">"}
+details.dd[open] .dd-mark{transform:rotate(90deg)}
+@media print{.main a[href]{color:#111}.main p,.main td,.main th,.main h1,.main h2,.main h3,.main h4{color:#111}}
+
+.sb-caret{width:1rem;height:1rem;border:0;line-height:1;transform:none}
+.sb-caret::before{content:">"}
+.secbar.open .sb-caret{transform:rotate(90deg)}
+
+.sec-head{position:relative}.legacy-anchor{position:absolute;top:0;scroll-margin-top:7rem}
+
+/* Use available width without forcing long labels into narrow columns. */
+@media screen{
+ .main,.page-medications{width:100%;max-width:none}
+ h1,.lede,.sec p,.sec>p,.dd-body>p{max-width:none}
+ .main{--page-gutter:clamp(1.25rem,3vw,3.5rem);padding-inline:var(--page-gutter)}
+ .secbar{margin-inline:calc(-1 * var(--page-gutter));padding-inline:var(--page-gutter)}
+ .sb-list{left:0;right:0}
+ .sb-list a{padding-left:var(--page-gutter)}
+ .sb-list a.sub{padding-left:calc(var(--page-gutter) + 1rem)}
+ .med-index{grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr))}
+ table.t{table-layout:auto}
+ table.t tbody td,.med-fact dd{overflow-wrap:normal;word-break:normal;hyphens:none}
+ table.t th{min-width:7rem}
+ table.t th:first-child,table.t td:first-child{min-width:10rem}
+ table.t td.mono,table.t .nowrap{white-space:nowrap}
+ .ref-fields{grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr))}
+ .ref-results{grid-template-columns:repeat(auto-fit,minmax(min(100%,12rem),1fr))}
+ .main a{overflow-wrap:break-word}
+ .drug>header{align-items:center}
+ .med-vial{width:70px;height:130px;object-fit:contain;flex:none}
+ .drug-title{flex:1;min-width:0}
+ .drug-title .dc{display:block;margin-top:.4rem}
+}
+@media(min-width:2400px){.med-card-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:540px){.med-index{grid-template-columns:1fr}.med-vial{width:54px;height:100px}}
+@media print{.med-vial{width:45px;height:85px;object-fit:contain}}
+
+/* Actual mod artwork with controls beside each catheter stage. */
+.drug>header:has(.med-vial){display:grid;grid-template-columns:70px minmax(0,1fr);column-gap:1.1rem;row-gap:.3rem}
+.drug>header:has(.med-vial) .dn{grid-column:2;grid-row:1;align-self:end}
+.drug>header:has(.med-vial) .dc{grid-column:2;grid-row:2;align-self:start}
+.drug>header .med-vial{grid-column:1;grid-row:1 / span 2}
+.iv-slideshow{border:1px solid var(--rule-2);border-radius:.6rem;padding:1.4rem;margin-block:1.5rem;background:var(--med-surface)}
+.slideshow-controls{display:flex;gap:.75rem;align-items:end;flex-wrap:wrap}
+.slideshow-controls label{flex:1;min-width:min(100%,16rem);font-size:.85rem;color:var(--cream-dim)}
+.slideshow-controls select{display:block;width:100%;margin-top:.3rem}
+.slideshow-controls button{min-height:46px;padding:.55rem 1rem;border:1px solid var(--rule-2);border-radius:.3rem;background:var(--med-head);color:var(--cream);cursor:pointer}
+.slideshow-controls button:hover{border-color:var(--amber);color:var(--amber)}
+.slideshow-controls button:disabled{opacity:.4;cursor:default}
+.slideshow-controls button[aria-pressed="true"]{border-color:var(--amber);color:var(--amber)}
+.slide-status{font-size:.875rem;color:var(--cream-dim);min-height:1.5em;margin-block:.75rem}
+.iv-slide{display:grid;grid-template-columns:minmax(200px,.8fr) minmax(0,1.2fr);gap:clamp(1.25rem,3vw,3rem);align-items:center;margin:1.5rem 0 0;padding:1rem;border:1px solid var(--rule);border-radius:.4rem;background:var(--navy)}
+.iv-art{height:430px;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#1a2b3a 0%,transparent 70%)}
+.iv-art img{height:100%;width:auto;max-width:100%;object-fit:contain}
+.iv-slide figcaption{font:inherit;letter-spacing:normal;text-transform:none;color:var(--body-ink)}
+.iv-slide h3{font-size:clamp(1.4rem,2.3vw,2rem);margin:.25rem 0 1rem;color:var(--amber)}
+.iv-slide .step-count{font-size:.8rem;letter-spacing:.12em;color:var(--accent)}
+.iv-control{display:inline-block;border:1px solid var(--rule-2);padding:.35rem .65rem;border-radius:.25rem;background:var(--med-head);color:var(--cream);font-weight:650}
+.iv-note{border-left:2px solid var(--accent);padding-left:1rem;color:var(--cream-dim);font-size:.95rem}
+.iv-controls th:nth-child(2),.iv-controls td:nth-child(2){min-width:15rem;width:30%}
+@media(max-width:819px){
+ .iv-slideshow{padding:1rem}
+ .iv-slide{grid-template-columns:1fr;gap:1rem}
+ .iv-art{height:300px}
+ .slideshow-controls label{order:-1;flex-basis:100%}
+ .slideshow-controls button{flex:1}
+}
+@media print{
+ .iv-slideshow{border:0;padding:0;background:white}
+ .slideshow-controls,.slide-status,[data-slide-hint]{display:none!important}
+ .iv-slide,.iv-slide[hidden]{display:grid!important;grid-template-columns:130px 1fr;break-inside:avoid;background:white;color:#111}
+ .iv-art{height:220px;background:none}
+ .iv-slide h3,.iv-slide p,.iv-slide figcaption{color:#111}
+ .iv-control{background:white;color:#111}
+}
+
+@media screen{
+ h1 .gl[role="button"],h2 .gl[role="button"],h3 .gl[role="button"],.dn .gl[role="button"]{color:inherit}
+ .reference-chart svg{max-height:560px}
+}
+@media(max-width:819px){.slideshow-controls [data-slide-all]{flex-basis:100%;white-space:nowrap}}

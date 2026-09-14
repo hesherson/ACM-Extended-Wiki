@@ -1,48 +1,5 @@
-<div class="eyebrow">PILLAR <span class="tag">//</span> INTERFACE</div>
-<h1>Accessibility</h1>
-<p class="lede">All client side. Every player sets their own and nothing needs to match across a server.</p>
-<div class="rule"></div>
-
-<section class="sec">
-  <div class="sec-head"><span class="sec-num">01</span><h2>Where The Settings Live</h2></div>
-  <p>All of these live under <code>Addon Options</code>, <b>ACM Extended: Accessibility</b>.</p>
-  <div class="scroll">
-  <table class="t">
-    <thead><tr><th>Setting</th><th>Default</th><th>What it does</th></tr></thead>
-    <tbody>
-      <tr><td>Left-align medical menu</td><td class="mono">off</td><td>Moves button text to the left edge. Prerequisite for grouping.</td></tr>
-      <tr><td>Group menu into dropdowns</td><td class="mono">on</td><td>Collapsible sections. Requires left-align.</td></tr>
-      <tr><td>Colour group headers</td><td class="mono">on</td><td>Per-section colour, dimmed while expanded.</td></tr>
-      <tr><td>Colourblind mode</td><td class="mono">off</td><td>Off, protanopia, deuteranopia, tritanopia.</td></tr>
-      <tr><td>Correction strength</td><td class="mono">1.0</td><td>Dial the correction back if it overshoots.</td></tr>
-    </tbody>
-  </table>
-  </div>
-</section>
-
-<section class="sec">
-  <div class="sec-head"><span class="sec-num">02</span><h2>Colourblind Correction: Protanopia, Deuteranopia &amp; Tritanopia</h2></div>
-  <p>Applies to <b>everything the addon draws</b>, not just the menu: ventilator panel and its alarm tiers, EMMA capnograph, blood cooler states, chest seal states.</p>
-
-  <details class="dd">
-    <summary><span class="dd-mark"></span><span class="dd-name">Why a transform, not a second palette</span><span class="dd-tag">Design</span></summary>
-    <div class="dd-body">
-      <p>Hand-authoring an alternate palette per mode would mean four versions of every colour in the addon, and every colour added later would have to be authored four times or silently fall back to the wrong one.</p>
-      <p>A transform applied at the point of use is much harder to forget, and anything added later inherits it for free.</p>
-    </div>
-  </details>
-
-  <details class="dd">
-    <summary><span class="dd-mark"></span><span class="dd-name">These are corrections, not simulations</span><span class="dd-tag">Important</span></summary>
-    <div class="dd-body">
-      <p>Each mode takes the difference a given deficiency cannot resolve and pushes it onto an axis that deficiency still has. They are corrections applied for the viewer, rather than simulations of what a colourblind person sees.</p>
-      <p>For protanopia and deuteranopia that means carrying the red-green difference on blue. For tritanopia it means carrying the blue-yellow difference on red-green.</p>
-      <p>Measured against the actual palette, by simulating what each deficiency perceives and checking the closest pair of colours: protanopia improves from 0.063 to 0.185, deuteranopia from 0.109 to 0.162, tritanopia from 0.087 to 0.164.</p>
-      <p>Greys, whites and blacks pass through untouched, because an achromatic colour has no difference to redistribute.</p>
-    </div>
-  </details>
-
-  <p>The alarm tiers get particular attention, because red HIGH against yellow MEDIUM is the pair red-green deficiency collapses and it is the most safety critical distinction in the addon. It widens in all three modes and is protected against being dimmed toward the panel background.</p>
-</section>
-
-
+<div class="eyebrow">ACM EXTENDED <span class="tag">/</span> SYSTEMS</div><h1>Accessibility</h1><p class="lede">Adjust medical-menu layout and procedural colors for your own display.</p><div class="rule"></div>
+<section class="sec"><div class="sec-head"><span id="where-the-settings-live" class="legacy-anchor" aria-hidden="true"></span><h2>Medical-menu options</h2></div><p>Open <b>Addon Options &gt; ACM Extended: Accessibility &gt; Options</b>. These preferences are client-side.</p><div class="scroll" tabindex="0" role="region" aria-label="Option reference"><table class="t"><thead><tr><th scope="col">Option</th><th scope="col">Default</th><th scope="col">Effect</th></tr></thead><tbody><tr><th scope="row">Left-align medical menu</th><td>Off</td><td>Controls alignment in the flat treatment list</td></tr><tr><th scope="row">Group medical menu into dropdowns</th><td>On</td><td>Expands treatments in sections. Grouped rows are left-aligned automatically; the separate left-align option is not a prerequisite</td></tr><tr><th scope="row">Use separate colors for medical menu sections</th><td>Off</td><td>Off uses cream section headings. On gives sections separate colors</td></tr><tr><th scope="row">Colorblind mode</th><td>Off / normal</td><td>Select a correction for procedural cues</td></tr><tr><th scope="row">Colorblind correction strength</th><td>1.0</td><td>Adjusts how much the selected correction changes the colors</td></tr></tbody></table></div></section>
+<section class="sec"><div class="sec-head"><span id="colourblind-correction-protanopia-deuteranopia-amp-tritanopia" class="legacy-anchor" aria-hidden="true"></span><h2>Color-vision modes</h2></div><div class="scroll" tabindex="0" role="region" aria-label="Mode family reference"><table class="t"><thead><tr><th scope="col">Mode family</th><th scope="col">Available choices</th></tr></thead><tbody><tr><th scope="row">Red–green correction</th><td>Deuteranomaly, deuteranopia, protanomaly and protanopia</td></tr><tr><th scope="row">Blue–yellow correction</th><td>Tritanomaly and tritanopia</td></tr><tr><th scope="row">Monochrome</th><td>Achromatopsia / monochrome</td></tr></tbody></table></div><p>The correction applies to cues that use the shared color resolver, including supported IV, chest-seal and monitor overlays. Neutral grays remain neutral. Protected warning colors receive a brightness floor so the correction does not dim them excessively.</p><p>Choose a mode using the cues you actually need to distinguish, then adjust strength. These settings affect game overlays; the wiki uses its own shared palette and night control.</p></section>
+<section class="sec"><div class="sec-head"><h2>Wiki controls</h2></div><p>Use the sidebar search or the section selector to find a topic. On narrow screens, open the navigation button in the top bar. Medical-term definitions work with hover, click or keyboard focus. Graphs support pointer inspection and numeric input.</p><p>Keyboard focus has a visible outline. The night control darkens backgrounds while retaining the medication-card palette. Print uses dark text on a light background.</p></section>
+<p class="source-note">Game mechanics checked against ACM Extended source 4848f63. Values below are game defaults and can change with mission settings. <a href="https://github.com/hesherson/ACM-Extended/blob/4848f63b200a45362eb576dcef469484202b6a80/addons/acm_extended/functions/fn_cbColor.sqf">Color correction</a> · <a href="https://github.com/hesherson/ACM-Extended/blob/4848f63b200a45362eb576dcef469484202b6a80/addons/acm_extended/functions/fn_initMedicalMenuConfig.sqf">Menu presentation</a></p><p class="source-note"><a href="https://github.com/hesherson/ACM-Extended/blob/4848f63b200a45362eb576dcef469484202b6a80/addons/acm_extended/XEH_settings.hpp">Exact option labels and defaults</a></p>

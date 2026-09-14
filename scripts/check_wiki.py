@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
-"""Check generated wiki navigation and compare the checked-in build with its sources."""
+"""Check navigation and compare output with an independent build, including ZIP copies."""
 from html.parser import HTMLParser
 from pathlib import Path
 import json
 import re
 import subprocess
+import tempfile
+import shutil
+import sys
 from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -59,16 +62,18 @@ for filename, page in pages.items():
             errors.append(f"{filename}: missing target {href}")
         elif url.fragment and path in pages and unquote(url.fragment) not in pages[path].ids:
             errors.append(f"{filename}: missing anchor {href}")
-    original = subprocess.run(
-        ["git", "show", f"HEAD:docs/{filename}"],
-        cwd=ROOT, check=False, capture_output=True, text=True
-    )
-    if original.returncode:
-        errors.append(f"{filename}: generated page is not checked in")
-    else:
-        generated = (DOCS / filename).read_text(encoding="utf-8")
-        if normalize(original.stdout) != normalize(generated):
-            errors.append(f"{filename}: checked-in output differs from build.py output")
+
+with tempfile.TemporaryDirectory(prefix="acme-wiki-check-") as scratch:
+    clean = Path(scratch)
+    shutil.copytree(ROOT / "src", clean / "src")
+    shutil.copy2(ROOT / "build.py", clean / "build.py")
+    subprocess.run([sys.executable, str(clean / "build.py")], cwd=clean,
+                   check=True, capture_output=True, text=True)
+    for filename in expected:
+        generated = DOCS / filename
+        if generated.is_file() and normalize(generated.read_text(encoding="utf-8")) != normalize(
+                (clean / "docs" / filename).read_text(encoding="utf-8")):
+            errors.append(f"{filename}: generated output is stale; run build.py")
 
 if errors:
     raise SystemExit("\n".join(errors))

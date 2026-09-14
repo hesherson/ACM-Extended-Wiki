@@ -1,0 +1,103 @@
+# Mod artwork and IV controls
+
+Original game textures from [hesherson/ACM-Extended](https://github.com/hesherson/ACM-Extended/tree/abf6253d4876b4a7a5563f84a3b060de53a0290d), revision `abf6253d4876b4a7a5563f84a3b060de53a0290d`.
+
+PAA textures were decoded to PNG without recoloring or redrawing. Transparent margins were removed; every catheter frame uses the same crop rectangle to preserve alignment. Vial artwork can show manufacturer text that differs from the configured game concentration. The written medication reference remains authoritative for the game.
+
+The slideshow uses the 18G, 15-degree-left sequence. It represents the catheter stages, not a screenshot of the entire in-game interface. Other gauges share the described advance, thread and retract controls.
+
+| Website image | Original repository path |
+| --- | --- |
+| `vial_calcium_gluconate_ca.png` | `addons/acm_extended/ui/items/vial_calcium_gluconate_ca.paa` |
+| `vial_ceftriaxone_ca.png` | `addons/acm_extended/ui/items/vial_ceftriaxone_ca.paa` |
+| `vial_epinephrine_1_10000_ca.png` | `addons/acm_extended/ui/items/vial_epinephrine_1_10000_ca.paa` |
+| `vial_midazolam_ca.png` | `addons/acm_extended/ui/items/vial_midazolam_ca.paa` |
+| `vial_norepinephrine_ca.png` | `addons/acm_extended/ui/items/vial_norepinephrine_ca.paa` |
+| `vial_propofol_ca.png` | `addons/acm_extended/ui/items/vial_propofol_ca.paa` |
+| `vial_rocuronium_ca.png` | `addons/acm_extended/ui/items/vial_rocuronium_ca.paa` |
+| `vial_sugammadex_ca.png` | `addons/acm_extended/ui/items/vial_sugammadex_ca.paa` |
+| `iv_catheter_18g_15_left_frame_00_ready_ca.png` | `addons/acm_extended/ui/iv/18g/15_left/iv_catheter_18g_15_left_frame_00_ready_ca.paa` |
+| `iv_catheter_18g_15_left_frame_01_bevel_contact_ca.png` | `addons/acm_extended/ui/iv/18g/15_left/iv_catheter_18g_15_left_frame_01_bevel_contact_ca.paa` |
+| `iv_catheter_18g_15_left_frame_02_bevel_half_cross_ca.png` | `addons/acm_extended/ui/iv/18g/15_left/iv_catheter_18g_15_left_frame_02_bevel_half_cross_ca.paa` |
+| `iv_catheter_18g_15_left_frame_03_bevel_crossed_ca.png` | `addons/acm_extended/ui/iv/18g/15_left/iv_catheter_18g_15_left_frame_03_bevel_crossed_ca.paa` |
+| `iv_catheter_18g_15_left_frame_04_catheter_tip_cross_flash_ca.png` | `addons/acm_extended/ui/iv/18g/15_left/iv_catheter_18g_15_left_frame_04_catheter_tip_cross_flash_ca.paa` |
+| `iv_catheter_18g_15_left_frame_05_assembly_advance_flash_ca.png` | `addons/acm_extended/ui/iv/18g/15_left/iv_catheter_18g_15_left_frame_05_assembly_advance_flash_ca.paa` |
+| `iv_catheter_18g_15_left_frame_06_insertion_endpoint_flash_ca.png` | `addons/acm_extended/ui/iv/18g/15_left/iv_catheter_18g_15_left_frame_06_insertion_endpoint_flash_ca.paa` |
+| `iv_catheter_18g_15_left_frame_07_catheter_thread_20_ca.png` | `addons/acm_extended/ui/iv/18g/15_left/iv_catheter_18g_15_left_frame_07_catheter_thread_20_ca.paa` |
+| `iv_catheter_18g_15_left_frame_08_catheter_thread_40_ca.png` | `addons/acm_extended/ui/iv/18g/15_left/iv_catheter_18g_15_left_frame_08_catheter_thread_40_ca.paa` |
+| `iv_catheter_18g_15_left_frame_09_catheter_thread_60_ca.png` | `addons/acm_extended/ui/iv/18g/15_left/iv_catheter_18g_15_left_frame_09_catheter_thread_60_ca.paa` |
+| `iv_catheter_18g_15_left_frame_10_catheter_thread_80_ca.png` | `addons/acm_extended/ui/iv/18g/15_left/iv_catheter_18g_15_left_frame_10_catheter_thread_80_ca.paa` |
+| `iv_catheter_18g_15_left_frame_11_catheter_thread_100_ca.png` | `addons/acm_extended/ui/iv/18g/15_left/iv_catheter_18g_15_left_frame_11_catheter_thread_100_ca.paa` |
+| `iv_catheter_18g_15_left_frame_12_button_press_retract_ca.png` | `addons/acm_extended/ui/iv/18g/15_left/iv_catheter_18g_15_left_frame_12_button_press_retract_ca.paa` |
+| `iv_catheter_18g_15_left_frame_13_needle_captured_withdraw_ca.png` | `addons/acm_extended/ui/iv/18g/15_left/iv_catheter_18g_15_left_frame_13_needle_captured_withdraw_ca.paa` |
+| `iv_catheter_18g_15_left_frame_14_catheter_hub_only_ca.png` | `addons/acm_extended/ui/iv/18g/15_left/iv_catheter_18g_15_left_frame_14_catheter_hub_only_ca.paa` |
+| `vial_adenosine_ca.png` | `addons/circulation/ui/vial_adenosine_ca.paa` |
+| `vial_amiodarone_ca.png` | `addons/circulation/ui/vial_amiodarone_ca.paa` |
+| `vial_atropine_ca.png` | `addons/circulation/ui/vial_atropine_ca.paa` |
+| `vial_calciumchloride_ca.png` | `addons/circulation/ui/vial_calciumchloride_ca.paa` |
+| `vial_epinephrine_ca.png` | `addons/circulation/ui/vial_epinephrine_ca.paa` |
+| `vial_ertapenem_ca.png` | `addons/circulation/ui/vial_ertapenem_ca.paa` |
+| `vial_esmolol_ca.png` | `addons/circulation/ui/vial_esmolol_ca.paa` |
+| `vial_fentanyl_ca.png` | `addons/circulation/ui/vial_fentanyl_ca.paa` |
+| `vial_ketamine_ca.png` | `addons/circulation/ui/vial_ketamine_ca.paa` |
+| `vial_lidocaine_ca.png` | `addons/circulation/ui/vial_lidocaine_ca.paa` |
+| `vial_morphine_ca.png` | `addons/circulation/ui/vial_morphine_ca.paa` |
+| `vial_ondansetron_ca.png` | `addons/circulation/ui/vial_ondansetron_ca.paa` |
+| `vial_txa_ca.png` | `addons/circulation/ui/vial_txa_ca.paa` |
+
+Controls checked in `config.cpp` and `fn_ivMinigameInit`, `Click`, `Tick`, `GrabNeedle`, `GrabPad`, `GrabBand`, `InsertStart`, `InsertAdvance`, `Scroll`, `Retract`, `StickSuccess`, `LineConnect` and `Done`. All refer to the pinned revision above. No game code was modified.
+
+
+The current slideshow groups frames 01–06 as a continuous insertion scene and omits the unused LINE instruction at the site owner’s request. The original frame artwork remains unchanged.
+
+# Suction and trauma asset provenance
+
+Repository: hesherson/ACM-Extended
+
+Verified source revision: 21f86948b8a03507146297742ea84983987d5be1
+
+The 10 stock ACM icons were converted directly from the provided ACM-main archive. Their Git blob SHA-1 values were verified identical to this revision. Yankauer artwork was fetched as base64 from GitHub and decoded. All PNGs use paa2png.py without visual edits. Audio files are original bytes, with browser-native controls and no autoplay.
+
+| Wiki asset | Source path | Git blob SHA |
+|---|---|---|
+| `img/trauma/accuvac.png` | `addons/airway/ui/accuvac_ca.paa` | `fc793931fe5b8bb42e0be9aff2c3e55b7cc202ce` |
+| `img/trauma/suction-bag.png` | `addons/airway/ui/suctionbag_ca.paa` | `f559c8209499434979a9bb3a7817d6dcde369c14` |
+| `img/trauma/chest-seal.png` | `addons/breathing/ui/chestseal_ca.paa` | `dd3cfd85cb3aeda11c30f7d20c9676c8ee5aa2bf` |
+| `img/trauma/chest-tube-kit.png` | `addons/breathing/ui/chestTubeKit_ca.paa` | `5d7c9ebd56075b844323432fac6ff89e2a0e7c31` |
+| `img/trauma/thoracostomy-kit.png` | `addons/breathing/ui/thoracostomyKit_ca.paa` | `8fce442b5b720503d8be2ce4e7c5ca1ebf158e62` |
+| `img/trauma/pressure-bandage.png` | `addons/damage/ui/pressurebandage.paa` | `c54f6c74a00c35e827df9cef8cd0ed137aca5676` |
+| `img/trauma/needle-decompression.png` | `addons/breathing/ui/ncdkit_ca.paa` | `19f57fb6472b322a36dcf7ea74509d777fea716b` |
+| `img/trauma/stethoscope.png` | `addons/breathing/ui/stethoscope_ca.paa` | `37c19387c5c5d75c2a9cf593dc8837d194706daf` |
+| `img/trauma/bvm.png` | `addons/breathing/ui/bvm_ca.paa` | `9c93d94350650740f0c62f1b6e5c1e608b68616c` |
+| `img/trauma/igel.png` | `addons/airway/ui/igel_ca.paa` | `86359535d7dba60fb4b31104eb1d9eb448425219` |
+| `img/trauma/yankauer.png` | `addons/acm_extended/ui/laryngo/suction/clear_00.paa` | `e222f265ba95e37f45eebda9f1cfbb79ba3b86cc` |
+| `audio/suction.ogg` | `addons/acm_extended/sound/suction.ogg` | `71bc6ed8d48e33b82175874f1554a0cc09183738` |
+| `audio/manual_suction_sfx.ogg` | `addons/acm_extended/sound/manual_suction_sfx.ogg` | `402e55548ca7280505cf27f81f772cabf4acb65c` |
+| `audio/suction_off_sfx.ogg` | `addons/acm_extended/sound/suction_off_sfx.ogg` | `94aae7255d97b4d890be028d925b76a86593bacf` |
+
+Suction audio registrations: config.cpp CfgSFX.ACM_Suction_SFX references suction.ogg; CfgSounds.ACME_ManualSuction references manual_suction_sfx.ogg; CfgSounds.ACM_Suction_Off references suction_off_sfx.ogg. fn_suctionDevice.sqf selects these classes for ACCUVAC/manual profiles; fn_suctionSfxStart.sqf starts the ACCUVAC sound source; fn_suctionBulb.sqf dispatches the manual sound on squeeze.
+
+Controls verified in fn_laryngoClick.sqf, fn_laryngoSuction.sqf, fn_laryngoSuctionPin.sqf, fn_suctionSelectDevice.sqf and fn_suctionOpen.sqf. Added airway source-note links pin these files to the verified revision. fn_suctionPhysiologyTick.sqf supports the brief reference to oxygenation cost, without converting the game's exposure grace to real treatment guidance.
+
+The S-path animation is an illustrative motion guide: 4.2s sweep,1s pause,.6s fade,.7s reset. It does not reproduce the game collision geometry. Tip art is anchored at the source profile UV .5703,.02539. Motion pauses offscreen or when the document is hidden; reduced-motion renders a static full path. Audio only starts from user playback controls. The original EMMA GIF remains as an instrument illustration.
+
+Reusable trauma PNGs: pressure-bandage.png for bleeding control; chest-seal.png/needle-decompression.png/chest-tube-kit.png for chest injury; bvm.png for respiratory support; stethoscope.png for assessment. All icon assets are 256px square; Yankauer sprite is 2048x4096.
+
+
+## Access decision guide review
+
+The decision guide was checked separately against revision `21f86948b8a03507146297742ea84983987d5be1`. Its article links identify the exact functions for gauge limits, anatomical targets, vesicant leakage, upstream punctures and prepared-set occupancy. Upper IV and EJ sites are not described as immune to vesicant injury. IO is described as avoiding the peripheral IV leakage model in this delivery path, without claiming universal immunity to every complication.
+
+## Supplied interface screenshots and expanded references
+
+The following original user-supplied screenshots are copied unchanged:
+
+| Site asset | Supplied file | Purpose |
+| --- | --- | --- |
+| `src/img/zeus/place-blood-fridge.png` | `1aa88334-b853-4d0a-a81f-8041a8e85af5.png` | Fridge placement controls |
+| `src/img/zeus/blood-fridge-contents.png` | `500e0482-cc5e-4c14-9283-2dcde895fcd0.png` | Fridge stock and regeneration display |
+| `src/img/debug/debug-menu.png` | `cc3cb3ba-7dc2-47f0-9b64-4b1726642876.png` | Complete debug reference |
+
+The Zeus, debug, capnography, pulse-oximeter and repeat-blast additions were checked at `21f86948b8a03507146297742ea84983987d5be1`. Each article links the relevant source files. Capnography uses the four normalized game morphology functions, with explicitly selected example time/CO₂ values rather than a prediction of a patient's measured result. The supplied debug screenshot records v1.2.1; older article reviews retain their individual source revisions.
+
+The IV display now combines advancing frames 01–06 and threading frames 07–11 into two continuous scenes. Six total scenes use seven-second intervals and a shared visual progress clock. The suction schematic now sweeps from bottom to top with four horizontal turns. The unchanged game artwork is combined with original website animation code.
