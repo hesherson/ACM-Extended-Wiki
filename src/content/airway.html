@@ -5,7 +5,7 @@
 
 <div class="principle">
   <div class="lab">The one thing</div>
-  <p><b>A needle costs something.</b> Decompressing a chest that did not need it seeds the pneumothorax you were looking for, and repeating it raises the chance of turning that into a {{tension-pneumothorax|tension}}.</p>
+  <p><b>A needle costs something.</b> Decompressing a chest that did not need it seeds the pneumothorax you were looking for, and a persistent leak can later progress toward {{tension-pneumothorax|tension}} when drainage is inadequate.</p>
 </div>
 
 <section class="sec">
@@ -16,17 +16,16 @@
     <header><span class="name">Unnecessary decompression</span><span class="badge off">Iatrogenic</span></header>
     <div class="grid">
       <div class="cell wide"><div class="k">First unnecessary needle</div><div class="v">seeds a developing simple pneumothorax</div></div>
-      <div class="cell"><div class="k">Tension chance</div><div class="v">0.35 cumulative</div></div>
-      <div class="cell"><div class="k">Onset delay</div><div class="v">90 s</div></div>
+      <div class="cell wide"><div class="k">Progression</div><div class="v">Depends on the persistent leak, drainage, positive pressure and altitude changes</div></div>
     </div>
   </div>
-  <p>Set <code>ACMI_ncd_iatrogenicTension</code> to false to disable the tension escalation while keeping the rest.</p>
+  <p><b>Addon Options → ACM Extended: Trauma → Procedures → Allow Needle Decompression</b> controls new needle placements. There is no separate visible option in the current build to disable the consequences of unnecessary decompression.</p>
 
   <details class="dd">
     <summary><span class="dd-mark"></span><span class="dd-name">Why this is in the addon</span><span class="dd-tag">Teaching intent</span></summary>
     <div class="dd-body">
       <p>Most medical sims make needle decompression a free action, which trains the habit of needling anything that looks unwell. That habit is actively dangerous, and it is one of the more common criticisms of prehospital chest decompression in the real literature.</p>
-      <p>Making it cost something turns it into a decision. You are meant to examine first, and the delay before the iatrogenic pneumothorax declares itself means you find out you were wrong later, which is exactly how it happens.</p>
+      <p>Making it cost something turns it into a decision. You are meant to examine first, and continued leakage can worsen the casualty after the procedure. The current model does not use a fixed 90-second iatrogenic-tension timer.</p>
       <p>It is recoverable. A simple pneumothorax you caused can be decompressed and drained like any other, so the cost is time and a lesson rather than a dead casualty.</p>
     </div>
   </details>
@@ -40,13 +39,13 @@
     <thead><tr><th>Volume state</th><th>Stroke volume penalty</th></tr></thead>
     <tbody>
       <tr><td>Full</td><td class="mono">about 0%</td></tr>
-      <tr><td>Class III haemorrhage</td><td class="mono">15 to 19%</td></tr>
-      <tr><td>Maximum modelled</td><td class="mono">35%</td></tr>
+      <tr><td>30% to 40% volume loss, PEEP-5 reference</td><td class="mono">about 9.7% to 13.3% of remaining estimated SV</td></tr>
+      <tr><td>Configured base maximum</td><td class="mono">35%; higher PEEP can increase this penalty up to 1.5×</td></tr>
     </tbody>
   </table>
   </div>
   <p>High PEEP multiplies it up to 1.5 times. This applies to <b>both</b> the ventilator and manual bagging, so an enthusiastic BVM technique on a shocked casualty does real harm.</p>
-  <p>The practical rule: <b>fill them before you tube them</b>, and if you must ventilate an empty casualty, keep pressures and PEEP low until volume is restored.</p>
+  <p>Address hemorrhage and inadequate oxygenation together, and reassess perfusion after starting ventilation or changing PEEP. See the <a href="oxygen.html#positive-pressure-and-preload">positive-pressure graph</a> for the current game calculation.</p>
 </section>
 
 <section class="sec">
@@ -67,7 +66,7 @@
   <h3>Red Flags</h3>
   <ul>
     <li><b>Needling on suspicion alone.</b> Examine first. A wrong needle creates the injury.</li>
-    <li><b>Repeat needles when the first did not help.</b> Each one raises the tension chance cumulatively.</li>
+    <li><b>Repeat needles when the first did not help.</b> Reassess the diagnosis, catheter function and need for further drainage.</li>
     <li><b>Ventilating an empty casualty.</b> You are trading oxygenation for cardiac output.</li>
     <li><b>High PEEP in shock.</b> Multiplies the {{preload|preload}} penalty by half again.</li>
   </ul>
