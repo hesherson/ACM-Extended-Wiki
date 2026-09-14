@@ -87,7 +87,7 @@ try {
   await page.setViewportSize({ width: 1905, height: 1000 });
   await visit(page, 'medications.html');
   assert.equal(await page.locator('.drug').count(), 33);
-  assert.equal(await page.locator('.med-vial').count(), 21);
+  assert.equal(await page.locator('.med-vial').count(), 33);
   assert.equal(await page.locator('#q').getAttribute('placeholder'), 'Search the wiki');
   assert.equal(await page.locator('h1').evaluate(element => getComputedStyle(element).color), 'rgb(241, 189, 89)');
   await checkInheritedTermColor(page.locator('.gl').first());

@@ -22,6 +22,7 @@ import os, re, datetime, json, sys, shutil
 sys.dont_write_bytecode = True   # keep src/ free of __pycache__
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "src"))
 from glossary_terms import TERMS
+from infusion_guide import render_infusion_guide
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(ROOT, "src")
@@ -40,7 +41,7 @@ PAGES = [
     ("fluids", "fluids.html", "Fluids & blood volume", "Quick reference"),
     ("descriptors", "descriptors.html", "Clinical descriptors", "Quick reference"),
     ("glossary", "glossary.html", "Glossary", "Quick reference"),
-    ("ventilator", "ventilator.html", "Ventilator Settings", "Systems"),
+    ("ventilator", "ventilator.html", "Ventilator Settings & Tips", "Systems"),
     ("airway", "airway.html", "Airway & Breathing", "Systems"),
     ("oxygen", "oxygen.html", "Oxygen Delivery (DO2)", "Systems"),
     ("bleeding", "bleeding.html", "Haemorrhage & Shock", "Systems"),
@@ -582,10 +583,10 @@ def build():
     if os.path.isfile(retired):
         os.remove(retired)
     css = "\n".join(open(os.path.join(SRC, name), encoding="utf-8").read()
-                    for name in ("_pillar.css", "visual-reference.css", "slideshow.css", "capnography.css", "rhythm-waveforms.css", "chest-seal.css", "languages.css")
+                    for name in ("_pillar.css", "visual-reference.css", "slideshow.css", "capnography.css", "rhythm-waveforms.css", "chest-seal.css", "languages.css", "infusion-guide.css")
                     if os.path.isfile(os.path.join(SRC, name)))
     reference_js = "\n".join(open(os.path.join(SRC, name), encoding="utf-8").read()
-                             for name in ("reference.js", "slideshow.js", "chart-readouts.js", "suction-guide.js", "capnography.js", "rhythm-waveforms.js", "chest-seal.js", "languages.js")
+                             for name in ("reference.js", "slideshow.js", "chart-readouts.js", "suction-guide.js", "capnography.js", "rhythm-waveforms.js", "chest-seal.js", "languages.js", "infusion-guide.js")
                              if os.path.isfile(os.path.join(SRC, name)))
     os.makedirs(OUT, exist_ok=True)
     os.makedirs(os.path.join(OUT, "img"), exist_ok=True)
@@ -621,6 +622,8 @@ def build():
                 missing.append(slug)
                 continue
             body = open(cpath, encoding="utf-8").read()
+            if "<!-- INFUSION_RANGES -->" in body:
+                body = body.replace("<!-- INFUSION_RANGES -->", render_infusion_guide())
         if slug not in REVIEWED:
             body = ('<div class="article-status">This article is retained from the previous guide '
                     'and awaits review against the current fork. See the '

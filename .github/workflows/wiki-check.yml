@@ -24,6 +24,7 @@ jobs:
           node --check src/languages.js
           node --check src/rhythm-waveforms.js
           node --check src/chest-seal.js
+          node --check src/infusion-guide.js
 
       - name: Install browser checks
         run: npm install --no-save --package-lock=false --ignore-scripts playwright@1.63.0
@@ -35,3 +36,4 @@ jobs:
           node scripts/check_visual_update.mjs
           node scripts/check_reference_expansion.mjs
           node scripts/check_chest_rhythms.mjs
+          node scripts/check_infusion_guide.mjs

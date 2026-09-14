@@ -170,7 +170,7 @@ try {
     await page.keyboard.press("Escape");
     await page.waitForTimeout(200);
     assert(!(await page.locator("#glpop").isVisible()));
-    assert.equal(await page.locator('.nav > a[href="ventilator.html"]').textContent(),"Ventilator Settings");
+    assert.equal(await page.locator('.nav > a[href="ventilator.html"]').textContent(),"Ventilator Settings & Tips");
     assert.equal(await page.locator(".chart-inspector").count(),2);
     assert.equal(await page.locator("a .gl,button .gl,summary .gl,svg .gl").count(),0,"Glossary links nested in controls");
     assert(await page.locator(".hemorrhage-classes td:nth-child(3)").first().evaluate(el=>getComputedStyle(el).whiteSpace==="nowrap"));

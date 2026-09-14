@@ -1,0 +1,307 @@
+{
+  "revision": "488a5e54efd10e5289245bcb2f7db7a40bbabcb0",
+  "rows": [
+    {
+      "id": "amiodarone",
+      "name": "Amiodarone",
+      "group": "Rhythm",
+      "summary": "15 mg/min example; rate hazard above 25 mg/min",
+      "reference": "<b>Below 25 mg/min:</b> below the specific fast infusion penalty. The source example is <b>150 mg over 10 minutes = 15 mg/min</b>. The native effect reference is 150 mg.",
+      "caution": "<b>Above 25 to 90 mg/min:</b> the modeled resistance drop increases, making hypotension more likely. Existing low pressure and esmolol make the overall response less forgiving.",
+      "danger": "<b>90 mg/min or more:</b> the fast infusion penalty is fully expressed once its rate smoothing catches up. <b>2,200 mg accumulated</b> also enters the separate torsades risk gate; that is not a daily allowance. Active amiodarone burden above 2,310 mg equivalent can trigger the family overdose syndrome.",
+      "watch": "Follow blood pressure, pulse and rhythm. Amiodarone does not treat torsades. Lowering the clamp does not immediately erase drug effect or cumulative exposure.",
+      "peak": "10 s native peak; rate hazard builds over about 15 s and eases over about 35 s after reduction.",
+      "sources": [
+        "drug",
+        "circ",
+        "tox"
+      ]
+    },
+    {
+      "id": "epinephrine",
+      "name": "Epinephrine, both vial strengths",
+      "group": "Pressor",
+      "summary": "0.5–15 mcg/min rate effect; higher delivery can trigger arrhythmias",
+      "reference": "<b>0–0.5 mcg/min:</b> below the added epinephrine heart rate drive onset. <b>0.5–15 mcg/min:</b> that drive rises toward its full +50 BPM target adjustment. These are effect bands, not a universally safe titration range.",
+      "caution": "<b>15 mcg/min or more:</b> the added rate drive has reached its cap, while arrhythmia burden can continue rising. The 1 mg native reference and 1 mg preparation example are not routine doses for a perfusing patient.",
+      "danger": "At default settings, infusion alone reaches the <b>atrial tachycardia score at about 20 mcg/min</b> and the <b>SVT score at about 38.9 mcg/min</b>. These are eased rates; pulse state, rhythm, heart rate and sustained exposure gates must also qualify. Prior bolus support can reach the score sooner.",
+      "watch": "Track pulse, rhythm, pressure, perfusion and the exact access site. The 1 mg/mL and 0.1 mg/mL stocks deliver the same drug; confirm which vial is selected before drawing.",
+      "peak": "5 s native peak; pressor delivery response ramps over about 45 s and fades over about 120 s.",
+      "sources": [
+        "drug",
+        "circ",
+        "rhythm",
+        "options"
+      ]
+    },
+    {
+      "id": "norepinephrine",
+      "name": "Norepinephrine",
+      "group": "Pressor",
+      "summary": "Configured starting band: 0.05–0.1 mcg/kg/min",
+      "reference": "<b>0.05–0.1 mcg/kg/min</b> is the source’s starting titration band: <b>4.15–8.3 mcg/min at 83 kg</b>. The native effect reference is only <b>80 mcg</b>; 4 mg is an amount used to prepare a bag.",
+      "caution": "<b>Below that band:</b> less support may be sufficient, or pressure may remain inadequate. <b>Above it:</b> you are beyond the starting band, not automatically overdosed. Titrate to the patient’s response and restore missing volume.",
+      "danger": "<b>No universal toxic mcg/min cutoff is implemented.</b> Pressure overshoot, worsening perfusion and extravasation remain reasons to reassess or reduce delivery. The default added MAP support cap is 25 mmHg before physiological gates; more drug does not guarantee more useful support. The configured 1 mg maxDose field is not a working norepinephrine overdose syndrome.",
+      "watch": "Reassess pressure, perfusion, volume, calcium, temperature and acidosis. A distal site does not turn norepinephrine into epinephrine; actual leakage still causes local injury.",
+      "peak": "30 s native peak; pressor response ramps over about 45 s and fades over about 120 s.",
+      "sources": [
+        "drug",
+        "circ",
+        "options",
+        "overdose"
+      ]
+    },
+    {
+      "id": "lidocaine",
+      "name": "Lidocaine",
+      "group": "Rhythm",
+      "summary": "Toxicity proxy: seizure 12, cardiac 15, arrest 25 mcg/mL",
+      "reference": "<b>83 mg at 83 kg</b> is one native IV effect reference, equivalent to 1 mg/kg. The preparation recipe uses 100 mg. A partial reference is a smaller current antiarrhythmic effect, not proof of a safe infusion rate.",
+      "caution": "<b>Below 12 mcg/mL:</b> below the separate seizure trigger, with less margin as the proxy rises. The model’s default steady level is rate ÷ clearance. Shock and esmolol reduce clearance, so an unchanged rate can accumulate further.",
+      "danger": "<b>12 mcg/mL:</b> seizure trigger unless suppressed; <b>15 mcg/mL:</b> cardiac toxicity begins; <b>25 mcg/mL:</b> bradyasystolic arrest threshold. With normal 0.40 L/min clearance, the corresponding steady rates are 4.8, 6 and 10 mg/min. With both shock and esmolol, they fall to about 2.02, 2.52 and 4.2 mg/min. These are eventual plateaus, not instant rate triggers or recommended doses.",
+      "watch": "Watch rhythm, pressure, breathing and seizure activity. Prior boluses change the starting level. Controlling a seizure does not remove lidocaine or prevent cardiac toxicity.",
+      "peak": "5 s native peak; the independent accumulation proxy follows distribution and clearance.",
+      "sources": [
+        "drug",
+        "circ",
+        "lido"
+      ]
+    },
+    {
+      "id": "ketamine",
+      "name": "Ketamine",
+      "group": "Sedation",
+      "summary": "Analgesia 0.1–0.2 mg/kg IV; induction about 1.75 mg/kg",
+      "reference": "<b>0.1–0.2 mg/kg IV/IO</b> spans the native analgesic anchors: <b>8.3–16.6 mg at 83 kg</b>. At full effect, ketamine alone reaches the default induction level near <b>1.75 mg/kg</b>, or 145.25 mg at 83 kg.",
+      "caution": "<b>Between analgesia and induction:</b> analgesia and hypnosis change separately. Repeated doses and an infusion add to the same current exposure. A 50 mg bag recipe is neither an induction requirement nor a maximum.",
+      "danger": "Extra respiratory depression begins above <b>1.6 induction equivalents</b>, about 2.8 mg/kg IV at full effect, and increases toward 3.2 equivalents. The family overdose evaluator can trigger above <b>262.5 mg of active IV-equivalent ketamine alone</b>; IM ketamine and esketamine also contribute through their own thresholds. Shock, rapid IV pushes and combinations can cause problems below that total.",
+      "watch": "Reassess breathing, pressure and actual sedation. See Ventilator Settings &amp; Tips for the nystagmus finding. Rocuronium contributes no sedation.",
+      "peak": "5 s IV/IO native peak. Sedation depends on current combined effect, not merely time since the syringe was pushed.",
+      "sources": [
+        "meds",
+        "tox",
+        "sedation",
+        "components"
+      ]
+    },
+    {
+      "id": "txa",
+      "name": "Tranexamic acid (TXA)",
+      "group": "Finite treatment",
+      "summary": "0–1 g builds toward the native 1 g reference",
+      "reference": "<b>0–1 g delivered:</b> builds toward one native medication reference as the dose takes effect. <b>1 g</b> is the preparation example and effect reference; it describes a finite hemorrhage adjunct.",
+      "caution": "<b>Beyond 1 g:</b> more delivered drug and carrier do not replace pressure, packing, blood replacement or other bleeding control. Account for earlier TXA doses before adding another bag.",
+      "danger": "<b>No dedicated high-dose toxicity threshold or safe maintenance rate is implemented in the reviewed TXA path.</b> Do not read that absence as an unlimited safe range. This wiki does not assign an invented red cutoff or a continuous treatment schedule.",
+      "watch": "Track total delivered amount, remaining bleeding and the need for further treatment. Close the clamp when the intended finite amount has been delivered.",
+      "peak": "15 s native peak for an admitted reference amount.",
+      "sources": [
+        "native",
+        "registry",
+        "delivery"
+      ]
+    },
+    {
+      "id": "fentanyl",
+      "name": "Fentanyl",
+      "group": "Analgesia",
+      "summary": "0.5–1 mcg/kg reference band; opioid burden can become toxic",
+      "reference": "<b>0.5–1 mcg/kg IV/IO</b> spans the native analgesic anchors: <b>41.5–83 mcg at 83 kg</b>. The 100 mcg recipe amount is the bag’s content example, not a guaranteed safe exposure.",
+      "caution": "<b>Above 110 mcg of active IV-equivalent exposure</b> can satisfy the native instability check when heart rate is below 50. Respiratory depression and loss of CO₂ response can matter before an overdose syndrome appears.",
+      "danger": "Fentanyl alone can trigger the opioid overdose evaluator above <b>157.5 mcg of active IV-equivalent exposure</b>. Morphine, IM fentanyl and the lozenge add to the same normalized family burden; do not add their raw mg together. Sedatives increase respiratory risk below this threshold.",
+      "watch": "Follow ventilation and consciousness as well as pain. Opioids are analgesic adjuncts; they do not provide reliable hypnosis by themselves. Naloxone reverses opioid effects, but reassessment remains necessary.",
+      "peak": "10 s IV/IO native peak; effect can persist after the line stops.",
+      "sources": [
+        "native",
+        "tox",
+        "unstable",
+        "interactions"
+      ]
+    },
+    {
+      "id": "morphine",
+      "name": "Morphine",
+      "group": "Analgesia",
+      "summary": "0.05–0.1 mg/kg reference band; combined opioid risk",
+      "reference": "<b>0.05–0.1 mg/kg IV/IO</b> spans the native analgesic anchors: <b>4.15–8.3 mg at 83 kg</b>. The preparation example contains 10 mg.",
+      "caution": "<b>Above 10 mg of active IV-equivalent exposure</b> can satisfy the native instability check when heart rate is below 50. Pressure and respiratory response still need reassessment below that amount.",
+      "danger": "Morphine alone can trigger the opioid overdose evaluator above <b>12.6 mg of active IV-equivalent exposure</b>. Fentanyl and other opioid routes reduce the remaining family margin. Propofol or midazolam add respiratory and pressure depression.",
+      "watch": "Follow pain, pressure, breathing and current opioid exposure. A partly empty bag does not show how much active medication remains in the patient.",
+      "peak": "25 s IV/IO native peak; 1,300 s native duration.",
+      "sources": [
+        "native",
+        "tox",
+        "unstable",
+        "interactions"
+      ]
+    },
+    {
+      "id": "midazolam",
+      "name": "Midazolam",
+      "group": "Sedation",
+      "summary": "5 mg native reference; about 10 mg alone reaches default induction",
+      "reference": "<b>0–5 mg current IV equivalent:</b> builds toward one native reference. <b>5 mg</b> contributes about half an induction equivalent; <b>10 mg alone</b> reaches one equivalent at full effect with default tuning.",
+      "caution": "<b>Above 5–10 mg, or when combined with another sedative:</b> hypnosis, respiratory depression and pressure effects accumulate. Propofol and opioids amplify the combined response. Allow for its slower peak before repeating.",
+      "danger": "<b>No universal mg/min danger threshold is wired for midazolam.</b> Its 20 mg unstableDose and 30 mg maxDose config fields do not establish a functioning, separate IV overdose gate in the reviewed handlers. Loss of breathing or deteriorating pressure is dangerous at any dose.",
+      "watch": "Check ventilator delivery, CO₂, spontaneous effort, sedation and pressure. Muscle paralysis can hide movement without treating awareness.",
+      "peak": "240 s IV native peak; a long effect tail follows delivery.",
+      "sources": [
+        "meds",
+        "components",
+        "sedation",
+        "overdose",
+        "unstable"
+      ]
+    },
+    {
+      "id": "ondansetron",
+      "name": "Ondansetron",
+      "group": "Finite treatment",
+      "summary": "4 mg reference; conditional instability above 8 mg",
+      "reference": "<b>0–4 mg current IV equivalent:</b> builds toward one native nausea-treatment reference. The preparation example contains <b>4 mg</b>.",
+      "caution": "<b>4–8 mg:</b> greater exposure is not automatically greater symptom relief. It does not reverse opioid respiratory depression or replace reassessment of the cause of vomiting.",
+      "danger": "<b>Above 8 mg of active IV-equivalent exposure with HR below 50</b> can satisfy the native instability check. There is no separate ondansetron overdose syndrome in the supported overdose handler and no validated safe continuous rate in this model.",
+      "watch": "Reassess nausea, vomiting, pulse and other medications. Treat it as an indicated finite administration rather than a routine indefinite drip.",
+      "peak": "15 s IV/IO native peak.",
+      "sources": [
+        "native",
+        "unstable",
+        "overdose"
+      ]
+    },
+    {
+      "id": "calcium-chloride",
+      "name": "Calcium chloride",
+      "group": "Electrolyte",
+      "summary": "Accumulation and fast delivery both matter; 1 g reference",
+      "reference": "<b>1 g</b> is the native replacement reference. One slow arithmetic example is 1 g over 10 min = <b>100 mg/min of calcium chloride</b>, or 27.3 mg/min elemental calcium. The model’s elemental fraction is 0.273.",
+      "caution": "Sustained delivery above about <b>219.8 mg/min of the salt</b> can eventually exceed the modeled excess-calcium threshold, even before a fast-rate penalty appears. This derives from 60 mg/min elemental calcium and assumes no previous excess. Stop when the intended replacement is delivered.",
+      "danger": "Fast-rate toxicity begins above about <b>366.3 mg/min of salt</b> and reaches full depth near <b>1,025.6 mg/min</b>. Independently, the excess-calcium proxy enters toxicity above <b>1 mg/dL</b> and reaches full depth at <b>4 mg/dL</b>. The worse of the rate and accumulation effects applies; severe bradycardia and arrest are possible.",
+      "watch": "Track cumulative calcium, transfusion context, pressure, rhythm and IV site integrity. Calcium gluconate adds to the same elemental calcium burden. This is not the patient’s measured total serum calcium.",
+      "peak": "300 s native effect peak; toxicity has its own rate and accumulation timing.",
+      "sources": [
+        "drug",
+        "circ",
+        "meds",
+        "calcium"
+      ]
+    },
+    {
+      "id": "calcium-gluconate",
+      "name": "Calcium gluconate",
+      "group": "Electrolyte",
+      "summary": "3 g reference; shares calcium toxicity with calcium chloride",
+      "reference": "<b>3 g</b> gives about 1 g of CaCl₂-equivalent replacement credit. Over 10 min, that is <b>300 mg/min of gluconate</b>, or 27.9 mg/min elemental calcium. The elemental fraction is 0.093.",
+      "caution": "Sustained delivery above about <b>645.2 mg/min of the salt</b> can eventually exceed the modeled excess-calcium threshold from a zero starting excess. The gentler salt does not remove the shared accumulation risk.",
+      "danger": "Fast-rate toxicity begins above about <b>1,075.3 mg/min of salt</b> and reaches full depth near <b>3,010.8 mg/min</b>. The same excess-calcium thresholds apply: above <b>1 mg/dL</b> enters toxicity, and <b>4 mg/dL</b> reaches full depth. Previous calcium chloride or gluconate reduces the remaining margin.",
+      "watch": "Use the correct salt concentration and count both salts. Reassess rhythm, pressure and site leakage; replacement credit and elemental toxicity use different conversions.",
+      "peak": "420 s native effect peak; toxicity uses a separate accumulator.",
+      "sources": [
+        "drug",
+        "circ",
+        "meds",
+        "calcium"
+      ]
+    },
+    {
+      "id": "ceftriaxone",
+      "name": "Ceftriaxone",
+      "group": "Finite treatment",
+      "summary": "0–1 g builds toward the native antibiotic reference",
+      "reference": "<b>0–1 g delivered:</b> builds toward the <b>1 g</b> game reference as effect develops. The preparation example uses 10 mL from the 100 mg/mL stock.",
+      "caution": "<b>Beyond the intended finite amount:</b> additional bag content is not evidence that more antibiotic is required. The game retains ceftriaxone’s identity while using the shared antibiotic-care abstraction.",
+      "danger": "<b>No dedicated ceftriaxone overdose cutoff or safe ongoing infusion rate is implemented in the reviewed path.</b> The generalized debug concentration band is display-only and must not be presented as a toxicity boundary.",
+      "watch": "Track the amount actually delivered and the treatment indication. Continue the underlying trauma and evacuation plan.",
+      "peak": "5 s native IV/IO reference peak; not a prediction of real antibiotic response time.",
+      "sources": [
+        "meds",
+        "native",
+        "registry",
+        "delivery",
+        "circ"
+      ]
+    },
+    {
+      "id": "propofol",
+      "name": "Propofol",
+      "group": "Sedation",
+      "summary": "100 mg at 83 kg is one induction reference; pressure risk rises with exposure",
+      "reference": "<b>0–100 mg at 83 kg</b> spans zero to one native effect equivalent. At full effect, <b>100 mg alone</b> gives one induction equivalent; the reference scales with body weight.",
+      "caution": "<b>More than one reference, or mixed sedatives:</b> hypnosis and respiratory depression increase. Opioids and midazolam can achieve a given hypnotic effect with less propofol while adding respiratory and pressure risk.",
+      "danger": "<b>No universal safe mg/min limit or separate propofol overdose trigger is defined here.</b> The 200 mg unstableDose and 400 mg maxDose fields are not functioning standalone propofol gates in the reviewed handlers. Hypovolemia and acidosis worsen the pressure response; apnea or hypotension can occur below those numbers.",
+      "watch": "Follow delivered ventilation, CO₂, pressure and sedation. Supply analgesia separately when required. Avoid treating a motionless, paralyzed patient as proof of adequate hypnosis.",
+      "peak": "90 s IV/IO native peak; 480 s native duration.",
+      "sources": [
+        "meds",
+        "components",
+        "sedation",
+        "overdose",
+        "unstable"
+      ]
+    },
+    {
+      "id": "esmolol",
+      "name": "Esmolol premix",
+      "group": "Rhythm",
+      "summary": "Steady reference 1.75–7 mg/min; toxicity rises above 2 mcg/mL",
+      "reference": "The modeled display band is <b>0.5–2 mcg/mL</b>. At default clearance, its steady input equivalent is <b>1.75–7 mg/min</b>, or <b>10.5–42 mL/h</b> of the 10 mg/mL premix. This is a game reference band, not proof of safe perfusion.",
+      "caution": "<b>Above 7 to 17.5 mg/min</b>, a constant infusion can eventually settle in the <b>2–5 mcg/mL</b> toxicity band. A previous bolus changes the starting level. Native rate control and this accumulation model are separate.",
+      "danger": "<b>Above 2 mcg/mL:</b> increasing bradycardia and hypotension. <b>5 mcg/mL or higher:</b> full modeled overdose depth. A steady 17.5 mg/min reaches that plateau, but not immediately. The full 2.5 g bag is inventory content, not an administration target.",
+      "watch": "Follow pulse, pressure and rhythm. Amiodarone adds nodal and pressure depression; esmolol also reduces lidocaine clearance.",
+      "peak": "20 s native peak. Accumulation follows distribution and clearance, rather than an immediate rate cutoff.",
+      "sources": [
+        "drug",
+        "circ",
+        "interactions"
+      ]
+    },
+    {
+      "id": "magnesium",
+      "name": "Magnesium sulfate premix",
+      "group": "Rhythm",
+      "summary": "2 g over 5–10 min example; rate hazard above 800 mg/min",
+      "reference": "The native reference is <b>2 g</b>. The source’s example range is <b>200–400 mg/min</b>, equivalent to a 2 g dose over 10–5 min. At 40 mg/mL, this is <b>300–600 mL/h</b> for a finite bag.",
+      "caution": "<b>Above 800 to 2,500 mg/min:</b> the fast infusion penalty rises, suppressing heart rate and reducing resistance. Below 800 mg/min only means this particular fast-rate penalty has not started.",
+      "danger": "<b>2,500 mg/min or more:</b> full fast-rate penalty after smoothing. Excessively fast delivery can worsen bradycardia and pressure. The generic 2–4 mg/dL debug band is display-only; it is not the trigger for these effects.",
+      "watch": "For torsades, enough native effect must develop before a termination attempt. Continue arrest care and correct causes; a bag being attached is not proof that a therapeutic amount reached the patient.",
+      "peak": "90 s native peak; fast-rate penalty builds over about 15 s.",
+      "sources": [
+        "drug",
+        "circ",
+        "meds"
+      ]
+    },
+    {
+      "id": "hts3",
+      "name": "Hypertonic saline 3%",
+      "group": "Osmotherapy",
+      "summary": "250 mL reference; benefit stops at the sodium ceiling",
+      "reference": "<b>0–250 mL</b> spans zero to the osmotherapy reference volume, containing up to <b>7.5 g NaCl</b>. At default settings, 250 mL can lower the ICP proxy by up to 8 mmHg and add 3 mEq/L to the sodium proxy, subject to its floors and ceiling.",
+      "caution": "<b>Repeated volumes:</b> add sodium and consume the remaining sodium margin. The full bag is a calibration amount, not an instruction to empty it. Benefits depend on the current ICP and retained TBI state.",
+      "danger": "<b>Sodium at or above 160 mEq/L by default:</b> further osmotherapy stops lowering ICP. The setting can be changed. The reviewed path does not define a separate universal dangerous mL/min or total-volume cutoff; the ceiling is a loss-of-benefit boundary, not a promise that lower values are safe.",
+      "watch": "Follow neurological findings, perfusion, delivered volume and the exact site. HTS extravasation is a local tissue hazard. It is not routine volume-resuscitation crystalloid.",
+      "peak": "Osmotherapy follows actual admitted volume, not a native medication peak curve.",
+      "sources": [
+        "drug",
+        "osmo",
+        "options",
+        "registry"
+      ]
+    },
+    {
+      "id": "mannitol",
+      "name": "Mannitol 20%",
+      "group": "Osmotherapy",
+      "summary": "500 mL / 100 g reference; no fixed overdose volume in this path",
+      "reference": "<b>0–500 mL</b> spans zero to the default osmotherapy reference, or <b>0–100 g</b> at 200 mg/mL. The full reference can lower the ICP proxy by up to 8 mmHg while the model permits benefit.",
+      "caution": "<b>Repeated volumes:</b> cannot drive ICP below its treatment floor. Mannitol’s configured sodium increment is <b>zero</b>, unlike HTS, but an already reached sodium ceiling still blocks this osmotherapy path.",
+      "danger": "<b>No standalone safe-to-dangerous dose or rate boundary is implemented for mannitol in this path.</b> Do not turn the 100 g bag total into a routine dose or an unlimited repeat allowance. Reassess low pressure, volume state and leakage instead of chasing the ICP number with another bag.",
+      "watch": "Track perfusion, volume, neurological findings and site integrity. Keep the ongoing injury and its recovery requirements in view after a temporary ICP improvement.",
+      "peak": "Effect follows admitted volume through the separate osmotherapy model.",
+      "sources": [
+        "drug",
+        "osmo",
+        "registry"
+      ]
+    }
+  ]
+}

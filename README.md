@@ -7,6 +7,9 @@ Static reference site for ACM Extended. The existing Python builder produces sel
 - `src/content/*.html`: article bodies
 - `src/_pillar.css`: base palette and layout
 - `src/visual-reference.css`: quiet glossary terms, visual cards, calculations and procedure layouts
+- `src/infusion-ranges.json`: dose, rate and risk explanations for all 18 infusion agents
+- `src/infusion_guide.py`: static infusion guide renderer
+- `src/infusion-guide.js` and `src/infusion-guide.css`: filtering and shared heading styling
 - `src/reference.js`: calculators, medication curves, automatic glossary links and printing
 - `src/chart-readouts.js`: access-capacity, fluid-conversion and waveform inspection
 - `src/slideshow.js`: fading IV stages, grouped insertion frames and manual controls
@@ -83,7 +86,7 @@ The other system articles remain available with a review notice. Remove an artic
 
 The new system references use ACM Extended source 4848f63b200a45362eb576dcef469484202b6a80. Existing medication, circulation and other references keep their stated earlier snapshots; this update does not claim to audit every later change to the entire mod.
 
-Build, local-link, anchor, asset and reproducibility checks are provided in `scripts/check_wiki.py`. The four Chromium suites in `scripts/` cover the complete site and the updated visual controls; the GitHub workflow repeats them after updates.
+Build, local-link, anchor, asset and reproducibility checks are provided in `scripts/check_wiki.py`. The five Chromium suites in `scripts/` cover the complete site and the updated visual controls; the GitHub workflow repeats them after updates.
 
 ## Hosting
 
@@ -124,3 +127,13 @@ Airway & Breathing includes an eased chest seal demonstration using both origina
 All 13 cardiac rhythm blocks include bright green, six-second monitor examples with pointer, touch and keyboard inspection. The traces use the mod’s native/custom waveform formulas; vertical values are relative monitor deflection, not calibrated millivolts. They remain visible without JavaScript. MV now opens the minute-ventilation definition, including the distinction between L/min and the game’s MV adequacy ratio. Unnecessary hyphens have been removed from article prose while preserving links and code identifiers.
 
 The chest seal mechanics, pneumothorax recovery and ECG generation were checked against commit `dd50edf34497588d473ffe3c70797f2eaa52f6f8`. Other references retain their stated review revisions. `scripts/check_chest_rhythms.mjs` checks these additions, and the existing suites cover the retained site controls.
+
+## Infusion dose and medication presentation update
+
+The access article has 18 searchable infusion guides linked from all 19 preparation rows (the two epinephrine stocks share a guide). Each compares its game reference, increasing exposure and implemented hazards, with timing and reassessment notes. Rate effects, active drug burden and accumulation proxies are distinguished; display-only debug bands are not presented as safety limits. Undefined toxicity cutoffs remain explicitly undefined. All numeric risk bands use the current initialized defaults, not fallback constants.
+
+Medication illustrations now cover all 33 cards. Hyaluronidase and phentolamine use the shared icon configured by the mod, with clear captions identifying the mismatch in the printed vial label. Dimercaprol has a prominent owner-requested unavailable notice; its legacy artwork and curve remain labeled as legacy data.
+
+Ventilator Settings & Tips now contains the complete ketamine nystagmus explanation. Old incoming links remain usable. The ketamine IM induction example uses the current 4.375 mg/kg calibration, and the norepinephrine dilution includes the injected volume (4 mg in 254 mL, about 15.75 mcg/mL). Small headings, medication fields, table headers and popup titles share the gold title color.
+
+These changes were reviewed at `488a5e54efd10e5289245bcb2f7db7a40bbabcb0`; other content retains its individual source review dates. The new browser suite checks filtering, dose links, original images, heading colors, moved guidance and the static fallback.

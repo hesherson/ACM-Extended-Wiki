@@ -141,3 +141,28 @@ All 13 rhythm strips use native and custom waveform formulas checked against `he
 - `addons/circulation/Defibrillator_defines.hpp`: `HR_COLOR {0,1,0,1}`, reproduced as `#00ff00`
 
 Each static SVG contains 201 samples at 30 ms, extending the monitor window to six seconds. AFib uses fixed example intervals within the game scheduler bounds. Torsades shows its established appearance after the entry transition. Motion, CPR and electrode-contact artifacts are omitted for clarity. Vertical deflection is relative and positive upward, not a calibrated mV measurement. Inspection interpolates between displayed samples. Perfusing and pulseless VT share the ventricular morphology; pulse status is explained separately in each block.
+
+## Remaining medication images and infusion dose ranges
+
+Revision: `488a5e54efd10e5289245bcb2f7db7a40bbabcb0`. Eleven additional original PAA assets were decoded to PNG without recoloring or redrawing. Existing uploaded ACM files were verified against the current Git blob hash; the remaining files were fetched from the same pinned revision.
+
+| Card or use | Original repository path | Git blob SHA |
+| --- | --- | --- |
+| Ammonia inhalant | `addons/circulation/ui/inhalant_ammonia_ca.paa` | `37b3eaa470d72ee91fee9731c8eb06fb4d06bfcc` |
+| Dimercaprol, legacy only | `addons/circulation/ui/ampule_dimercaprol_ca.paa` | `bb299e81d1951c94b7eaf703e063546ee88154fe` |
+| Esketamine | `addons/acm_extended/ui/items/esketamine_in_ca.paa` | `39282d3d8ac2246f06cfb3337142e7ee4d24e1c8` |
+| Fentanyl lozenge | `addons/circulation/ui/lozenge_fentanyl_ca.paa` | `4d3eded935e4db6719dec7138da4818d2db12a17` |
+| HTS 3% | `addons/acm_extended/ui/items/htsiv_ca.paa` | `a1878939c43a280ec21b6f2a81adc23006fe9de8` |
+| Magnesium sulfate | `addons/acm_extended/ui/items/mgbag_50ml_iv_ca.paa` | `d7a8da70aa70c1fcd70d00a0babbea5dae83dbe3` |
+| Mannitol | `addons/acm_extended/ui/items/mannitolbag_iv_ca.paa` | `4f9d222656c856a6e073714bb404fe201d90e944` |
+| Naloxone | `addons/circulation/ui/spray_naloxone_ca.paa` | `240f1292adf975076bef8a4b01884c1994f849eb` |
+| Paracetamol | `addons/circulation/ui/paracetamol_singlepack_ca.paa` | `5e36443ecdb9f96463a24a7bd3842515eb547d21` |
+| Penthrox | `addons/circulation/ui/inhaler_penthrox_ca.paa` | `3c55ff02b2ffe2a9330e56e60b51b325be101a5a` |
+| Esmolol premix | `addons/acm_extended/ui/items/esmololbagiv_ca.paa` | `1bd8cca892abd5dc2df3328631abb71211519474` |
+| Hyaluronidase and phentolamine shared icon | `addons/acm_extended/ui/items/vial_norepinephrine_ca.paa` | `44a5632f305c9280710d2acef2c0b58b32da1e5f` |
+
+`config.cpp` assigns the norepinephrine picture to both hyaluronidase and phentolamine. The wiki mirrors that choice and warns readers to use the card label rather than the printed art. The unavailable Dimercaprol notice follows the site owner’s instruction; retained legacy source classes and artwork are not presented as proof that the medication is available.
+
+Infusion ranges are authored in `src/infusion-ranges.json` and rendered into static HTML by `src/infusion_guide.py`. The renderer links the exact source for each medication. Key audits include initialized drug physiology values, the circulation loop, native medication configuration, active family toxicity, conditional instability, drug interactions, sedation components and osmotherapy. Amiodarone’s initialized fast-rate onset is 25 mg/min (not its 20 mg/min fallback); magnesium’s is 800 mg/min (not its 300 mg/min fallback). The generalized debug PK bands are display-only.
+
+Derived steady rates use the implemented clearance: esmolol 3.5 L/min and lidocaine 0.40 L/min, with lidocaine shock ×0.6 and esmolol ×0.7 modifiers. Calcium salt rates divide the shared elemental thresholds by 0.273 for chloride or 0.093 for gluconate. These are model calculations, not clinical dosing limits. References and danger notes explicitly distinguish rate, active effect and accumulation.

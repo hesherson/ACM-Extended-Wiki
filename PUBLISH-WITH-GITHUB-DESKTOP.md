@@ -7,8 +7,8 @@ The ZIP includes the rebuilt site in `docs`, the editable source and the build s
 3. Choose **Repository > Show in Explorer**.
 4. Extract this ZIP somewhere else. Copy the contents of its `ACM-Extended-Wiki` folder into the repository folder. Replace matching files. `build.py`, `src` and `docs` belong directly inside the repository, not inside a second nested folder.
 5. Delete `docs/ov_traps.html` if that retired page remains from an older build. The source copy is no longer part of the published site.
-6. Open `docs/index.html` in a browser. Check the chest seal animation in Airway & Breathing, green cardiac rhythm traces, MV hover definition, fading IV guide and a narrow window.
-7. Return to GitHub Desktop. Review **Changes**, enter `Add chest seal guidance and cardiac rhythm traces`, click **Commit to main**, then **Push origin**.
+6. Open `docs/index.html` in a browser. Check the infusion ranges and filters, all medication images, the Dimercaprol warning, Ventilator Settings & Tips, and a narrow window.
+7. Return to GitHub Desktop. Review **Changes**, enter `Expand infusion risk guides and ventilator tips`, click **Commit to main**, then **Push origin**.
 8. On GitHub, check the **Actions** tab for the wiki checks and Pages deployment. Wait for deployment to finish before refreshing the live site.
 
 The repository's documented publishing source is **Settings > Pages > Deploy from a branch > main > /docs**. Keep that source. Uploading the ZIP file itself does not update the website; publish its extracted contents.
@@ -26,6 +26,8 @@ The repository's documented publishing source is **Settings > Pages > Deploy fro
 | Sound previews | `src/audio` |
 | Capnography explorer | `src/capnography.js` and `src/capnography.css` |
 | Language picker | `src/languages.js` and `src/languages.css` |
+| Infusion dose and risk text | `src/infusion-ranges.json` |
+| Infusion filtering and layout | `src/infusion-guide.js` and `src/infusion-guide.css` |
 | ECG examples | `src/rhythm-waveforms.js` and `src/rhythm-waveforms.css` |
 | Chest seal demonstration | `src/chest-seal.js` and `src/chest-seal.css` |
 | Navigation or new pages | `build.py` and the matching content file |
@@ -43,7 +45,7 @@ From the repository folder, after copying the update:
 git status
 git diff --check
 git add build.py paa2png.py src docs scripts .github README.md BUILD-WIKI.cmd MOD-ASSET-SOURCES.md PUBLISH-WITH-GITHUB-DESKTOP.md
-git commit -m "Add chest seal guidance and cardiac rhythm traces"
+git commit -m "Expand infusion risk guides and ventilator tips"
 git push origin main
 ```
 
@@ -61,3 +63,5 @@ The build, JavaScript syntax, local links, anchors and reproducibility checks pa
 Official guidance: [GitHub Desktop commits and pushing](https://docs.github.com/en/desktop/making-changes-in-a-branch/committing-and-reviewing-changes-to-your-project-in-github-desktop), [GitHub Pages publishing source](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
 
 US/UK English work in the ZIP preview. German, French, Spanish and Russian open automatic live-page translations after publication, with an internet connection. The language selector does not create separate translated source files.
+
+The infusion update retains the existing repository and `/docs` publishing source. Its additional checks cover all 18 agents, 19 recipe links, empty-search and hash navigation, 33 medication images, gold headings and the relocated nystagmus section. No new workspace or hosting setup is required.
