@@ -28,6 +28,7 @@ jobs:
           node --check src/infusion-explorer.js
           node --check src/mixture-guide.js
           node --check src/print-reference.js
+          node --check src/reading-layout.js
 
       - name: Install browser checks
         run: npm install --no-save --package-lock=false --ignore-scripts playwright@1.63.0

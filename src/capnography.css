@@ -22,12 +22,12 @@
 .capno-chart figcaption{margin:.3rem 0 1.3rem;padding:0;color:var(--cream-dim);font-size:.875rem;line-height:1.55;text-transform:none;letter-spacing:normal}
 .capno-pattern-note{padding:1.2rem 0 0;border-top:1px solid var(--rule-2)}
 .capno-pattern-note+.capno-pattern-note{margin-top:1.2rem}
-.capno-pattern-note h3{margin:0 0 1rem;color:var(--amber)}
+.capno-pattern-note :is(h3,h4){margin:0 0 1rem;color:var(--cream)}
 .capno-notes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.4rem}
 .capno-notes>div{padding-left:1rem;border-left:2px solid var(--rule-2);min-width:0}
-.capno-notes h4{margin:0 0 .6rem;font-size:.85rem;color:var(--cream);letter-spacing:.035em}
+.capno-notes :is(h4,h5){margin:0 0 .6rem;font-size:.85rem;color:var(--cream);letter-spacing:.035em}
 .capno-notes p{margin:0;font-size:.95rem;line-height:1.6}
 @media(min-width:2200px){.capno-chart svg{max-height:560px}.capno-inspector{grid-template-columns:12rem auto minmax(0,1fr)}}
 @media(max-width:1100px){.capno-controls{grid-template-columns:repeat(2,minmax(0,1fr))}.capno-notes{grid-template-columns:1fr;gap:1rem}}
 @media(max-width:540px){.capno-controls{grid-template-columns:1fr}.capno-inspector{grid-template-columns:minmax(0,1fr) auto}.capno-inspector .chart-readout{grid-column:1 / -1}.capno-controls label{font-size:.95rem}.capno-axis{font-size:27px}.capno-chart svg{min-height:170px}.capno-chart [data-capno-bubble]{display:none}}
-@media print{.capno-explorer{border:0;padding:0;background:white}.capno-controls,.capno-inspector,.capno-help,.capno-chart .chart-cursor{display:none!important}.capno-pattern-note[hidden]{display:block!important}.capno-pattern-note{break-inside:avoid}.capno-patterns,.capno-notes{display:block}.capno-notes>div{margin-bottom:1rem}.capno-chart svg{background:white;color:#222}.capno-line{stroke:#624000}.capno-chart figcaption,.capno-pattern-note h3,.capno-pattern-note h4,.capno-pattern-note p{color:#111}}
+@media print{.capno-explorer{border:0;padding:0;background:white}.capno-controls,.capno-inspector,.capno-help,.capno-chart .chart-cursor{display:none!important}.capno-pattern-note[hidden]{display:block!important}.capno-pattern-note{break-inside:avoid}.capno-patterns,.capno-notes{display:block}.capno-notes>div{margin-bottom:1rem}.capno-chart svg{background:white;color:#222}.capno-line{stroke:#624000}.capno-chart figcaption,.capno-pattern-note :is(h3,h4),.capno-pattern-note :is(h4,h5),.capno-pattern-note p{color:#111}}

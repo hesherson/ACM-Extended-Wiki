@@ -80,6 +80,7 @@
     txt('level-readout', `${fmt(actualMinute)} min · ${fmt(point.level)} ${row.unit} · ${dose} admitted`);
     $('level-dot').setAttribute('cx', x(actualMinute));
     $('level-dot').setAttribute('cy', y(point.level));
+    window.ACMEWiki.sizeChartMarkers($('level-svg'), [$('level-dot')]);
     $('level-cursor').setAttribute('x1', x(actualMinute));
     $('level-cursor').setAttribute('x2', x(actualMinute));
     thresholds(point);

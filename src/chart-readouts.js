@@ -63,9 +63,10 @@
         readout.append(row);
       });
       group.querySelectorAll("circle").forEach(node => node.remove());
-      points.forEach(point => group.insertBefore(element("circle", {
-        cx: point.x, cy: point.y, r: 5, fill: point.color || "#edbd58", stroke: "#0b1119", "stroke-width": 2
-      }), bubble));
+      points.forEach(point => group.append(element("circle", {
+        cx: point.x, cy: point.y, r: 5.5, fill: point.color || "#edbd58", stroke: "#f2e8d2", "stroke-width": 2
+      })));
+      api.sizeChartMarkers(svg, Array.from(group.querySelectorAll("circle")));
       const first = points[0];
       guide.setAttribute("x1", first.x);
       guide.setAttribute("x2", first.x);
@@ -79,7 +80,8 @@
         line.textContent = name + ": " + value;
         text.append(line);
       });
-      const x = clamp(first.x + 16, bounds.left, bounds.right - 290);
+      const x = first.x + 306 <= bounds.right
+        ? first.x + 16 : Math.max(bounds.left, first.x - 306);
       const y = clamp(first.y - height - 12, bounds.top, bounds.bottom - height);
       bubble.setAttribute("transform", "translate(" + x + "," + y + ")");
       group.style.display = "";

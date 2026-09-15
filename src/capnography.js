@@ -80,6 +80,7 @@
       const y = plot.bottom - result.co2 / 80 * (plot.bottom - plot.top);
       guide.setAttribute('x1', x); guide.setAttribute('x2', x);
       dot.setAttribute('cx', x); dot.setAttribute('cy', y);
+      api.sizeChartMarkers(svg, [dot]);
       dot.dataset.time = time; dot.dataset.co2 = result.co2;
       const left = x + 280 <= plot.right ? x + 14 : x - 278;
       const top = clamp(y - 75, plot.top + 4, plot.bottom - 65);

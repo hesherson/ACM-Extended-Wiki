@@ -11,7 +11,6 @@ page.on('pageerror', error => errors.push(error.message));
 const visit = name => page.goto(pathToFileURL(resolve(root, 'docs', name + '.html')).href);
 const capture = (locator, name) => process.env.WIKI_SCREENSHOT_DIR
   ? locator.screenshot({ path: resolve(process.env.WIKI_SCREENSHOT_DIR, name + '.png') }) : Promise.resolve();
-const gold = 'rgb(241, 189, 89)';
 try {
   await visit('access');
   const guides = page.locator('.infusion-guide');
@@ -42,7 +41,7 @@ try {
     await page.setViewportSize({ width, height: 1100 });
     await amio.scrollIntoViewIfNeeded();
     assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'Infusion overflow at ' + width);
-    assert(await amio.locator('h3').evaluateAll(headings => headings.every(h => getComputedStyle(h).color === 'rgb(241, 189, 89)')));
+    assert(await amio.locator('.infusion-band :is(h3,h4)').evaluateAll(headings => headings.every(h => getComputedStyle(h).color === 'rgb(242, 232, 210)')));
     await capture(amio, 'infusion-amiodarone-' + width);
   }
   await page.setViewportSize({ width: 1905, height: 1100 });
@@ -52,7 +51,7 @@ try {
     images.forEach(image => { image.loading = 'eager'; });
     return Promise.all(images.map(image => image.decode()));
   });
-  assert(await page.locator('.med-fact dt').evaluateAll(headings => headings.every(h => getComputedStyle(h).color === 'rgb(241, 189, 89)')));
+  assert(await page.locator('.med-fact dt').evaluateAll(headings => headings.every(h => getComputedStyle(h).color === 'rgb(242, 232, 210)')));
   const dim = page.locator('#d-dimercaprol');
   assert(await dim.locator('.availability-warning').isVisible());
   assert.match(await dim.locator('.availability-warning').textContent(), /NOT IN GAME/);
@@ -87,5 +86,5 @@ try {
   await noJS.locator('#infusion-risk-calcium-chloride > summary').click();
   assert(await noJS.locator('#infusion-risk-calcium-chloride .infusion-bands').isVisible());
   assert.deepEqual(errors, []);
-  console.log('Passed 18 infusion guides, 19 recipe links, filters, hash navigation, dose warnings, 33 images, gold headings, moved ventilator tips and no-JS access.');
+  console.log('Passed 18 infusion guides, 19 recipe links, filters, hash navigation, dose warnings, 33 images, cream headings, moved ventilator tips and no-JS access.');
 } finally { await browser.close(); }

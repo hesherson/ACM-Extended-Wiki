@@ -1,0 +1,242 @@
+{
+  "access": [
+    {
+      "id": "access-placement",
+      "title": "Choose and establish access",
+      "sections": [
+        "gauge-selection",
+        "iv-catheter-slideshow",
+        "pressure-and-site-difficulty"
+      ]
+    },
+    {
+      "id": "access-flow",
+      "title": "Flow and site function",
+      "sections": [
+        "drip-calculator",
+        "what-changes-actual-flow",
+        "fluid-loss-at-a-compromised-site",
+        "infusion-rates"
+      ]
+    },
+    {
+      "id": "medication-delivery",
+      "title": "Prepare and deliver medication",
+      "sections": [
+        "preparing-and-flushing-medication",
+        "slow-and-incremental-medication-pushes",
+        "medication-mixtures-and-preparation",
+        "pfc-and-tfc"
+      ]
+    },
+    {
+      "id": "infusion-reference",
+      "title": "Infusion reference",
+      "sections": [
+        "infusion-dose-ranges",
+        "full-infusion-list",
+        "medications-without-infusion-support"
+      ]
+    }
+  ],
+  "airway": [
+    {
+      "id": "airway-management",
+      "title": "Airway management",
+      "sections": [
+        "quick-assessment",
+        "suction-controls-and-sweep",
+        "endotracheal-tube-checks",
+        "capnography-explorer"
+      ]
+    },
+    {
+      "id": "chest-injuries",
+      "title": "Chest injuries and drainage",
+      "sections": [
+        "needle-decompression",
+        "chest-seals-and-thoracostomy",
+        "burping-a-chest-seal",
+        "how-pneumothorax-improves"
+      ]
+    },
+    {
+      "id": "breathing-support",
+      "title": "Breathing support and circulation",
+      "sections": [
+        "positive-pressure-and-circulation"
+      ]
+    }
+  ],
+  "ventilator": [
+    {
+      "id": "ventilator-setup",
+      "title": "Setup and support",
+      "sections": [
+        "start-and-reassess",
+        "ketamine-sedation-and-nystagmus",
+        "ventilation-modes",
+        "choosing-support-for-the-injury"
+      ]
+    },
+    {
+      "id": "ventilator-assessment",
+      "title": "Read the delivered breath",
+      "sections": [
+        "controls-and-measurements",
+        "waveform-reference",
+        "oxygenation-and-shunt",
+        "lung-mechanics-and-pressure"
+      ]
+    },
+    {
+      "id": "ventilator-complications",
+      "title": "Complications and reassessment",
+      "sections": [
+        "barotrauma-and-volume-related-injury",
+        "gas-trapping"
+      ]
+    },
+    {
+      "id": "ventilator-device",
+      "title": "Device operation",
+      "sections": [
+        "battery-and-vehicle-power",
+        "screen-brightness-amp-night-mode",
+        "panel-icons"
+      ]
+    }
+  ],
+  "tbi": [
+    {
+      "id": "head-injury-assessment",
+      "title": "Recognize and assess",
+      "sections": [
+        "acute-and-structural-injury",
+        "assessment-priorities",
+        "pupil-findings"
+      ]
+    },
+    {
+      "id": "brain-perfusion",
+      "title": "Brain perfusion and pressure",
+      "sections": [
+        "icp-and-brain-perfusion",
+        "pressure-and-recovery-gates",
+        "autoregulation-and-autonomic-tone",
+        "tbi-and-junctional-bleeding"
+      ]
+    },
+    {
+      "id": "head-injury-care",
+      "title": "Treatment and recovery",
+      "sections": [
+        "positioning-treatment-and-transport",
+        "recovery-and-persistent-injury",
+        "progression-timing"
+      ]
+    }
+  ],
+  "bleeding": [
+    {
+      "id": "shock-assessment",
+      "title": "Blood loss and perfusion",
+      "sections": [
+        "hemorrhage-classes",
+        "stroke-volume-and-resistance",
+        "permissive-hypotension-amp-map-targets",
+        "oxygen-delivery-during-resuscitation"
+      ]
+    },
+    {
+      "id": "bleeding-control",
+      "title": "Bleeding control",
+      "sections": [
+        "junctional-haemorrhage-amp-aajt-s",
+        "direct-pressure-over-a-fracture"
+      ]
+    },
+    {
+      "id": "warming-and-recovery",
+      "title": "Warming and recovery",
+      "sections": [
+        "hypothermia-amp-active-rewarming-hpmk",
+        "triad-legs-at-a-glance"
+      ]
+    }
+  ],
+  "oxygen": [
+    {
+      "id": "oxygen-assessment",
+      "title": "Read oxygenation and perfusion",
+      "sections": [
+        "spo2-and-poor-perfusion",
+        "pulse-oximeter-game-behavior"
+      ]
+    },
+    {
+      "id": "oxygen-delivery-model",
+      "title": "Understand oxygen delivery",
+      "sections": [
+        "oxygen-delivery-do2",
+        "hemorrhage-examples",
+        "delivery-calculator"
+      ]
+    },
+    {
+      "id": "oxygen-delivery-modifiers",
+      "title": "What changes delivery",
+      "sections": [
+        "positive-pressure-and-preload",
+        "cardiology-and-delivery",
+        "tissue-delivery-and-brain-injury"
+      ]
+    }
+  ],
+  "blast": [
+    {
+      "id": "blast-exposure",
+      "title": "Exposure and injury",
+      "sections": [
+        "what-is-simulated",
+        "distance-cover-and-enclosure",
+        "default-injury-thresholds",
+        "breachers-syndrome"
+      ]
+    },
+    {
+      "id": "blast-lung-care",
+      "title": "Blast lung and evacuation",
+      "sections": [
+        "delayed-blast-lung",
+        "ards-and-evacuation"
+      ]
+    }
+  ],
+  "flight": [
+    {
+      "id": "flight-effects",
+      "title": "Flight effects",
+      "sections": [
+        "flight-reference",
+        "barometric-pressure-amp-pao2-at-altitude",
+        "hemorrhage-and-flight"
+      ]
+    },
+    {
+      "id": "transport-preparation",
+      "title": "Transport preparation",
+      "sections": [
+        "pre-flight-checks",
+        "poiseuille"
+      ]
+    },
+    {
+      "id": "flight-settings",
+      "title": "Altitude and settings",
+      "sections": [
+        "altitude-derivation-amp-sea-level-datum"
+      ]
+    }
+  ]
+}

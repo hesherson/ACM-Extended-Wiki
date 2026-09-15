@@ -12,6 +12,7 @@ from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
+VOID_TAGS = set("area base br col embed hr img input link meta param source track wbr".split())
 
 class Page(HTMLParser):
     def __init__(self, text):
@@ -19,7 +20,12 @@ class Page(HTMLParser):
         self.ids = set()
         self.duplicates = []
         self.links = []
+        self.article_stack = []
+        self.structure_errors = []
+        self.main_count = 0
         self.feed(text)
+        if self.main_count != 1 or self.article_stack:
+            self.structure_errors.append("Article must have one fully closed main element")
 
     def handle_starttag(self, tag, attrs):
         values = dict(attrs)
@@ -31,6 +37,27 @@ class Page(HTMLParser):
         for name in ("href", "src"):
             if name in values:
                 self.links.append(values[name])
+        if tag == "main":
+            self.main_count += 1
+        if tag == "main" or self.article_stack:
+            if tag == "details" and "source-details" in values.get("class", "").split():
+                if "details" in self.article_stack:
+                    self.structure_errors.append("Source notes must not create nested disclosures")
+            if tag not in VOID_TAGS:
+                self.article_stack.append(tag)
+
+    def handle_endtag(self, tag):
+        if not self.article_stack or tag in VOID_TAGS:
+            return
+        if self.article_stack[-1] == tag:
+            self.article_stack.pop()
+            return
+        self.structure_errors.append(
+            f"Line {self.getpos()[0]}: </{tag}> crosses unclosed <{self.article_stack[-1]}>"
+        )
+        if tag in self.article_stack:
+            while self.article_stack.pop() != tag:
+                pass
 
 def normalize(text):
     # Build dates and JSON object ordering are not content changes.
@@ -50,6 +77,7 @@ if set(pages) != expected:
     errors.append("Generated page set differs from build.py: " + str(set(pages) ^ expected))
 for filename, page in pages.items():
     errors.extend(f"{filename}: duplicate id {value}" for value in page.duplicates)
+    errors.extend(f"{filename}: {value}" for value in page.structure_errors)
     for href in page.links:
         url = urlsplit(href)
         if url.scheme or url.netloc:
@@ -77,4 +105,4 @@ with tempfile.TemporaryDirectory(prefix="acme-wiki-check-") as scratch:
 
 if errors:
     raise SystemExit("\n".join(errors))
-print(f"Checked {len(pages)} pages: generated content, IDs, local links and assets match.")
+print(f"Checked {len(pages)} pages: article structure, source disclosures, generated content, IDs, local links and assets match.")

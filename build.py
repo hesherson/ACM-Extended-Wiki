@@ -18,6 +18,7 @@ ADDING AN IMAGE: put it in src/img/ and reference it as img/thing.png. build.py 
                  src/img into docs/img every build, so docs/ can always be deleted safely.
 """
 import os, re, datetime, json, sys, shutil
+from html import escape
 
 sys.dont_write_bytecode = True   # keep src/ free of __pycache__
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "src"))
@@ -29,6 +30,7 @@ from hardcore_medications import render_slow_push_guide, add_push_card_notes
 from responsive_tables import responsive_tables
 from route_lists import stack_route_lists
 from print_reference import render_print_reference
+from reading_layout import group_sections, fold_source_notes, heading_marks, plain
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(ROOT, "src")
@@ -453,11 +455,9 @@ def add_card_anchors(body):
 
 def toc(body):
     """Sticky section bar. Sits at the top of the content column, opaque so nothing shows through it,
-    and collapses to a thin strip as the reader scrolls. Sections come from the h2 anchors, and named
-    cards nest under them, so it can never disagree with the page."""
-    marks = []
-    for m in re.finditer(r'<h2 id="([^"]+)">(.*?)</h2>', body, re.S):
-        marks.append((m.start(), "sec", m.group(1), re.sub(r"<[^>]+>", "", m.group(2)).strip()))
+    and collapses to a thin strip as the reader scrolls. Parent topics, marked subsections and
+    named cards follow the same order as the article."""
+    marks = [(position, kind, anchor, label) for position, kind, anchor, label, _ in heading_marks(body)]
     for m in re.finditer(r'id="d-([\w-]+)"><header><span class="dn">([^<]+)<', body):
         marks.append((m.start(), "sub", "d-" + m.group(1), m.group(2).strip()))
     for m in re.finditer(r'id="c-([\w-]+)"><header><span class="iname">([^<]+)<', body):
@@ -477,7 +477,7 @@ def toc(body):
            '  <nav class="sb-list" id="sbList" hidden>']
     for _, kind, anchor, label in marks:
         cls = ' class="sub"' if kind == "sub" else ""
-        out.append(f'    <a{cls} href="#{anchor}" data-a="{anchor}">{label}</a>')
+        out.append(f'    <a{cls} href="#{anchor}" data-a="{anchor}">{escape(label)}</a>')
     out += ["  </nav>", "</div>"]
     return "\n".join(out)
 
@@ -485,14 +485,13 @@ def toc(body):
 def index_page(slug, fname, title, body):
     """One search record per section: page, heading, anchor, and the visible text under it."""
     recs = []
-    parts = re.split(r'<h2 id="([^"]+)">(.*?)</h2>', body)
-    lead = re.sub(r"<[^>]+>", " ", parts[0])
+    marks = heading_marks(body)
+    lead = plain(body[:marks[0][0]] if marks else body)
     recs.append({"p": title, "f": fname, "a": "", "h": title,
                  "t": re.sub(r"\s+", " ", lead).strip()[:900]})
-    for i in range(1, len(parts), 3):
-        anchor, head, chunk = parts[i], parts[i + 1], parts[i + 2]
-        head = re.sub(r"<[^>]+>", "", head)
-        txt = re.sub(r"<[^>]+>", " ", chunk)
+    for i, (_, _, anchor, head, end) in enumerate(marks):
+        next_start = marks[i + 1][0] if i + 1 < len(marks) else len(body)
+        txt = plain(body[end:next_start])
         recs.append({"p": title, "f": fname, "a": anchor, "h": head,
                      "t": re.sub(r"\s+", " ", txt).strip()[:900]})
     # Index each medication card separately, including cards deep inside one h2 section.
@@ -548,10 +547,9 @@ def glossary_page():
 
 
 def page_sections(body):
-    """h2 anchors for one page. Only the page being viewed gets these in the sidebar, so the nav stays
+    """Topic and subsection anchors. Only the page being viewed gets these in the sidebar, so the nav stays
     a list of pages rather than expanding into a full site outline."""
-    return [(m.group(1), re.sub(r"<[^>]+>", "", m.group(2)).strip())
-            for m in re.finditer(r'<h2 id="([^"]+)">(.*?)</h2>', body, re.S)]
+    return [(anchor, label, kind) for _, kind, anchor, label, _ in heading_marks(body)]
 
 
 def sidebar(current, sections=()):
@@ -590,8 +588,9 @@ def sidebar(current, sections=()):
         out.append(f'    <a{cls} href="{fname}">{title}</a>')
         if slug == current and sections:
             out.append('    <div class="subnav">')
-            for anchor, label in sections:
-                out.append(f'      <a href="#{anchor}" data-s="{anchor}">{label}</a>')
+            for anchor, label, kind in sections:
+                nested = ' class="nested-section"' if kind == 'sub' else ''
+                out.append(f'      <a{nested} href="#{anchor}" data-s="{anchor}">{escape(label)}</a>')
             out.append('    </div>')
     out += ['  </nav>',
             '  <button type="button" class="nightbtn" id="nightBtn" aria-pressed="false">',
@@ -607,10 +606,10 @@ def build():
     if os.path.isfile(retired):
         os.remove(retired)
     css = "\n".join(open(os.path.join(SRC, name), encoding="utf-8").read()
-                    for name in ("_pillar.css", "visual-reference.css", "slideshow.css", "capnography.css", "rhythm-waveforms.css", "chest-seal.css", "languages.css", "infusion-guide.css", "infusion-explorer.css", "mixture-guide.css", "hardcore-reference.css", "route-lists.css", "mobile-layout.css", "print-reference.css")
+                    for name in ("_pillar.css", "visual-reference.css", "slideshow.css", "capnography.css", "rhythm-waveforms.css", "chest-seal.css", "languages.css", "infusion-guide.css", "infusion-explorer.css", "mixture-guide.css", "hardcore-reference.css", "route-lists.css", "mobile-layout.css", "reading-layout.css", "print-reference.css")
                     if os.path.isfile(os.path.join(SRC, name)))
     reference_js = "\n".join(open(os.path.join(SRC, name), encoding="utf-8").read()
-                             for name in ("reference.js", "slideshow.js", "chart-readouts.js", "suction-guide.js", "capnography.js", "rhythm-waveforms.js", "chest-seal.js", "languages.js", "infusion-guide.js", "infusion-explorer.js", "mixture-guide.js", "print-reference.js")
+                             for name in ("reference.js", "slideshow.js", "chart-readouts.js", "suction-guide.js", "capnography.js", "rhythm-waveforms.js", "chest-seal.js", "languages.js", "infusion-guide.js", "infusion-explorer.js", "mixture-guide.js", "print-reference.js", "reading-layout.js")
                              if os.path.isfile(os.path.join(SRC, name)))
     os.makedirs(OUT, exist_ok=True)
     os.makedirs(os.path.join(OUT, "img"), exist_ok=True)
@@ -666,6 +665,9 @@ def build():
         body = group_field_labels(body)
         body = add_anchors(body)
         body = add_card_anchors(body)
+        body = group_sections(slug, body)
+        if slug not in {"quick-reference", "glossary"}:
+            body = fold_source_notes(body)
         body = responsive_tables(body)
         bodies[slug] = body
         index += index_page(slug, fname, title, body)

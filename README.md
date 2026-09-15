@@ -1,12 +1,26 @@
 # ACM Extended Wiki
 
+Latest package: September 15, 2026. See [DEPLOY.md](DEPLOY.md) for deployment commands, changes and the current validation scope. Earlier browser results below belong to their recorded updates.
+
 Static reference site for ACM Extended. The existing Python builder produces self-contained HTML pages in `docs/`, with offline search, inline styles and inline browser scripts.
+
+## Reading layout update
+
+Eight longer articles now use 25 parent topics with indented subsections and a subtle left rule: IV access, airway, ventilator, TBI, bleeding, oxygen, blast and flight. The 21 Hardcore settings are organized under five subgroup headings. Both page navigation menus reflect the hierarchy, and the original section anchors remain valid.
+
+There are 71 short labels above existing explanations. Related plain explanations can share columns on wide screens; caution and in-game notes use quiet, labeled callouts. Prose has a shorter reading width, while tables, figures and interactive references retain their available space. The subsection indent shrinks on phones.
+
+Forty-four standalone source notes now use optional disclosures. Treatment information and slideshow instructions stay visible, and the build does not add disclosures inside existing disclosures. Section headings gain a copy-link button with a selectable-text fallback if clipboard access fails. Existing search, glossary, print and reference controls remain included.
+
+The full article-content comparison preserved the original text, 899 article anchors, links, 161 tables and 137 controls. The build and structural/link checks pass. A fresh browser preview was blocked by the available browser security policy, so visual, mobile and clipboard verification remains outstanding. [SOURCE-REVIEW.md](SOURCE-REVIEW.md) inventories the existing source pins and the remaining source-review work. This layout update does not change game values or claim a new mod review.
 
 ## Edit and build
 
 - `src/content/*.html`: article bodies
 - `src/_pillar.css`: base palette and layout
 - `src/visual-reference.css`: quiet glossary terms, visual cards, calculations and procedure layouts
+- `src/page-groups.json` and `src/reading_layout.py`: parent topics, subsection hierarchy and optional source notes
+- `src/reading-layout.css` and `src/reading-layout.js`: prose layout, subsection rails and copy-section links
 - `src/infusion-ranges.json`: dose, rate and risk explanations for all 18 infusion agents
 - `src/infusion_guide.py`: static infusion guide renderer
 - `src/infusion-guide.js` and `src/infusion-guide.css`: filtering and shared heading styling
@@ -32,11 +46,13 @@ python3 scripts/check_wiki.py
 node --check src/reference.js
 ```
 
-The checker compares docs with an independent build and validates local links and IDs. It works in a ZIP copy without Git. The builder uses Python's standard library. Windows users can double-click BUILD-WIKI.cmd.
+The checker compares docs with an independent build and validates local links, IDs, article element nesting and source disclosure nesting. It works in a ZIP copy without Git. The builder uses Python's standard library. Windows users can double-click BUILD-WIKI.cmd.
+
+For a grouped article, keep the existing source sections and their h2 IDs. Assign each section exactly once in `src/page-groups.json`; the build derives the h2 parent topics and h3 subsections while preserving the old IDs. New labels use `reading-block` or `reference-note`, with `reading-label` for the short title. Only adjacent plain blocks belong in a `reading-grid`. Keep actual instructions out of `source-note`, or add `guide-note` when an existing source-note paragraph must stay visible.
 
 Add a page to `PAGES` in `build.py` and create its body in `src/content/`. Put images in `src/img/` and sound clips in `src/audio/`; the builder copies these into the matching `docs/` directories.
 
-## Current reference review
+## Earlier baseline reference review
 
 The medication, rhythm, settings and medical-menu references were updated against ACM Extended commit `eabd2f2e88fba4754d81bda8543b81303a72964d`:
 
@@ -75,7 +91,7 @@ The other system articles remain available with a review notice. Remove an artic
 ## September 14 update
 
 - Shared medication-card palette across headings, panels, tables, navigation and links
-- Gold page and section titles, quiet metric labels, spaced paragraphs and `>` disclosure markers
+- Cream page and section titles, quiet metric labels, spaced paragraphs and `>` disclosure markers
 - New obtundation and blast-overpressure references with code-backed thresholds and treatment nuances
 - Ketamine nystagmus conditions and fracture-pressure awakening added with cross-links
 - Head injury, airway, ventilator and accessibility articles rewritten for quick reference
@@ -100,7 +116,7 @@ The existing `paa2png.py` supports the DXT5 workflow documented in its source an
 
 ## Visual update and IV guide
 
-The shared palette uses charcoal backgrounds, navy panels, gold headings, blue links and cream labels. Glossary terms inherit their surrounding text color and use subtle rectangular outlines, a filling underline and a short popup fade. Pages expand to the available browser width; wide tables scroll within their own container on small screens.
+The shared palette uses charcoal backgrounds, navy panels, cream headings, blue links and cream labels. Glossary terms inherit their surrounding text color and use subtle rectangular outlines, a filling underline and a short popup fade. Pages expand to the available browser width; wide tables scroll within their own container on small screens.
 
 The medication page includes 21 original vial images. The access page presents the 15 original IV frames in six fading scenes, each held for seven seconds. Frames 01–06 play as one advancing motion and frames 07–11 play as one threading motion. Both use brief crossfades; a thin progress line shows the remaining scene time. Previous/next buttons, keyboard navigation, a stage selector, pause and show-all remain available. Reduced-motion starts paused; without JavaScript all scenes are visible. The unused LINE instruction is omitted. Slideshow controls belong to the website; game inputs appear in the captions and controls table.
 
@@ -134,7 +150,7 @@ The access article has 18 searchable infusion guides linked from all 19 preparat
 
 Medication illustrations now cover all 33 cards. Hyaluronidase and phentolamine use the shared icon configured by the mod, with clear captions identifying the mismatch in the printed vial label. Dimercaprol has a prominent owner-requested unavailable notice; its legacy artwork and curve remain labeled as legacy data.
 
-Ventilator Settings & Tips now contains the complete ketamine nystagmus explanation. Old incoming links remain usable. The ketamine IM induction example uses the current 4.375 mg/kg calibration, and the norepinephrine dilution includes the injected volume (4 mg in 254 mL, about 15.75 mcg/mL). Small headings, medication fields, table headers and popup titles share the gold title color.
+Ventilator Settings & Tips now contains the complete ketamine nystagmus explanation. Old incoming links remain usable. The ketamine IM induction example uses the current 4.375 mg/kg calibration, and the norepinephrine dilution includes the injected volume (4 mg in 254 mL, about 15.75 mcg/mL). Small headings, medication fields, table headers and popup titles share the cream title color.
 
 These changes were reviewed at `488a5e54efd10e5289245bcb2f7db7a40bbabcb0`; other content retains its individual source review dates. The new browser suite checks filtering, dose links, original images, heading colors, moved guidance and the static fallback.
 
@@ -183,8 +199,21 @@ The sources for this update are pinned to ACM Extended dev `98d18bb3f60dc9be8cda
 
 The shared site version is 1.2.1. The settings reference separates 21 Hardcore switches, with defaults, setting scope and source-reviewed on/off comparisons. It distinguishes active changes from inherited controls that have limited or no additional effect in the current Extended runtime. These additions follow ACM Extended dev `bc90fc7661fa6612cef5f4382f3b181fd5868f11`. Other article sections retain their stated review pins.
 
-`src/hardcore_medications.py` supplies the 14 suggested IV/IO push times, a linked note on each affected medication card and the full slow-push guide in IV access. The guide covers current target volume, 1–300 second selection, compound defaults, incremental Stop Push, 0.01 mL retention, continuous flow with menus closed, the corner syringe, restart behavior, distance/vehicle constraints and flush consolidation. `src/hardcore-reference.css` uses the existing dark/gold hierarchy and responsive cards.
+`src/hardcore_medications.py` supplies the 14 suggested IV/IO push times, a linked note on each affected medication card and the full slow-push guide in IV access. The guide covers current target volume, 1–300 second selection, compound defaults, incremental Stop Push, 0.01 mL retention, continuous flow with menus closed, the corner syringe, restart behavior, distance/vehicle constraints and flush consolidation. `src/hardcore-reference.css` uses the existing dark/cream hierarchy and responsive cards.
 
 The current code keeps actual infusion-rate effects and concentration accumulation active with Hardcore Medications off. The switch changes manual bolus timing, enables persistent incremental IV/IO pushing and adds rapid-push loads. Normal-mode custom bolus windows are separate from the visible timer and the listed Hardcore defaults. The infusion JSON records this newer mode review without changing the validated concentration equations or older baseline review. IM retains its original administration path.
 
 Defaults are not no-risk limits: they apply to the current target volume, so medication mass and concentration still matter. For example, 150 mg amiodarone over its 300-second default delivers 30 mg/min, above the unchanged 25 mg/min fast-rate threshold. The website documents this source behavior; it does not change the mod runtime.
+
+
+## September 15 readability and graph update
+
+* Cream page titles, section headings, medication fields, infusion headings, Hardcore notes and sidebar branding
+* Underlined links have a subtle blue background, a stronger hover state and a visible keyboard focus outline
+* Graph inspection markers keep an 11 px screen diameter on scaled charts, with a cream outline
+* Medication and physiology charts preserve touch selections when the finger leaves the screen
+* Multi-curve markers remain above their readout boxes; access/fluid readouts choose the opposite side near the plot edge
+* Focusing an empty medication/physiology time field retains its validation message
+* The full source and rebuilt 28-page site are included; the public version remains 1.2.1
+
+This update starts from the September 14 website ZIP (revision 12). Game equations, doses and article source revisions are unchanged. See DEPLOY.md for the PowerShell publishing steps and this handoff's validation scope. The existing GitHub Pages source remains main, /docs.

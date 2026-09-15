@@ -442,7 +442,7 @@ footer .brand{color:var(--cream)}
 /* Special considerations: what this addon does differently. Amber left edge marks it as the
    modelled behaviour rather than the general pharmacology above it. */
 .drug .sect.special{border-left:3px solid var(--amber);background:rgba(var(--amber-rgb),.05)}
-.drug .sect.special h4{color:var(--amber)}
+.drug .sect.special h4{color:var(--cream)}
 .drug .sect p{font-size:14px}
 .drug .sect ul{list-style:none;font-size:14px}
 .drug .sect li{padding-left:14px;position:relative;margin-top:3px}
@@ -961,19 +961,20 @@ table.hemorrhage-classes th:nth-child(3),table.hemorrhage-classes td:nth-child(3
 .gl[role="button"]{display:inline;font:inherit;text-transform:inherit;letter-spacing:inherit;padding:0;white-space:normal}
 @media print{.chart-inspector,.chart-cursor{display:none!important}.med-card-grid>.drug,.med-card-grid .med-facts{display:block}.med-fact{min-height:0}.gl{border:0;background:none;color:inherit}}
 
-/* Shared palette: charcoal, navy, gold, blue and cream. */
+/* Shared palette: charcoal and navy surfaces, cream headings, blue links. */
 @media screen {
  :root{--navy:#090e13;--navy-2:#111b26;--med-surface:#111d29;--med-head:#162637;--surface-key:var(--med-head);--cream:#f2e8d2;--body-ink:#c6d6e2;--cream-dim:#a9becf;--amber:#f1bd59;--amber-dim:#d6ad62;--amber-rgb:241,189,89;--accent:#39bde9;--link-ink:#8dcdff;--rule-2:#344c60;--rule:rgba(118,169,205,.22)}
  html.night{--navy:#05080c;--navy-2:#0b141d;--med-surface:#0d1721;--med-head:#122131;--surface-key:var(--med-head)}
- h1,h2,h3,.card .name,.drug .dn,.dd-name,.side .brand-text,.sb-cur,.guide-link strong{color:var(--amber)}
+ h1,h2,h3,.card .name,.drug .dn,.dd-name,.side .brand-text,.sb-cur,.guide-link strong{color:var(--cream)}
  h4,.pk .v,.sgrid .sv,.sgrid .s.key .sv,.icard .treat b,.danger-zone .dz b{color:var(--cream)}
  .side,.mbar{background:var(--navy-2)}
  .card,.principle,details.dd,.ref-calculator,.guide-link,.formula,.glpop-in,.tb-panel,.secbar,.sgrid,.icard{background:var(--med-surface)}
  .card>header,.drug>header,table.t thead th,.chart-inspector,.sb-list,.grid .cell,.sgrid .s.key,.med-card-grid .drug>header{background:var(--med-head)}
  .reference-chart,figure.wave{background:var(--navy)}
  .article-status{background:var(--med-surface);color:var(--cream-dim);border-color:var(--rule-2)}
- .main a[href]:not(.gl){color:var(--link-ink);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em}
- .main a[href]:not(.gl):hover{color:var(--cream);background:var(--med-head)}
+ .main a[href]:not(.gl){color:var(--link-ink);background-color:rgba(141,205,255,.08);border-radius:.15rem;box-decoration-break:clone;-webkit-box-decoration-break:clone;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em}
+ .main a[href]:not(.gl):hover,.main a[href]:not(.gl):focus-visible{color:var(--cream);background-color:rgba(141,205,255,.16);text-decoration-thickness:2px}
+ .main a[href]:not(.gl):focus-visible{outline:2px solid var(--link-ink);outline-offset:3px}
  .main .med-index a{padding:.65rem .8rem;border:1px solid var(--rule-2);border-radius:.4rem;background:var(--med-surface)}
  .main .guide-link{color:var(--body-ink)}
  .nav a.on,.nav .subnav a.on{color:var(--amber);background:var(--med-head);border-left-color:var(--amber)}
@@ -1048,7 +1049,7 @@ details.dd[open] .dd-mark{transform:rotate(90deg)}
 .iv-art{height:430px;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#1a2b3a 0%,transparent 70%)}
 .iv-art img{height:100%;width:auto;max-width:100%;object-fit:contain}
 .iv-slide figcaption{font:inherit;letter-spacing:normal;text-transform:none;color:var(--body-ink)}
-.iv-slide h3{font-size:clamp(1.4rem,2.3vw,2rem);margin:.25rem 0 1rem;color:var(--amber)}
+.iv-slide :is(h3,h4){font-size:clamp(1.4rem,2.3vw,2rem);margin:.25rem 0 1rem;color:var(--cream)}
 .iv-slide .step-count{font-size:.8rem;letter-spacing:.12em;color:var(--accent)}
 .iv-control{display:inline-block;border:1px solid var(--rule-2);padding:.35rem .65rem;border-radius:.25rem;background:var(--med-head);color:var(--cream);font-weight:650}
 .iv-note{border-left:2px solid var(--accent);padding-left:1rem;color:var(--cream-dim);font-size:.95rem}
@@ -1065,7 +1066,7 @@ details.dd[open] .dd-mark{transform:rotate(90deg)}
  .slideshow-controls,.slide-status,[data-slide-hint]{display:none!important}
  .iv-slide,.iv-slide[hidden]{display:grid!important;grid-template-columns:130px 1fr;break-inside:avoid;background:white;color:#111}
  .iv-art{height:220px;background:none}
- .iv-slide h3,.iv-slide p,.iv-slide figcaption{color:#111}
+ .iv-slide :is(h3,h4),.iv-slide p,.iv-slide figcaption{color:#111}
  .iv-control{background:white;color:#111}
 }
 

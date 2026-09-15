@@ -127,6 +127,17 @@ form.addEventListener("input",update);form.addEventListener("change",update);for
   }
   api.medicationEffect = medicationEffect;
   const pretty=(v,d=2)=>new Intl.NumberFormat(undefined,{maximumFractionDigits:d}).format(v);
+  // Keep the inspection markers readable as SVG charts shrink on phones.
+  api.sizeChartMarkers=(svg,dots)=>{
+    const matrix=svg.getScreenCTM();
+    const scale=matrix?Math.hypot(matrix.a,matrix.b):1;
+    const radius=5.5/(Number.isFinite(scale)&&scale>0?scale:1);
+    dots.forEach(dot=>{
+      dot.setAttribute("r",radius);
+      dot.setAttribute("stroke","#f2e8d2");
+      dot.setAttribute("vector-effect","non-scaling-stroke");
+    });
+  };
   const configs={
     "hemorrhage-delivery":{min:0,max:50,ymax:125,label:"Blood loss",unit:"%",names:["SV / DO₂ at HR 75","DO₂ at HR 120"],
       values:x=>[100*(1-x/100)**1.6,124*(1-x/100)**1.6]},
@@ -157,7 +168,7 @@ form.addEventListener("input",update);form.addEventListener("change",update);for
     group.append(guide);
     const dots=lines.map(line=>{
       const dot=document.createElementNS(ns,"circle");
-      for(const[k,v]of Object.entries({r:5,fill:line.getAttribute("stroke"),stroke:"#0b1119","stroke-width":2}))dot.setAttribute(k,v);
+      for(const[k,v]of Object.entries({r:5.5,fill:line.getAttribute("stroke"),stroke:"#f2e8d2","stroke-width":2}))dot.setAttribute(k,v);
       group.append(dot);return dot;
     });
     
@@ -168,6 +179,8 @@ form.addEventListener("input",update);form.addEventListener("change",update);for
     const bubbleText=document.createElementNS(ns,"text");
     for(const[k,v]of Object.entries({x:10,y:18,fill:"#f2e8d2","font-size":13}))bubbleText.setAttribute(k,v);
     bubble.append(bubbleText);group.append(bubble);
+    // Draw every curve marker above the readout box on charts with several lines.
+    dots.forEach(dot=>group.append(dot));
     svg.append(group);svg.classList.add("chart-interactive");
     const panel=document.createElement("div");panel.className="chart-inspector";panel.dataset.noGlossary="";
     const label=document.createElement("label"),input=document.createElement("input"),readout=document.createElement("output");
@@ -180,6 +193,7 @@ form.addEventListener("input",update);form.addEventListener("change",update);for
       const values=cfg.values(x),px=left+(x-cfg.min)/(cfg.max-cfg.min)*(right-left);
       guide.setAttribute("x1",px);guide.setAttribute("x2",px);
       values.forEach((v,i)=>{dots[i].setAttribute("cx",px);dots[i].setAttribute("cy",bottom-v/cfg.ymax*(bottom-top));});
+      api.sizeChartMarkers(svg,dots);
       group.style.display="";
       if(fromPointer)input.value=String(Number(x.toFixed(med?3:2)));
       readout.replaceChildren();
@@ -211,8 +225,8 @@ form.addEventListener("input",update);form.addEventListener("change",update);for
     }
     svg.addEventListener("pointermove",locate);
     svg.addEventListener("pointerdown",locate);
-    svg.addEventListener("pointerleave",()=>{group.style.display="none";});
-    input.addEventListener("focus",()=>render(Number(input.value)));
+    svg.addEventListener("pointerleave",event=>{if(event.pointerType!=="touch")group.style.display="none";});
+    input.addEventListener("focus",()=>render(input.value.trim()===""?NaN:Number(input.value)));
     render(cfg.min);group.style.display="none";
   });
 })();

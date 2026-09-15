@@ -89,7 +89,7 @@ try {
   assert.equal(await page.locator('.drug').count(), 33);
   assert.equal(await page.locator('.med-vial').count(), 33);
   assert.equal(await page.locator('#q').getAttribute('placeholder'), 'Search the wiki');
-  assert.equal(await page.locator('h1').evaluate(element => getComputedStyle(element).color), 'rgb(241, 189, 89)');
+  assert.equal(await page.locator('h1').evaluate(element => getComputedStyle(element).color), 'rgb(242, 232, 210)');
   await checkInheritedTermColor(page.locator('.gl').first());
   await checkChartPointer(page.locator('figure.med-curve').first());
 

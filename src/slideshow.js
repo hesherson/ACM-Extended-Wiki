@@ -71,7 +71,7 @@
       play.setAttribute('aria-pressed', String(!paused));
       status.setAttribute('aria-live', announce ? 'polite' : 'off');
       status.textContent = showAll ? 'All ' + slides.length + ' stages shown.' :
-        'Stage ' + (index + 1) + ' of ' + slides.length + ': ' + slides[index].querySelector('h3').textContent;
+        'Stage ' + (index + 1) + ' of ' + slides.length + ': ' + slides[index].querySelector('h3,h4').textContent;
     }
     function change(value, manual = true, carry = 0) {
       clearTimeout(fadeTimer);

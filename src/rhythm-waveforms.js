@@ -154,6 +154,7 @@
       const y = plot.baseline + result.value * plot.scale;
       guide.setAttribute('x1', x); guide.setAttribute('x2', x);
       dot.setAttribute('cx', x); dot.setAttribute('cy', y);
+      api.sizeChartMarkers(svg, [dot]);
       dot.dataset.time = time; dot.dataset.deflection = result.deflection;
       const label = 'Time: ' + time.toFixed(2) + ' s';
       const value = 'Deflection: ' + (result.deflection > 0 ? '+' : '') + result.deflection.toFixed(1) + ' relative units';

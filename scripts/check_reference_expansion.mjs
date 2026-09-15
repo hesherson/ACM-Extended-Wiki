@@ -30,10 +30,10 @@ try{
  assert.deepEqual(await language.locator('option').evaluateAll(options=>options.map(option=>option.value)),['en-US','en-GB','de','fr','es','ru']);
  await language.selectOption('en-GB');await page.locator('[data-language-apply]').click();
  assert.equal(await page.locator('html').getAttribute('lang'),'en-GB');
- assert((await page.locator('h2#spo2-and-poor-perfusion').textContent()).includes('hypovolaemia'));
+ assert((await page.locator('#spo2-and-poor-perfusion').textContent()).includes('hypovolaemia'));
  await language.selectOption('en-US');await page.locator('[data-language-apply]').click();
  assert.equal(await page.locator('html').getAttribute('lang'),'en-US');
- assert((await page.locator('h2#spo2-and-poor-perfusion').textContent()).includes('hypovolemia'));
+ assert((await page.locator('#spo2-and-poor-perfusion').textContent()).includes('hypovolemia'));
  await language.selectOption('de');assert(await page.locator('[data-language-apply]').isDisabled(),'Local preview must not claim to translate unpublished content');
  assert((await page.locator('[data-language-note]').textContent()).includes('published website'));
 

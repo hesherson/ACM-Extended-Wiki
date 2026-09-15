@@ -1,11 +1,11 @@
 .mixture-guide{min-width:0;overflow-wrap:anywhere}
 .mixture-guide [hidden]{display:none!important}
 .mixture-picker{display:flex;align-items:center;gap:.7rem 1.2rem;flex-wrap:wrap;padding:1rem;border:1px solid var(--rule);border-radius:.4rem;background:var(--med-head);margin:1.2rem 0}
-.mixture-guide label,.mixture-guide h3,.mixture-guide h4,.mixture-total>b,.mixture-tag>b,.mixture-figure b{color:var(--amber)}
+.mixture-guide label,.mixture-guide h3,.mixture-guide :is(h4,h5),.mixture-total>b,.mixture-tag>b,.mixture-figure b{color:var(--cream)}
 .mixture-picker label{font-weight:600;flex:0 1 15rem;min-width:0;margin:0}
 .mixture-picker select{flex:1 1 18rem;min-width:0;max-width:100%;min-height:44px;padding:.6rem;font:inherit}
 .mixture-recipe{padding:1.3rem;border:1px solid var(--rule);border-radius:.45rem;background:var(--med-head);margin:1.2rem 0;scroll-margin-top:7rem;min-width:0}
-.mixture-recipe-header h3{margin:0;font-size:1.45rem;line-height:1.35}
+.mixture-recipe-header :is(h3,h4){margin:0;font-size:1.45rem;line-height:1.35}
 .mixture-recipe-header p{margin:.35rem 0 1rem;font-size:.9rem;color:var(--cream-dim)}
 .mixture-stocks{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr));gap:.8rem;margin:1rem 0 1.3rem;padding:0;list-style:none}
 .mixture-stocks li{padding:.8rem 1rem;border-left:2px solid var(--rule-2);background:var(--navy);min-width:0}
@@ -35,8 +35,8 @@
 .mixture-guide button:focus-visible,.mixture-guide input:focus-visible,.mixture-guide select:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
 .mixture-steps{margin:0;padding:0;list-style:none}
 .mixture-step{padding:.1rem 0 .2rem .9rem;border-left:2px solid var(--rule-2);margin:0 0 1rem;min-width:0}
-.mixture-step h4{font-size:1.05rem;line-height:1.5;margin:.15rem 0 .5rem}
-.mixture-step h4>span{font-size:.8rem;color:var(--cream-dim);padding-right:.35rem;font-variant-numeric:tabular-nums}
+.mixture-step :is(h4,h5){font-size:1.05rem;line-height:1.5;margin:.15rem 0 .5rem}
+.mixture-step :is(h4,h5)>span{font-size:.8rem;color:var(--cream-dim);padding-right:.35rem;font-variant-numeric:tabular-nums}
 .mixture-step p{margin:.4rem 0;font-size:.95rem;line-height:1.7}
 .mixture-step-controls{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.6rem;margin:1rem 0}
 .mixture-step-controls>span{font-size:.85rem;color:var(--cream-dim)}
@@ -46,7 +46,7 @@
 .mixture-tag>div{padding:.6rem .8rem;border:1px solid var(--rule-2);border-top:5px solid #070b10;background:var(--navy);color:var(--cream);font-variant-numeric:tabular-nums;max-width:100%}
 .mixture-tag span{display:block;line-height:1.6}
 .mixture-preview{border-top:1px solid var(--rule);margin:1.2rem 0 0;padding:1.1rem 0 0}
-.mixture-preview h4{font-size:1.1rem;margin:0 0 .8rem}
+.mixture-preview :is(h4,h5){font-size:1.1rem;margin:0 0 .8rem}
 .mixture-interactive{max-width:38rem}
 .mixture-interactive label{display:block;font-size:.9rem;margin:0 0 .4rem}
 .mixture-guide .mixture-interactive input[type=number]{width:9rem;max-width:100%;min-height:44px;padding:.6rem;border:1px solid var(--rule-2);border-radius:.3rem;background:var(--navy);color:var(--cream);font:inherit}
@@ -65,11 +65,11 @@
 .mixture-interactions{margin:1.5rem 0}
 .mixture-effect-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
 .mixture-effect-grid article{min-width:0;padding:.7rem 1rem;border-left:2px solid var(--rule-2);background:var(--med-head)}
-.mixture-effect-grid h4{font-size:1.05rem;line-height:1.5;margin:0 0 .65rem}
+.mixture-effect-grid :is(h4,h5){font-size:1.05rem;line-height:1.5;margin:0 0 .65rem}
 .mixture-effect-grid p{font-size:.93rem;line-height:1.65;margin:.65rem 0}
 .mixture-guide .source-note{font-size:.78rem;line-height:1.9}
 @media(max-width:760px){.mixture-recipe{padding:1rem}.mixture-workbench{grid-template-columns:1fr}.mixture-figure{display:grid;grid-template-columns:76px minmax(0,1fr);gap:.6rem;align-items:center}.mixture-figure figcaption{text-align:left}.mixture-syringe-window{width:76px}.mixture-effect-grid{grid-template-columns:1fr}.mixture-step-controls>span{flex:1 1 100%;order:3;text-align:center}}
 @media(max-width:480px){.mixture-figure{display:block}.mixture-figure figcaption{text-align:center}.mixture-syringe-window{width:60px}}
 @media(max-width:380px){.mixture-recipe{padding:.75rem}.mixture-step-controls button{flex:1 1 7rem}.mixture-step-controls{justify-content:start}}
 @media(prefers-reduced-motion:reduce){.mixture-liquid,.mixture-plunger{transition:none}}
-@media print{.mixture-guide .mixture-recipe[hidden],.mixture-guide .mixture-step[hidden]{display:block!important}.mixture-guide .mixture-picker,.mixture-guide .mixture-step-picker,.mixture-guide .mixture-step-controls,.mixture-guide .mixture-interactive,.mixture-guide .mixture-figure{display:none!important}.mixture-recipe,.mixture-effect-grid article,.mixture-total,.mixture-tag>div,.mixture-caution,.mixture-output>div,.mixture-stocks li{background:white;color:#111}.mixture-workbench{display:block}.mixture-recipe{break-before:auto;break-inside:auto}.mixture-step,.mixture-stocks li,.mixture-effect-grid article{break-inside:avoid}.mixture-guide h3,.mixture-guide h4,.mixture-guide b,.mixture-guide strong,.mixture-guide span,.mixture-guide small{color:#111}.mixture-effect-grid{display:block}.mixture-stocks{grid-template-columns:repeat(2,minmax(0,1fr))}.mixture-guide .mixture-output{display:none}.mixture-guide .mixture-preview-note{color:#333}}
+@media print{.mixture-guide .mixture-recipe[hidden],.mixture-guide .mixture-step[hidden]{display:block!important}.mixture-guide .mixture-picker,.mixture-guide .mixture-step-picker,.mixture-guide .mixture-step-controls,.mixture-guide .mixture-interactive,.mixture-guide .mixture-figure{display:none!important}.mixture-recipe,.mixture-effect-grid article,.mixture-total,.mixture-tag>div,.mixture-caution,.mixture-output>div,.mixture-stocks li{background:white;color:#111}.mixture-workbench{display:block}.mixture-recipe{break-before:auto;break-inside:auto}.mixture-step,.mixture-stocks li,.mixture-effect-grid article{break-inside:avoid}.mixture-guide h3,.mixture-guide :is(h4,h5),.mixture-guide b,.mixture-guide strong,.mixture-guide span,.mixture-guide small{color:#111}.mixture-effect-grid{display:block}.mixture-stocks{grid-template-columns:repeat(2,minmax(0,1fr))}.mixture-guide .mixture-output{display:none}.mixture-guide .mixture-preview-note{color:#333}}
