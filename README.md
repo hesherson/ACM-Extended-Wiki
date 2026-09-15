@@ -4,6 +4,10 @@ Latest package: September 15, 2026. See [DEPLOY.md](DEPLOY.md) for deployment co
 
 Static reference site for ACM Extended. The existing Python builder produces self-contained HTML pages in `docs/`, with offline search, inline styles and inline browser scripts.
 
+## Calcium and blood transfusion update
+
+The Fluids & blood volume article now explains calcium timing around the first and fourth units, controlled chloride/gluconate delivery, the separate 50 mL HR and 1 L additional-deficit thresholds, burden clearance and remaining credit. Both medication cards, infusion guides and the bleeding summary link to it. The full 3 g gluconate / 120 s Hardcore rate hazard is explicit. The current review distinguishes main `5416332` from dev `a9ae90c`; see [CALCIUM-REVIEW.md](CALCIUM-REVIEW.md) for sources and validation. The dark palette and reading layout are retained.
+
 ## Dark palette and title correction
 
 The palette uses the earlier charcoal background (`#090E13`) and navy surfaces (`#111B26`, `#111D29`, `#162637`), with cream body text (`#F2E8D2`) and the original yellow titles (`#F1BD59`). Secondary text uses a muted cream. The new information blocks and link highlights share the dark surface colors, and the selected subsection uses yellow. The grouped layout, article content, graph markers and blue links are retained. Screen palette variables are defined together in `src/_pillar.css`; print colors remain separate.

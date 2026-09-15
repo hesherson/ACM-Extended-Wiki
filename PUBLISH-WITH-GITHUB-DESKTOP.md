@@ -10,7 +10,7 @@ The ZIP includes the rebuilt site in `docs`, the editable source and the build s
 4. Extract this ZIP somewhere else. Copy the contents of its `ACM-Extended-Wiki` folder into the repository folder. Replace matching files. `build.py`, `src` and `docs` belong directly inside the repository, not inside a second nested folder.
 5. Delete `docs/ov_traps.html` if that retired page remains from an older build. The source copy is no longer part of the published site.
 6. Open `docs/index.html` in a browser. Check the grouped IV access, airway, ventilator and Settings pages on desktop and at phone width. Try the section menu, IV slideshow and a copy-section link. Check Printable charts in the A4 or US Letter preview.
-7. Return to GitHub Desktop. Review **Changes**, enter `Restore dark wiki palette and yellow headings`, click **Commit to main**, then **Push origin**.
+7. Return to GitHub Desktop. Review **Changes**, enter `Explain ACME calcium timing during transfusion`, click **Commit to main**, then **Push origin**.
 8. On GitHub, check the **Actions** tab for the wiki checks and Pages deployment. Wait for deployment to finish before refreshing the live site.
 
 The repository's documented publishing source is **Settings > Pages > Deploy from a branch > main > /docs**. Keep that source. Uploading the ZIP file itself does not update the website; publish its extracted contents.
@@ -48,8 +48,8 @@ From the repository folder, after copying the update:
 ```powershell
 git status
 git diff --check
-git add build.py paa2png.py src docs scripts .github README.md BUILD-WIKI.cmd MOD-ASSET-SOURCES.md PUBLISH-WITH-GITHUB-DESKTOP.md DEPLOY.md SOURCE-REVIEW.md
-git commit -m "Restore dark wiki palette and yellow headings"
+git add build.py paa2png.py src docs scripts .github README.md BUILD-WIKI.cmd MOD-ASSET-SOURCES.md PUBLISH-WITH-GITHUB-DESKTOP.md DEPLOY.md SOURCE-REVIEW.md CALCIUM-REVIEW.md
+git commit -m "Explain ACME calcium timing during transfusion"
 git push origin main
 ```
 

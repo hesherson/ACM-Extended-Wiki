@@ -71,12 +71,12 @@
 <article class="icard">
 <header><span class="iname">Ionised calcium</span><span class="bdg recruit">Directly treatable</span></header>
 <div class="sgrid">
-<div class="s key"><div class="sk">Threshold</div><div class="sv">1.0</div></div>
+<div class="s key"><div class="sk">Extra deficit starts above</div><div class="sv">1.0 L<small>uncleared blood burden</small></div></div>
 <div class="s"><div class="sk">Worst case</div><div class="sv">1.4x<small>bleeding</small></div></div>
 <div class="s danger"><div class="sk">Citrate cost</div><div class="sv">0.18<small>per litre</small></div></div>
 <div class="s"><div class="sk">CaCl credit</div><div class="sv">0.12<small>per gram</small></div></div>
 </div>
-<p class="treat">Also costs up to <b>40 mmHg of MAP</b> per unit below threshold, so you lose clotting and cardiac output together. Give calcium early in a massive transfusion rather than reactively.</p>
+<p class="treat">The additional calcium deficit starts above <b>1 L of uncleared transfusion burden</b>. Its default normalized floor of 0.55 produces a maximum <b>18 mmHg pressure-suppression target</b> through the circulation model, plus up to <b>1.4× bleeding</b>. The separate native HR-target penalty starts above <b>50 mL</b>. See <a href="fluids.html#calcium-during-transfusion">first/fourth-unit calcium timing, controlled delivery and recovery</a>.</p>
 <div class="resp">
 <div class="resp-h">What a transfusion does<span class="cols">without calcium</span></div>
 <div class="rrow is-good"><span class="lab">Volume</span><span class="bar"><i style="width:92%"></i></span><span class="num">restored</span></div>
@@ -88,7 +88,7 @@
 <h3>Red Flags</h3>
 <ul>
 <li><b>Chasing a normal blood pressure with uncontrolled bleeding.</b> You will pop clots you had already formed.</li>
-<li><b>Transfusing without calcium.</b> Each unit costs ionised calcium, which costs clotting and myocardial function.</li>
+<li><b>Transfusing without calcium.</b> Uncleared blood burden first suppresses the native HR target; above the additional deficit threshold it also worsens bleeding, pressure and pressor response. <a href="fluids.html#calcium-untreated-transfusion-effects">Compare the first four units.</a></li>
 <li><b>Treating hypothermia as a comfort problem.</b> Cold blood does not clot, and the effect multiplies with the other two legs.</li>
 <li><b>A heart rate that is falling on its own.</b> The compensation is failing, and arrest usually follows.</li>
 <li><b>Head injury plus hemorrhage.</b> Follow oxygen delivery and the injury’s pressure requirements together. Severe structural TBI needs CPP at least 55 mmHg; critical structural TBI needs at least 60 mmHg. Normal SpO₂ does not establish adequate brain perfusion.</li>

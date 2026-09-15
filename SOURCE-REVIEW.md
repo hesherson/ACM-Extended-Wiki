@@ -2,7 +2,7 @@
 
 Inventory date: 15 September 2026. This accompanies the reading layout update; the website version remains 1.2.1.
 
-This is an inventory of the ACM Extended commit links already present in the 28 built articles, not a fresh validation of the mod. Article text, dose data, equations, existing links and source pins are unchanged in this update. Source notes are now optional disclosures; the IV slideshow instructions remain beside its controls.
+The original inventory accompanied the reading layout update. The later calcium reference was checked against main 5416332 and dev a9ae90c on 15 September 2026; see CALCIUM-REVIEW.md. Other articles retain their existing reviews. Source notes are optional disclosures; the IV slideshow instructions remain beside its controls.
 
 ## What still needs source review
 
@@ -10,7 +10,7 @@ The articles cite different snapshots. A page can intentionally use several revi
 
 The saved website identifies dev revision `bc90fc7661fa6612cef5f4382f3b181fd5868f11` for Hardcore medication behavior and dev revision `98d18bb3f60dc9be8cdaf4a43419bb57483c3a3f` for B119 TBI and the infusion/mixture models. Those are historical review statements from the package; this update does not establish the current main or dev branch head.
 
-A current ACM Extended repository read was unavailable in this session. The supplied ACM, ACE3 and Animate source archives do not establish the current ACM Extended fork revision. A future content audit should retrieve the actual current fork and compare each reviewed subsystem before changing any in-game value.
+A current ACM Extended repository read was unavailable during the earlier layout work. Repository access became available for the later calcium review documented in CALCIUM-REVIEW.md. The supplied ACM, ACE3 and Animate source archives do not establish the current ACM Extended fork revision. A future content audit should retrieve the actual current fork and compare each reviewed subsystem before changing any in-game value.
 
 Recommended review order:
 
@@ -21,10 +21,12 @@ Recommended review order:
 
 ## Pins found in article links
 
-10 distinct commit pins appear across 22 pages. Asset and behavioral review links are both counted.
+12 distinct commit pins appear across 22 pages. Asset and behavioral review links are both counted.
 
 | Commit | Pages containing a link to it |
 | --- | --- |
+| [5416332](https://github.com/hesherson/ACM-Extended/commit/5416332cf899f11f5170c9bcb9768edabb8827e5) | [Fluids & blood volume: calcium](docs/fluids.html#calcium-during-transfusion) |
+| [a9ae90c](https://github.com/hesherson/ACM-Extended/commit/a9ae90c9abd448844861f16747f4b29e7ac3d510) | [Fluids & blood volume: calcium](docs/fluids.html#calcium-main-and-hardcore) |
 | [21f8694](https://github.com/hesherson/ACM-Extended/commit/21f86948b8a03507146297742ea84983987d5be1) | [IV access & infusions](docs/access.html), [Airway and chest](docs/airway.html), [Blast overpressure](docs/blast.html), [Debug menu reference](docs/debug.html), [Oxygen delivery](docs/oxygen.html), [Ventilator Settings & Tips](docs/ventilator.html), [Zeus Modules](docs/zeus.html) |
 | [302b811](https://github.com/hesherson/ACM-Extended/commit/302b811ba90b4e2347b5614b8c74fb41b5442245) | [Bleeding and shock](docs/bleeding.html), [Oxygen delivery](docs/oxygen.html) |
 | [4848f63](https://github.com/hesherson/ACM-Extended/commit/4848f63b200a45362eb576dcef469484202b6a80) | [Accessibility](docs/accessibility.html), [Airway and chest](docs/airway.html), [Blast overpressure](docs/blast.html), [ACM Extended Wiki](docs/index.html), [Obtunded states](docs/obtunded.html), [Traumatic brain injury](docs/tbi.html), [Ventilator Settings & Tips](docs/ventilator.html) |
@@ -51,6 +53,6 @@ These pages may draw on other articles, generated definitions or the site review
 
 - Compared every built article with the preceding website package, excluding the new labels, topic headings and navigation. Original article text, all 899 existing article anchors, links, images, 161 tables and 137 form/button controls were preserved.
 - The independent build comparison and HTML structure checks pass on all 28 pages. The structure check rejects wrapper crossings and newly nested source disclosures.
-- Search indexes 332 records. Both page navigation surfaces include parent topics and marked subsections; the older subsection anchors remain valid.
+- The layout update indexed 332 records; the calcium addition brings this to 339. Both page navigation surfaces include parent topics and marked subsections; the older subsection anchors remain valid.
 - Browser preview was blocked by the available browser security policy. A fresh visual, mobile, clipboard and browser-interaction pass remains outstanding. The seven existing browser suites remain in the GitHub workflow; their heading selectors were adjusted where this hierarchy changed.
 - This package has not been pushed or deployed from this session.

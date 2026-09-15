@@ -202,7 +202,7 @@
       "reference": "<b>1 g</b> is the native replacement reference. One slow arithmetic example is 1 g over 10 min = <b>100 mg/min of calcium chloride</b>, or 27.3 mg/min elemental calcium. The model’s elemental fraction is 0.273.",
       "caution": "Sustained delivery above about <b>219.8 mg/min of the salt</b> can eventually exceed the modeled excess-calcium threshold, even before a fast-rate penalty appears. This derives from 60 mg/min elemental calcium and assumes no previous excess. Stop when the intended replacement is delivered.",
       "danger": "Fast-rate toxicity begins above about <b>366.3 mg/min of salt</b> and reaches full depth near <b>1,025.6 mg/min</b>. Independently, the excess-calcium proxy enters toxicity above <b>1 mg/dL</b> and reaches full depth at <b>4 mg/dL</b>. The worse of the rate and accumulation effects applies; severe bradycardia and arrest are possible.",
-      "watch": "Track cumulative calcium, transfusion context, pressure, rhythm and IV site integrity. Calcium gluconate adds to the same elemental calcium burden. This is not the patient’s measured total serum calcium.",
+      "watch": "Track cumulative calcium, transfusion context, pressure, rhythm and IV site integrity. Calcium gluconate adds to the same elemental calcium burden. This is not the patient’s measured total serum calcium. For transfusion replacement, see <a href=\"fluids.html#calcium-first-and-fourth-unit\">first/fourth-unit timing</a> and the <a href=\"fluids.html#calcium-chloride-and-gluconate-rate\">1 g over 5 min example</a>.",
       "peak": "300 s native effect peak; toxicity has its own rate and accumulation timing.",
       "sources": [
         "drug",
@@ -223,7 +223,7 @@
       "reference": "<b>3 g</b> gives about 1 g of CaCl₂-equivalent replacement credit. Over 10 min, that is <b>300 mg/min of gluconate</b>, or 27.9 mg/min elemental calcium. The elemental fraction is 0.093.",
       "caution": "Sustained delivery above about <b>645.2 mg/min of the salt</b> can eventually exceed the modeled excess-calcium threshold from a zero starting excess. The gentler salt does not remove the shared accumulation risk.",
       "danger": "Fast-rate toxicity begins above about <b>1,075.3 mg/min of salt</b> and reaches full depth near <b>3,010.8 mg/min</b>. The same excess-calcium thresholds apply: above <b>1 mg/dL</b> enters toxicity, and <b>4 mg/dL</b> reaches full depth. Previous calcium chloride or gluconate reduces the remaining margin.",
-      "watch": "Use the correct salt concentration and count both salts. Reassess rhythm, pressure and site leakage; replacement credit and elemental toxicity use different conversions.",
+      "watch": "Use the correct salt concentration and count both salts. Reassess rhythm, pressure and site leakage; replacement credit and elemental toxicity use different conversions. <b>3 g over the 120 s Hardcore default delivers 139.5 mg/min elemental calcium</b>, above the 100 mg/min fast-rate onset. See the <a href=\"fluids.html#calcium-chloride-and-gluconate-rate\">3 g over 5 min example</a> and <a href=\"fluids.html#calcium-first-and-fourth-unit\">transfusion timing</a>.",
       "peak": "420 s native effect peak; toxicity uses a separate accumulator.",
       "sources": [
         "drug",
