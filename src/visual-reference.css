@@ -24,7 +24,7 @@
 .sec-head{margin-left:calc(-1 * clamp(.75rem,1.3vw,1.25rem) - 1px);padding-left:clamp(.75rem,1.3vw,1.25rem);border-left:2px solid var(--amber)}
 .quick-grid,.clinical-cards,.gauge-choice-grid,.sound-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,18rem),1fr));gap:1rem;margin:1.2rem 0 1.5rem;align-items:stretch}
 .quick-card,.clinical-card,.sound-card{min-width:0;padding:1.1rem 1.2rem;border:1px solid var(--rule-2);border-radius:.5rem;background:var(--med-surface)}
-.quick-card h3,.quick-card :is(h4,h5),.clinical-card h3,.clinical-card :is(h4,h5),.sound-card :is(h4,h5){margin:0 0 .65rem;color:var(--cream);font-family:inherit;font-size:1.15rem;line-height:1.4;text-transform:none}
+.quick-card h3,.quick-card :is(h4,h5),.clinical-card h3,.clinical-card :is(h4,h5),.sound-card :is(h4,h5){margin:0 0 .65rem;color:var(--amber);font-family:inherit;font-size:1.15rem;line-height:1.4;text-transform:none}
 .quick-card p,.clinical-card p,.sound-card p{margin:.5rem 0 0}
 .metric-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,11rem),1fr));gap:1px;margin:1.1rem 0;background:var(--rule);border:1px solid var(--rule);border-radius:.45rem;overflow:hidden}
 .metric{min-width:0;display:flex;flex-direction:column;gap:.4rem;padding:1rem;background:var(--med-head)}
@@ -34,7 +34,7 @@
 .vent-scenarios{grid-template-columns:minmax(0,1fr)}
 .vent-scenarios>.icard{margin:0;min-width:0}
 .icard>header{padding:1rem 1.2rem;background:var(--med-head);gap:.7rem;align-items:center;flex-wrap:wrap}
-.icard .iname{font:700 1.3rem/1.35 system-ui,sans-serif;color:var(--cream);text-transform:none;letter-spacing:normal}
+.icard .iname{font:700 1.3rem/1.35 system-ui,sans-serif;color:var(--amber);text-transform:none;letter-spacing:normal}
 .bdg{font:500 .75rem/1.3 system-ui,sans-serif;letter-spacing:normal;text-transform:none}
 .sgrid{grid-template-columns:repeat(2,minmax(0,1fr));background:var(--rule);gap:1px}
 .sgrid .s{min-width:0;padding:1rem;background:var(--med-surface)}

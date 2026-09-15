@@ -1,6 +1,6 @@
 .push-card-note{border-left:3px solid var(--amber-dim);background:var(--med-head)}
 .slow-push-guide,[data-hardcore-setting],.slow-push-guide h3[id],.push-default-table tr{scroll-margin-top:7.25rem}
-.main .push-card-note h4{font-size:1rem;color:var(--cream);margin:0 0 .6rem}
+.main .push-card-note h4{font-size:1rem;color:var(--amber);margin:0 0 .6rem}
 .push-card-note p{font-size:.92rem;line-height:1.65;margin:.5rem 0}
 .push-card-note p>strong{color:var(--cream)}
 .push-instructions{display:grid;grid-template-columns:150px minmax(0,1fr);gap:1.4rem;align-items:center;margin:1.2rem 0}
@@ -12,7 +12,7 @@
 .push-state-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
 .push-default-table th:first-child{width:20%}.push-default-table th:nth-child(2){width:16%}
 .push-off-note{margin:.6rem 0 0;padding-top:.45rem;border-top:1px solid var(--rule)}
-.push-off-note summary{font-size:.85rem;color:var(--cream);cursor:pointer}.push-off-note p{font-size:.88rem;margin:.5rem 0 0}
+.push-off-note summary{font-size:.85rem;color:var(--amber);cursor:pointer}.push-off-note p{font-size:.88rem;margin:.5rem 0 0}
 .push-rate-example .math-row{display:flex;align-items:center;justify-content:start;gap:.7rem;flex-wrap:wrap}
 .infusion-mode-note{font-size:.87rem;padding:.7rem .85rem;border-left:2px solid var(--amber-dim);background:var(--med-head);margin:1rem 0}
 @media(max-width:1100px){.push-state-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}

@@ -452,7 +452,7 @@ footer .brand{color:var(--cream)}
 /* Special considerations: what this addon does differently. Amber left edge marks it as the
    modelled behaviour rather than the general pharmacology above it. */
 .drug .sect.special{border-left:3px solid var(--amber);background:rgba(var(--amber-rgb),.05)}
-.drug .sect.special h4{color:var(--cream)}
+.drug .sect.special h4{color:var(--amber)}
 .drug .sect p{font-size:14px}
 .drug .sect ul{list-style:none;font-size:14px}
 .drug .sect li{padding-left:14px;position:relative;margin-top:3px}
@@ -971,19 +971,25 @@ table.hemorrhage-classes th:nth-child(3),table.hemorrhage-classes td:nth-child(3
 .gl[role="button"]{display:inline;font:inherit;text-transform:inherit;letter-spacing:inherit;padding:0;white-space:normal}
 @media print{.chart-inspector,.chart-cursor{display:none!important}.med-card-grid>.drug,.med-card-grid .med-facts{display:block}.med-fact{min-height:0}.gl{border:0;background:none;color:inherit}}
 
-/* Shared palette: charcoal and navy surfaces, cream headings, blue links. */
+/* Original dark surfaces, warm cream text and yellow headings. */
 @media screen {
- :root{--navy:#090e13;--navy-2:#111b26;--med-surface:#111d29;--med-head:#162637;--surface-key:var(--med-head);--cream:#f2e8d2;--body-ink:#c6d6e2;--cream-dim:#a9becf;--amber:#f1bd59;--amber-dim:#d6ad62;--amber-rgb:241,189,89;--accent:#39bde9;--link-ink:#8dcdff;--rule-2:#344c60;--rule:rgba(118,169,205,.22)}
+ :root{
+  --navy:#090e13;--navy-2:#111b26;--med-surface:#111d29;--med-head:#162637;
+  --surface-key:var(--med-head);
+  --cream:#f2e8d2;--body-ink:var(--cream);--cream-dim:#ccbf9c;--sub-ink:var(--cream-dim);
+  --amber:#f1bd59;--amber-dim:#d6ad62;--amber-rgb:241,189,89;
+  --accent:#39bde9;--link-ink:#8dcdff;--rule-2:#344c60;--rule:rgba(118,169,205,.22);
+ }
  html.night{--navy:#05080c;--navy-2:#0b141d;--med-surface:#0d1721;--med-head:#122131;--surface-key:var(--med-head)}
- h1,h2,h3,.card .name,.drug .dn,.dd-name,.side .brand-text,.sb-cur,.guide-link strong{color:var(--cream)}
+ h1,h2,h3,.card .name,.drug .dn,.dd-name,.side .brand-text,.sb-cur,.guide-link strong{color:var(--amber)}
  h4,.pk .v,.sgrid .sv,.sgrid .s.key .sv,.icard .treat b,.danger-zone .dz b{color:var(--cream)}
  .side,.mbar{background:var(--navy-2)}
  .card,.principle,details.dd,.ref-calculator,.guide-link,.formula,.glpop-in,.tb-panel,.secbar,.sgrid,.icard{background:var(--med-surface)}
  .card>header,.drug>header,table.t thead th,.chart-inspector,.sb-list,.grid .cell,.sgrid .s.key,.med-card-grid .drug>header{background:var(--med-head)}
  .reference-chart,figure.wave{background:var(--navy)}
  .article-status{background:var(--med-surface);color:var(--cream-dim);border-color:var(--rule-2)}
- .main a[href]:not(.gl){color:var(--link-ink);background-color:rgba(141,205,255,.08);border-radius:.15rem;box-decoration-break:clone;-webkit-box-decoration-break:clone;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em}
- .main a[href]:not(.gl):hover,.main a[href]:not(.gl):focus-visible{color:var(--cream);background-color:rgba(141,205,255,.16);text-decoration-thickness:2px}
+ .main a[href]:not(.gl){color:var(--link-ink);background-color:var(--med-surface);border-radius:.15rem;box-decoration-break:clone;-webkit-box-decoration-break:clone;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em}
+ .main a[href]:not(.gl):hover,.main a[href]:not(.gl):focus-visible{color:var(--cream);background-color:var(--med-head);text-decoration-thickness:2px}
  .main a[href]:not(.gl):focus-visible{outline:2px solid var(--link-ink);outline-offset:3px}
  .main .med-index a{padding:.65rem .8rem;border:1px solid var(--rule-2);border-radius:.4rem;background:var(--med-surface)}
  .main .guide-link{color:var(--body-ink)}
@@ -1059,7 +1065,7 @@ details.dd[open] .dd-mark{transform:rotate(90deg)}
 .iv-art{height:430px;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#1a2b3a 0%,transparent 70%)}
 .iv-art img{height:100%;width:auto;max-width:100%;object-fit:contain}
 .iv-slide figcaption{font:inherit;letter-spacing:normal;text-transform:none;color:var(--body-ink)}
-.iv-slide :is(h3,h4){font-size:clamp(1.4rem,2.3vw,2rem);margin:.25rem 0 1rem;color:var(--cream)}
+.iv-slide :is(h3,h4){font-size:clamp(1.4rem,2.3vw,2rem);margin:.25rem 0 1rem;color:var(--amber)}
 .iv-slide .step-count{font-size:.8rem;letter-spacing:.12em;color:var(--accent)}
 .iv-control{display:inline-block;border:1px solid var(--rule-2);padding:.35rem .65rem;border-radius:.25rem;background:var(--med-head);color:var(--cream);font-weight:650}
 .iv-note{border-left:2px solid var(--accent);padding-left:1rem;color:var(--cream-dim);font-size:.95rem}
@@ -1112,7 +1118,7 @@ details.dd[open] .dd-mark{transform:rotate(90deg)}
 .sec-head{margin-left:calc(-1 * clamp(.75rem,1.3vw,1.25rem) - 1px);padding-left:clamp(.75rem,1.3vw,1.25rem);border-left:2px solid var(--amber)}
 .quick-grid,.clinical-cards,.gauge-choice-grid,.sound-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,18rem),1fr));gap:1rem;margin:1.2rem 0 1.5rem;align-items:stretch}
 .quick-card,.clinical-card,.sound-card{min-width:0;padding:1.1rem 1.2rem;border:1px solid var(--rule-2);border-radius:.5rem;background:var(--med-surface)}
-.quick-card h3,.quick-card :is(h4,h5),.clinical-card h3,.clinical-card :is(h4,h5),.sound-card :is(h4,h5){margin:0 0 .65rem;color:var(--cream);font-family:inherit;font-size:1.15rem;line-height:1.4;text-transform:none}
+.quick-card h3,.quick-card :is(h4,h5),.clinical-card h3,.clinical-card :is(h4,h5),.sound-card :is(h4,h5){margin:0 0 .65rem;color:var(--amber);font-family:inherit;font-size:1.15rem;line-height:1.4;text-transform:none}
 .quick-card p,.clinical-card p,.sound-card p{margin:.5rem 0 0}
 .metric-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,11rem),1fr));gap:1px;margin:1.1rem 0;background:var(--rule);border:1px solid var(--rule);border-radius:.45rem;overflow:hidden}
 .metric{min-width:0;display:flex;flex-direction:column;gap:.4rem;padding:1rem;background:var(--med-head)}
@@ -1122,7 +1128,7 @@ details.dd[open] .dd-mark{transform:rotate(90deg)}
 .vent-scenarios{grid-template-columns:minmax(0,1fr)}
 .vent-scenarios>.icard{margin:0;min-width:0}
 .icard>header{padding:1rem 1.2rem;background:var(--med-head);gap:.7rem;align-items:center;flex-wrap:wrap}
-.icard .iname{font:700 1.3rem/1.35 system-ui,sans-serif;color:var(--cream);text-transform:none;letter-spacing:normal}
+.icard .iname{font:700 1.3rem/1.35 system-ui,sans-serif;color:var(--amber);text-transform:none;letter-spacing:normal}
 .bdg{font:500 .75rem/1.3 system-ui,sans-serif;letter-spacing:normal;text-transform:none}
 .sgrid{grid-template-columns:repeat(2,minmax(0,1fr));background:var(--rule);gap:1px}
 .sgrid .s{min-width:0;padding:1rem;background:var(--med-surface)}
@@ -1292,7 +1298,7 @@ kbd{font:inherit;font-size:.9em;padding:.1rem .4rem;border:1px solid var(--rule-
 .capno-chart figcaption{margin:.3rem 0 1.3rem;padding:0;color:var(--cream-dim);font-size:.875rem;line-height:1.55;text-transform:none;letter-spacing:normal}
 .capno-pattern-note{padding:1.2rem 0 0;border-top:1px solid var(--rule-2)}
 .capno-pattern-note+.capno-pattern-note{margin-top:1.2rem}
-.capno-pattern-note :is(h3,h4){margin:0 0 1rem;color:var(--cream)}
+.capno-pattern-note :is(h3,h4){margin:0 0 1rem;color:var(--amber)}
 .capno-notes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.4rem}
 .capno-notes>div{padding-left:1rem;border-left:2px solid var(--rule-2);min-width:0}
 .capno-notes :is(h4,h5){margin:0 0 .6rem;font-size:.85rem;color:var(--cream);letter-spacing:.035em}
@@ -1374,12 +1380,12 @@ kbd{font:inherit;font-size:.9em;padding:.1rem .4rem;border:1px solid var(--rule-
 .language-picker :focus-visible{outline:2px solid var(--amber);outline-offset:2px}
 @media print{.language-picker{display:none}}
 
-/* Shared cream headings and labels across the reference cards. */
+/* Original yellow heading hierarchy; cream values and control text. */
 @media screen {
  .main h4,.main h5,.main h6,.main table.t th,.main .med-fact dt,.glpop .glpop-t,
  .main .flow-node :is(h4,h5),.main .rhythm-monitor .rhythm-monitor-head strong,
  .main .metric small,.main .math-term small,.main .sgrid .sk,.main .icard .gate .gk,
- .main .pk .k,.main .kv .k,.main .formula>strong,.main .infusion-band :is(h3,h4),.main .route-peaks strong{color:var(--cream)}
+ .main .pk .k,.main .kv .k,.main .formula>strong,.main .infusion-band :is(h3,h4),.main .route-peaks strong{color:var(--amber)}
 }
 .availability-warning{margin:1rem;padding:1.1rem 1.2rem;border:2px solid #d78778;border-left-width:6px;border-radius:.35rem;background:#301c20}
 .availability-warning>strong{display:block;color:#ffd27a;font-size:1.1rem;line-height:1.4;letter-spacing:.015em}
@@ -1393,7 +1399,7 @@ kbd{font:inherit;font-size:.9em;padding:.1rem .4rem;border:1px solid var(--rule-
 .med-art-note{grid-column:1/-1;font-size:.75rem;line-height:1.5;color:var(--cream-dim);padding-top:.45rem}
 .infusion-toolbar{display:flex;align-items:end;gap:1rem;flex-wrap:wrap;padding:1rem;margin:1.2rem 0;background:var(--med-head);border:1px solid var(--rule);border-radius:.4rem}
 .infusion-toolbar[hidden],.infusion-guide[hidden],.infusion-empty[hidden]{display:none}
-.infusion-toolbar label{flex:1 1 19rem;margin:0;min-width:0;font-size:.9rem;color:var(--cream)}
+.infusion-toolbar label{flex:1 1 19rem;margin:0;min-width:0;font-size:.9rem;color:var(--amber)}
 .infusion-toolbar input{display:block;width:100%;margin-top:.4rem;min-height:44px}
 .infusion-toolbar button{padding:.65rem .9rem;min-height:44px;border:1px solid var(--rule-2);border-radius:.3rem;background:var(--navy);color:var(--cream);font:inherit;cursor:pointer}
 .infusion-toolbar button:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
@@ -1413,7 +1419,7 @@ kbd{font:inherit;font-size:.9em;padding:.1rem .4rem;border:1px solid var(--rule-
 .infusion-band.band-danger{border-top-color:#c98777}
 .infusion-followup{margin:1rem 0;padding:.15rem 1rem;border-left:2px solid var(--rule-2)}
 .infusion-followup p{margin:.7rem 0;font-size:.94rem}
-.infusion-followup p>b{color:var(--cream)}
+.infusion-followup p>b{color:var(--amber)}
 .infusion-guide .source-note{font-size:.78rem;line-height:1.8;margin:1rem 0 0;color:var(--cream-dim)}
 .infusion-legend p{max-width:none}
 .premix-thumb{width:45px;height:60px;object-fit:contain;vertical-align:middle;margin-right:.7rem}
@@ -1436,7 +1442,7 @@ kbd{font:inherit;font-size:.9em;padding:.1rem .4rem;border:1px solid var(--rule-
 .explorer-controls .explorer-check{display:flex;align-items:center;gap:.65rem;color:var(--body-ink)}.explorer-check input{width:18px;height:18px;flex:none;accent-color:var(--amber)}.explorer-controls .explorer-check>span{margin:0}
 .explorer-modifiers{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:.6rem 1.5rem;padding:.7rem 1rem;border:1px solid var(--rule);border-radius:.3rem;min-width:0}.explorer-modifiers legend{font-size:.85rem;color:var(--amber);padding:0 .4rem}
 .explorer-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--rule);border-radius:.4rem;overflow:hidden;margin:1rem 0;gap:1px;background:var(--rule)}
-.explorer-metrics>div{padding:1rem;min-width:0;background:var(--med-head);display:flex;flex-direction:column;gap:.4rem}.main .explorer-metrics :is(h4,h5){margin:0;font:600 .82rem/1.5 system-ui;color:var(--cream)}.explorer-metrics strong{font-size:1.3rem;line-height:1.35;color:var(--cream);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.explorer-metrics span{font-size:.82rem;line-height:1.5;color:var(--cream-dim)}
+.explorer-metrics>div{padding:1rem;min-width:0;background:var(--med-head);display:flex;flex-direction:column;gap:.4rem}.main .explorer-metrics :is(h4,h5){margin:0;font:600 .82rem/1.5 system-ui;color:var(--amber)}.explorer-metrics strong{font-size:1.3rem;line-height:1.35;color:var(--cream);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.explorer-metrics span{font-size:.82rem;line-height:1.5;color:var(--cream-dim)}
 .explorer-plot{background:var(--navy);border:1px solid var(--rule);border-radius:.35rem;padding:.8rem;min-width:0}.explorer-plot svg{display:block;width:100%;height:auto;overflow:visible;touch-action:pan-y}.explorer-plot svg text{font:13px system-ui;fill:var(--cream-dim)}.explorer-unit{font-size:.8rem;color:var(--cream-dim);margin:0 0 .5rem}
 .explorer-legend{display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;font-size:.75rem;color:var(--cream-dim)}.explorer-legend>span{display:flex;align-items:center;gap:.5rem}.explorer-legend i{display:inline-block;width:1.1rem;height:.55rem}.legend-line{border-top:2px solid #55baf3;transform:translateY(.2rem)}.legend-band{background:#f1bd592f;border:1px solid #f1bd5966}
 .explorer-time{display:block;margin:1rem 0 .2rem;font-size:.87rem;color:var(--amber)}.explorer-time>span{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}.explorer-time output{font-variant-numeric:tabular-nums;color:var(--cream)}
@@ -1451,7 +1457,7 @@ kbd{font:inherit;font-size:.9em;padding:.1rem .4rem;border:1px solid var(--rule-
 .mixture-guide{min-width:0;overflow-wrap:anywhere}
 .mixture-guide [hidden]{display:none!important}
 .mixture-picker{display:flex;align-items:center;gap:.7rem 1.2rem;flex-wrap:wrap;padding:1rem;border:1px solid var(--rule);border-radius:.4rem;background:var(--med-head);margin:1.2rem 0}
-.mixture-guide label,.mixture-guide h3,.mixture-guide :is(h4,h5),.mixture-total>b,.mixture-tag>b,.mixture-figure b{color:var(--cream)}
+.mixture-guide label,.mixture-guide h3,.mixture-guide :is(h4,h5),.mixture-total>b,.mixture-tag>b,.mixture-figure b{color:var(--amber)}
 .mixture-picker label{font-weight:600;flex:0 1 15rem;min-width:0;margin:0}
 .mixture-picker select{flex:1 1 18rem;min-width:0;max-width:100%;min-height:44px;padding:.6rem;font:inherit}
 .mixture-recipe{padding:1.3rem;border:1px solid var(--rule);border-radius:.45rem;background:var(--med-head);margin:1.2rem 0;scroll-margin-top:7rem;min-width:0}
@@ -1526,7 +1532,7 @@ kbd{font:inherit;font-size:.9em;padding:.1rem .4rem;border:1px solid var(--rule-
 
 .push-card-note{border-left:3px solid var(--amber-dim);background:var(--med-head)}
 .slow-push-guide,[data-hardcore-setting],.slow-push-guide h3[id],.push-default-table tr{scroll-margin-top:7.25rem}
-.main .push-card-note h4{font-size:1rem;color:var(--cream);margin:0 0 .6rem}
+.main .push-card-note h4{font-size:1rem;color:var(--amber);margin:0 0 .6rem}
 .push-card-note p{font-size:.92rem;line-height:1.65;margin:.5rem 0}
 .push-card-note p>strong{color:var(--cream)}
 .push-instructions{display:grid;grid-template-columns:150px minmax(0,1fr);gap:1.4rem;align-items:center;margin:1.2rem 0}
@@ -1538,7 +1544,7 @@ kbd{font:inherit;font-size:.9em;padding:.1rem .4rem;border:1px solid var(--rule-
 .push-state-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
 .push-default-table th:first-child{width:20%}.push-default-table th:nth-child(2){width:16%}
 .push-off-note{margin:.6rem 0 0;padding-top:.45rem;border-top:1px solid var(--rule)}
-.push-off-note summary{font-size:.85rem;color:var(--cream);cursor:pointer}.push-off-note p{font-size:.88rem;margin:.5rem 0 0}
+.push-off-note summary{font-size:.85rem;color:var(--amber);cursor:pointer}.push-off-note p{font-size:.88rem;margin:.5rem 0 0}
 .push-rate-example .math-row{display:flex;align-items:center;justify-content:start;gap:.7rem;flex-wrap:wrap}
 .infusion-mode-note{font-size:.87rem;padding:.7rem .85rem;border-left:2px solid var(--amber-dim);background:var(--med-head);margin:1rem 0}
 @media(max-width:1100px){.push-state-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -1644,22 +1650,22 @@ kbd{font:inherit;font-size:.9em;padding:.1rem .4rem;border:1px solid var(--rule-
  .topic-group>.sec{margin:1.5rem 0 2rem;padding-left:1.2rem;border-left:1px solid var(--rule-2);min-width:0}
  .topic-group>.sec>.sec-head{margin-left:0;padding-left:0;border-left:0;gap:.6rem;margin-bottom:.75rem;flex-wrap:wrap;align-items:center}
  .topic-group>.sec>.sec-head>.sec-num{display:none}
- .topic-group h3[data-wiki-nav]{font:700 1.2rem/1.45 system-ui,sans-serif;color:var(--cream);margin:0;min-width:0}
- .topic-group .sec>h4{font-size:1.05rem;line-height:1.5;color:var(--cream);margin:1.2rem 0 .6rem}
- :where(.topic-group .sec) h5{font-size:1rem;line-height:1.5;color:var(--cream)}
+ .topic-group h3[data-wiki-nav]{font:700 1.2rem/1.45 system-ui,sans-serif;color:var(--amber);margin:0;min-width:0}
+ .topic-group .sec>h4{font-size:1.05rem;line-height:1.5;color:var(--amber);margin:1.2rem 0 .6rem}
+ :where(.topic-group .sec) h5{font-size:1rem;line-height:1.5;color:var(--amber)}
  .topic-group>.sec .sec-head .clinical-icon{width:36px;height:36px}
  .main .reading-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,28rem),1fr));gap:.8rem 2rem;max-width:108rem;margin:.8rem 0 1.2rem;align-items:start}
  .reading-block{min-width:0;margin:.75rem 0 1rem}
  .reading-grid>.reading-block{margin:0}
- .main .reading-label{font:650 .9rem/1.5 system-ui,sans-serif;color:var(--cream);margin:0 0 .3rem;letter-spacing:0;text-transform:none}
+ .main .reading-label{font:650 .9rem/1.5 system-ui,sans-serif;color:var(--amber);margin:0 0 .3rem;letter-spacing:0;text-transform:none}
  .main .reading-block>p{margin:.3rem 0 0}
  .main .reading-block>p+p{margin-top:.7rem}
  .main .reading-block>ul,.main .reading-block>ol{margin:.4rem 0 .3rem;padding-left:1.2rem;line-height:1.65}
  .main .reading-block li+li{margin-top:.4rem}
- .reference-note{padding:.8rem 1rem;border-left:2px solid #617f92;background:rgba(97,127,146,.08);max-width:85ch;margin:1rem 0;min-width:0;border-radius:0 .25rem .25rem 0}
- .reference-note.note-caution{border-left-color:#d3a17c;background:rgba(211,161,124,.07)}
- .reference-note.note-hardcore{border-left-color:#a39dbd;background:rgba(163,157,189,.07)}
- .reference-note.note-game{border-left-color:#6ea4b8;background:rgba(110,164,184,.07)}
+ .reference-note{padding:.8rem 1rem;border-left:2px solid #617f92;background:var(--med-surface);max-width:85ch;margin:1rem 0;min-width:0;border-radius:0 .25rem .25rem 0}
+ .reference-note.note-caution{border-left-color:#d3a17c}
+ .reference-note.note-hardcore{border-left-color:#a39dbd}
+ .reference-note.note-game{border-left-color:#6ea4b8}
  .reference-note>p{margin:.35rem 0 0;max-width:var(--reading-width)}
  .reference-note .reading-label{margin:0}
  .note-kind{display:inline-block;margin-right:.65rem;color:var(--cream-dim);font-size:.75rem;font-weight:500;border-bottom:1px solid currentColor;line-height:1.5}
@@ -1680,9 +1686,9 @@ kbd{font:inherit;font-size:.9em;padding:.1rem .4rem;border:1px solid var(--rule-
  .copy-link-status:empty{display:none}
  .sb-list a.sub{font-size:.875rem;line-height:1.5;margin-left:var(--page-gutter);padding-left:1rem;border-left:1px solid var(--rule-2)}
  .nav .subnav a.nested-section{font-size:.875rem;line-height:1.4;padding-left:1.55rem;color:var(--cream-dim)}
- .nav .subnav a.nested-section.on{color:var(--cream);border-left-color:var(--cream-dim)}
+ .nav .subnav a.nested-section.on{color:var(--amber);border-left-color:var(--amber)}
  .settings-subsection{margin:1.4rem 0 1.8rem;padding-left:1.2rem;border-left:1px solid var(--rule-2)}
- .settings-subsection h3[data-wiki-nav]{font:700 1.15rem/1.45 system-ui;color:var(--cream);margin:0 0 .8rem}
+ .settings-subsection h3[data-wiki-nav]{font:700 1.15rem/1.45 system-ui;color:var(--amber);margin:0 0 .8rem}
  .settings-subsection details.dd{margin:.6rem 0}
  .settings-subsection .dd-body{padding:1rem 1.2rem}
  .settings-subsection .push-mode-grid{gap:1.3rem}

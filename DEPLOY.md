@@ -1,6 +1,6 @@
-# Deploy the September 15 reading layout update
+# Deploy the September 15 dark palette correction
 
-This full package contains the editable source and the rebuilt `docs` site. The website version remains **1.2.1**. It adds grouped topics, indented subsections and labeled explanations to the existing package, including the Hardcore settings, slow-push guide, infusion tools, printable charts and cream-heading/graph updates.
+This full package uses the earlier dark charcoal and navy surfaces, cream body text and original yellow titles (`#F1BD59`). New information blocks and link highlights match the dark palette. It includes the editable source and rebuilt `docs` site, with the grouped layout retained. The website version remains **1.2.1**. It adds grouped topics, indented subsections and labeled explanations to the existing package, including the Hardcore settings, slow-push guide, infusion tools, printable charts and graph updates.
 
 Use the existing **hesherson/ACM-Extended-Wiki** repository. GitHub Pages continues to publish **main /docs**. No npm install or Python build is needed to publish the included HTML.
 
@@ -39,7 +39,7 @@ git diff --cached --stat
 Open `docs/index.html` to preview, and review the staged changes. This ZIP is a full saved website snapshot; check any changes that would replace newer work in your checkout. When ready, publish:
 
 ```powershell
-git commit -m "Improve wiki reading layout and topic navigation"
+git commit -m "Restore dark wiki palette and yellow headings"
 if ($LASTEXITCODE -ne 0) { throw "Commit failed; nothing was pushed." }
 git push origin main
 if ($LASTEXITCODE -ne 0) { throw "Push failed. The local commit is retained." }
@@ -60,7 +60,9 @@ Commit both `src` and rebuilt `docs`. Editing only `docs` will be overwritten by
 
 ## Changes and validation
 
-* 25 parent topics across eight long articles, with smaller cream subsection headings and a subtle left rule
+Latest correction: the earlier charcoal/navy surface colors are applied consistently to the new information blocks and link highlights. Body text is cream, secondary text is muted cream, and headings plus the active subsection use yellow. Article HTML and reference logic are unchanged by this correction; all 28 pages were rebuilt and checked.
+
+* 25 parent topics across eight long articles, with smaller yellow subsection headings and a subtle left rule
 * Five subgroup headings for the 21 Hardcore setting comparisons
 * 71 labels that make explanations, in-game behavior and cautions easier to scan
 * Shorter prose lines, compact spacing and a smaller phone indent; wide tables and charts retain their space

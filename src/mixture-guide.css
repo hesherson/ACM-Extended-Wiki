@@ -1,7 +1,7 @@
 .mixture-guide{min-width:0;overflow-wrap:anywhere}
 .mixture-guide [hidden]{display:none!important}
 .mixture-picker{display:flex;align-items:center;gap:.7rem 1.2rem;flex-wrap:wrap;padding:1rem;border:1px solid var(--rule);border-radius:.4rem;background:var(--med-head);margin:1.2rem 0}
-.mixture-guide label,.mixture-guide h3,.mixture-guide :is(h4,h5),.mixture-total>b,.mixture-tag>b,.mixture-figure b{color:var(--cream)}
+.mixture-guide label,.mixture-guide h3,.mixture-guide :is(h4,h5),.mixture-total>b,.mixture-tag>b,.mixture-figure b{color:var(--amber)}
 .mixture-picker label{font-weight:600;flex:0 1 15rem;min-width:0;margin:0}
 .mixture-picker select{flex:1 1 18rem;min-width:0;max-width:100%;min-height:44px;padding:.6rem;font:inherit}
 .mixture-recipe{padding:1.3rem;border:1px solid var(--rule);border-radius:.45rem;background:var(--med-head);margin:1.2rem 0;scroll-margin-top:7rem;min-width:0}

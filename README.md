@@ -4,6 +4,10 @@ Latest package: September 15, 2026. See [DEPLOY.md](DEPLOY.md) for deployment co
 
 Static reference site for ACM Extended. The existing Python builder produces self-contained HTML pages in `docs/`, with offline search, inline styles and inline browser scripts.
 
+## Dark palette and title correction
+
+The palette uses the earlier charcoal background (`#090E13`) and navy surfaces (`#111B26`, `#111D29`, `#162637`), with cream body text (`#F2E8D2`) and the original yellow titles (`#F1BD59`). Secondary text uses a muted cream. The new information blocks and link highlights share the dark surface colors, and the selected subsection uses yellow. The grouped layout, article content, graph markers and blue links are retained. Screen palette variables are defined together in `src/_pillar.css`; print colors remain separate.
+
 ## Reading layout update
 
 Eight longer articles now use 25 parent topics with indented subsections and a subtle left rule: IV access, airway, ventilator, TBI, bleeding, oxygen, blast and flight. The 21 Hardcore settings are organized under five subgroup headings. Both page navigation menus reflect the hierarchy, and the original section anchors remain valid.
